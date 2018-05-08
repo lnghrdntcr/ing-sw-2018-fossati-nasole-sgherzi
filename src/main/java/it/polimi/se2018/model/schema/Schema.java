@@ -9,7 +9,7 @@ public class Schema {
     private DiceFace diceFaces[] = new DiceFace[20];
     private SchemaCardFace schemaCardFace;
 
-    Schema(){
+    public Schema(SchemaCardFace schemaCardFace){
 
     }
 

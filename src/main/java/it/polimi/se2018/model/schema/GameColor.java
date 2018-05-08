@@ -5,8 +5,6 @@ import java.awt.*;
 public enum GameColor {
     RED, BLUE, GREEN, PURPLE, YELLOW;
 
-
-
     public Color getColor(){
         return null;
     }

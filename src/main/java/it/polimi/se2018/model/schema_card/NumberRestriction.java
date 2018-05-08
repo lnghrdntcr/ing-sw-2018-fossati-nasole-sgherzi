@@ -4,12 +4,16 @@ public class NumberRestriction extends CellRestriction  {
 
   private int number;
 
-  NumberRestriction(int number){
-
+  public NumberRestriction(int number){
+    this.number = number;
   }
 
   @Override
   public boolean isDiceAllowed() {
     return false;
+  }
+
+  public int getNumber() {
+    return this.number;
   }
 }

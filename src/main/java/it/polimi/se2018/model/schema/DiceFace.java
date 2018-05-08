@@ -1,10 +1,13 @@
 package it.polimi.se2018.model.schema;
 
 public class DiceFace {
+
     private GameColor color;
     private int number;
 
-    DiceFace() {
+    public DiceFace(GameColor color, int number) {
+
+        // Fare il controllo su number
 
     }
 
