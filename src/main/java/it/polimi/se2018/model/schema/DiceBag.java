@@ -7,10 +7,10 @@ import java.util.EnumMap;
 import java.util.Random;
 
 /**
- * @author Francesco Sgherzi
- * @since 09/05/2018
  * Creates DiceFaces and holds them.
  * It also checks that not more than a certain number of dice is created for each color.
+ * @author Francesco Sgherzi
+ * @since 09/05/2018
  */
 public class DiceBag {
     // TODO: Implement Tests
@@ -27,10 +27,10 @@ public class DiceBag {
     }
 
     /**
-     * @return A new DiceFace, according to internal checks.
-     * @throws IllegalStateException if the number of dices drawn is greater than 90.
      * Draws a dice checking that the number of dices drawn per color is less than `Settings.MAX_DICE_PER_COLOR`
      * and the number of total drawn dices is less than `Settings.MAX_DICE_PER_COLOR * GameColor.values().length`
+     * @return A new DiceFace, according to internal checks.
+     * @throws IllegalStateException if the number of dices drawn is greater than 90.
      */
     public DiceFace drawDice() {
 
@@ -52,9 +52,9 @@ public class DiceBag {
     }
 
     /**
+     * Puts back a dice, checking that a dice of that color has ever been drawn, or if any dice has ever been drawn.
      * @param diceFace The DiceFace to be put back.
      * @throws IllegalStateException If the number of dices drawn is less than 0.
-     * Puts back a dice, checking that a dice of that color has ever been drawn, or if any dice has ever been drawn
      */
     public void putBackDice(@NotNull DiceFace diceFace) {
 

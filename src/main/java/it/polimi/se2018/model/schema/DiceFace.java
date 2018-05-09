@@ -3,9 +3,9 @@ package it.polimi.se2018.model.schema;
 import com.sun.istack.internal.NotNull;
 
 /**
+ * Holds the logic for the dice to be placed in the schema card or the scoreboard
  * @author Francesco Sgherzi
  * @since 09/05/2018
- * Holds the logic for the dice to be placed in the schema card or the scoreboard
  */
 public class DiceFace {
     // TODO: Implement Tests
