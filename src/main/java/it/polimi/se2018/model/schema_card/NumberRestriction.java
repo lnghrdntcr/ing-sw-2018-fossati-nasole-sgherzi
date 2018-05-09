@@ -1,19 +1,36 @@
 package it.polimi.se2018.model.schema_card;
 
-public class NumberRestriction extends CellRestriction  {
+import it.polimi.se2018.model.schema.DiceFace;
 
-  private int number;
+/**
+ * @author Nicola Fossati
+ * @since 09/05/2018
+ * A restriction based on the number of the dice
+ */
+public class NumberRestriction extends CellRestriction {
 
-  public NumberRestriction(int number){
-    this.number = number;
-  }
+    private int number;
 
-  @Override
-  public boolean isDiceAllowed() {
-    return false;
-  }
+    /**
+     * @param number the value of the dice required
+     */
+    public NumberRestriction(int number) {
+        if (number < 1 || number > 6) {
+            throw new IllegalArgumentException(this.getClass().getCanonicalName()+": number must be between 1 and 6!");
+        }
+        this.number = number;
+    }
 
-  public int getNumber() {
-    return this.number;
-  }
+    public int getNumber() {
+        return this.number;
+    }
+
+    /**
+     * @param diceFace the DiceFace to check
+     * @return true if the dice number is equal to the restriction number, false otherwise
+     */
+    @Override
+    public boolean isDiceAllowed(DiceFace diceFace) {
+        return (number == diceFace.getNumber());
+    }
 }

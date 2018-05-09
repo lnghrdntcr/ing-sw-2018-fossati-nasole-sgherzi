@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class Schema {
 
-    private DiceFace diceFaces[] = new DiceFace[20];
+    private DiceFace diceFaces[] = new DiceFace[20]; //FIXME: WTF?
     private SchemaCardFace schemaCardFace;
 
     public Schema(SchemaCardFace schemaCardFace){
