@@ -51,6 +51,7 @@ public class DiceHolder {
    */
   public void addDice(int turn, @NotNull DiceFace diceFace){
 
+    if(turn < 0) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Turn less than 0");
     if(turn > Settings.TURNS) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Tryig to access a turn greater than " + Settings.TURNS);
     if(diceFace == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": diceFace cannot be null.");
 
@@ -67,7 +68,7 @@ public class DiceHolder {
    */
   public DiceFace[] getTurnDices(int turn) {
     // Uses new DiceFace[0] to infer the type
-    if(turn > Settings.TURNS) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Tryig to access a turn greater than " + Settings.TURNS);
+    if(turn >= Settings.TURNS) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Tryig to access a turn greater than " + Settings.TURNS);
     return turnHolder.get(turn).toArray(new DiceFace[0]);
   }
 

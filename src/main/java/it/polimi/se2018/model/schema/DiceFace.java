@@ -18,8 +18,9 @@ public class DiceFace {
      * @throws IllegalArgumentException if the number is less than 1 or greater than 6.
      */
     public DiceFace(@NotNull GameColor color, int number) {
-        if (this.number < 1 || this.number > 6)
+        if (number < 1 || number > 6){
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Number must be greater than one or less than 6.");
+        }
         if (color == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Color cannot be null.");
         this.color = color;
@@ -35,12 +36,14 @@ public class DiceFace {
     }
 
     /**
-     * Check if a dice is similar to this dice
-     * @param diceFace the other DiceFace to compare to this one
-     * @return true if color or (inclusively) number is equal, false otherwise
+     * Check if a dice is similar to this dice.
+     * @param diceFace the other DiceFace to compare to this one.
+     * @return true if color or (inclusively) number is equal, false otherwise.
+     * @throws IllegalArgumentException if the diceFace is null.
      * @author Nicola Fossati
      */
-    public boolean isSimilar(DiceFace diceFace) {
+    public boolean isSimilar(@NotNull DiceFace diceFace) {
+        if(diceFace == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": diceFace cannot be null.");
         return (this.color.equals(diceFace.getColor()) || this.number == diceFace.getNumber());
     }
 }

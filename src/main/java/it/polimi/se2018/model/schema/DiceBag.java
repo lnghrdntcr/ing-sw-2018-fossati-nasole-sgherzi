@@ -13,7 +13,7 @@ import java.util.Random;
  * @since 09/05/2018
  */
 public class DiceBag {
-    // TODO: Implement Tests
+
     private Random random;
     private EnumMap<GameColor, Integer> counter = new EnumMap<>(GameColor.class);
     private int dicesDrawn;
@@ -46,7 +46,6 @@ public class DiceBag {
 
         counter.put(values[color], counter.get(values[color]) + 1);
         dicesDrawn += 1;
-
         return new DiceFace(GameColor.values()[color], number);
 
     }
@@ -69,4 +68,5 @@ public class DiceBag {
         dicesDrawn -= 1;
 
     }
+
 }
