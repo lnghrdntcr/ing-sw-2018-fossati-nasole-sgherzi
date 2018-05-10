@@ -45,7 +45,7 @@ public class DifferentColumnColor extends PublicObjective {
                 counter.put(color, counter.get(color) + 1);
             }
 
-            if (valid(counter)) score = score + getPoint();
+            if (isValid(counter)) score = score + getPoint();
 
         }
         return score;
@@ -53,9 +53,9 @@ public class DifferentColumnColor extends PublicObjective {
 
     /**
      * @param counter A map using colors as key and their occurrences in the column as value.
-     * @return true if all the colors ar different, false otherwise.
+     * @return true if all the colors are different, false otherwise.
      */
-    private boolean valid(EnumMap<GameColor, Integer> counter) {
+    private boolean isValid(EnumMap<GameColor, Integer> counter) {
         int zeros = 0;
         int filled = 0;
 
