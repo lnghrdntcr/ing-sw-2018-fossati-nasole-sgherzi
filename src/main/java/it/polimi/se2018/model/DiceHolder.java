@@ -31,13 +31,21 @@ public class DiceHolder {
   public DiceFace removeDice(int turn, int position){
 
     DiceFace removedDice;
+    ArrayList<DiceFace> turnDices;
 
     if(turn > Settings.TURNS) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Tryig to access a turn greater than " + Settings.TURNS);
 
     try{
-      removedDice = turnHolder.get(turn).remove(position);
+      turnDices = turnHolder.get(turn);
     } catch (IndexOutOfBoundsException e) {
-      throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Position or turn number are not in the ArrayList");
+      throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Turn number is not in the ArrayList.");
+    }
+
+    try {
+      removedDice = turnDices.remove(position);
+    } catch (IndexOutOfBoundsException e){
+      throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Position number is not in the ArrayList.");
+
     }
 
     return removedDice;
@@ -67,9 +75,17 @@ public class DiceHolder {
    * @throws IllegalArgumentException When the turn is greater than `Settings.TURNS`
    */
   public DiceFace[] getTurnDices(int turn) {
-    // Uses new DiceFace[0] to infer the type
-    if(turn >= Settings.TURNS) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Tryig to access a turn greater than " + Settings.TURNS);
-    return turnHolder.get(turn).toArray(new DiceFace[0]);
+
+    ArrayList<DiceFace> turnDices = turnHolder.get(turn);
+
+    if(turn < 0) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Turn less than 0.");
+    if(turn >= Settings.TURNS) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Trying to access a turn greater than " + Settings.TURNS);
+    if(turnDices.isEmpty()){
+      throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Trying to access an empty turn.");
+    }
+
+    // Uses `new DiceFace[0]` to infer the type
+    return turnDices.toArray(new DiceFace[0]);
   }
 
 }
