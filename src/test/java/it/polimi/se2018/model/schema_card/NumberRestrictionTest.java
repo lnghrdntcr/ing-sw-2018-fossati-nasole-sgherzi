@@ -11,6 +11,7 @@ public class NumberRestrictionTest {
     public void generalTest(){
         for(int i=1; i<=6; i++){
             NumberRestriction numberRestriction = new NumberRestriction(i);
+            assertEquals(i, numberRestriction.getNumber());
             for(GameColor gc : GameColor.values()){
                 for(int j=1; j<=6; j++){
                     if(i==j){

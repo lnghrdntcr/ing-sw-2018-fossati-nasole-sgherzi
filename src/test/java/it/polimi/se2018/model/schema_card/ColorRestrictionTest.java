@@ -12,6 +12,7 @@ public class ColorRestrictionTest {
     public void generalTest(){
         for(GameColor gc : GameColor.values()){
             ColorRestriction colorRestriction = new ColorRestriction(gc);
+            assertEquals(gc, colorRestriction.getColor());
             for(GameColor gc2 : GameColor.values()){
                 for(int i =1; i<=6; i++){
                     if(gc.equals(gc2)){
@@ -23,6 +24,14 @@ public class ColorRestrictionTest {
             }
         }
 
+    }
+
+    @Test
+    public void failureTest(){
+        try{
+            ColorRestriction colorRestriction = new ColorRestriction(null);
+            fail();
+        }catch (IllegalArgumentException ignored){}
     }
 
 }
