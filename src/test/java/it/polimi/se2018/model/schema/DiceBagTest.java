@@ -60,9 +60,9 @@ public class DiceBagTest {
     }
 
     /*
-    * Testing normal behaviour:
-    * Attempting to put back all dices of a color from the diceBag.
-    */
+     * Testing normal behaviour:
+     * Attempting to put back all dices of a color from the diceBag.
+     */
     for(GameColor gc: GameColor.values()){
       for(int i = 0; i < Settings.MAX_DICE_PER_COLOR; i++) {
         // Using new DiceFace(gc, 2) because the number is actually useless.

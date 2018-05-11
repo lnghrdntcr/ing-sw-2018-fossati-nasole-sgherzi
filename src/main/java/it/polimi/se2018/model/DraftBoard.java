@@ -1,8 +1,8 @@
 package it.polimi.se2018.model;
 
-import com.sun.istack.internal.NotNull;
 import it.polimi.se2018.model.schema.DiceBag;
 import it.polimi.se2018.model.schema.DiceFace;
+import it.polimi.se2018.utils.Settings;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,7 +30,8 @@ public class DraftBoard {
    */
   public void drawDices(int playerNumber){
 
-    if(playerNumber < 2) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": User number has to be at least 2.");
+    if(playerNumber < Settings.MIN_NUM_PLAYERS) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": User number has to be at least 2.");
+    if(playerNumber > Settings.MAX_NUM_PLAYERS) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": User number must, at most, be 4");
 
     int dices = 2 * playerNumber + 1;
 
@@ -50,12 +51,13 @@ public class DraftBoard {
 
     DiceFace removedDice;
 
-    if(position > diceFaces.size() || position < 0) throw new IllegalArgumentException(this.getClass().getCanonicalName() + "Trying to get an already taken dice or accessing a non existing position.");
+    if(position > this.getDiceNumber() || position < 0) throw new IllegalArgumentException(this.getClass().getCanonicalName() + "Trying to get an already taken dice or accessing a non existing position.");
+    if(this.getDiceNumber() == 0) throw new IllegalStateException(this.getClass().getCanonicalName() + ": Trying to take a dice, but no dice is actually placed.");
 
     try{
       removedDice = diceFaces.remove(position);
     } catch (IndexOutOfBoundsException e) {
-      throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Position is are not in the ArrayList");
+      throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Position is not in the ArrayList");
     }
 
     return removedDice;
@@ -67,7 +69,7 @@ public class DraftBoard {
    * @param diceFace The diceFace to add.
    * @throws IllegalArgumentException If the `diceFace` is null.
    */
-  public void addDice(@NotNull DiceFace diceFace){
+  public void addDice(DiceFace diceFace){
 
     if(diceFace == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": diceFace cannot be null.");
 

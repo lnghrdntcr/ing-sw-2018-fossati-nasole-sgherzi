@@ -6,5 +6,7 @@ public class Settings {
   public static final int CARD_HEIGHT = 4;
   public static final int MAX_DICE_PER_COLOR = 18;
   public static final int TURNS = 10;
+  public static final int MAX_NUM_PLAYERS = 4;
+  public static final int MIN_NUM_PLAYERS = 2;
 
 }

@@ -1,15 +1,11 @@
 package it.polimi.se2018.model;
 
-import com.sun.xml.internal.ws.api.config.management.policy.ManagementAssertion;
 import it.polimi.se2018.model.schema.DiceBag;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.utils.Settings;
-import jdk.nashorn.internal.runtime.ECMAException;
 import org.junit.Before;
 import org.junit.Test;
-import sun.plugin.javascript.navig.Array;
-
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
@@ -120,21 +116,20 @@ public class DiceHolderTest {
     try {
       this.diceHolder.getTurnDices(-1);
       fail();
-    } catch (Exception e){}
+    } catch (IllegalArgumentException e){}
 
     // Testing against a turn not in range.
     try{
       this.diceHolder.getTurnDices(Settings.TURNS );
       fail();
-    } catch(Exception e){}
+    } catch(IllegalArgumentException e){}
 
     // Testing normal behaviour: get the turn dices for each turn
     for(int i = 0; i < Settings.TURNS; i++){
       if(i == this.MISSING_TURN){
         try{
-          System.out.println(Arrays.toString(this.diceHolder.getTurnDices(i)));
-
-        } catch (Exception e){}
+          this.diceHolder.getTurnDices(i);
+        } catch (IllegalArgumentException e){}
       } else{
         this.diceHolder.getTurnDices(i);
       }

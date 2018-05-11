@@ -1,7 +1,5 @@
 package it.polimi.se2018.model.schema;
 
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
 
@@ -24,7 +22,7 @@ public class Schema {
      * @param schemaCardFace the schemaCard selected by the user to build this schema
      * @throws IllegalArgumentException if schemaCardFace is null
      */
-    public Schema(@NotNull SchemaCardFace schemaCardFace) {
+    public Schema(SchemaCardFace schemaCardFace) {
         if (schemaCardFace == null)
             throw new IllegalArgumentException(getClass().getCanonicalName() + ": schemaCardFace cannot be null!");
         this.schemaCardFace = schemaCardFace;
@@ -36,8 +34,7 @@ public class Schema {
      * @param point the position of the schema to check, 0 based
      * @return the diceFace placed in the given point or null
      */
-    @Nullable
-    public DiceFace getDiceFace(@NotNull Point point) {
+    public DiceFace getDiceFace(Point point) {
         if (point == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": point cannot be null!");
 
@@ -54,7 +51,7 @@ public class Schema {
      * @param diceFace the diceFace to place or null to remove any existent diceFace
      * @throws IllegalArgumentException if point not valid, or point null
      */
-    public void setDiceFace(@NotNull Point point, @Nullable DiceFace diceFace) {
+    public void setDiceFace(Point point,DiceFace diceFace) {
         if (point == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": point cannot be null!");
 
@@ -72,7 +69,7 @@ public class Schema {
      * @param diceFace the diceFace to place
      * @return true if the diceFace can be placed, false otherwise
      */
-    public boolean isDiceAllowed(@NotNull Point point, @NotNull DiceFace diceFace) {
+    public boolean isDiceAllowed(Point point,DiceFace diceFace) {
         if (point == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": point cannot be null!");
 

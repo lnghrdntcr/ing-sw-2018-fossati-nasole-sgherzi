@@ -1,6 +1,5 @@
 package it.polimi.se2018.model.schema_card;
 
-import com.sun.istack.internal.NotNull;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 
@@ -16,7 +15,7 @@ public class ColorRestriction extends CellRestriction {
     /**
      * @param color the color of this restriction
      */
-    public ColorRestriction(@NotNull GameColor color) {
+    public ColorRestriction(GameColor color) {
         if(color==null){
             throw new IllegalArgumentException(this.getClass().getCanonicalName()+": color must not be null!");
         }

@@ -1,10 +1,7 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.objectives.PrivateObjective;
-import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.Schema;
-
-import java.awt.*;
 
 public class Player {
 
@@ -14,7 +11,8 @@ public class Player {
   private PrivateObjective privateObjective;
 
   public Player(String name, String id){
-
+    this.name = name;
+    this.id = id;
   }
 
   public Schema getSchema() {

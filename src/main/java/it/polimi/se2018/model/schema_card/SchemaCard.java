@@ -1,14 +1,12 @@
 package it.polimi.se2018.model.schema_card;
 
-import com.sun.istack.internal.NotNull;
-
 import java.util.EnumMap;
 
 public class SchemaCard {
 
     private EnumMap<Side, SchemaCardFace> schemaCardFaces = new EnumMap<>(Side.class);
 
-    public SchemaCard(@NotNull SchemaCardFace front, @NotNull SchemaCardFace back) {
+    public SchemaCard(SchemaCardFace front, SchemaCardFace back) {
         if (front==null || back==null){
             throw new IllegalArgumentException(getClass().getCanonicalName()+": front and back cannot be null");
         }

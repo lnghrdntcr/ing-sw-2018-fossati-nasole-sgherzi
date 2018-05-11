@@ -1,6 +1,5 @@
 package it.polimi.se2018.model.schema;
 
-import com.sun.istack.internal.NotNull;
 import it.polimi.se2018.utils.Settings;
 
 import java.util.EnumMap;
@@ -55,7 +54,7 @@ public class DiceBag {
      * @param diceFace The DiceFace to be put back.
      * @throws IllegalStateException If the number of dices drawn is less than 0.
      */
-    public void putBackDice(@NotNull DiceFace diceFace) {
+    public void putBackDice(DiceFace diceFace) {
 
         if(diceFace == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": diceFace cannot be null.");
 

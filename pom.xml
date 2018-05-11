@@ -25,8 +25,8 @@
     <sonar.language>java</sonar.language>
 
     <sonar.host.url>http://localhost:9000/</sonar.host.url>
-    <!--sonar.login>admin</sonar.login>
-    <sonar.password>admin</sonar.password-->
+    <sonar.login>admin</sonar.login>
+    <sonar.password>admin</sonar.password>
 
   </properties>
 

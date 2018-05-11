@@ -1,10 +1,7 @@
 package it.polimi.se2018.model.schema_card;
 
-import com.sun.istack.internal.NotNull;
 import it.polimi.se2018.model.schema.DiceFace;
-import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.utils.Settings;
-import javafx.scene.control.Cell;
 
 import java.awt.*;
 
@@ -37,7 +34,7 @@ public class SchemaCardFace {
      * @param restriction the restriction to apply
      * @throws IllegalArgumentException if the position is invalid, or the restriction or point is null
      */
-    private void setCellRestriction(@NotNull Point point, @NotNull CellRestriction restriction) {
+    private void setCellRestriction(Point point, CellRestriction restriction) {
         if (restriction == null) throw new IllegalArgumentException(this.getClass().getCanonicalName()+": restriction cannot be null!");
 
         if(point == null) throw new IllegalArgumentException(this.getClass().getCanonicalName()+": point cannot be null!");
@@ -56,7 +53,7 @@ public class SchemaCardFace {
      * @return true if the dice can be placed in point, false otherwise
      * @throws IllegalArgumentException if the position is invalid, or the restriction or point is null
      */
-    public boolean isDiceAllowed(@NotNull Point point, @NotNull DiceFace diceFace) {
+    public boolean isDiceAllowed(Point point, DiceFace diceFace) {
         if (diceFace == null) throw new IllegalArgumentException(this.getClass().getCanonicalName()+": diceFace cannot be null!");
 
         return getRestriction(point).isDiceAllowed(diceFace);
@@ -67,7 +64,7 @@ public class SchemaCardFace {
      * @param point the point of the schema, 0 based
      * @return the restriction in that cell
      */
-    @NotNull public CellRestriction getRestriction(@NotNull Point point){
+    public CellRestriction getRestriction(Point point){
         if(point == null) throw new IllegalArgumentException(this.getClass().getCanonicalName()+": point cannot be null!");
 
         if(point.x <0 || point.x >= Settings.CARD_WIDTH || point.y <0 || point.y >= Settings.CARD_HEIGHT)

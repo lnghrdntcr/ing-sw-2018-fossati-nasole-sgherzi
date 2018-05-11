@@ -1,14 +1,12 @@
 package it.polimi.se2018.model.schema;
 
-import com.sun.istack.internal.NotNull;
-
 /**
  * Holds the logic for the dice to be placed in the schema card or the scoreboard
  * @author Francesco Sgherzi
  * @since 09/05/2018
  */
 public class DiceFace {
-    // TODO: Implement Tests
+
     private GameColor color;
     private int number;
 
@@ -17,7 +15,7 @@ public class DiceFace {
      * @param number The number of the Dice Face.
      * @throws IllegalArgumentException if the number is less than 1 or greater than 6.
      */
-    public DiceFace(@NotNull GameColor color, int number) {
+    public DiceFace(GameColor color, int number) {
         if (number < 1 || number > 6){
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Number must be greater than one or less than 6.");
         }
@@ -42,8 +40,11 @@ public class DiceFace {
      * @throws IllegalArgumentException if the diceFace is null.
      * @author Nicola Fossati
      */
-    public boolean isSimilar(@NotNull DiceFace diceFace) {
+    public boolean isSimilar(DiceFace diceFace) {
+
         if(diceFace == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": diceFace cannot be null.");
+
         return (this.color.equals(diceFace.getColor()) || this.number == diceFace.getNumber());
+
     }
 }

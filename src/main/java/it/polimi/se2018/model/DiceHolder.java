@@ -1,6 +1,5 @@
 package it.polimi.se2018.model;
 
-import com.sun.istack.internal.NotNull;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.utils.Settings;
 
@@ -57,7 +56,7 @@ public class DiceHolder {
    * @param diceFace The diceFace to add.
    * @throws IllegalArgumentException When the turn is greater than `Settings.TURNS` or `diceFace` is null.
    */
-  public void addDice(int turn, @NotNull DiceFace diceFace){
+  public void addDice(int turn, DiceFace diceFace){
 
     if(turn < 0) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Turn less than 0");
     if(turn > Settings.TURNS) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Tryig to access a turn greater than " + Settings.TURNS);
@@ -76,16 +75,14 @@ public class DiceHolder {
    */
   public DiceFace[] getTurnDices(int turn) {
 
-    ArrayList<DiceFace> turnDices = turnHolder.get(turn);
-
     if(turn < 0) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Turn less than 0.");
     if(turn >= Settings.TURNS) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Trying to access a turn greater than " + Settings.TURNS);
-    if(turnDices.isEmpty()){
+    if(turnHolder.get(turn).isEmpty()){
       throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Trying to access an empty turn.");
     }
 
     // Uses `new DiceFace[0]` to infer the type
-    return turnDices.toArray(new DiceFace[0]);
+    return turnHolder.get(turn).toArray(new DiceFace[0]);
   }
 
 }
