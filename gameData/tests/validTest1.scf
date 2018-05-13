@@ -1,0 +1,24 @@
+[
+  {
+    "front": {
+      "diff": 5,
+      "name": "Virtus",
+      "restrictions":[
+        ["4",      "",  "2", "5", "GREEN"],
+        ["",       "",  "6",     "GREEN",  "2"],
+        ["",       "3", "GREEN",  "4",  ""],
+        ["5", "GREEN",  "1", "", ""]
+      ]
+    },
+    "back": {
+      "diff": 3,
+      "name": "Via Lux",
+      "restrictions":[
+        ["YELLOW",      "",  "6", "", ""],
+        ["",       "1",  "5",     "",  "2"],
+        ["3",       "YELLOW", "RED",  "PURPLE",  ""],
+        ["", "",  "4", "3", "RED"]
+      ]
+    }
+  }
+]
