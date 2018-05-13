@@ -76,8 +76,9 @@ public class SchemaCardFace {
 
         if(point == null) throw new IllegalArgumentException(this.getClass().getCanonicalName()+": point cannot be null!");
 
-        if(point.x <0 || point.x >= Settings.CARD_WIDTH || point.y <0 || point.y >= Settings.CARD_HEIGHT)
-            throw new IllegalArgumentException(this.getClass().getCanonicalName()+": illegal point: "+point.x+", "+point.y+"!");
+        //Is this even necessary? It's an internal call and it's assured what checked...
+        /*if(point.x <0 || point.x >= Settings.CARD_WIDTH || point.y <0 || point.y >= Settings.CARD_HEIGHT)
+            throw new IllegalArgumentException(this.getClass().getCanonicalName()+": illegal point: "+point.x+", "+point.y+"!");*/
 
         cellRestrictions[point.x][point.y]=restriction;
 

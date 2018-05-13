@@ -2,6 +2,7 @@ package it.polimi.se2018.model.schema_card;
 
 public class MalformedSchemaCardFaceException extends IllegalArgumentException {
     public MalformedSchemaCardFaceException() {
+        super();
     }
 
     public MalformedSchemaCardFaceException(String s) {

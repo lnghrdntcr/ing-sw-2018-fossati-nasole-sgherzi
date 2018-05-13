@@ -84,4 +84,20 @@ public class SchemaCardTest {
         assertEquals(0, schemaCardList.size());
 
     }
+
+    @Test
+    public void testInvalid4() throws FileNotFoundException {
+        List<SchemaCard> schemaCardList = SchemaCard.loadSchemaCardsFromJson("./gameData/tests/invalidTest_wrongdim1.scf");
+
+        assertEquals(0, schemaCardList.size());
+
+    }
+
+    @Test
+    public void testInvalid5() throws FileNotFoundException {
+        List<SchemaCard> schemaCardList = SchemaCard.loadSchemaCardsFromJson("./gameData/tests/invalidTest_wrongdim2.scf");
+
+        assertEquals(0, schemaCardList.size());
+
+    }
 }
