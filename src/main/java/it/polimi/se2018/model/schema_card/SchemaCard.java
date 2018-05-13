@@ -43,17 +43,19 @@ public class SchemaCard {
         if (!jsonFile.exists())
             throw new FileNotFoundException(SchemaCard.class.getCanonicalName() + ": file does not exist -> " + fileName);
 
-        //let's load the intere string in memory
+        //let's load the whole string in memory
 
         //open file and set up reader
         FileInputStream fileInputStream = new FileInputStream(fileName);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-        Scanner scanner = new Scanner(bufferedInputStream);
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder;
+        try (Scanner scanner = new Scanner(bufferedInputStream)) {
+            builder = new StringBuilder();
 
-        //read all lines
-        while (scanner.hasNextLine()) {
-            builder.append(scanner.nextLine());
+            //read all lines
+            while (scanner.hasNextLine()) {
+                builder.append(scanner.nextLine());
+            }
         }
 
         //now we have the whole file loaded, let's parse the JSON
