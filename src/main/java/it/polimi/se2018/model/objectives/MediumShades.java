@@ -35,8 +35,8 @@ public class MediumShades extends PublicObjective  {
 
     if(schema == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Schema cannot be null.");
 
-    for(int x = 0; x <= Settings.CARD_WIDTH; x++){
-      for(int y = 0; y <= Settings.CARD_HEIGHT; y++){
+    for(int x = 0; x < Settings.CARD_WIDTH; x++){
+      for(int y = 0; y < Settings.CARD_HEIGHT; y++){
 
         actualPoint = new Point(x, y);
         actualFace = schema.getDiceFace(actualPoint);

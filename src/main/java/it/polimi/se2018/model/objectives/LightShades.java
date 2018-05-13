@@ -35,20 +35,20 @@ public class LightShades extends PublicObjective  {
 
     if(schema == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Schema cannot be null.");
 
-    for(int x = 0; x <= Settings.CARD_WIDTH; x++){
-      for(int y = 0; y <= Settings.CARD_HEIGHT; y++){
+    for(int x = 0; x < Settings.CARD_WIDTH; x++){
+      for(int y = 0; y < Settings.CARD_HEIGHT; y++){
 
         actualPoint = new Point(x, y);
         actualFace = schema.getDiceFace(actualPoint);
 
         if(actualFace != null){
           if(actualFace.getNumber() == 1) numOne++;
-          if(actualFace.getNumber() == 2) numOne++;
+          if(actualFace.getNumber() == 2) numTwo++;
         }
 
       }
     }
-    // The minimum number of occurrences of a 5 or 6 will be the number of sets.
-    return numOne <= numTwo ? this.getPoint() * numOne : this.getPoint() * numTwo;
+    // The minimum number of occurrences of a 1 or 2 will be the number of sets.
+    return numOne <= numTwo ? (this.getPoint() * numOne) : (this.getPoint() * numTwo);
   }
 }

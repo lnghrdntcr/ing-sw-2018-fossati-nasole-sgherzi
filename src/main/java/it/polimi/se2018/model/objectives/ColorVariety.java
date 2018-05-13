@@ -43,7 +43,7 @@ public class ColorVariety extends PublicObjective {
     }
 
     // Update the EnumMap with at each iteration, in order to get the number of occurrences of every color.
-    for (int x = 0; x <= Settings.CARD_WIDTH; x++){
+    for (int x = 0; x < Settings.CARD_WIDTH; x++){
       for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
 
         actualPoint = new Point(x, y);

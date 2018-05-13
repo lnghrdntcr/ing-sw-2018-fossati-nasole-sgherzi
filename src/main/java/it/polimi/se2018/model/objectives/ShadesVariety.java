@@ -41,8 +41,8 @@ public class ShadesVariety extends PublicObjective  {
       occurrences.put(i, 0);
     }
 
-    for(int x = 0; x <= Settings.CARD_WIDTH; x++){
-      for (int y = 0; y <= Settings.CARD_HEIGHT; y++) {
+    for(int x = 0; x < Settings.CARD_WIDTH; x++){
+      for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
 
         actualPoint = new Point(x, y);
         actualCell = schema.getDiceFace(actualPoint);
