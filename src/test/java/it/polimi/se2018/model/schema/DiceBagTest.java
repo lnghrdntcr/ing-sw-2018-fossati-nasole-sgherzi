@@ -49,11 +49,17 @@ public class DiceBagTest {
   @Test
   public void putBackDice() {
 
+    // Testing against null input.
     try{
       this.diceBag.putBackDice(null);
       fail();
     } catch(IllegalArgumentException e){}
 
+    // Trying to put back a dice, but no dices have been drawn.
+    try{
+      this.diceBag.putBackDice(new DiceFace(GameColor.PURPLE, 3));
+      fail();
+    } catch (IllegalStateException e){}
 
     for(int i = 0; i < Settings.MAX_DICE_PER_COLOR * GameColor.values().length; i++){
       this.diceBag.drawDice();
