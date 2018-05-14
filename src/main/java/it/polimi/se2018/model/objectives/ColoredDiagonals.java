@@ -2,10 +2,12 @@ package it.polimi.se2018.model.objectives;
 
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
+import it.polimi.se2018.utils.Settings;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static it.polimi.se2018.utils.Settings.CARD_HEIGHT;
 import static it.polimi.se2018.utils.Settings.CARD_WIDTH;
@@ -17,6 +19,8 @@ import static it.polimi.se2018.utils.Settings.CARD_WIDTH;
  */
 public class ColoredDiagonals extends PublicObjective {
 
+
+
     public ColoredDiagonals(int points) {
         super(1);
     }
@@ -27,43 +31,39 @@ public class ColoredDiagonals extends PublicObjective {
      */
     @Override
     public int computeScore(Schema schema) {
+
         int score = 0;
-        //From right to left
-        for (int x = CARD_WIDTH - 1; x >= 0; x--) {
-            int row = 1;
-            ArrayList<GameColor> diag = new ArrayList<>();
-            for (int y = 0; y < row; y++) {
-                int i = x;
-                diag.add(schema.getDiceFace(new Point(i++, y)).getColor());
+
+        boolean[][] visited = new boolean[Settings.CARD_WIDTH][CARD_HEIGHT];
+
+        if(schema == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Schema cannot be null.");
+
+        for (int x = 0; x < Settings.CARD_WIDTH; x++) {
+            for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
+                int scoreTemp = this.countDiag(visited, schema, null, new Point(x, y));
+                if(scoreTemp > 1) score += scoreTemp;
             }
-            if (row < CARD_HEIGHT - 1) row++;
-
-            for (int a = 0; a < diag.size(); a++) {
-                int count = 0;
-                if (diag.get(a).equals(diag.get(a + 1))) count = count + getPoint();
-                if (count > 1) score = score + count;
-            }
-
-        }
-
-        //From left to right
-        for (int x = 0; x < CARD_WIDTH; x++) {
-            int row = 1;
-            ArrayList<GameColor> diag = new ArrayList<>();
-            for (int y = 0; y < row; y++) {
-                int i = x;
-                diag.add(schema.getDiceFace(new Point(i--, y)).getColor());
-            }
-            if (row < CARD_HEIGHT - 1) row++;
-
-            for (int a = 0; a < diag.size(); a++) {
-                int count = 0;
-                if (diag.get(a).equals(diag.get(a + 1))) count = count + getPoint();
-                if (count > 1) score = score + count;
-            }
-
         }
 
         return score;
     }
+
+    private int countDiag(boolean[][] visited, Schema schema, GameColor color, Point point){
+
+        if(point.x < 0 || point.x >= Settings.CARD_WIDTH || point.y < 0 || point.y >= Settings.CARD_HEIGHT) return 0;
+        if(schema.getDiceFace(point) == null) return 0;
+        if(color == null) color = schema.getDiceFace(point).getColor();
+        if(visited[point.x][point.y]) return 0;
+        if(schema.getDiceFace(point).getColor() != color ) return 0;
+
+        visited[point.x][point.y] = true;
+
+        return 1
+                + countDiag(visited, schema, color, new Point(point.x + 1, point.y + 1))
+                + countDiag(visited, schema, color, new Point(point.x - 1, point.y + 1))
+                + countDiag(visited, schema, color, new Point(point.x + 1, point.y - 1))
+                + countDiag(visited, schema, color, new Point(point.x - 1, point.y - 1));
+
+    }
+
 }
