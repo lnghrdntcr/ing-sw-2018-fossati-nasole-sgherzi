@@ -1,32 +1,43 @@
 package it.polimi.se2018.model;
 
-import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema.Schema;
 
+/**
+ * A class to contain players data
+ */
 public class Player {
 
-  private String name;
-  private String id;
-  private Schema schema;
+    private String name;
+    private Schema schema;
 
-  public Player(String name, String id){
-    this.name = name;
-    this.id = id;
-  }
+    /**
+     * @param name the name of the player; this must be unique across a match
+     */
+    public Player(String name) {
+        this.name = name;
+    }
 
-  public Schema getSchema() {
-    return schema;
-  }
+    /**
+     * Get the current schema of a player
+     * @return the schema associated with this player
+     */
+    public Schema getSchema() {
+        return schema;
+    }
 
-  public void setSchema(Schema schema) {
-    this.schema = schema;
-  }
+    /**
+     * Associate a player with his schema
+     * @param schema the player's schema
+     */
+    public void setSchema(Schema schema) {
+        this.schema = schema;
+    }
 
-  public String getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
+    /**
+     * Get the player name
+     * @return the player's name
+     */
+    public String getName() {
+        return name;
+    }
 }
