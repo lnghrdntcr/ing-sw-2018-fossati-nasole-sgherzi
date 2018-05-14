@@ -93,13 +93,15 @@ public class PrivateObjectiveTest {
   @Test
   public void computeScore() {
 
+    this.privateObjective = new PrivateObjective(GameColor.PURPLE);
+
     // Testing against null input.
     try{
       this.privateObjective.computeScore(null);
       fail();
     } catch (IllegalArgumentException e){}
 
-    this.privateObjective = new PrivateObjective(GameColor.PURPLE);
+
     assertEquals(8, this.privateObjective.computeScore(this.actualSchemaCardBack));
     assertEquals(12, this.privateObjective.computeScore(this.actualSchemaCardFront));
 
