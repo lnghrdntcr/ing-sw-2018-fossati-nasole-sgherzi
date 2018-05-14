@@ -1,5 +1,6 @@
 package it.polimi.se2018.model.objectives;
 
+import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 
@@ -30,6 +31,10 @@ public class DifferentRowColor extends PublicObjective {
     public int computeScore(Schema schema) {
 
         int score = 0;
+        GameColor actualGameColor;
+        DiceFace actualDiceFace;
+
+        if(schema == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Schema cannot be null.");
 
         for (int y = 0; y < CARD_HEIGHT; y++) {
 
@@ -40,9 +45,15 @@ public class DifferentRowColor extends PublicObjective {
             }
 
             for (int x = 0; x < CARD_WIDTH; x++) {
-                GameColor color = schema.getDiceFace(new Point(x, y)).getColor();
 
-                counter.put(color, counter.get(color) + 1);
+                actualDiceFace = schema.getDiceFace(new Point(x, y));
+
+                if(actualDiceFace != null){
+                    actualGameColor = actualDiceFace.getColor();
+                    counter.put(actualGameColor, counter.get(actualGameColor) + 1);
+                }
+
+
             }
 
             if (isValid(counter)) score = score + getPoint();

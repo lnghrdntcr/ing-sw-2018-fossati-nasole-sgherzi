@@ -14,17 +14,18 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class DifferentColumnColorTest {
+public class DifferentColumnShadesTest {
+
 
   List<SchemaCard> loadedSchemas;
-  DifferentColumnColor differentColumnColor;
+  DifferentColumnShades differentColumnShades;
   Schema actualSchemaCardFront;
   Schema actualSchemaCardBack;
 
   @Before
   public void setUp() throws FileNotFoundException {
 
-    this.differentColumnColor = new DifferentColumnColor(2);
+    this.differentColumnShades = new DifferentColumnShades();
 
     // Take all the cards...
     this.loadedSchemas = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_EqualCards.scf");
@@ -91,17 +92,18 @@ public class DifferentColumnColorTest {
 
   }
 
+
   @Test
   public void computeScore() {
 
-    // Try against a null input
+    // Test against a null input.
     try{
-      this.differentColumnColor.computeScore(null);
+      this.differentColumnShades.computeScore(null);
       fail();
     } catch (IllegalArgumentException e){}
 
-    assertEquals(5, this.differentColumnColor.computeScore(this.actualSchemaCardBack));
-    assertEquals(0, this.differentColumnColor.computeScore(this.actualSchemaCardFront));
+    assertEquals(8, this.differentColumnShades.computeScore(this.actualSchemaCardBack));
+    assertEquals(4, this.differentColumnShades.computeScore(this.actualSchemaCardFront));
 
   }
 }

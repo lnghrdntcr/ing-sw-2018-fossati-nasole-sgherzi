@@ -25,8 +25,10 @@ public class DifferentColumnShades extends PublicObjective {
      */
     @Override
     public int computeScore(Schema schema) {
+
         int score = 0;
 
+        if(schema == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Schema cannot be null.");
 
         for (int x = 0; x < CARD_WIDTH; x++) {
             //creating an array to count the occurrences of every dice face number, initialized to 0
@@ -37,11 +39,11 @@ public class DifferentColumnShades extends PublicObjective {
 
             for (int y = 0; y < CARD_HEIGHT; y++) {
 
-                if (schema.getDiceFace(new Point(x, y)) == null) {
+                if (schema.getDiceFace(new Point(x, y)) != null) {
                     //do nothing ¯\_(ツ)_/¯
-                } else {
                     counter[schema.getDiceFace(new Point(x, y)).getNumber() - 1]++;
                 }
+
             }
 
             if (isValid(counter)) score = score + getPoint();

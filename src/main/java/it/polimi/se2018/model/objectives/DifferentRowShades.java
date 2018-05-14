@@ -29,6 +29,7 @@ public class DifferentRowShades extends PublicObjective {
     public int computeScore(Schema schema) {
         int score = 0;
 
+        if(schema == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Schema cannot be null.");
 
         for (int y = 0; y < CARD_HEIGHT; y++) {
             //creating an array to count the occurrences of every dice face number, initialized to 0
@@ -39,9 +40,8 @@ public class DifferentRowShades extends PublicObjective {
 
             for (int x = 0; x < CARD_WIDTH; x++) {
 
-                if (schema.getDiceFace(new Point(x, y)) == null) {
+                if (schema.getDiceFace(new Point(x, y)) != null) {
                     //do nothing ¯\_(ツ)_/¯
-                } else {
                     counter[schema.getDiceFace(new Point(x, y)).getNumber() - 1]++;
                 }
             }

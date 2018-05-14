@@ -14,17 +14,17 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class DifferentColumnColorTest {
+public class DifferentRowColorTest {
 
   List<SchemaCard> loadedSchemas;
-  DifferentColumnColor differentColumnColor;
+  DifferentRowColor differentRowColor;
   Schema actualSchemaCardFront;
   Schema actualSchemaCardBack;
 
   @Before
   public void setUp() throws FileNotFoundException {
 
-    this.differentColumnColor = new DifferentColumnColor(2);
+    this.differentRowColor = new DifferentRowColor();
 
     // Take all the cards...
     this.loadedSchemas = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_EqualCards.scf");
@@ -85,7 +85,7 @@ public class DifferentColumnColorTest {
       actualSchemaCardBack.setDiceFace(new Point(1, 3), new DiceFace(GameColor.GREEN, 2));
       actualSchemaCardBack.setDiceFace(new Point(2, 3), new DiceFace(GameColor.BLUE, 1));
       actualSchemaCardBack.setDiceFace(new Point(3, 3), new DiceFace(GameColor.PURPLE, 2));
-      actualSchemaCardBack.setDiceFace(new Point(4, 3), new DiceFace(GameColor.BLUE, 1));
+      actualSchemaCardBack.setDiceFace(new Point(4, 3), new DiceFace(GameColor.YELLOW, 1));
 
     }
 
@@ -94,14 +94,14 @@ public class DifferentColumnColorTest {
   @Test
   public void computeScore() {
 
-    // Try against a null input
+    // Test against a null input.
     try{
-      this.differentColumnColor.computeScore(null);
+      this.differentRowColor.computeScore(null);
       fail();
     } catch (IllegalArgumentException e){}
 
-    assertEquals(5, this.differentColumnColor.computeScore(this.actualSchemaCardBack));
-    assertEquals(0, this.differentColumnColor.computeScore(this.actualSchemaCardFront));
+    assertEquals(6, this.differentRowColor.computeScore(this.actualSchemaCardBack));
+    assertEquals(0, this.differentRowColor.computeScore(this.actualSchemaCardFront));
 
   }
 }
