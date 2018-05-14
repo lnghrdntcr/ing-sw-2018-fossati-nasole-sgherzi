@@ -22,16 +22,13 @@ public class ColorVarietyTest {
   Schema actualSchemaCardBack;
 
   @Before
-  public void setUp(){
+  public void setUp() throws FileNotFoundException {
 
     this.colorVariety = new ColorVariety(4);
 
     // Take a the cards...
-    try {
-      this.loadedSchemas = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_EqualCards.scf");
-    } catch (FileNotFoundException e) {
-      System.out.println(e.getMessage());
-    }
+
+    this.loadedSchemas = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_EqualCards.scf");
 
     // and generate two Schemas from it.
     for(SchemaCard sc: this.loadedSchemas){

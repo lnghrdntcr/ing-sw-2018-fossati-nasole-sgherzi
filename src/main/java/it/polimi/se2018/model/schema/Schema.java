@@ -116,7 +116,7 @@ public class Schema {
             for (int y = -1; y <= 1; y++) {
                 if (!(x == 0 && y == 0)) {
                     int realX = point.x + x, realY = point.y + y;
-                    if (realX > 0 && realY > 0 && realX < Settings.CARD_WIDTH && realY < Settings.CARD_HEIGHT) {
+                    if (realX >= 0 && realY >= 0 && realX < Settings.CARD_WIDTH && realY < Settings.CARD_HEIGHT) {
                         if (diceFaces[realX][realY] != null) {
                             return true;
                         }
@@ -138,10 +138,10 @@ public class Schema {
      */
     private boolean hasOneSimilarNeighbour(Point point, DiceFace diceFace) {
         //UP
-        if (point.y - 1 > 0) {
+        if (point.y - 1 >= 0) {
             if (diceFaces[point.x][point.y - 1] != null) {
                 if (diceFaces[point.x][point.y - 1].isSimilar(diceFace)) {
-                    return false;
+                    return true;
                 }
             }
         }
@@ -149,15 +149,15 @@ public class Schema {
         if (point.y + 1 < Settings.CARD_HEIGHT) {
             if (diceFaces[point.x][point.y + 1] != null) {
                 if (diceFaces[point.x][point.y + 1].isSimilar(diceFace)) {
-                    return false;
+                    return true;
                 }
             }
         }
         //LEFT
-        if (point.x - 1 > 0) {
+        if (point.x - 1 >= 0) {
             if (diceFaces[point.x - 1][point.y] != null) {
                 if (diceFaces[point.x - 1][point.y].isSimilar(diceFace)) {
-                    return false;
+                    return true;
                 }
             }
         }
@@ -165,12 +165,12 @@ public class Schema {
         if (point.x + 1 < Settings.CARD_WIDTH) {
             if (diceFaces[point.x + 1][point.y] != null) {
                 if (diceFaces[point.x + 1][point.y].isSimilar(diceFace)) {
-                    return false;
+                    return true;
                 }
             }
         }
 
-        return true;
+        return false;
     }
 
     /**
