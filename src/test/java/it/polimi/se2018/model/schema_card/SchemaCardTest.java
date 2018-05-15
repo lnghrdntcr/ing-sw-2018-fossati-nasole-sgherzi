@@ -51,6 +51,78 @@ public class SchemaCardTest {
     }
 
     @Test
+    public void finalTestValid() throws FileNotFoundException {
+        List<SchemaCard> schemaCardList = SchemaCard.loadSchemaCardsFromJson
+                ("./gameData/resources/schemaCards/schemaCardBase.scf");
+
+        assertEquals(12, schemaCardList.size());
+
+        SchemaCardFace front = schemaCardList.get(0).getFace(Side.FRONT);
+        SchemaCardFace back = schemaCardList.get(0).getFace(Side.BACK);
+
+        //schema infos
+        assertEquals(5, front.getDifficulty());
+        assertEquals("Virtus", front.getName());
+
+        //numbers
+        assertEquals(4, ((NumberRestriction)front.getRestriction(new Point(0, 0))).getNumber());
+        assertEquals(2, ((NumberRestriction)front.getRestriction(new Point(2, 0))).getNumber());
+        assertEquals(5, ((NumberRestriction)front.getRestriction(new Point(3, 0))).getNumber());
+        assertEquals(6, ((NumberRestriction)front.getRestriction(new Point(2, 1))).getNumber());
+        assertEquals(2, ((NumberRestriction)front.getRestriction(new Point(4, 1))).getNumber());
+        assertEquals(3, ((NumberRestriction)front.getRestriction(new Point(1, 2))).getNumber());
+        assertEquals(4, ((NumberRestriction)front.getRestriction(new Point(3, 2))).getNumber());
+        assertEquals(5, ((NumberRestriction)front.getRestriction(new Point(0, 3))).getNumber());
+        assertEquals(1, ((NumberRestriction)front.getRestriction(new Point(2, 3))).getNumber());
+
+        //Color restrictions
+        assertEquals(GameColor.GREEN, ((ColorRestriction)front.getRestriction(new Point(4, 0))).getColor());
+        assertEquals(GameColor.GREEN, ((ColorRestriction)front.getRestriction(new Point(3, 1))).getColor());
+        assertEquals(GameColor.GREEN, ((ColorRestriction)front.getRestriction(new Point(2, 2))).getColor());
+        assertEquals(GameColor.GREEN, ((ColorRestriction)front.getRestriction(new Point(1, 3))).getColor());
+
+        //No restrictions
+        assertTrue(front.getRestriction(new Point(1, 0)) instanceof NoRestriction);
+        assertTrue(front.getRestriction(new Point(0, 1)) instanceof NoRestriction);
+        assertTrue(front.getRestriction(new Point(1, 1)) instanceof NoRestriction);
+        assertTrue(front.getRestriction(new Point(0, 2)) instanceof NoRestriction);
+        assertTrue(front.getRestriction(new Point(4, 2)) instanceof NoRestriction);
+        assertTrue(front.getRestriction(new Point(3, 3)) instanceof NoRestriction);
+        assertTrue(front.getRestriction(new Point(4, 3)) instanceof NoRestriction);
+
+        //schema infos
+        assertEquals(6, back.getDifficulty());
+        assertEquals("Symphony Of Life", back.getName());
+
+        //numbers
+        assertEquals(2, ((NumberRestriction)back.getRestriction(new Point(0, 0))).getNumber());
+        assertEquals(5, ((NumberRestriction)back.getRestriction(new Point(2, 0))).getNumber());
+        assertEquals(1, ((NumberRestriction)back.getRestriction(new Point(4, 0))).getNumber());
+        assertEquals(6, ((NumberRestriction)back.getRestriction(new Point(1, 1))).getNumber());
+        assertEquals(2, ((NumberRestriction)back.getRestriction(new Point(3, 1))).getNumber());
+        assertEquals(4, ((NumberRestriction)back.getRestriction(new Point(2, 2))).getNumber());
+        assertEquals(3, ((NumberRestriction)back.getRestriction(new Point(2, 3))).getNumber());
+        assertEquals(5, ((NumberRestriction)back.getRestriction(new Point(3, 3))).getNumber());
+
+        //Color restrictions
+        assertEquals(GameColor.YELLOW, ((ColorRestriction)back.getRestriction(new Point(0, 1))).getColor());
+        assertEquals(GameColor.PURPLE, ((ColorRestriction)back.getRestriction(new Point(2, 1))).getColor());
+        assertEquals(GameColor.RED, ((ColorRestriction)back.getRestriction(new Point(4, 1))).getColor());
+        assertEquals(GameColor.BLUE, ((ColorRestriction)back.getRestriction(new Point(1, 2))).getColor());
+        assertEquals(GameColor.GREEN, ((ColorRestriction)back.getRestriction(new Point(3, 2))).getColor());
+
+
+        //No restrictions
+        assertTrue(back.getRestriction(new Point(1, 0)) instanceof NoRestriction);
+        assertTrue(back.getRestriction(new Point(3, 0)) instanceof NoRestriction);
+        assertTrue(back.getRestriction(new Point(0, 2)) instanceof NoRestriction);
+        assertTrue(back.getRestriction(new Point(4, 2)) instanceof NoRestriction);
+        assertTrue(back.getRestriction(new Point(0, 3)) instanceof NoRestriction);
+        assertTrue(back.getRestriction(new Point(1, 3)) instanceof NoRestriction);
+        assertTrue(back.getRestriction(new Point(4, 3)) instanceof NoRestriction);
+    }
+
+    @Test
     public void testInvalid1() throws FileNotFoundException {
         List<SchemaCard> schemaCardList = SchemaCard.loadSchemaCardsFromJson("./gameData/tests/invalidTest_wrongface.scf");
 

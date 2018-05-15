@@ -41,7 +41,7 @@ public class DifferentRowShades extends PublicObjective {
             for (int x = 0; x < CARD_WIDTH; x++) {
 
                 if (schema.getDiceFace(new Point(x, y)) != null) {
-                    //do nothing ¯\_(ツ)_/¯
+                    //¯\_(ツ)_/¯
                     counter[schema.getDiceFace(new Point(x, y)).getNumber() - 1]++;
                 }
             }

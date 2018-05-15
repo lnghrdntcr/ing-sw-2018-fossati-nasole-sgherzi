@@ -40,7 +40,7 @@ public class DifferentColumnShades extends PublicObjective {
             for (int y = 0; y < CARD_HEIGHT; y++) {
 
                 if (schema.getDiceFace(new Point(x, y)) != null) {
-                    //do nothing ¯\_(ツ)_/¯
+                    //¯\_(ツ)_/¯
                     counter[schema.getDiceFace(new Point(x, y)).getNumber() - 1]++;
                 }
 
