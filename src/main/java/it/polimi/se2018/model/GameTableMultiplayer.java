@@ -123,12 +123,39 @@ public class GameTableMultiplayer {
     }
 
     /**
+     * Increases or decreases a dice value
+     * @param diceIndex the index of the dice in the DraftBoard
+     * @param direction 1 to increase, -1 to decrease
+     * @throws IllegalArgumentException if direction != -1 && direction != 1
+     * @throws IllegalStateException if increasing a 6 dice or decreasing a 1 dice
+     */
+    public void increaseDecreaseDice(int diceIndex, int direction){
+        if(direction != 1 && direction!=-1) throw new IllegalArgumentException(getClass().getCanonicalName()+": direction must be +1 or -1");
+
+        DiceFace df = draftBoard.getDices()[diceIndex];
+        if(direction == 1 && df.getNumber() == 6 ){
+            throw new IllegalStateException(getClass().getCanonicalName()+": cannot increase a 6 dice");
+        }
+
+        if(direction == -1 && df.getNumber() == 1 ){
+            throw new IllegalStateException(getClass().getCanonicalName()+": cannot decrease a 1 dice");
+        }
+
+        draftBoard.removeDice(diceIndex);
+        draftBoard.addDice(new DiceFace(df.getColor(), df.getNumber()+direction));
+    }
+
+
+
+    /**
      * End the current turn
      */
     //Turn stuff
     public void nextTurn(){
         turnHolder.nextTurn();
     }
+
+
 
 
 
