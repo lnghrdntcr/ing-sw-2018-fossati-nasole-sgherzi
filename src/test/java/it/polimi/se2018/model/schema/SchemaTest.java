@@ -65,7 +65,7 @@ public class SchemaTest {
         assertEquals(GameColor.BLUE, empty.getDiceFace(new Point(3, 1)).getColor());
 
         assertNull(virtus.getDiceFace(new Point(0, 0)));
-        virtus.setDiceFace(new Point(1, 3), null);
+        virtus.removeDiceFace(new Point(1, 3));
         assertNull(virtus.getDiceFace(new Point(1, 3)));
 
         try{

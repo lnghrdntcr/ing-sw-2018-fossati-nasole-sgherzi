@@ -4,17 +4,21 @@ import it.polimi.se2018.model.Player;
 
 public abstract class Tool {
 
-  private int token;
+    private int token;
 
-  public abstract boolean isUsable();
+    public abstract boolean isUsable();
 
-  public abstract void use(Player player);
+    public abstract void use(Player player);
 
-  public int getToken() {
-    return token;
-  }
+    public int getToken() {
+        return token;
+    }
 
-  public void addToken(int tokenAdded) {
-    this.token += tokenAdded;
-  }
+    public void addToken(int tokenAdded) {
+        this.token += tokenAdded;
+    }
+
+    public int getNeededTokens() {
+        return token > 0 ? 2 : 1;
+    }
 }

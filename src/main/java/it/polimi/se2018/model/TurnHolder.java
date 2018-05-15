@@ -19,7 +19,7 @@ public class TurnHolder {
      * @throws IllegalArgumentException if players are less than 2 or players are more than 4.
      */
     public TurnHolder(int players) {
-        if (players < 2 || players > 4)
+        if (players < Settings.MIN_NUM_PLAYERS || players > Settings.MAX_NUM_PLAYERS)
             throw new IllegalArgumentException(getClass().getCanonicalName() + ": players must be between 2 and 4!");
         this.players = players;
         currentPlayer = 0;

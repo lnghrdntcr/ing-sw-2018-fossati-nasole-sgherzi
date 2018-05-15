@@ -9,6 +9,7 @@ public class Player {
 
     private String name;
     private Schema schema;
+    private int token;
 
     /**
      * @param name the name of the player; this must be unique across a match
@@ -27,10 +28,13 @@ public class Player {
 
     /**
      * Associate a player with his schema
+     * Moreover sets the number of token of the player
      * @param schema the player's schema
      */
     public void setSchema(Schema schema) {
+        if(schema==null)throw new IllegalArgumentException(getClass().getCanonicalName()+": schema cannot be null!");
         this.schema = schema;
+        this.token = schema.getSchemaCardFace().getDifficulty();
     }
 
     /**
@@ -39,5 +43,13 @@ public class Player {
      */
     public String getName() {
         return name;
+    }
+
+    public int getToken() {
+        return token;
+    }
+
+    public void setToken(int token) {
+        this.token = token;
     }
 }

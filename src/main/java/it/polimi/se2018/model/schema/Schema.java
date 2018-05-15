@@ -45,21 +45,42 @@ public class Schema {
     }
 
     /**
-     * Set a diceFace in a specific point
+     * Set a diceFace in a specific point. The Schema must be empty in the point.
      *
      * @param point    where to place a diceFace, 0 based
-     * @param diceFace the diceFace to place or null to remove any existent diceFace
+     * @param diceFace the diceFace to place
      * @throws IllegalArgumentException if point not valid, or point null
+     * @throws IllegalStateException    if the cell is already occupied
      */
-    public void setDiceFace(Point point,DiceFace diceFace) {
+    public void setDiceFace(Point point, DiceFace diceFace) {
         if (point == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": point cannot be null!");
+
+        if (diceFace == null)
+            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": diceFace cannot be null!");
 
         if (point.x < 0 || point.x >= Settings.CARD_WIDTH || point.y < 0 || point.y >= Settings.CARD_HEIGHT)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": illegal point: " + point.x + ", " + point.y + "!");
 
+        if (diceFaces[point.x][point.y] != null)
+            throw new IllegalStateException(getClass().getCanonicalName() + ": cannot put a dice in an already occupied face!");
+
 
         diceFaces[point.x][point.y] = diceFace;
+    }
+
+    /**
+     * Remove and returns a DiceFace in the Schema
+     * @param point where to remove the DiceFace
+     * @return the removed DiceFace
+     */
+    public DiceFace removeDiceFace(Point point){
+        if (diceFaces[point.x][point.y] == null)
+            throw new IllegalStateException(getClass().getCanonicalName() + ": cannot remove dice from an empty cell!");
+
+        DiceFace df = diceFaces[point.x][point.y];
+        diceFaces[point.x][point.y] = null;
+        return df;
     }
 
     /**
@@ -69,7 +90,7 @@ public class Schema {
      * @param diceFace the diceFace to place
      * @return true if the diceFace can be placed, false otherwise
      */
-    public boolean isDiceAllowed(Point point,DiceFace diceFace) {
+    public boolean isDiceAllowed(Point point, DiceFace diceFace) {
         if (point == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": point cannot be null!");
 
