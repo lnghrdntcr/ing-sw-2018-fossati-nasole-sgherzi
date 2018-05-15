@@ -134,7 +134,7 @@ public class Schema {
      *
      * @param point    the position to check
      * @param diceFace the dice to check
-     * @return
+     * @return true if it has a similar neighbour, false otherwise.
      */
     private boolean hasOneSimilarNeighbour(Point point, DiceFace diceFace) {
         //UP
