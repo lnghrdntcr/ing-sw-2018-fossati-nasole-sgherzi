@@ -16,7 +16,7 @@ public class TurnHolder {
 
     /**
      * @param players the number of players that take part to the match
-     * @throws IllegalArgumentException if players < 2 or players > 4
+     * @throws IllegalArgumentException if players are less than 2 or players are more than 4.
      */
     public TurnHolder(int players) {
         if (players < 2 || players > 4)
