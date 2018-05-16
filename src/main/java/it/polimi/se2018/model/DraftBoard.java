@@ -16,12 +16,10 @@ import java.util.Random;
 public class DraftBoard {
 
     private DiceBag diceBag;
-    private Random random;
     private ArrayList<DiceFace> diceFaces = new ArrayList<>();
 
     public DraftBoard() {
         diceBag = new DiceBag();
-        random = new Random();
     }
 
     /**
@@ -104,6 +102,30 @@ public class DraftBoard {
     public int getDiceNumber() {
         return diceFaces.size();
     }
+
+    /**
+     * TODO
+     * @param index
+     */
+    public void putBackDice(int index){
+        diceBag.putBackDice(diceFaces.get(index));
+        diceFaces.remove(index);
+    }
+
+    public void drawSingleDice(){
+        diceFaces.add(diceBag.drawDice());
+    }
+
+    public DiceFace getDiceFace(int position){
+        if (position > this.getDiceNumber() || position < 0)
+            throw new IllegalArgumentException(this.getClass().getCanonicalName() + "Trying to get an already taken dice or accessing a non existing position.");
+        if (this.getDiceNumber() == 0)
+            throw new IllegalStateException(this.getClass().getCanonicalName() + ": Trying to take a dice, but no dice is actually placed.");
+
+        return diceFaces.get(position);
+    }
+
+
 
 }
 

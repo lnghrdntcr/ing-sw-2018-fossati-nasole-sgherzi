@@ -3,9 +3,12 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.schema.DiceFace;
+import it.polimi.se2018.model.schema_card.SchemaCard;
+import it.polimi.se2018.model.schema_card.SchemaCardFace;
 
 import java.awt.*;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 /**
  * The main model entry point for multiplayer
@@ -145,6 +148,66 @@ public class GameTableMultiplayer {
         draftBoard.addDice(new DiceFace(df.getColor(), df.getNumber()+direction));
     }
 
+    /**
+     * TODO
+     * @param draftIndex
+     * @param turn
+     * @param turnDiceIndex
+     */
+    public void swapDraftDiceWithHolder(int draftIndex, int turn, int turnDiceIndex){
+        DiceFace oldDfDraft = draftBoard.removeDice(draftIndex);
+        DiceFace oldDfHolder = diceHolder.removeDice(turn, turnDiceIndex);
+
+        draftBoard.addDice(oldDfHolder);
+        diceHolder.addDice(turn, oldDfDraft);
+    }
+
+    /**
+     * TODO
+     * WARNING the method put the dice at the end!!!!
+     * @param index
+     * @return
+     */
+    public DiceFace redrawDice(int index){
+        DiceFace df = draftBoard.removeDice(index);
+        df  = new DiceFace(df.getColor(), new Random().nextInt(6)+1);
+        draftBoard.addDice(df);
+        return df;
+    }
+
+    /**
+     * TODO
+     */
+    public void redrawAllDice(){
+        for(int i=0; i<draftBoard.getDiceNumber(); i++){
+            redrawDice(0);
+        }
+    }
+
+    /**
+     * TODO
+     * @param index
+     */
+    public void rotateDice(int index){
+        DiceFace df = draftBoard.removeDice(index);
+        df = new DiceFace(df.getColor(), 7-df.getNumber());
+        draftBoard.addDice(df);
+    }
+
+    public DiceFace putBackAndRedrawDice(int index){
+        draftBoard.putBackDice(index);
+        draftBoard.drawSingleDice();
+        return draftBoard.getDiceFace(draftBoard.getDiceNumber()-1);
+    }
+
+    public void changeDiceNumber(int index, int number){
+        draftBoard.addDice(new DiceFace(draftBoard.removeDice(index).getColor(), number));
+    }
+
+    public void moveDice(String player, Point source, Point destination){
+        Player p = getPlayerByName(player);
+        p.getSchema().setDiceFace(destination, p.getSchema().removeDiceFace(source));
+    }
 
 
     /**
@@ -154,6 +217,8 @@ public class GameTableMultiplayer {
     public void nextTurn(){
         turnHolder.nextTurn();
     }
+
+
 
 
 
