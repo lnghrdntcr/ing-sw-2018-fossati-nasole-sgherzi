@@ -37,10 +37,25 @@ public class SchemaCardFaceTest {
         }catch (IllegalArgumentException ignored){}
     }
 
+
     @Test
-    public void normalTest(){
-        assertFalse(front.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 5), SchemaCardFace.Ignore.NOTHING));
+    public void completeTest() {
+        //tests for ignore no restriction
         assertTrue(front.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 4), SchemaCardFace.Ignore.NOTHING));
+        assertFalse(front.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 5), SchemaCardFace.Ignore.NOTHING));
+        assertTrue(front.isDiceAllowed(new Point(4, 0), new DiceFace(GameColor.GREEN, 4), SchemaCardFace.Ignore.NOTHING));
+        assertFalse(front.isDiceAllowed(new Point(4, 0), new DiceFace(GameColor.RED, 5), SchemaCardFace.Ignore.NOTHING));
+
+
+        //tests for ignore number restriction
+        assertTrue(front.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 5), SchemaCardFace.Ignore.BOTH));
+        assertTrue(front.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 5), SchemaCardFace.Ignore.NUMBER));
+        assertFalse(front.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 5), SchemaCardFace.Ignore.COLOR));
+
+        //tests for ignore color restriction
+        assertTrue(front.isDiceAllowed(new Point(4, 0), new DiceFace(GameColor.RED, 5), SchemaCardFace.Ignore.BOTH));
+        assertTrue(front.isDiceAllowed(new Point(4, 0), new DiceFace(GameColor.RED, 5), SchemaCardFace.Ignore.COLOR));
+        assertFalse(front.isDiceAllowed(new Point(4, 0), new DiceFace(GameColor.RED, 5), SchemaCardFace.Ignore.NUMBER));
     }
 
 }
