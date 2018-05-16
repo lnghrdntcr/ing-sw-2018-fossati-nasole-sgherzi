@@ -149,10 +149,10 @@ public class GameTableMultiplayer {
     }
 
     /**
-     * TODO
-     * @param draftIndex
-     * @param turn
-     * @param turnDiceIndex
+     * Swap a DiceFace from the DraftBoard with a DiceFace from the DiceHolder area
+     * @param draftIndex index of the dice in the DraftBoard
+     * @param turn the turn from wich swap the dice
+     * @param turnDiceIndex the index in the turn of the dice to swipe
      */
     public void swapDraftDiceWithHolder(int draftIndex, int turn, int turnDiceIndex){
         DiceFace oldDfDraft = draftBoard.removeDice(draftIndex);
@@ -163,10 +163,9 @@ public class GameTableMultiplayer {
     }
 
     /**
-     * TODO
-     * WARNING the method put the dice at the end!!!!
-     * @param index
-     * @return
+     * Redraw a dice (change its number but not its color)
+     * @param index the index of the dice to redraw
+     * @return the DiceFace just redrawn
      */
     public DiceFace redrawDice(int index){
         DiceFace df = draftBoard.removeDice(index);
@@ -176,7 +175,7 @@ public class GameTableMultiplayer {
     }
 
     /**
-     * TODO
+     * Redraw all dices (change their number but not their color)
      */
     public void redrawAllDice(){
         for(int i=0; i<draftBoard.getDiceNumber(); i++){
@@ -185,35 +184,51 @@ public class GameTableMultiplayer {
     }
 
     /**
-     * TODO
-     * @param index
+     * Flip a dice: 6 becomes 1, 5 becomes 2, 4 becomes 3 etc.
+     * @param index the index of the dice to flip in the DraftBoard
      */
-    public void rotateDice(int index){
+    public void flipDice(int index){
         DiceFace df = draftBoard.removeDice(index);
         df = new DiceFace(df.getColor(), 7-df.getNumber());
         draftBoard.addDice(df);
     }
 
+    /**
+     * Put a single dice back in the DiceBag and then redraws a new dice
+     * @param index index of the dice to put back in the DiceBag
+     * @return the dice just drawn
+     */
     public DiceFace putBackAndRedrawDice(int index){
         draftBoard.putBackDice(index);
         draftBoard.drawSingleDice();
         return draftBoard.getDiceFace(draftBoard.getDiceNumber()-1);
     }
 
+    /**
+     * Change the number of a dice to a specific number
+     * @param index index of the dice in the DraftBoard to change
+     * @param number new value to assign to the dice. Must be between 1 and 6.
+     */
     public void changeDiceNumber(int index, int number){
         draftBoard.addDice(new DiceFace(draftBoard.removeDice(index).getColor(), number));
     }
 
+    /**
+     * Move a dice in the schema of a player from position source to destination
+     * @param player the player to modify
+     * @param source the source position where to pick up the dice
+     * @param destination the destination where to put the dice
+     */
     public void moveDice(String player, Point source, Point destination){
         Player p = getPlayerByName(player);
         p.getSchema().setDiceFace(destination, p.getSchema().removeDiceFace(source));
     }
 
+    //Turn stuff
 
     /**
      * End the current turn
      */
-    //Turn stuff
     public void nextTurn(){
         turnHolder.nextTurn();
     }
