@@ -16,12 +16,10 @@ import java.util.Random;
 public class DraftBoard {
 
     private DiceBag diceBag;
-    private Random random;
     private ArrayList<DiceFace> diceFaces = new ArrayList<>();
 
     public DraftBoard() {
         diceBag = new DiceBag();
-        random = new Random();
     }
 
     /**
@@ -69,7 +67,7 @@ public class DraftBoard {
     }
 
     /**
-     * Adds the dice into the `diceFaces` ArrayList.
+     * Adds the dice to the DraftBoard.
      *
      * @param diceFace The diceFace to add.
      * @throws IllegalArgumentException If the `diceFace` is null.
@@ -84,9 +82,9 @@ public class DraftBoard {
     }
 
     /**
-     * Returns the turn diceFaces, as an array.
+     * Returns all the DiceFaces.
      *
-     * @return All the diceFaces of that turn.
+     * @return All the diceFaces.
      * @throws IllegalStateException If there are no more dice to take.
      */
     public DiceFace[] getDices() {
@@ -99,11 +97,42 @@ public class DraftBoard {
     }
 
     /**
-     * @return The size of the `diceFaces` ArrayList.
+     * @return The number in the DraftBoard
      */
     public int getDiceNumber() {
         return diceFaces.size();
     }
+
+    /**
+     * Put a dice back in to the DiceBag
+     * @param index the index of the dice to put back
+     */
+    public void putBackDice(int index){
+        diceBag.putBackDice(diceFaces.get(index));
+        diceFaces.remove(index);
+    }
+
+    /**
+     * Draws a single dice from the bag
+     */
+    public void drawSingleDice(){
+        diceFaces.add(diceBag.drawDice());
+    }
+
+    /**
+     * Returns a dice in a specific position
+     * @param position position of the dice in the DraftBoard
+     * @return the DiceFace
+     * @throws IllegalArgumentException if position is invalid
+     */
+    public DiceFace getDiceFace(int position){
+        if (position > this.getDiceNumber() || position < 0)
+            throw new IllegalArgumentException(this.getClass().getCanonicalName() + "Trying to get an already taken dice or accessing a non existing position.");
+
+        return diceFaces.get(position);
+    }
+
+
 
 }
 
