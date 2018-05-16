@@ -86,56 +86,56 @@ public class SchemaTest {
 
     @Test
     public void isDiceAllowed() {
-        assertFalse(virtus.isDiceAllowed(new Point(1, 1), new DiceFace(GameColor.RED, 1)));
-        assertFalse(empty.isDiceAllowed(new Point(1, 1), new DiceFace(GameColor.RED, 1)));
+        assertFalse(virtus.isDiceAllowed(new Point(1, 1), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
+        assertFalse(empty.isDiceAllowed(new Point(1, 1), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
 
-        assertTrue(virtus.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 4)));
-        assertTrue(empty.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 4)));
+        assertTrue(virtus.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 4), SchemaCardFace.Ignore.NOTHING));
+        assertTrue(empty.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 4), SchemaCardFace.Ignore.NOTHING));
 
         virtus.setDiceFace(new Point(0, 0), new DiceFace(GameColor.RED, 4));
         empty.setDiceFace(new Point(0, 0), new DiceFace(GameColor.RED, 4));
 
-        assertTrue(virtus.isDiceAllowed(new Point(1, 1), new DiceFace(GameColor.RED, 1)));
-        assertTrue(empty.isDiceAllowed(new Point(1, 1), new DiceFace(GameColor.RED, 1)));
+        assertTrue(virtus.isDiceAllowed(new Point(1, 1), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
+        assertTrue(empty.isDiceAllowed(new Point(1, 1), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
 
-        assertTrue(virtus.isDiceAllowed(new Point(1, 0), new DiceFace(GameColor.BLUE, 1)));
-        assertTrue(empty.isDiceAllowed(new Point(1, 0), new DiceFace(GameColor.BLUE, 1)));
+        assertTrue(virtus.isDiceAllowed(new Point(1, 0), new DiceFace(GameColor.BLUE, 1), SchemaCardFace.Ignore.NOTHING));
+        assertTrue(empty.isDiceAllowed(new Point(1, 0), new DiceFace(GameColor.BLUE, 1), SchemaCardFace.Ignore.NOTHING));
 
-        assertFalse(virtus.isDiceAllowed(new Point(1, 0), new DiceFace(GameColor.RED, 1)));
-        assertFalse(empty.isDiceAllowed(new Point(1, 0), new DiceFace(GameColor.RED, 1)));
+        assertFalse(virtus.isDiceAllowed(new Point(1, 0), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
+        assertFalse(empty.isDiceAllowed(new Point(1, 0), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
 
-        assertFalse(virtus.isDiceAllowed(new Point(2, 2), new DiceFace(GameColor.GREEN, 1)));
-        assertFalse(empty.isDiceAllowed(new Point(2, 2), new DiceFace(GameColor.GREEN, 1)));
+        assertFalse(virtus.isDiceAllowed(new Point(2, 2), new DiceFace(GameColor.GREEN, 1), SchemaCardFace.Ignore.NOTHING));
+        assertFalse(empty.isDiceAllowed(new Point(2, 2), new DiceFace(GameColor.GREEN, 1), SchemaCardFace.Ignore.NOTHING));
 
 
         //Ignoring validity for tests
         virtus.setDiceFace(new Point(2, 2), new DiceFace(GameColor.RED, 1));
         empty.setDiceFace(new Point(2, 2), new DiceFace(GameColor.RED, 1));
 
-        assertFalse(virtus.isDiceAllowed(new Point(1, 2), new DiceFace(GameColor.RED, 1)));
-        assertFalse(empty.isDiceAllowed(new Point(1, 2), new DiceFace(GameColor.RED, 1)));
+        assertFalse(virtus.isDiceAllowed(new Point(1, 2), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
+        assertFalse(empty.isDiceAllowed(new Point(1, 2), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
 
-        assertFalse(virtus.isDiceAllowed(new Point(3, 2), new DiceFace(GameColor.RED, 1)));
-        assertFalse(empty.isDiceAllowed(new Point(3, 2), new DiceFace(GameColor.RED, 1)));
+        assertFalse(virtus.isDiceAllowed(new Point(3, 2), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
+        assertFalse(empty.isDiceAllowed(new Point(3, 2), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
 
-        assertFalse(virtus.isDiceAllowed(new Point(2, 1), new DiceFace(GameColor.RED, 1)));
-        assertFalse(empty.isDiceAllowed(new Point(2, 1), new DiceFace(GameColor.RED, 1)));
+        assertFalse(virtus.isDiceAllowed(new Point(2, 1), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
+        assertFalse(empty.isDiceAllowed(new Point(2, 1), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
 
-        assertFalse(virtus.isDiceAllowed(new Point(2, 3), new DiceFace(GameColor.RED, 1)));
-        assertFalse(empty.isDiceAllowed(new Point(2, 3), new DiceFace(GameColor.RED, 1)));
+        assertFalse(virtus.isDiceAllowed(new Point(2, 3), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
+        assertFalse(empty.isDiceAllowed(new Point(2, 3), new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING));
 
         try{
-            empty.isDiceAllowed(null, new DiceFace(GameColor.RED, 1));
+            empty.isDiceAllowed(null, new DiceFace(GameColor.RED, 1), SchemaCardFace.Ignore.NOTHING);
             fail();
         }catch (IllegalArgumentException ignored){}
 
         try{
-            empty.isDiceAllowed(new Point(1, 0), null);
+            empty.isDiceAllowed(new Point(1, 0), null, SchemaCardFace.Ignore.NOTHING);
             fail();
         }catch (IllegalArgumentException ignored){}
 
         try{
-            empty.isDiceAllowed(new Point(1, -1), new DiceFace(GameColor.RED, 2));
+            empty.isDiceAllowed(new Point(1, -1), new DiceFace(GameColor.RED, 2), SchemaCardFace.Ignore.NOTHING);
             fail();
         }catch (IllegalArgumentException ignored){}
     }

@@ -90,7 +90,7 @@ public class Schema {
      * @param diceFace the diceFace to place
      * @return true if the diceFace can be placed, false otherwise
      */
-    public boolean isDiceAllowed(Point point, DiceFace diceFace) {
+    public boolean isDiceAllowed(Point point, DiceFace diceFace, SchemaCardFace.Ignore ignore) {
         if (point == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": point cannot be null!");
 
@@ -102,7 +102,7 @@ public class Schema {
 
         if (diceFaces[point.x][point.y] != null) return false;
 
-        if (!schemaCardFace.isDiceAllowed(point, diceFace)) return false;
+        if (!schemaCardFace.isDiceAllowed(point, diceFace, ignore)) return false;
 
 
         if (isEmpty()) {

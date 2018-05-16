@@ -4,6 +4,7 @@ import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.omg.CORBA.NO_IMPLEMENT;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
@@ -31,15 +32,15 @@ public class SchemaCardFaceTest {
         }catch (IllegalArgumentException ignored){}
 
         try{
-            front.isDiceAllowed(new Point(0, 0), null);
+            front.isDiceAllowed(new Point(0, 0), null, SchemaCardFace.Ignore.NOTHING);
             fail();
         }catch (IllegalArgumentException ignored){}
     }
 
     @Test
     public void normalTest(){
-        assertFalse(front.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 5)));
-        assertTrue(front.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 4)));
+        assertFalse(front.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 5), SchemaCardFace.Ignore.NOTHING));
+        assertTrue(front.isDiceAllowed(new Point(0, 0), new DiceFace(GameColor.RED, 4), SchemaCardFace.Ignore.NOTHING));
     }
 
 }
