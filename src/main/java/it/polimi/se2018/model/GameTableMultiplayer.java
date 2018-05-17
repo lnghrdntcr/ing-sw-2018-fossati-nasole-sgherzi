@@ -58,7 +58,7 @@ public class GameTableMultiplayer {
     /**
      * Returns the Tool card by position
      *
-     * @param position zero based position of the card. 0 <= position < 3
+     * @param position zero based position of the card. Position is grater than or equal to zero and lesser than 3
      * @return the Tool card
      * @throws IllegalArgumentException if position outside of range
      */
@@ -71,7 +71,7 @@ public class GameTableMultiplayer {
     /**
      * Returns the PublicObjectiveCard by position
      *
-     * @param position zero based position of the card. 0 <= position < 3
+     * @param position zero based position of the card. Position is grater than or equal to zero and lesser than 3
      * @return the PublicObjectiveCard
      * @throws IllegalArgumentException if position outside of range
      */
@@ -129,7 +129,7 @@ public class GameTableMultiplayer {
      * Increases or decreases a dice value
      * @param diceIndex the index of the dice in the DraftBoard
      * @param direction 1 to increase, -1 to decrease
-     * @throws IllegalArgumentException if direction != -1 && direction != 1
+     * @throws IllegalArgumentException if diceIndex is not equal to -1 and direction is not equal to -1
      * @throws IllegalStateException if increasing a 6 dice or decreasing a 1 dice
      */
     public void increaseDecreaseDice(int diceIndex, int direction){

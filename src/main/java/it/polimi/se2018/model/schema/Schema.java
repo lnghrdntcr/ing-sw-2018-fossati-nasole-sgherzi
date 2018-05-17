@@ -88,6 +88,7 @@ public class Schema {
      *
      * @param point    the position where the dice should be placed, 0 based
      * @param diceFace the diceFace to place
+     * @param ignore the type of restricton to ignore
      * @return true if the diceFace can be placed, false otherwise
      */
     public boolean isDiceAllowed(Point point, DiceFace diceFace, SchemaCardFace.Ignore ignore) {
