@@ -2,6 +2,7 @@ package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.schema.DiceBag;
 import it.polimi.se2018.model.schema.DiceFace;
+import it.polimi.se2018.model_view.DraftBoardImmutable;
 import it.polimi.se2018.utils.Settings;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.Random;
  * @author Francesco Sgherzi
  * @since 09/05/2018
  */
-public class DraftBoard {
+public class DraftBoard implements ImmutableCloneable{
 
     private DiceBag diceBag;
     private ArrayList<DiceFace> diceFaces = new ArrayList<>();
@@ -133,6 +134,9 @@ public class DraftBoard {
     }
 
 
-
+    @Override
+    public DraftBoardImmutable getImmutableInstance() {
+        return new DraftBoardImmutable(this.getDices());
+    }
 }
 

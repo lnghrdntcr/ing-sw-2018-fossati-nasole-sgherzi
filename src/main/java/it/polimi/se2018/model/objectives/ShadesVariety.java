@@ -15,8 +15,6 @@ import java.util.HashMap;
  */
 public class ShadesVariety extends PublicObjective  {
 
-  // TODO: Write tests.
-
   public ShadesVariety(int points) {
     super(points);
   }

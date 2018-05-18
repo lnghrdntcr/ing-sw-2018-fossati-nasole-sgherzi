@@ -12,5 +12,10 @@ public class FirmPastaDiluent extends Tool {
   public void use(Player player) {
 
   }
+
+  @Override
+  public Object getImmutableInstance() {
+    return null;
+  }
   // Diluente per pasta salda
 }

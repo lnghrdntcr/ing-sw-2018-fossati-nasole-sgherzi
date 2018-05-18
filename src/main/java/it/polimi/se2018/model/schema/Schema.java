@@ -1,6 +1,8 @@
 package it.polimi.se2018.model.schema;
 
+import it.polimi.se2018.model.ImmutableCloneable;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
+import it.polimi.se2018.model_view.SchemaImmutable;
 import it.polimi.se2018.utils.Settings;
 
 import java.awt.*;
@@ -11,7 +13,7 @@ import java.awt.*;
  * @author Nicola Fossati
  * @since 09/05/2018
  */
-public class Schema {
+public class Schema implements ImmutableCloneable {
 
     private DiceFace[][] diceFaces = new DiceFace[Settings.CARD_WIDTH][Settings.CARD_HEIGHT];
     private SchemaCardFace schemaCardFace;
@@ -211,5 +213,10 @@ public class Schema {
 
     public SchemaCardFace getSchemaCardFace() {
         return schemaCardFace;
+    }
+
+    @Override
+    public SchemaImmutable getImmutableInstance() {
+        return new SchemaImmutable(this.diceFaces, this.schemaCardFace);
     }
 }

@@ -13,8 +13,6 @@ import java.awt.*;
  */
 public class DarkShades extends PublicObjective {
 
-  // TODO: Write tests.
-
   public DarkShades(int points) {
     super(points);
   }

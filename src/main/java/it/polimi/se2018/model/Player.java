@@ -1,15 +1,18 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema.Schema;
+import it.polimi.se2018.model_view.PlayerImmutable;
 
 /**
  * A class to contain players data
  */
-public class Player {
+public class Player implements ImmutableCloneable{
 
     private String name;
     private Schema schema;
     private int token;
+    private PrivateObjective privateObjective;
 
     /**
      * @param name the name of the player; this must be unique across a match
@@ -51,5 +54,18 @@ public class Player {
 
     public void setToken(int token) {
         this.token = token;
+    }
+
+    public PrivateObjective getPrivateObjective() {
+      return privateObjective;
+    }
+
+    public void setPrivateObjective(PrivateObjective privateObjective) {
+      this.privateObjective = privateObjective;
+    }
+
+    @Override
+    public PlayerImmutable getImmutableInstance() {
+      return new PlayerImmutable(this.name, this.schema, this.privateObjective);
     }
 }

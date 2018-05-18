@@ -13,8 +13,6 @@ import java.awt.*;
  */
 public class MediumShades extends PublicObjective  {
 
-  // TODO: Write tests.
-
   public MediumShades(int points) {
     super(points);
   }
