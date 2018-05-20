@@ -104,11 +104,10 @@ public class SchemaCardFace {
         if (ignore == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": ignore field cannot be null!");
 
-        if (ignore == ignore.BOTH) return true;
-        else if (ignore == ignore.COLOR && getRestriction(point) instanceof ColorRestriction) return true;
-        else if (ignore == ignore.NUMBER && getRestriction(point) instanceof NumberRestriction) return true;
-
-        return getRestriction(point).isDiceAllowed(diceFace);
+        if (ignore == Ignore.BOTH) return true;
+        else if (ignore == Ignore.COLOR && getRestriction(point) instanceof ColorRestriction) return true;
+        else if (ignore == Ignore.NUMBER && getRestriction(point) instanceof NumberRestriction) return true;
+        else return getRestriction(point).isDiceAllowed(diceFace);
     }
 
     /**
