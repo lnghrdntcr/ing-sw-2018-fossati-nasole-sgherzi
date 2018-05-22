@@ -19,7 +19,7 @@ import it.polimi.se2018.model.schema.GameColor;
 
 public class DifferentColumnColor extends PublicObjective {
 
-    public DifferentColumnColor(int points) {
+    public DifferentColumnColor() {
         super(5);
     }
 

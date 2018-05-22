@@ -21,7 +21,7 @@ public class ColoredDiagonals extends PublicObjective {
 
 
 
-    public ColoredDiagonals(int points) {
+    public ColoredDiagonals() {
         super(1);
     }
 

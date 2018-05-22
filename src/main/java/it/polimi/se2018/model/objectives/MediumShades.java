@@ -13,8 +13,8 @@ import java.awt.*;
  */
 public class MediumShades extends PublicObjective  {
 
-  public MediumShades(int points) {
-    super(points);
+  public MediumShades() {
+    super(2);
   }
 
   /**

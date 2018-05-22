@@ -15,15 +15,15 @@ import java.util.HashMap;
  */
 public class ShadesVariety extends PublicObjective  {
 
-  public ShadesVariety(int points) {
-    super(points);
+  public ShadesVariety() {
+    super(5);
   }
 
   /**
    * Computes the score given a Schema, according to its logic.
    * @param schema The Schema on which compute the score.
    * @return The score given by the rule of this PublicObjective.
-   * @throws IllegalArgumentException If the schema given is null.
+   * @throws IllegalArgumentException If the given schema is null.
    */
   @Override
   public int computeScore(Schema schema) {
