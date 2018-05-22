@@ -13,8 +13,8 @@ import java.awt.*;
  */
 public class DarkShades extends PublicObjective {
 
-  public DarkShades(int points) {
-    super(points);
+  public DarkShades() {
+    super(2);
   }
 
   /**

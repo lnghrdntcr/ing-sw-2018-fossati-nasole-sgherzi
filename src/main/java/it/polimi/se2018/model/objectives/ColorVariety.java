@@ -16,8 +16,8 @@ import java.util.EnumMap;
  */
 public class ColorVariety extends PublicObjective {
 
-  public ColorVariety(int points) {
-    super(points);
+  public ColorVariety() {
+    super(4);
   }
 
   /**
