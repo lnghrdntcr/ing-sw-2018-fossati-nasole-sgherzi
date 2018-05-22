@@ -1,6 +1,7 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.schema.DiceFace;
+import it.polimi.se2018.model_view.DiceHolderImmutable;
 import it.polimi.se2018.utils.Settings;
 
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class DiceHolder implements ImmutableCloneable{
   }
 
   @Override
-  public Object getImmutableInstance() {
-    return null;
+  public DiceHolderImmutable getImmutableInstance() {
+    return new DiceHolderImmutable(this.turnHolder);
   }
 }
