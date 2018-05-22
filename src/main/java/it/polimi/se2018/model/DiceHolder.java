@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @since 09/05/2018
  * Holds the dices remaining from every turn.
  */
-public class DiceHolder implements ImmutableCloneable{
+public class DiceHolder implements ImmutableCloneable<DiceHolderImmutable>{
 
   private ArrayList<ArrayList<DiceFace>> turnHolder = new ArrayList<>();
 

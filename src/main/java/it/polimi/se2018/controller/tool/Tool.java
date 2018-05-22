@@ -2,8 +2,9 @@ package it.polimi.se2018.controller.tool;
 
 import it.polimi.se2018.model.ImmutableCloneable;
 import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model_view.ToolCardImmutable;
 
-public abstract class Tool implements ImmutableCloneable {
+public abstract class Tool implements ImmutableCloneable<ToolCardImmutable> {
 
     private int token;
 

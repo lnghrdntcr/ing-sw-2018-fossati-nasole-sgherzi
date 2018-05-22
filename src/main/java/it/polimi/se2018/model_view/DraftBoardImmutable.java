@@ -15,7 +15,7 @@ public class DraftBoardImmutable {
     this.drawnDices = drawnDices;
   }
 
-  public DiceFace[] getDrawnDices() {
+  public DiceFace[] getDices() {
     return drawnDices;
   }
 }

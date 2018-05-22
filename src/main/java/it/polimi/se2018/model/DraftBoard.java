@@ -14,7 +14,7 @@ import java.util.Random;
  * @author Francesco Sgherzi
  * @since 09/05/2018
  */
-public class DraftBoard implements ImmutableCloneable{
+public class DraftBoard implements ImmutableCloneable<DraftBoardImmutable>{
 
     private DiceBag diceBag;
     private ArrayList<DiceFace> diceFaces = new ArrayList<>();

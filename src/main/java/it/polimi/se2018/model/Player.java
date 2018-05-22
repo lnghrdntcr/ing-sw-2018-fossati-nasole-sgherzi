@@ -7,7 +7,7 @@ import it.polimi.se2018.model_view.PlayerImmutable;
 /**
  * A class to contain players data
  */
-public class Player implements ImmutableCloneable{
+public class Player implements ImmutableCloneable<PlayerImmutable>{
 
     private String name;
     private Schema schema;
