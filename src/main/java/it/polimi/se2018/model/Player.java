@@ -66,6 +66,6 @@ public class Player implements ImmutableCloneable{
 
     @Override
     public PlayerImmutable getImmutableInstance() {
-      return new PlayerImmutable(this.name, this.schema, this.privateObjective);
+      return new PlayerImmutable(this.name, this.token, this.privateObjective);
     }
 }

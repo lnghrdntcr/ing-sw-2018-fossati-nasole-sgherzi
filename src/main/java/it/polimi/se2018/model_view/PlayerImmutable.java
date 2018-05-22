@@ -11,13 +11,13 @@ import it.polimi.se2018.model.schema.Schema;
 public class PlayerImmutable {
 
   private String name;
-  private SchemaImmutable schema;
+  private int token;
   private PrivateObjective privateObjective;
 
-  public PlayerImmutable(String name, Schema schema, PrivateObjective privateObjective){
+  public PlayerImmutable(String name, int token, PrivateObjective privateObjective){
 
     this.name = name;
-    this.schema = schema.getImmutableInstance();
+    this.token =token;
     this.privateObjective = privateObjective;
 
   }
@@ -26,11 +26,12 @@ public class PlayerImmutable {
     return name;
   }
 
-  public SchemaImmutable getSchema() {
-    return schema;
-  }
 
   public PrivateObjective getPrivateObjective() {
     return privateObjective;
+  }
+
+  public int getToken() {
+    return token;
   }
 }
