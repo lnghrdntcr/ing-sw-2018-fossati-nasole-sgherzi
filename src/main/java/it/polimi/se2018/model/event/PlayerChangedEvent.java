@@ -1,6 +1,7 @@
 package it.polimi.se2018.model.event;
 
 import it.polimi.se2018.model_view.PlayerImmutable;
+import it.polimi.se2018.utils.Event;
 
 public class PlayerChangedEvent extends Event {
     PlayerImmutable playerImmutable;

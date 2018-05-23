@@ -1,12 +1,10 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.event.*;
-import it.polimi.se2018.model.event.Event;
+import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.schema.DiceFace;
-import it.polimi.se2018.model.schema_card.SchemaCard;
-import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
@@ -264,7 +262,8 @@ public class GameTableMultiplayer {
      */
     public void nextTurn() {
         turnHolder.nextTurn();
-        dispatchEvent(new TurnChangedEvent("nextTurn", players[turnHolder.getCurrentPlayer()].getName(), turnHolder.getRound()));
+        dispatchEvent(new TurnChangedEvent("nextTurn", players[turnHolder.getCurrentPlayer()].getName()
+                , turnHolder.getRound()));
     }
 
 

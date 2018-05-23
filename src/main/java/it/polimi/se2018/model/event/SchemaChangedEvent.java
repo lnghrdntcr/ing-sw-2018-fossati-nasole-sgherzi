@@ -1,6 +1,7 @@
 package it.polimi.se2018.model.event;
 
 import it.polimi.se2018.model.schema.Schema;
+import it.polimi.se2018.utils.Event;
 
 public class SchemaChangedEvent extends Event {
     Schema schema;
