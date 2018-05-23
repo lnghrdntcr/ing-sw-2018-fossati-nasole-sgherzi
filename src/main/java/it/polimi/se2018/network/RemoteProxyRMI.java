@@ -38,11 +38,11 @@ public class RemoteProxyRMI extends RemoteProxy implements RemoteProxyRMIInterfa
         this.dispatchEventToRemoteView(event);
     }
 
-    public LocalProxyRMIInterface getLocalProxyRMI() {
+    public LocalProxyRMIInterface getServer() {
         return localProxyRMI;
     }
 
-    public void setLocalProxyRMI(LocalProxyRMIInterface localProxyRMI) {
+    public void setServer(LocalProxyRMIInterface localProxyRMI) {
         this.localProxyRMI = localProxyRMI;
     }
 }

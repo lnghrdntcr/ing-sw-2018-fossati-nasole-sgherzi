@@ -1,10 +1,10 @@
 package it.polimi.se2018.network;
 
-import it.polimi.se2018.model.event.TurnChangedEvent;
 import it.polimi.se2018.utils.Log;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -14,29 +14,34 @@ import java.util.Scanner;
 
 /**
  * The client class.
+ *
  * @author Francesco Sgherzi
  * @since 23/05/2018
  */
 public class Client {
 
-    private static String host;
+    private static String host, name;
     private static int port;
 
     /**
      * Begins the connection with the RMI server.
      */
-    private static void connectRMI(){
+    private static void connectRMI() {
 
         try {
             Registry registry = LocateRegistry.getRegistry(host, port);
-            ServerInterface server = (ServerInterface) registry.lookup( "SagradaServer");
+            ServerInterface server = (ServerInterface) registry.lookup("SagradaServer");
 
             RemoteProxyRMI remoteRMI = new RemoteProxyRMI();
             RemoteProxyRMIInterface remoteProxyRMIInterface = (RemoteProxyRMIInterface) UnicastRemoteObject.exportObject(remoteRMI, 0);
 
-            server.connectRMIClient(remoteProxyRMIInterface);
+            if (server.connectRMIClient(remoteProxyRMIInterface, name)) {
+                Log.d("Connected!");
+            } else {
+                Log.e("Error during connection... Duplicate name?");
+            }
         } catch (NotBoundException | RemoteException e) {
-            e.printStackTrace();
+            Log.e("Cannot connect to server: " + e.getMessage());
         }
 
     }
@@ -45,6 +50,21 @@ public class Client {
      * Begins the connection with the RMI server.
      */
     private static void connectSocket() {
+        try {
+            Log.d("Connecting...");
+            Socket socket = new Socket(host, port);
+            Log.d("Sending name...");
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+            objectOutputStream.writeObject(name);
+            objectOutputStream.flush();
+            //objectOutputStream.close();
+            Log.d("Registering proxy...");
+            RemoteProxySocket remoteProxySocket = new RemoteProxySocket(socket);
+
+            Log.d("Connected!");
+        } catch (IllegalArgumentException | IOException e) {
+            Log.e("Cannot connect to server: " + e.getMessage());
+        }
 
     }
 
@@ -55,24 +75,26 @@ public class Client {
     /**
      * Starts the client getting basic informations about the connection.
      */
-    public static void startClient(){
+    public static void startClient() {
 
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Connection method?");
+        System.out.print("Connection method?");
         String method = scanner.nextLine();
 
-        if(method.equalsIgnoreCase("RMI")){
+        System.out.print("ip: ");
+        host = scanner.nextLine();
+        System.out.print("port: ");
+        port = Integer.parseInt(scanner.nextLine());
+        System.out.print("Name: ");
+        name = scanner.nextLine();
 
-            System.out.println("ip: ");
-            host = scanner.nextLine();
-            System.out.println("port: ");
-            port = scanner.nextInt();
-
+        if (method.equalsIgnoreCase("RMI")) {
             connectRMI();
+        } else if (method.equalsIgnoreCase("socket")) {
+            connectSocket();
         } else {
             Log.w("Not implemented.");
-            return;
         }
 
 

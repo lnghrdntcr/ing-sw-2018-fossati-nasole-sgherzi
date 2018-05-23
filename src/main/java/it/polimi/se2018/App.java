@@ -4,6 +4,7 @@ import it.polimi.se2018.network.Client;
 import it.polimi.se2018.network.Server;
 import it.polimi.se2018.utils.Log;
 
+import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,15 +13,28 @@ import java.util.List;
  **/
 
 public class App {
-    public static void main(String[] args) {
-        if (args.length != 1) {
-            Log.e("You have to pass exactly one argument");
+    public static void main(String[] args) throws RemoteException {
+        if (args.length <= 0) {
+            Log.e("You have to pass at least one parameter");
             printUsage();
+            return;
         }
 
         switch (args[0]) {
             case "server":
-                Server.startServer();
+                if(args.length<=1){
+                    Log.e("Missing parameter: players");
+                    printUsage();
+                    return;
+                }
+                try{
+                    new Server(Integer.parseInt(args[1])).startServer();
+                }catch (NumberFormatException e){
+                    Log.e("Players not a number!");
+                    printUsage();
+                    return;
+                }
+
                 break;
             case "client":
                 Client.startClient();
@@ -33,6 +47,6 @@ public class App {
     }
 
     private static void printUsage() {
-        System.out.println("Usage: sagrada.jar [server|client]");
+        System.out.println("Usage: sagrada.jar [server players|client]");
     }
 }

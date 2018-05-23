@@ -36,4 +36,12 @@ public class LocalProxyRMI extends LocalProxy implements LocalProxyRMIInterface{
     public void sendEventToServer(Event event) throws RemoteException {
         this.dispatchEventToVirtualView(event);
     }
+
+    public RemoteProxyRMIInterface getClient() {
+        return client;
+    }
+
+    public void setClient(RemoteProxyRMIInterface client) {
+        this.client = client;
+    }
 }

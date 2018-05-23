@@ -6,7 +6,8 @@ import it.polimi.se2018.utils.Event;
 public class VirtualView extends View {
     private LocalProxy localProxy;
 
-    public VirtualView(LocalProxy localProxy) {
+    public VirtualView(String player, LocalProxy localProxy) {
+        super(player);
         this.localProxy = localProxy;
         localProxy.setView(this);
     }

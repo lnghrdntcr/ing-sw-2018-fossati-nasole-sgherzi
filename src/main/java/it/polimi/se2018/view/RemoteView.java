@@ -5,7 +5,8 @@ import it.polimi.se2018.utils.Event;
 
 public class RemoteView extends View {
 
-    public RemoteView() {
+    public RemoteView(String player) {
+        super(player);
     }
 
     @Override
