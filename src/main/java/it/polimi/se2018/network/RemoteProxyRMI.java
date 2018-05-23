@@ -15,26 +15,26 @@ public class RemoteProxyRMI extends RemoteProxy implements RemoteProxyRMIInterfa
     private LocalProxyRMIInterface localProxyRMI;
 
     /**
-     * Sends the event to the LocalProxy, using RMI.
-     * @param event The event to be sent.
+     * Sends the modelEvent to the LocalProxy, using RMI.
+     * @param event The modelEvent to be sent.
      */
     @Override
     void sendEventToServer(Event event) {
         try {
             localProxyRMI.sendEventToServer(event);
         } catch (RemoteException e) {
-            Log.e("Failed to send event to server: " + e.getMessage());
+            Log.e("Failed to send modelEvent to server: " + e.getMessage());
         }
     }
 
     /**
-     * Sends event to the RemoteView, in order to be dispatched by it.
-     * @param event The event to be sent.
+     * Sends modelEvent to the RemoteView, in order to be dispatched by it.
+     * @param event The modelEvent to be sent.
      * @throws RemoteException If an error occurred.
      */
     @Override
     public void sendEventToClient(Event event) throws RemoteException {
-        // This method is called from server side when an event occurs on the server.
+        // This method is called from server side when an modelEvent occurs on the server.
         this.dispatchEventToRemoteView(event);
     }
 

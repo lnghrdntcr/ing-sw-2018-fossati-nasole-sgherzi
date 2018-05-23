@@ -9,11 +9,11 @@ public abstract class Event {
         this.player = player;
     }
 
-    public String getEmitter() {
+    public String getEmitterName() {
         return emitter;
     }
 
-    public String getPlayer() {
+    public String getPlayerName() {
         return player;
     }
 

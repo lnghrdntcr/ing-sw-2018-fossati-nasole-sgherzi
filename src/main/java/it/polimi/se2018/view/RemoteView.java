@@ -1,7 +1,6 @@
 package it.polimi.se2018.view;
 
-import it.polimi.se2018.model.event.TurnChangedEvent;
-import it.polimi.se2018.network.RemoteProxy;
+import it.polimi.se2018.model.modelEvent.TurnChangedEvent;
 import it.polimi.se2018.utils.Event;
 
 public class RemoteView extends View {

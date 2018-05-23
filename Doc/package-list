@@ -2,7 +2,7 @@ it.polimi.se2018
 it.polimi.se2018.controller
 it.polimi.se2018.controller.tool
 it.polimi.se2018.model
-it.polimi.se2018.model.event
+it.polimi.se2018.model.modelEvent
 it.polimi.se2018.model.objectives
 it.polimi.se2018.model.schema
 it.polimi.se2018.model.schema_card

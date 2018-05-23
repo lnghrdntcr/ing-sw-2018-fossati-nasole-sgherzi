@@ -1,4 +1,4 @@
-package it.polimi.se2018.model.event;
+package it.polimi.se2018.model.modelEvent;
 
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Event;

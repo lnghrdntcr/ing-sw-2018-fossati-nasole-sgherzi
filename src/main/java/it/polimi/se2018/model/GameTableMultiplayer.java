@@ -1,6 +1,7 @@
 package it.polimi.se2018.model;
 
-import it.polimi.se2018.model.event.*;
+import it.polimi.se2018.model.modelEvent.*;
+import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.controller.tool.Tool;
@@ -39,6 +40,11 @@ public class GameTableMultiplayer {
     private Player getCurrentPlayer() {
         return players[turnHolder.getCurrentPlayer()];
     }
+
+    /**
+     * @return the name of who's playing
+     */
+    public String getCurrentPlayerName(){return getCurrentPlayer().getName();}
 
     /**
      * Return a player by its name
@@ -270,6 +276,14 @@ public class GameTableMultiplayer {
     private void dispatchEvent(Event event) {
         //TODO: Do this maderfader.
         throw new NotImplementedException();
+    }
+
+    public boolean isDiceAllowed(String playerName, Point point, DiceFace diceFace, SchemaCardFace.Ignore ignore){
+        return getPlayerByName(playerName).getSchema().isDiceAllowed(point,diceFace,ignore);
+    }
+
+    public DiceFace getDiceFaceByIndex(int i){
+        return draftBoard.getDiceFace(i);
     }
 
 
