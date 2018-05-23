@@ -1,5 +1,6 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.network.Client;
 import it.polimi.se2018.network.Server;
 import it.polimi.se2018.utils.Log;
 
@@ -22,7 +23,7 @@ public class App {
                 Server.startServer();
                 break;
             case "client":
-                Log.e("still not implemented...");
+                Client.startClient();
                 break;
             default:
                 printUsage();

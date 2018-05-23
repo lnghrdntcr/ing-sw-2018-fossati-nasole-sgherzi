@@ -1,6 +1,7 @@
 package it.polimi.se2018.controller.tool;
 
 import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model_view.ToolCardImmutable;
 
 public class FirmPastaDiluent extends Tool {
   @Override
@@ -14,8 +15,8 @@ public class FirmPastaDiluent extends Tool {
   }
 
   @Override
-  public Object getImmutableInstance() {
-    return null;
+  public ToolCardImmutable getImmutableInstance() {
+    return new ToolCardImmutable(this.getClass().getName(), this.getToken());
   }
   // Diluente per pasta salda
 }

@@ -29,7 +29,7 @@ public class LightShadesTest {
   @Before
   public void setUp(){
 
-    this.lightShades = new LightShades(2);
+    this.lightShades = new LightShades();
 
     // Take all the cards...
     try {

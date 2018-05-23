@@ -9,6 +9,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class Server extends UnicastRemoteObject implements ServerInterface  {
+
     public final static int PORT=1099;
 
     protected Server() throws RemoteException {
@@ -39,7 +40,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface  {
 
 
     @Override
-    public void connectRMIClient(RemoteProxyRMI remoteProxyRMI) throws RemoteException {
-
+    public void connectRMIClient(RemoteProxyRMIInterface remoteProxyRMI) throws RemoteException {
+        Log.e("Ti piacerebbe eh....");
     }
 }

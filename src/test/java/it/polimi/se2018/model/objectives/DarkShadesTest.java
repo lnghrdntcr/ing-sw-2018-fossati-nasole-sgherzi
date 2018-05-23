@@ -24,7 +24,7 @@ public class DarkShadesTest {
   @Before
   public void setUp() throws Exception {
 
-    this.darkShades = new DarkShades(2);
+    this.darkShades = new DarkShades();
 
     // Take all the cards...
     try {

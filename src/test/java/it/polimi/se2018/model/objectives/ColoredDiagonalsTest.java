@@ -25,7 +25,7 @@ public class ColoredDiagonalsTest {
   @Before
   public void setUp() throws FileNotFoundException {
 
-    this.coloredDiagonals = new ColoredDiagonals(2);
+    this.coloredDiagonals = new ColoredDiagonals();
 
     // Take all the cards...
     this.loadedSchemas = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_EqualCards.scf");

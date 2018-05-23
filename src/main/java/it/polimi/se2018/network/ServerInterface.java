@@ -4,5 +4,5 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface ServerInterface extends Remote {
-    public void connectRMIClient(RemoteProxyRMI remoteProxyRMI) throws RemoteException;
+    public void connectRMIClient(RemoteProxyRMIInterface remoteProxyRMI) throws RemoteException;
 }

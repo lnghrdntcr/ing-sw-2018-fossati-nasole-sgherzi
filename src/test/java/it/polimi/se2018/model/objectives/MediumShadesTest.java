@@ -27,7 +27,7 @@ public class MediumShadesTest {
   public void setUp() throws Exception {
 
 
-    this.mediumShades= new MediumShades(2);
+    this.mediumShades= new MediumShades();
 
     // Take all the cards...
     try {

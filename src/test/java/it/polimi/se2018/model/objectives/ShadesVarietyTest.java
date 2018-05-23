@@ -24,7 +24,7 @@ public class ShadesVarietyTest {
   @Before
   public void setUp(){
 
-    this.shadesVariety = new ShadesVariety(5);
+    this.shadesVariety = new ShadesVariety();
 
     // Take a the cards...
     try {

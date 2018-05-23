@@ -24,7 +24,7 @@ public class ColorVarietyTest {
   @Before
   public void setUp() throws FileNotFoundException {
 
-    this.colorVariety = new ColorVariety(4);
+    this.colorVariety = new ColorVariety();
 
     // Take a the cards...
 

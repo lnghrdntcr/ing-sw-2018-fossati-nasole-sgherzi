@@ -1,4 +1,10 @@
 package it.polimi.se2018.network;
 
-public interface RemoteProxyRMIInterface {
+import it.polimi.se2018.utils.Event;
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface RemoteProxyRMIInterface extends Remote {
+    public void sendEventToClient(Event event) throws RemoteException;
 }

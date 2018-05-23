@@ -24,7 +24,7 @@ public class DifferentColumnColorTest {
   @Before
   public void setUp() throws FileNotFoundException {
 
-    this.differentColumnColor = new DifferentColumnColor(2);
+    this.differentColumnColor = new DifferentColumnColor();
 
     // Take all the cards...
     this.loadedSchemas = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_EqualCards.scf");
