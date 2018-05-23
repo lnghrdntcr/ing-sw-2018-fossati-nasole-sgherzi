@@ -49,6 +49,10 @@ public class Client {
 
     }
 
+    public Client() {
+        super();
+    }
+
     /**
      * Starts the client getting basic informations about the connection.
      */

@@ -2,7 +2,7 @@ package it.polimi.se2018.network;
 
 import it.polimi.se2018.utils.Log;
 
-import java.net.MalformedURLException;
+import java.net.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -20,18 +20,32 @@ public class Server extends UnicastRemoteObject implements ServerInterface  {
     }
 
     private static void setupRMI(){
-        try {
+
+        String ip = "127.0.0.1";
+
+        try (final DatagramSocket socket = new DatagramSocket()){
+
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            ip = socket.getLocalAddress().getHostAddress();
+
+            System.setProperty("java.rmi.server.hostname", ip);
             LocateRegistry.createRegistry(PORT);
+
         } catch (RemoteException e) {
             //TODO
             System.out.println(e.getMessage());
             return;
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (SocketException e) {
+            e.printStackTrace();
         }
 
         try {
             Server serverImplementation = new Server();
-            Naming.rebind("//localhost/SagradaServer", serverImplementation);
-            Log.i("RMI Server exposed up on port "+ PORT);
+            Naming.rebind("SagradaServer", serverImplementation);
+            Log.i("RMI Server exposed up on " + ip + ":" + PORT);
+
         } catch (MalformedURLException e) {
             System.err.println("Impossibile registrare l'oggetto indicato!");
         } catch (RemoteException e) {
