@@ -1,5 +1,6 @@
 package it.polimi.se2018.network;
 
+import it.polimi.se2018.model.event.TurnChangedEvent;
 import it.polimi.se2018.utils.Log;
 
 import java.net.MalformedURLException;
@@ -29,14 +30,12 @@ public class Client {
         try {
             Registry registry = LocateRegistry.getRegistry(host, port);
             ServerInterface server = (ServerInterface) registry.lookup( "SagradaServer");
-            Log.d("Looked up");
+
             RemoteProxyRMI remoteRMI = new RemoteProxyRMI();
             RemoteProxyRMIInterface remoteProxyRMIInterface = (RemoteProxyRMIInterface) UnicastRemoteObject.exportObject(remoteRMI, 0);
-            Log.d("Exported");
+
             server.connectRMIClient(remoteProxyRMIInterface);
-            Log.d("Connected");
         } catch (NotBoundException | RemoteException e) {
-            Log.e("Cannot connect to RMI server, catching those madaffada: ");
             e.printStackTrace();
         }
 
@@ -47,6 +46,10 @@ public class Client {
      */
     private static void connectSocket() {
 
+    }
+
+    public Client() {
+        super();
     }
 
     /**

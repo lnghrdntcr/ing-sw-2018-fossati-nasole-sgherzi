@@ -1,6 +1,8 @@
 package it.polimi.se2018.utils;
 
-public abstract class Event {
+import java.io.Serializable;
+
+public abstract class Event implements Serializable {
     private final String player;
     private String emitter;
 
