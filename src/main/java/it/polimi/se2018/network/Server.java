@@ -24,6 +24,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface  {
             LocateRegistry.createRegistry(PORT);
         } catch (RemoteException e) {
             //TODO
+            System.out.println(e.getMessage());
             return;
         }
 
