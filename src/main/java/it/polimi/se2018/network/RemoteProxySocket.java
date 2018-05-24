@@ -9,12 +9,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * A class that represent a server connected via socket communication on the client.
+ */
 public class RemoteProxySocket extends RemoteProxy {
     private Socket remoteConnection;
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
     private RemoteProxySocket.ListenerThread listenerThread;
 
+    /**
+     * Create a new proxy, associating the specified remoteConnection
+     * @param remoteConnection the socket to associate with this instance of the proxy
+     * @throws IOException if an error occours
+     */
     RemoteProxySocket(Socket remoteConnection) throws IOException {
         this.remoteConnection = remoteConnection;
         // In this specific order or it does not work!
@@ -34,15 +42,22 @@ public class RemoteProxySocket extends RemoteProxy {
         }*/
     }
 
+    /**
+     * Sends the event to the connected server, using socket connection
+     * @param event the event that should me dispatched
+     */
     @Override
     void sendEventToServer(Event event) {
         try {
             objectOutputStream.writeObject(event);
         } catch (IOException e) {
-            Log.e("Unbale to send an event to the client!");
+            Log.e("Unbale to send an event to the server!");
         }
     }
 
+    /**
+     * A thread that listen to incoming event and dispatch them to the {@link it.polimi.se2018.view.RemoteView}
+     */
     class ListenerThread extends Thread {
         private boolean goAhead = true;
 
@@ -61,6 +76,9 @@ public class RemoteProxySocket extends RemoteProxy {
             }
         }
 
+        /**
+         * Tries to stop the thread and tries to close the connection
+         */
         void kill() {
             goAhead = false;
             try {
@@ -71,6 +89,9 @@ public class RemoteProxySocket extends RemoteProxy {
         }
     }
 
+    /**
+     * Kill the {@link ListenerThread} and close any active connection with the client
+     */
     public void closeConnection() {
         listenerThread.kill();
         try {

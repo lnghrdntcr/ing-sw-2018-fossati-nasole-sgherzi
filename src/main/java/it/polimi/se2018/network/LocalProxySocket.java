@@ -10,12 +10,20 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * A class that represent a client connected via socket communication on the server.
+ */
 public class LocalProxySocket extends LocalProxy {
     private Socket remoteConnection;
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
     private ListenerThread listenerThread;
 
+    /**
+     * Create a new proxy, associating the specified remoteConnection
+     * @param remoteConnection the socket to associate with this instance of the proxy
+     * @throws IOException if an error occours
+     */
     public LocalProxySocket(Socket remoteConnection) throws IOException {
         this.remoteConnection = remoteConnection;
         // In this specific order or it does not work!
@@ -35,6 +43,10 @@ public class LocalProxySocket extends LocalProxy {
         }*/
     }
 
+    /**
+     * Sends the event to the connected client, using socket connection
+     * @param event the event that should me dispatched
+     */
     @Override
     public void sendEventToClient(Event event) {
         try {
@@ -44,6 +56,9 @@ public class LocalProxySocket extends LocalProxy {
         }
     }
 
+    /**
+     * A thread that listen to incoming event and dispatch them to the {@link it.polimi.se2018.view.VirtualView}
+     */
     class ListenerThread extends Thread {
         private boolean goAhead = true;
 
@@ -62,6 +77,9 @@ public class LocalProxySocket extends LocalProxy {
             }
         }
 
+        /**
+         * Tries to stop the thread and tries to close the connection
+         */
         void kill() {
             goAhead = false;
             try {
@@ -72,6 +90,9 @@ public class LocalProxySocket extends LocalProxy {
         }
     }
 
+    /**
+     * Kill the {@link ListenerThread} and close any active connection with the client
+     */
     public void closeConnection() {
         listenerThread.kill();
         try {

@@ -16,6 +16,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The entry point for the server. Manages all the connections and waits for client's connections
+ */
 public class Server extends UnicastRemoteObject implements ServerInterface {
     private ArrayList<VirtualView> virtualViews = new ArrayList<>();
     private Controller controller;
@@ -28,10 +31,18 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     private final static int SOCKET_PORT = 2099;
     private String ip = "127.0.0.1";
 
-    public Server(int playersN) throws RemoteException {
+    /**
+     * Instantiate a new server
+     * @param playersN the number of players to wait for
+     *@throws RemoteException If a communicaton error occours
+     */
+    public Server(int playersN) throws RemoteException{
         this.playersN = playersN;
     }
 
+    /**
+     * Main entry point. Starts the RMI and the Socket listeners
+     */
     public void startServer() {
         try (final DatagramSocket socket = new DatagramSocket()) {
             socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
@@ -44,6 +55,10 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         setupSocket();
     }
 
+    /**
+     * Instantiates the Socket part of the servers.
+     * Moreover spawns a Thread to accept incoming connections
+     */
     private void setupSocket() {
         try {
             serverSocket = new ServerSocket(SOCKET_PORT);
@@ -90,6 +105,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         }
     }
 
+    /**
+     * Starts the RMI server and listen for RMI clients
+     */
     private void setupRMI() {
         try {
 
@@ -108,6 +126,14 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     }
 
 
+    /**
+     * A method that must be called from a remote client via RMI.
+     * Tries to connect the client with this server
+     * @param remoteProxyRMI the server's representation on client side
+     * @param player the nickname of the player
+     * @return true if the connection is successful, false otherwise
+     * @throws RemoteException if there is a communication error
+     */
     @Override
     public boolean connectRMIClient(RemoteProxyRMIInterface remoteProxyRMI, String player) throws RemoteException {
         for (VirtualView el : virtualViews) {
@@ -128,6 +154,11 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         return true;
     }
 
+    /**
+     * Creates a {@link VirtualView} and associates it with the localProxy
+     * @param localProxy the local proxy to add to the list of connected clients
+     * @param player player name
+     */
     private void addClient(LocalProxy localProxy, String player) {
         VirtualView virtualView = new VirtualView(player, localProxy);
         localProxy.setView(virtualView);
@@ -139,6 +170,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         }
     }
 
+    /**
+     * When the required number of players are connected, starts the match
+     */
     private void startGame() {
         //TODO
         gameStarted = true;
