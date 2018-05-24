@@ -7,5 +7,5 @@ import java.rmi.RemoteException;
 
 public interface RemoteProxyRMIInterface extends Remote {
     public void sendEventToClient(Event event) throws RemoteException;
-    public void setServer(LocalProxyRMIInterface localProxyRMI);
+    public void setServer(LocalProxyRMIInterface localProxyRMI) throws RemoteException;
 }

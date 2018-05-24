@@ -118,9 +118,10 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         }
 
         LocalProxyRMI localProxyRMI = new LocalProxyRMI();
+        LocalProxyRMIInterface localProxyRMIInterface = (LocalProxyRMIInterface) UnicastRemoteObject.exportObject(localProxyRMI, 0);
         localProxyRMI.setClient(remoteProxyRMI);
 
-        remoteProxyRMI.setServer(localProxyRMI);
+        remoteProxyRMI.setServer(localProxyRMIInterface);
 
         Log.i("Client connected!");
         addClient(localProxyRMI, player);

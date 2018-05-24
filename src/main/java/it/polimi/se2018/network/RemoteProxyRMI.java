@@ -42,7 +42,7 @@ public class RemoteProxyRMI extends RemoteProxy implements RemoteProxyRMIInterfa
         return localProxyRMI;
     }
 
-    public void setServer(LocalProxyRMIInterface localProxyRMI) {
+    public void setServer(LocalProxyRMIInterface localProxyRMI) throws RemoteException {
         this.localProxyRMI = localProxyRMI;
     }
 }

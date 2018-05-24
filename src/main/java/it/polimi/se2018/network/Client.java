@@ -42,6 +42,7 @@ public class Client {
             }
         } catch (NotBoundException | RemoteException e) {
             Log.e("Cannot connect to server: " + e.getMessage());
+            e.printStackTrace();
         }
 
     }
