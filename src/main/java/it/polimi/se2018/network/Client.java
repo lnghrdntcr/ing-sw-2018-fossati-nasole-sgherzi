@@ -37,8 +37,9 @@ public class Client {
 
             if (server.connectRMIClient(remoteProxyRMIInterface, name)) {
                 Log.d("Connected!");
+                Log.i("Hello "+ name +"! Nice to meet you!");
             } else {
-                Log.e("Error during connection... Duplicate name?");
+                Log.e("Error during connection... Duplicate name or the maximum number of players is already reached.");
             }
         } catch (NotBoundException | RemoteException e) {
             Log.e("Cannot connect to server: " + e.getMessage());
@@ -53,14 +54,15 @@ public class Client {
     private static void connectSocket() {
         try {
             Log.d("Connecting...");
-            Socket socket = new Socket(host, port);
-            Log.d("Sending name...");
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-            objectOutputStream.writeObject(name);
-            objectOutputStream.flush();
-            //objectOutputStream.close();
-            Log.d("Registering proxy...");
-            RemoteProxySocket remoteProxySocket = new RemoteProxySocket(socket);
+            try (Socket socket = new Socket(host, port)) {
+                Log.d("Sending name...");
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                objectOutputStream.writeObject(name);
+                objectOutputStream.flush();
+                //objectOutputStream.close();
+                Log.d("Registering proxy...");
+                RemoteProxySocket remoteProxySocket = new RemoteProxySocket(socket);
+            }
 
             Log.d("Connected!");
         } catch (IllegalArgumentException | IOException e) {

@@ -6,6 +6,7 @@ import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.schema.DiceFace;
+import it.polimi.se2018.utils.Observable;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
@@ -15,7 +16,7 @@ import java.util.Random;
 /**
  * The main model entry point for multiplayer
  */
-public class GameTableMultiplayer {
+public class GameTableMultiplayer extends Observable<Event> {
 
     final private PublicObjective[] publicObjectives;
     final private Player[] players;

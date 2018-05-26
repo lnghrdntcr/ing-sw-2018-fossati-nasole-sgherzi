@@ -64,8 +64,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
             serverSocket = new ServerSocket(SOCKET_PORT);
             Log.i("Socket server listening on " + ip + ":" + SOCKET_PORT);
             listenerThread = new Thread(() -> {
+                // TODO while (virtualViews.size() < this.playersN)
                 try {
-                    while (true) {
+                    while (virtualViews.size() < this.playersN) {
                         Socket clientConnection = serverSocket.accept();
                         ObjectInputStream inputStream = new ObjectInputStream(clientConnection.getInputStream());
                         String playerName = null;
@@ -93,6 +94,12 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
                             }
                         }
                     }
+
+                    Log.w(
+                        "No more player are allowed as the maximum of "
+                        + this.playersN
+                        + " players is already reached."
+                    );
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -128,7 +135,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
     /**
      * A method that must be called from a remote client via RMI.
-     * Tries to connect the client with this server
+     * Tries to connect the client with this serverCome cCome
      * @param remoteProxyRMI the server's representation on client side
      * @param player the nickname of the player
      * @return true if the connection is successful, false otherwise
@@ -136,6 +143,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
      */
     @Override
     public boolean connectRMIClient(RemoteProxyRMIInterface remoteProxyRMI, String player) throws RemoteException {
+
+        if(virtualViews.size() >= this.playersN) return false;
+
         for (VirtualView el : virtualViews) {
             if (el.getPlayer().equals(player)) {
                 Log.w("A player with an already existent name tried to join this match!");
@@ -149,7 +159,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
         remoteProxyRMI.setServer(localProxyRMIInterface);
 
-        Log.i("Client connected!");
+        Log.i("Client with name " + player + " connected!");
         addClient(localProxyRMI, player);
         return true;
     }
