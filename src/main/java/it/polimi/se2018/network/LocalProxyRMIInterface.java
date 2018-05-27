@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
  */
 public interface LocalProxyRMIInterface extends Remote {
     /**
-     * @param event
+     * @param event the
      * @throws RemoteException if an error occours
      */
     public void sendEventToServer(Event event) throws RemoteException;
