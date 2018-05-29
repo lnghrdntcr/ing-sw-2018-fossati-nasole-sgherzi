@@ -3,7 +3,7 @@ package it.polimi.se2018.model.modelEvent;
 import it.polimi.se2018.model_view.DraftBoardImmutable;
 import it.polimi.se2018.utils.Event;
 
-public class DraftBoardChagedEvent extends Event {
+public class DraftBoardChagedEvent extends ModelEvent {
     DraftBoardImmutable draftBoardImmutable;
 
     public DraftBoardChagedEvent(String emitter, String player, DraftBoardImmutable draftBoardImmutable) {
