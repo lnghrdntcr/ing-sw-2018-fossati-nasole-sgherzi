@@ -24,17 +24,18 @@ public class Controller extends Observable<Event> implements Observer<Event> {
 
     private State state;
 
-    public Controller (ArrayList<View> list){
+    public Controller (ArrayList<View> viewArrayList){
+        ArrayList<String> pln=new ArrayList<>();
         //register the Controller as an observer
         //and the view as an observer of the controller
-        list.forEach((view) -> {
+        viewArrayList.forEach((view) -> {
             view.register(this);
             register(view);
             model.register(view);
+            pln.add(view.getPlayer());
         });
 
-        model = new GameTableMultiplayer(pickPublicObjectives(), , pickToolCards());
-
+        model = new GameTableMultiplayer(pickPublicObjectives(), pln.toArray(new String[viewArrayList.size()]), pickToolCards());
 
         //TODO: initializa state
 

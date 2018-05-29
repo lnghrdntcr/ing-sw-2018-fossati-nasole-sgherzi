@@ -10,6 +10,8 @@ import it.polimi.se2018.utils.Observable;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
@@ -25,9 +27,16 @@ public class GameTableMultiplayer extends Observable<Event> {
     final private DiceHolder diceHolder;
     final private TurnHolder turnHolder;
 
-    public GameTableMultiplayer(PublicObjective[] publicObjectives, Player[] players, Tool[] toolCards) {
+    public GameTableMultiplayer(PublicObjective[] publicObjectives, String[] players, Tool[] toolCards) {
         this.publicObjectives = publicObjectives;
-        this.players = players;
+
+        ArrayList<Player> playersList = new ArrayList<>();
+        Arrays.stream(players).forEach((playerName) -> {
+            playersList.add(new Player(playerName));
+        });
+        this.players = playersList.toArray(new Player[0]);
+
+
         turnHolder = new TurnHolder(players.length);
         this.toolCards = toolCards;
         draftBoard = new DraftBoard();
