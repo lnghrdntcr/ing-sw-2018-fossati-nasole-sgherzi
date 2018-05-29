@@ -137,6 +137,6 @@ public class Controller extends Observable<Event> implements Observer<Event> {
 
     @Override
     public void update(Event message) {
-        state = state.handleEvent(message);
+        state = state.handleEvent(message, model);
     }
 }
