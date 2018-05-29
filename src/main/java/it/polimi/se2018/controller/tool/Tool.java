@@ -6,6 +6,7 @@ import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.ImmutableCloneable;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model_view.ToolCardImmutable;
+import it.polimi.se2018.utils.Event;
 
 public abstract class Tool implements ImmutableCloneable<ToolCardImmutable> {
 
@@ -13,7 +14,7 @@ public abstract class Tool implements ImmutableCloneable<ToolCardImmutable> {
 
     public abstract boolean isUsable();
 
-    public abstract State use(Controller controller, GameTableMultiplayer model, State state);
+    public abstract State use(Controller controller, GameTableMultiplayer model, State state, Event event);
 
     public int getToken() {
         return token;

@@ -1,7 +1,11 @@
 package it.polimi.se2018.controller.tool;
 
+import it.polimi.se2018.controller.Controller;
+import it.polimi.se2018.controller.states.State;
+import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model_view.ToolCardImmutable;
+import it.polimi.se2018.utils.Event;
 
 public class RoughingNipper extends Tool {
   @Override
@@ -10,8 +14,8 @@ public class RoughingNipper extends Tool {
   }
 
   @Override
-  public void use(Player player) {
-
+  public State use(Controller controller, GameTableMultiplayer model, State state, Event event) {
+    return null;
   }
 
   @Override

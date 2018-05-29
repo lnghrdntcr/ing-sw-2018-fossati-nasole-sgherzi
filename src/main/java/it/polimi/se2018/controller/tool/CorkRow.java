@@ -5,6 +5,7 @@ import it.polimi.se2018.controller.states.State;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model_view.ToolCardImmutable;
+import it.polimi.se2018.utils.Event;
 
 public class CorkRow extends Tool {
   @Override
@@ -13,7 +14,7 @@ public class CorkRow extends Tool {
   }
 
   @Override
-  public State use(Controller controller, GameTableMultiplayer model, State state) {
+  public State use(Controller controller, GameTableMultiplayer model, State state, Event event) {
     return null;
   }
 
@@ -22,5 +23,5 @@ public class CorkRow extends Tool {
   public ToolCardImmutable getImmutableInstance() {
     return new ToolCardImmutable(this.getClass().getName(), this.getToken());
   }
-  // Riga in sughero
+  //(9) Riga in sughero
 }
