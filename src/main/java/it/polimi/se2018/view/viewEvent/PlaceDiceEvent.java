@@ -22,5 +22,6 @@ public class PlaceDiceEvent extends Event {
 
     public Point getPoint() {
         return point;
+        //nothing
     }
 }
