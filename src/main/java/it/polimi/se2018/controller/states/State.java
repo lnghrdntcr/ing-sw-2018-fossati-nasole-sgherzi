@@ -10,7 +10,7 @@ public abstract class State {
         this.controller = controller;
     }
 
-    abstract State handleEvent(Event event);
+    abstract public State handleEvent(Event event);
 
     public Controller getController() {
         return controller;

@@ -3,7 +3,7 @@ package it.polimi.se2018.controller.tool;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 
-public class FrimPastaBrush extends Tool {
+public class FirmPastaBrush extends Tool {
   @Override
   public boolean isUsable() {
     return false;

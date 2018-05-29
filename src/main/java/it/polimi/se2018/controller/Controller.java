@@ -1,7 +1,9 @@
 package it.polimi.se2018.controller;
 
-import it.polimi.se2018.controller.tool.Tool;
+import it.polimi.se2018.controller.states.State;
+import it.polimi.se2018.controller.tool.*;
 import it.polimi.se2018.model.GameTableMultiplayer;
+import it.polimi.se2018.model.objectives.*;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
@@ -14,12 +16,63 @@ import it.polimi.se2018.view.viewEvent.SchemaCardSelectedEvent;
 import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Controller extends Observable<Event> implements Observer<Event> {
 
-    GameTableMultiplayer model;
+    private GameTableMultiplayer model;
 
-    public Controller (ArrayList<View> list){}
+    private State state;
+
+    public Controller (ArrayList<View> list){
+        //register the Controller as an observer
+        //and the view as an observer of the controller
+        list.forEach((view) -> {
+            view.register(this);
+            register(view);
+            model.register(view);
+        });
+
+        model = new GameTableMultiplayer(pickPublicObjectives(), , pickToolCards());
+
+
+        //TODO: initializa state
+
+    }
+
+    private Tool[] pickToolCards() {
+        ArrayList<Tool> tools = new ArrayList<>();
+        tools.add(new CopperReamer());
+        tools.add(new CorkRow());
+        tools.add(new DiamondPad());
+        tools.add(new EglomiseBrush());
+        tools.add(new FirmPastaDiluent());
+        tools.add(new FirmPastaBrush());
+        tools.add(new Gavel());
+        tools.add(new Lathekin());
+        tools.add(new ManualCutter());
+        tools.add(new RoughingNipper());
+        tools.add(new WheeledPincer());
+
+        Collections.shuffle(tools);
+        return tools.subList(0, 3).toArray(new Tool[3]);
+    }
+
+    private PublicObjective[] pickPublicObjectives() {
+        ArrayList<PublicObjective> publicObjectives = new ArrayList<>();
+        publicObjectives.add(new ColoredDiagonals());
+        publicObjectives.add(new ColorVariety());
+        publicObjectives.add(new DarkShades());
+        publicObjectives.add(new DifferentColumnColor());
+        publicObjectives.add(new DifferentColumnShades());
+        publicObjectives.add(new DifferentRowColor());
+        publicObjectives.add(new DifferentRowShades());
+        publicObjectives.add(new LightShades());
+        publicObjectives.add(new MediumShades());
+
+        Collections.shuffle(publicObjectives);
+        return publicObjectives.subList(0, 3).toArray(new PublicObjective[3]);
+    }
 
     private void connectViewWithModel(View view){
         this.model.register(view);
@@ -84,6 +137,6 @@ public class Controller extends Observable<Event> implements Observer<Event> {
 
     @Override
     public void update(Event message) {
-
+        state = state.handleEvent(message);
     }
 }
