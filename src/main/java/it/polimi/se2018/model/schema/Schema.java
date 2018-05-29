@@ -210,6 +210,20 @@ public class Schema {
         return true;
     }
 
+    public int computeFreeSpaces(){
+
+        int freeSpaces = 0;
+
+        for (int x = 0; x < Settings.CARD_HEIGHT; x++) {
+            for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
+                if(this.diceFaces[x][y] == null) freeSpaces++;
+            }
+
+        }
+
+        return freeSpaces;
+    }
+
     public SchemaCardFace getSchemaCardFace() {
         return schemaCardFace;
     }

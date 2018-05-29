@@ -8,13 +8,11 @@ import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.utils.Observable;
+import it.polimi.se2018.utils.ScoreHolder;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.Random;
+import java.util.*;
 
 /**
  * The main model entry point for multiplayer
@@ -101,8 +99,40 @@ public class GameTableMultiplayer extends Observable<Event> {
         return publicObjectives[position];
     }
 
-    //Player stuff
+    public ArrayList<ScoreHolder> computeAllScores(){
 
+        ArrayList<ScoreHolder> scoreHolders = new ArrayList<>();
+
+        Arrays.stream(this.players).forEach(player -> {
+            scoreHolders.add(new ScoreHolder(
+                player.getName(),
+                player.computeScoreFromPrivateObjective(),
+                this.computePublicObjectivesScore(player.getSchema()),
+                player.getToken(),
+                player.computeFreeSpaces(),
+                this.getPlayerPosition(player.getName())));
+        });
+
+        return scoreHolders;
+
+    }
+
+    private int getPlayerPosition(String playerName){
+        for (int i = 0; i < this.players.length; i++) {
+            if(this.players[i].getName().equals(playerName)) return i;
+        }
+        throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": No player with that name!");
+    }
+
+    private int computePublicObjectivesScore(Schema schema){
+        int publicObjectivesScore = 0;
+        for(PublicObjective puo: this.publicObjectives){
+            publicObjectivesScore += puo.computeScore(schema);
+        }
+        return publicObjectivesScore;
+    }
+
+    //Player stuff
 
     /**
      * Get the number of token of the player

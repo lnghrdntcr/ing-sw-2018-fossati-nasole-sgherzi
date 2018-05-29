@@ -64,6 +64,14 @@ public class Player implements ImmutableCloneable<PlayerImmutable>{
       this.privateObjective = privateObjective;
     }
 
+    public int computeScoreFromPrivateObjective(){
+        return this.privateObjective.computeScore(this.schema);
+    }
+
+    public int computeFreeSpaces(){
+        return schema.computeFreeSpaces();
+    }
+
     @Override
     public PlayerImmutable getImmutableInstance() {
       return new PlayerImmutable(this.name, this.token, this.privateObjective);
