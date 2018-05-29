@@ -7,8 +7,14 @@ public class SchemaCardSelectedEvent extends Event {
     private int schemaCardId;
 
     protected SchemaCardSelectedEvent(String emitter, String player, int schemaCardId) {
-        // TODO: as the selection will be given to the player schemaCardId will be a number in [0, 3]
         super(emitter, player);
-        this.schemaCardId = schemaCardId;
+        if (schemaCardId >= 0 && schemaCardId < 4) {
+            this.schemaCardId = schemaCardId;
+        } else
+            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": number must be between 0 and 3.");
+    }
+
+    public int getSchemaCardId() {
+        return schemaCardId;
     }
 }

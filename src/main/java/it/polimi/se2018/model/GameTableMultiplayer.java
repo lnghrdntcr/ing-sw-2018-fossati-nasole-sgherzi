@@ -1,6 +1,7 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.modelEvent.*;
+import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.model.objectives.PublicObjective;
@@ -54,7 +55,9 @@ public class GameTableMultiplayer extends Observable<Event> {
     /**
      * @return the name of who's playing
      */
-    public String getCurrentPlayerName(){return getCurrentPlayer().getName();}
+    public String getCurrentPlayerName() {
+        return getCurrentPlayer().getName();
+    }
 
     /**
      * Return a player by its name
@@ -204,7 +207,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         DiceFace df = draftBoard.removeDice(index);
         df = new DiceFace(df.getColor(), new Random().nextInt(6) + 1);
         draftBoard.addDice(df);
-        if(singal) dispatchEvent(new DraftBoardChagedEvent("redrawDice", null, draftBoard.getImmutableInstance()));
+        if (singal) dispatchEvent(new DraftBoardChagedEvent("redrawDice", null, draftBoard.getImmutableInstance()));
         return df;
     }
 
@@ -268,7 +271,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         Player p = getPlayerByName(player);
         p.getSchema().setDiceFace(destination, p.getSchema().removeDiceFace(source));
 
-        if(lastMove) dispatchEvent(new SchemaChangedEvent("moveDice", player, p.getSchema().clone()));
+        if (lastMove) dispatchEvent(new SchemaChangedEvent("moveDice", player, p.getSchema().clone()));
     }
 
     //Turn stuff
@@ -288,12 +291,22 @@ public class GameTableMultiplayer extends Observable<Event> {
         throw new NotImplementedException();
     }
 
-    public boolean isDiceAllowed(String playerName, Point point, DiceFace diceFace, SchemaCardFace.Ignore ignore){
-        return getPlayerByName(playerName).getSchema().isDiceAllowed(point,diceFace,ignore);
+    public boolean isDiceAllowed(String playerName, Point point, DiceFace diceFace, SchemaCardFace.Ignore ignore) {
+        return getPlayerByName(playerName).getSchema().isDiceAllowed(point, diceFace, ignore);
     }
 
-    public DiceFace getDiceFaceByIndex(int i){
+    public DiceFace getDiceFaceByIndex(int i) {
         return draftBoard.getDiceFace(i);
+    }
+
+    private void setPlayerSchema(String playerName, SchemaCardFace schemaCardFace) {
+        if (getPlayerByName(playerName).getSchema() == null) {
+            getPlayerByName(playerName).setSchema(new Schema(schemaCardFace));
+        }
+        else {
+            throw new IllegalStateException(this.getClass().getCanonicalName() +
+                ": schema alredy setted. Cannot set a new schema.");
+        }
     }
 
 
