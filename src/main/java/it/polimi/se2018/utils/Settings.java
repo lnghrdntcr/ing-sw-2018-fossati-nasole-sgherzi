@@ -34,4 +34,17 @@ public class Settings {
      */
     public static final int MIN_NUM_PLAYERS = 2;
 
+    /**
+     * Number of toolcards in a match
+     */
+    public static final int TOOLCARDS_N = 3;
+
+    /**
+     * Number of public objectives in a match
+     */
+    public static final int POBJECTIVES_N = 3;
+
+    //TODO: this must become a resource!
+    public static final String SCHEMACARD_DATABASE="./gameData/resources/schemaCards/schemaCardBase.scf";
+
 }

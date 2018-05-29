@@ -2,6 +2,7 @@ package it.polimi.se2018.network;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.VirtualView;
 
 import javax.xml.bind.Element;
@@ -20,8 +21,7 @@ import java.util.HashMap;
  * The entry point for the server. Manages all the connections and waits for client's connections
  */
 public class Server extends UnicastRemoteObject implements ServerInterface {
-    private ArrayList<VirtualView> virtualViews = new ArrayList<>();
-    private Controller controller;
+    private ArrayList<View> virtualViews = new ArrayList<>();
     private int playersN;
     private ServerSocket serverSocket;
     private Thread listenerThread;
@@ -33,10 +33,11 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
     /**
      * Instantiate a new server
+     *
      * @param playersN the number of players to wait for
-     *@throws RemoteException If a communicaton error occours
+     * @throws RemoteException If a communicaton error occours
      */
-    public Server(int playersN) throws RemoteException{
+    public Server(int playersN) throws RemoteException {
         this.playersN = playersN;
     }
 
@@ -78,8 +79,8 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
                         }
 
                         if (playerName != null) {
-                            Log.i("Hello "+playerName+"! Nice to meet you!");
-                            for (VirtualView el : virtualViews) {
+                            Log.i("Hello " + playerName + "! Nice to meet you!");
+                            for (View el : virtualViews) {
                                 if (el.getPlayer().equals(playerName)) {
                                     Log.w("A player with an already existent name tried to join this match!");
                                     clientConnection.close();
@@ -96,9 +97,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
                     }
 
                     Log.w(
-                        "No more player are allowed as the maximum of "
-                        + this.playersN
-                        + " players is already reached."
+                            "No more player are allowed as the maximum of "
+                                    + this.playersN
+                                    + " players is already reached."
                     );
 
                 } catch (IOException e) {
@@ -136,17 +137,18 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     /**
      * A method that must be called from a remote client via RMI.
      * Tries to connect the client with this serverCome cCome
+     *
      * @param remoteProxyRMI the server's representation on client side
-     * @param player the nickname of the player
+     * @param player         the nickname of the player
      * @return true if the connection is successful, false otherwise
      * @throws RemoteException if there is a communication error
      */
     @Override
     public boolean connectRMIClient(RemoteProxyRMIInterface remoteProxyRMI, String player) throws RemoteException {
 
-        if(virtualViews.size() >= this.playersN) return false;
+        if (virtualViews.size() >= this.playersN) return false;
 
-        for (VirtualView el : virtualViews) {
+        for (View el : virtualViews) {
             if (el.getPlayer().equals(player)) {
                 Log.w("A player with an already existent name tried to join this match!");
                 return false;
@@ -166,8 +168,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
     /**
      * Creates a {@link VirtualView} and associates it with the localProxy
+     *
      * @param localProxy the local proxy to add to the list of connected clients
-     * @param player player name
+     * @param player     player name
      */
     private void addClient(LocalProxy localProxy, String player) {
         VirtualView virtualView = new VirtualView(player, localProxy);
@@ -187,6 +190,8 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         //TODO
         gameStarted = true;
         //listenerThread.stop();
+
+        new Controller(virtualViews).start();
 
     }
 

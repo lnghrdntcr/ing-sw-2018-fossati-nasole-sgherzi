@@ -17,7 +17,7 @@ public class VirtualView extends View {
         localProxy.sendEventToClient(message);
     }
 
-    public void dispatchProxyEvent(Event event){
+    public void dispatchProxyEvent(Event event) {
         notify(event);
     }
 

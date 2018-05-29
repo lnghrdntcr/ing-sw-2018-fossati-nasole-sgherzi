@@ -14,7 +14,7 @@ public class TurnState extends State {
     private boolean hasPlacedDice;
     private boolean hasUsedToolcard;
 
-    public TurnState(Controller controller, String playerName, boolean hasPlacedDice, boolean hasUsedToolcard) {
+    public TurnState(Controller controller, boolean hasPlacedDice, boolean hasUsedToolcard) {
         super(controller);
         this.hasPlacedDice = hasPlacedDice;
         this.hasUsedToolcard = hasUsedToolcard;
@@ -29,11 +29,12 @@ public class TurnState extends State {
         if (event instanceof PlaceDiceEvent) return this.handleDicePlacing((PlaceDiceEvent) event, model);
         if (event instanceof EndTurnEvent) return this.handleTurnEnding((EndTurnEvent) event, model);
 
-        return new TurnState(this.getController(), model.getCurrentPlayerName(), this.hasPlacedDice, this.hasUsedToolcard);
+        return this;
 
     }
 
     private State handleToolcardUse(UseToolcardEvent event, GameTableMultiplayer model) {
+        //TODO!
         return null;
     }
 
@@ -44,17 +45,17 @@ public class TurnState extends State {
         if (!model.getCurrentPlayerName().equals(event.getPlayerName()))
             Log.w(event.getPlayerName() + ": Only the current player can place a dice!");
         if (
-            model.isDiceAllowed(
-                event.getPlayerName(),
-                event.getPoint(),
-                model.getDiceFaceByIndex(
-                    event.getDiceFaceIndex()
-                ),
-                SchemaCardFace.Ignore.NOTHING
-            )
-            ) model.placeDice(event.getPlayerName(), event.getDiceFaceIndex(), event.getPoint());
+                model.isDiceAllowed(
+                        event.getPlayerName(),
+                        event.getPoint(),
+                        model.getDiceFaceByIndex(
+                                event.getDiceFaceIndex()
+                        ),
+                        SchemaCardFace.Ignore.NOTHING
+                )
+                ) model.placeDice(event.getPlayerName(), event.getDiceFaceIndex(), event.getPoint());
 
-        return new TurnState(this.getController(), model.getCurrentPlayerName(), true, this.hasUsedToolcard);
+        return new TurnState(this.getController(), true, this.hasUsedToolcard);
 
     }
 
@@ -66,7 +67,7 @@ public class TurnState extends State {
             model.nextTurn();
         }
 
-        return new TurnState(this.getController(), model.getCurrentPlayerName(), false, false);
+        return new TurnState(this.getController(), false, false);
 
     }
 

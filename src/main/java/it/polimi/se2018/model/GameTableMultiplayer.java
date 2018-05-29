@@ -299,15 +299,26 @@ public class GameTableMultiplayer extends Observable<Event> {
         return draftBoard.getDiceFace(i);
     }
 
-    private void setPlayerSchema(String playerName, SchemaCardFace schemaCardFace) {
+    public void setPlayerSchema(String playerName, SchemaCardFace schemaCardFace) {
         if (getPlayerByName(playerName).getSchema() == null) {
             getPlayerByName(playerName).setSchema(new Schema(schemaCardFace));
-        }
-        else {
+        } else {
             throw new IllegalStateException(this.getClass().getCanonicalName() +
-                ": schema already set. Cannot set a new schema.");
+                    ": schema already set. Cannot set a new schema.");
         }
     }
 
 
+    /**
+     * Check if all players have selected a schemaCardFace
+     *
+     * @return true if all players have selected a schemaCardFace, false otherwise
+     */
+    public boolean allPlayersHaveSelectedSchemaCardFace() {
+        for (Player p : players) {
+            if (p.getSchema() == null)
+                return false;
+        }
+        return true;
+    }
 }
