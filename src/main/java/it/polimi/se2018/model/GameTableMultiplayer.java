@@ -305,7 +305,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         }
         else {
             throw new IllegalStateException(this.getClass().getCanonicalName() +
-                ": schema alredy setted. Cannot set a new schema.");
+                ": schema already set. Cannot set a new schema.");
         }
     }
 
