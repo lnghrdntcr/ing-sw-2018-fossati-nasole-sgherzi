@@ -33,7 +33,7 @@ public class TurnState extends State {
     }
 
     private State handleToolcardUse(UseToolcardEvent event, GameTableMultiplayer model) {
-        return model.getToolCardByPosition(event.getToolCardIndex()).use(getController(), model, this);
+        return model.getToolCardByPosition(event.getToolCardIndex()).use(getController(), model, this, event);
     }
 
     private State handleDicePlacing(PlaceDiceEvent event, GameTableMultiplayer model) {

@@ -2,6 +2,7 @@ package it.polimi.se2018.controller.tool;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.states.State;
+import it.polimi.se2018.controller.states.TurnState;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.ImmutableCloneable;
 import it.polimi.se2018.model.Player;
@@ -14,7 +15,7 @@ public abstract class Tool implements ImmutableCloneable<ToolCardImmutable> {
 
     public abstract boolean isUsable();
 
-    public abstract State use(Controller controller, GameTableMultiplayer model, State state, Event event);
+    public abstract State use(Controller controller, GameTableMultiplayer model, TurnState state, Event event);
 
     public int getToken() {
         return token;
