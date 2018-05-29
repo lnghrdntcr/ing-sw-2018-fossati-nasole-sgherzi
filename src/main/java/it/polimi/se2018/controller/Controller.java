@@ -21,7 +21,6 @@ public class Controller extends Observable<Event> implements Observer<Event> {
 
     public Controller (ArrayList<View> list){}
 
-
     private void connectViewWithModel(View view){
         this.model.register(view);
     }
