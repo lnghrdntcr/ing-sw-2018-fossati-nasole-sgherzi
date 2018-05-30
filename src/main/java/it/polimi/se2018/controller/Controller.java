@@ -154,4 +154,9 @@ public class Controller extends Observable<Event> implements Observer<Event> {
     public ArrayList<View> getViewArrayList() {
         return viewArrayList;
     }
+
+    public void dispatchEvent(Event toDispatchEvent) {
+        this.notify(toDispatchEvent);
+    }
+
 }
