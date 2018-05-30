@@ -14,25 +14,29 @@ import java.util.*;
  */
 public class GameEndState extends State {
 
-    public GameEndState(Controller controller) {
+    public GameEndState(Controller controller, GameTableMultiplayer model) {
         super(controller);
+        this.computeScore(model);
+        // TODO: Add the logic to do other stuff eg. write things to file.
     }
 
-    /**
-     * The event handler for the EndGameEvent triggered.
-     * @param event The EndGameEvent.
-     * @param model The model of the game.
-     * @return Null every time, as the game is up at this point.
-     * @throws IllegalArgumentException If one of the argument (event, model) is null.
-     * @throws IllegalStateException If event cannot be cast to an EndGameEvent, as this state should be reached only if a EndGameEvent is dispatched.
-     * @throws IllegalStateException If there are no players on which compute the score.
-     */
+
+
     @Override
     public State handleEvent(Event event, GameTableMultiplayer model) {
+        return null;
+    }
 
-        if(event == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null.");
+     /**
+     * The event handler for the EndGameEvent triggered.
+     * @param model The model.
+     * @return Null every time, as the game is up at this point.
+     * @throws IllegalArgumentException If the model is null
+     * @throws IllegalStateException If there are no players on which compute the score.
+     */
+    private void computeScore(GameTableMultiplayer model){
+
         if(model == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Model cannot be null.");
-        if(!(event instanceof EndGameEvent)) throw new IllegalStateException(this.getClass().getCanonicalName() + ": You can only reach this state by dispatching an EndGameEvent");
 
         ArrayList<ScoreHolder> scoreHolders = model.computeAllScores();
 
@@ -41,7 +45,6 @@ public class GameEndState extends State {
 
         this.getController().dispatchEvent(new EndGameEvent(this.getClass().getName(), null, scoreHolders));
 
-        return null;
-
     }
+
 }

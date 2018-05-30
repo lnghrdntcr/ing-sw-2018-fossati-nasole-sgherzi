@@ -1,6 +1,7 @@
 package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
+import it.polimi.se2018.controller.controllerEvent.EndGameEvent;
 import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
@@ -10,6 +11,10 @@ import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
 
+/**
+ * The state that handles the state of the turn.
+ * @since 29/05/2018
+ */
 public class TurnState extends State {
 
     private boolean hasPlacedDice;
@@ -21,6 +26,13 @@ public class TurnState extends State {
         this.hasUsedToolcard = hasUsedToolcard;
     }
 
+    /**
+     * Handles the incoming event and dispatches actions to handle it.
+     * @param event The event to be handled
+     * @param model The model.
+     * @return A new Turn state.
+     * @throws IllegalArgumentException If event is null.
+     */
     @Override
     public State handleEvent(Event event, GameTableMultiplayer model) {
         if (event == null)
@@ -33,7 +45,15 @@ public class TurnState extends State {
 
     }
 
+    /**
+     * Handles the incoming UseToolcardEvent.
+     * @param event The event to be handled.
+     * @param model The model.
+     * @return A new Turn state.
+     * @throws IllegalArgumentException If event is null.
+     */
     private State handleToolcardUse(UseToolcardEvent event, GameTableMultiplayer model) {
+
         Tool tool = model.getToolCardByPosition(event.getToolCardIndex());
         int playerToken = model.getPlayerToken(event.getPlayerName());
 
@@ -56,7 +76,17 @@ public class TurnState extends State {
 
     }
 
+    /**
+     * Handles the incoming PlaceDiceEvent.
+     * @param event The event to be handled.
+     * @param model The model.
+     * @return A new Turn state.
+     * @throws IllegalArgumentException If event or model is null.
+     */
     private State handleDicePlacing(PlaceDiceEvent event, GameTableMultiplayer model) {
+
+        if(event == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
+        if(model == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Model cannot be null");
 
         if (this.hasPlacedDice) Log.w(event.getPlayerName() + " has already placed a dice.");
 
@@ -77,7 +107,17 @@ public class TurnState extends State {
 
     }
 
+    /**
+     * Handles the incoming EndTurnEvent.
+     * @param event The event to be handled.
+     * @param model The model.
+     * @return A new Turn state.
+     * @throws IllegalArgumentException If event or model is null.
+     */
     private State handleTurnEnding(EndTurnEvent event, GameTableMultiplayer model) {
+
+        if(event == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
+        if(model == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Model cannot be null");
 
         if (!model.getCurrentPlayerName().equals(event.getPlayerName())) {
             Log.w(event.getPlayerName() + "Only the current player can end its turn!");
