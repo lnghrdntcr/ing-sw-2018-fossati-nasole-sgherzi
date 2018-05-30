@@ -14,6 +14,7 @@ import it.polimi.se2018.utils.ScoreHolder;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -28,6 +29,8 @@ public class GameTableMultiplayer extends Observable<Event> {
     final private DiceHolder diceHolder;
     final private TurnHolder turnHolder;
     final private String[] playersName;
+
+    private ArrayList<String> dropTurnPlayers=new ArrayList<>();
 
     public GameTableMultiplayer(PublicObjective[] publicObjectives, String[] players, Tool[] toolCards) {
         playersName=players.clone();
@@ -271,6 +274,13 @@ public class GameTableMultiplayer extends Observable<Event> {
     }
 
     /**
+     * Draws the dice accordling to the player number
+     */
+    public void drawDice(){
+        draftBoard.drawDices(players.length);
+    }
+
+    /**
      * Put a single dice back in the DiceBag and then redraws a new dice
      *
      * @param index index of the dice to put back in the DiceBag
@@ -317,6 +327,11 @@ public class GameTableMultiplayer extends Observable<Event> {
      */
     public void nextTurn() {
         turnHolder.nextTurn();
+        while(dropTurnPlayers.contains(playersName[turnHolder.getCurrentPlayer()]) && !turnHolder.isGameEnded()){
+            dropTurnPlayers.remove(playersName[turnHolder.getCurrentPlayer()]);
+            turnHolder.nextTurn();
+        }
+
         dispatchEvent(new TurnChangedEvent("nextTurn", players[turnHolder.getCurrentPlayer()].getName()
                 , turnHolder.getRound()));
     }
@@ -405,5 +420,20 @@ public class GameTableMultiplayer extends Observable<Event> {
     public boolean isColorInDiceHolder(GameColor gameColor){
         return diceHolder.isColorPresent(gameColor);
 
+    }
+
+    /**
+     * The passed player will drop the next turn
+     * @param player the player that will drop the turn
+     */
+    public void playerWillDropTurn(String player){
+        for(String pl: playersName){
+            if(pl.equals(player)){
+                dropTurnPlayers.add(player);
+                return;
+            }
+        }
+
+        throw new IllegalArgumentException("Player does not exist!");
     }
 }
