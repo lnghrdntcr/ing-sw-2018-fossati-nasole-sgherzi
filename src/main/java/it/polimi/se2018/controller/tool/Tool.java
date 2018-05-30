@@ -11,7 +11,7 @@ import it.polimi.se2018.utils.Event;
 
 public abstract class Tool implements ImmutableCloneable<ToolCardImmutable> {
 
-    private int token;
+    private int token=0;
 
     public abstract boolean isUsable();
 
@@ -21,9 +21,7 @@ public abstract class Tool implements ImmutableCloneable<ToolCardImmutable> {
         return token;
     }
 
-    public void addToken(int tokenAdded) {
-        this.token += tokenAdded;
-    }
+    public void addToken(int tokenAdded) { this.token += tokenAdded; }
 
     public int getNeededTokens() {
         return token > 0 ? 2 : 1;

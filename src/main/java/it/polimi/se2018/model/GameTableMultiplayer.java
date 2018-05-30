@@ -295,7 +295,7 @@ public class GameTableMultiplayer extends Observable<Event> {
      * @param playerName      the player to modify
      * @param source      the source position where to pick up the dice
      * @param destination the destination where to put the dice
-     * @param lastMove    if this is the last move of the set
+     * @param lastMove    if this is the last move of the set, if true signals a modify to the players
      */
     public void moveDice(String playerName, Point source, Point destination, boolean lastMove) {
         Player p = getPlayerByName(playerName);
