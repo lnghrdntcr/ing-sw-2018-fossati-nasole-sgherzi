@@ -1,5 +1,7 @@
 package it.polimi.se2018.controller.states;
 
+//TODO: erase this class as it turned out to be f-ing USELESS!
+
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.GameTableMultiplayer;
