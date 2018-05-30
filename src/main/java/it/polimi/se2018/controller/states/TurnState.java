@@ -50,7 +50,6 @@ public class TurnState extends State {
             );
             return this;
         } else {
-            model.useTokenOnToolcard(event.getPlayerName(), tool);
             return tool.use(getController(), model, this, event);
         }
 
