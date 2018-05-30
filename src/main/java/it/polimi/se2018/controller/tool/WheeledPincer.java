@@ -8,6 +8,7 @@ import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Event;
+import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
 import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 
 public class WheeledPincer extends Tool {
@@ -18,7 +19,7 @@ public class WheeledPincer extends Tool {
 
   @Override
   public State use(Controller controller, GameTableMultiplayer model, TurnState state, Event event) {
-      PlaceDiceEvent ev = (PlaceDiceEvent) event;
+      PlaceAnotherDiceEvent ev = (PlaceAnotherDiceEvent) event;
 
       if (model.isDiceAllowed(event.getPlayerName(), ev.getPoint(), model.getDiceFaceByIndex(ev.getDiceFaceIndex()), SchemaCardFace.Ignore.NOTHING)) {
           model.placeDice(event.getPlayerName(), ev.getDiceFaceIndex(), ev.getPoint());
