@@ -93,6 +93,19 @@ public class Schema {
      * @return true if the diceFace can be placed, false otherwise
      */
     public boolean isDiceAllowed(Point point, DiceFace diceFace, SchemaCardFace.Ignore ignore) {
+        return isDiceAllowed(point, diceFace, ignore, false);
+    }
+
+    /**
+     * Check if a given diceFace can be placed here, checking both the Schema and the SchemaCardFace
+     *
+     * @param point    the position where the dice should be placed, 0 based
+     * @param diceFace the diceFace to place
+     * @param ignore the type of restricton to ignore
+     * @param forceLoneliness if this diceFace should be kept alone (as for toolcard 9)
+     * @return true if the diceFace can be placed, false otherwise
+     */
+    public boolean isDiceAllowed(Point point, DiceFace diceFace, SchemaCardFace.Ignore ignore, boolean forceLoneliness) {
         if (point == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": point cannot be null!");
 
@@ -106,20 +119,24 @@ public class Schema {
 
         if (!schemaCardFace.isDiceAllowed(point, diceFace, ignore)) return false;
 
+        if(forceLoneliness){
+            return !hasOneNeighbour(point);
+        }else {
 
-        if (isEmpty()) {
-            //If the schema is empty -> alias is the first dice
-            return (point.x == 0 || point.y == 0 || point.x == Settings.CARD_WIDTH - 1 || point.y == Settings.CARD_HEIGHT - 1);
-        } else {
-            //There is at least one dice on the board
-            //check if there is one at least neighbour
-            if (!hasOneNeighbour(point)) {
-                return false;
-            }
+            if (isEmpty()) {
+                //If the schema is empty -> alias is the first dice
+                return (point.x == 0 || point.y == 0 || point.x == Settings.CARD_WIDTH - 1 || point.y == Settings.CARD_HEIGHT - 1);
+            } else {
+                //There is at least one dice on the board
+                //check if there is one at least neighbour
+                if (!hasOneNeighbour(point)) {
+                    return false;
+                }
 
-            //check for similar neighbour
-            if (hasOneSimilarNeighbour(point, diceFace)) {
-                return false;
+                //check for similar neighbour
+                if (hasOneSimilarNeighbour(point, diceFace)) {
+                    return false;
+                }
             }
         }
 

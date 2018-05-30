@@ -10,7 +10,7 @@ import it.polimi.se2018.utils.Event;
 
 public class FirmPastaBrush extends Tool {
     @Override
-    public boolean isUsable() {
+    public boolean isUsable(GameTableMultiplayer model, TurnState currentState) {
         return false;
     }
 

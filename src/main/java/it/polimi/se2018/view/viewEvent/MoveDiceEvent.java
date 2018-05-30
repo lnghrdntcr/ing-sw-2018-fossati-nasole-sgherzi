@@ -5,14 +5,12 @@ import it.polimi.se2018.utils.Event;
 
 import java.awt.*;
 
-public class CopperReamerEvent extends Event {
+public class MoveDiceEvent extends UseToolcardEvent {
     Point source;
     Point destination;
-    DiceFace diceFace;
 
-    protected CopperReamerEvent(String emitter, String player, DiceFace diceFace, Point source, Point destination) {
-        super(emitter, player);
-        this.diceFace = diceFace;
+    protected MoveDiceEvent(String emitter, String player, int position, Point source, Point destination) {
+        super(emitter, player, position);
         this.source = source;
         this.destination = destination;
     }
@@ -25,7 +23,4 @@ public class CopperReamerEvent extends Event {
         return destination;
     }
 
-    public DiceFace getDiceFace() {
-        return diceFace;
-    }
 }

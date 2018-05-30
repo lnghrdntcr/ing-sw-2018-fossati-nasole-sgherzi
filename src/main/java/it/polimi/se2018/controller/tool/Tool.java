@@ -13,7 +13,7 @@ public abstract class Tool implements ImmutableCloneable<ToolCardImmutable> {
 
     private int token=0;
 
-    public abstract boolean isUsable();
+    public abstract boolean isUsable(GameTableMultiplayer model, TurnState currentState);
 
     public abstract State use(Controller controller, GameTableMultiplayer model, TurnState state, Event event);
 

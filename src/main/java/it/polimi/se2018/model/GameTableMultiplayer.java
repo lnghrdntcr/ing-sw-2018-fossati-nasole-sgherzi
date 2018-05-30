@@ -1,7 +1,9 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.modelEvent.*;
+import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
+import it.polimi.se2018.model.schema_card.SchemaCard;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.model.objectives.PublicObjective;
@@ -25,8 +27,10 @@ public class GameTableMultiplayer extends Observable<Event> {
     final private DraftBoard draftBoard;
     final private DiceHolder diceHolder;
     final private TurnHolder turnHolder;
+    final private String[] playersName;
 
     public GameTableMultiplayer(PublicObjective[] publicObjectives, String[] players, Tool[] toolCards) {
+        playersName=players.clone();
         this.publicObjectives = publicObjectives;
 
         ArrayList<Player> playersList = new ArrayList<>();
@@ -206,6 +210,8 @@ public class GameTableMultiplayer extends Observable<Event> {
         dispatchEvent(new DraftBoardChagedEvent("increaseDecreaseDice", null, draftBoard.getImmutableInstance()));
     }
 
+
+
     /**
      * Swap a DiceFace from the DraftBoard with a DiceFace from the DiceHolder area
      *
@@ -317,12 +323,22 @@ public class GameTableMultiplayer extends Observable<Event> {
 
 
     private void dispatchEvent(Event event) {
-        //TODO: Do this maderfader.
-        throw new NotImplementedException();
+        notify(event);
     }
 
     public boolean isDiceAllowed(String playerName, Point point, DiceFace diceFace, SchemaCardFace.Ignore ignore) {
         return getPlayerByName(playerName).getSchema().isDiceAllowed(point, diceFace, ignore);
+    }
+
+    /**
+     * @param playerName the name of the player
+     * @param point the point where the dice face should be placed
+     * @param diceFace the dice face to check
+     * @param ignore if there is some restriction to ignore
+     * @return true if the dice face is allowed, false otherwise
+     */
+    public boolean isAloneDiceAllowed(String playerName, Point point, DiceFace diceFace, SchemaCardFace.Ignore ignore) {
+        return getPlayerByName(playerName).getSchema().isDiceAllowed(point, diceFace, ignore, true);
     }
 
     public DiceFace getDiceFaceByIndex(int i) {
@@ -338,6 +354,14 @@ public class GameTableMultiplayer extends Observable<Event> {
         }
     }
 
+    /**
+     * Get the players names
+     * @return an array containing the names of the connected clients
+     */
+    public String[] getPlayersName(){
+        return playersName.clone();
+    }
+
 
     /**
      * Check if all players have selected a schemaCardFace
@@ -350,5 +374,36 @@ public class GameTableMultiplayer extends Observable<Event> {
                 return false;
         }
         return true;
+    }
+
+    /**
+     * Return the DiceFace in a particular position in a player's schema
+     * @param player the player's name
+     * @param position the position of the dice face
+     * @return the DiceFace placed here if there is any, null otherwise
+     */
+    public DiceFace getPlayerDiceFace(String player, Point position){
+        return getPlayerByName(player).getSchema().getDiceFace(position);
+    }
+
+    /**
+     * @return true if this is the first turn in a match, false otherwise
+     */
+    public boolean isFirstTurnInRound() {
+        return turnHolder.isFirstTurnInRound();
+    }
+
+    /**
+     * Get a mutable copy of a player's Schema
+     * @param playerName the player to get the Schema
+     * @return the requested copy of the Schema
+     */
+    public Schema getPlayerSchemaCopy(String playerName) {
+        return getPlayerByName(playerName).getSchema().clone();
+    }
+
+    public boolean isColorInDiceHolder(GameColor gameColor){
+        return diceHolder.isColorPresent(gameColor);
+
     }
 }
