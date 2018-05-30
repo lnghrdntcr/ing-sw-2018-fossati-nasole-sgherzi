@@ -4,14 +4,11 @@ import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.states.State;
 import it.polimi.se2018.controller.states.TurnState;
 import it.polimi.se2018.model.GameTableMultiplayer;
-import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Event;
-import it.polimi.se2018.utils.Log;
-import it.polimi.se2018.view.viewEvent.ChangeDiceNumberEvent;
-import it.polimi.se2018.view.viewEvent.DiceActionEvent;
+import it.polimi.se2018.view.viewEvent.SwapDiceFaceWithTurnHolderEvent;
 
-public class RoughingNipper extends Tool {
+public class CircularCutter extends Tool {
     @Override
     public boolean isUsable(GameTableMultiplayer model, TurnState currentState) {
         return true;
@@ -19,21 +16,18 @@ public class RoughingNipper extends Tool {
 
     @Override
     public State use(Controller controller, GameTableMultiplayer model, TurnState state, Event event) {
-        ChangeDiceNumberEvent ev = (ChangeDiceNumberEvent) event;
-
-        try {
-            model.increaseDecreaseDice(ev.getDicePosition(), ev.getDicePosition());
+        SwapDiceFaceWithTurnHolderEvent ev = (SwapDiceFaceWithTurnHolderEvent) event;
+        try{
+            model.swapDraftDiceWithHolder(ev.getDraftBoardIndex(), ev.getTurn(), ev.getIndexInTurn());
             return new TurnState(controller, state.isDicePlaced(), true);
-        } catch (Exception e){
-            Log.w("Unable to flip the dice: "+e.getMessage());
+        }catch (Exception e){
+
             return state;
         }
-
     }
 
     @Override
     public ToolCardImmutable getImmutableInstance() {
         return new ToolCardImmutable(this.getClass().getName(), this.getToken());
     }
-    // (1) Pinza sgrossatrice
 }

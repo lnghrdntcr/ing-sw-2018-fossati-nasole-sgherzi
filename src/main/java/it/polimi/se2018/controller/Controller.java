@@ -97,37 +97,7 @@ public class Controller extends Observable<Event> implements Observer<Event> {
         }
     }
 
-    private void handleToolCardActivation(Event e) {
 
-        UseToolcardEvent event = (UseToolcardEvent) e;
-        Tool tool = this.model.getToolCardByPosition(event.getToolCardIndex());
-        int playerToken = this.model.getPlayerToken(event.getPlayerName());
-
-        if (!this.model.getCurrentPlayerName().equals(event.getPlayerName())) {
-            Log.w("Only current player can use a toolcard");
-            return;
-        }
-
-        if (!tool.isUsable()) {
-            Log.i(tool.getClass().getName() + "not usable in this turn.");
-            return;
-        }
-
-        if (playerToken < tool.getNeededTokens()) {
-            Log.i(
-                    event.getPlayerName()
-                            + " cannot use the " + tool.getClass().getName() + " toolcard:\n "
-                            + "Needed:\t" + tool.getNeededTokens()
-                            + "\n Actual:\t" + playerToken
-            );
-            return;
-        } else {
-            this.model.useTokenOnToolcard(event.getPlayerName(), tool);
-            // TODO: add a method in the model to expose the user using the toolcard, because tool.use() needs a player as argument.
-            // TODO: call tool.use()
-        }
-
-    }
 
     private void handleTurnEnding(Event e) {
         EndTurnEvent event = (EndTurnEvent) e;

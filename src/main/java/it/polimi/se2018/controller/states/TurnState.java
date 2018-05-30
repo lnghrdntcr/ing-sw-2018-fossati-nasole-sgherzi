@@ -59,7 +59,7 @@ public class TurnState extends State {
 
         if (!model.getCurrentPlayerName().equals(event.getPlayerName())) Log.w("Only current player can use a toolcard");
 
-        if (!tool.isUsable()) Log.i(tool.getClass().getName() + "not usable in this turn.");
+        if (!tool.isUsable(model, this)) Log.i(tool.getClass().getName() + "not usable in this turn.");
 
         if (playerToken < tool.getNeededTokens()) {
             Log.i(
@@ -87,20 +87,27 @@ public class TurnState extends State {
         if(event == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
         if(model == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Model cannot be null");
 
-        if (this.hasPlacedDice) Log.w(event.getPlayerName() + " has already placed a dice.");
+        if (this.hasPlacedDice) {
+            Log.w(event.getPlayerName() + " has already placed a dice.");
+            return this;
+        }
 
-        if (!model.getCurrentPlayerName().equals(event.getPlayerName()))
+        if (!model.getCurrentPlayerName().equals(event.getPlayerName())) {
             Log.w(event.getPlayerName() + ": Only the current player can place a dice!");
-        if (
-            model.isDiceAllowed(
+            return this;
+        }
+        if (model.isDiceAllowed(
                 event.getPlayerName(),
                 event.getPoint(),
                 model.getDiceFaceByIndex(
                     event.getDiceFaceIndex()
                 ),
-                SchemaCardFace.Ignore.NOTHING
-            )
-            ) model.placeDice(event.getPlayerName(), event.getDiceFaceIndex(), event.getPoint());
+                SchemaCardFace.Ignore.NOTHING))
+        {
+            model.placeDice(event.getPlayerName(), event.getDiceFaceIndex(), event.getPoint());
+        }else{
+            return this;
+        }
 
         return new TurnState(this.getController(), true, this.hasUsedToolcard);
 
