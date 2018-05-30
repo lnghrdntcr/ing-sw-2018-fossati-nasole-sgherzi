@@ -23,7 +23,7 @@ public class CopperReamer extends Tool {
         if (model.isDiceAllowed(name, e.getDestination(), e.getDiceFace(), SchemaCardFace.Ignore.NUMBER)) {
             model.moveDice(name, e.getSource(), e.getDestination(), true);
             model.useTokenOnToolcard(event.getPlayerName(), this);
-            return new TurnState(controller, name, state.isDicePlaced(), true);
+            return new TurnState(controller, state.isDicePlaced(), true);
         }
         else{
             Log.w("Destination not allowed");

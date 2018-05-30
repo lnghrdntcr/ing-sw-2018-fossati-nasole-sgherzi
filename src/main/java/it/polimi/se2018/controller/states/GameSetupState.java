@@ -60,7 +60,7 @@ public class GameSetupState extends State {
         model.setPlayerSchema(event.getPlayerName(), schemaCardList.get(playerIndex*2+event.getSchemaCardId()).getFace(event.getSide()));
 
         if(model.allPlayersHaveSelectedSchemaCardFace()){
-            return new TurnState(getController(), "TO INSERT THE PLAYER HERE", false, false);
+            return new TurnState(getController(), false, false);
         }
 
         return this;
