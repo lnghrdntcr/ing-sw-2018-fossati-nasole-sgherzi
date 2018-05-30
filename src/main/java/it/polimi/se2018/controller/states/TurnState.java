@@ -1,6 +1,7 @@
 package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
+import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Event;
@@ -33,7 +34,26 @@ public class TurnState extends State {
     }
 
     private State handleToolcardUse(UseToolcardEvent event, GameTableMultiplayer model) {
-        return model.getToolCardByPosition(event.getToolCardIndex()).use(getController(), model, this, event);
+        Tool tool = model.getToolCardByPosition(event.getToolCardIndex());
+        int playerToken = model.getPlayerToken(event.getPlayerName());
+
+        if (!model.getCurrentPlayerName().equals(event.getPlayerName())) Log.w("Only current player can use a toolcard");
+
+        if (!tool.isUsable()) Log.i(tool.getClass().getName() + "not usable in this turn.");
+
+        if (playerToken < tool.getNeededTokens()) {
+            Log.i(
+                    event.getPlayerName()
+                            + " cannot use the " + tool.getClass().getName() + " toolcard:\n "
+                            + "Tokens needed:\t" + tool.getNeededTokens()
+                            + "\n Actual tokens:\t" + playerToken
+            );
+            return this;
+        } else {
+            model.useTokenOnToolcard(event.getPlayerName(), tool);
+            return tool.use(getController(), model, this, event);
+        }
+
     }
 
     private State handleDicePlacing(PlaceDiceEvent event, GameTableMultiplayer model) {
@@ -69,11 +89,8 @@ public class TurnState extends State {
 
     }
 
-    public boolean isHasPlacedDice() {
+    public boolean isDicePlaced() {
         return hasPlacedDice;
     }
 
-    public boolean isHasUsedToolcard() {
-        return hasUsedToolcard;
-    }
 }

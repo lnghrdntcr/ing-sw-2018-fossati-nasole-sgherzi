@@ -292,16 +292,16 @@ public class GameTableMultiplayer extends Observable<Event> {
     /**
      * Move a dice in the schema of a player from position source to destination
      *
-     * @param player      the player to modify
+     * @param playerName      the player to modify
      * @param source      the source position where to pick up the dice
      * @param destination the destination where to put the dice
      * @param lastMove    if this is the last move of the set
      */
-    public void moveDice(String player, Point source, Point destination, boolean lastMove) {
-        Player p = getPlayerByName(player);
+    public void moveDice(String playerName, Point source, Point destination, boolean lastMove) {
+        Player p = getPlayerByName(playerName);
         p.getSchema().setDiceFace(destination, p.getSchema().removeDiceFace(source));
 
-        if (lastMove) dispatchEvent(new SchemaChangedEvent("moveDice", player, p.getSchema().clone()));
+        if (lastMove) dispatchEvent(new SchemaChangedEvent("moveDice", playerName, p.getSchema().clone()));
     }
 
     //Turn stuff
