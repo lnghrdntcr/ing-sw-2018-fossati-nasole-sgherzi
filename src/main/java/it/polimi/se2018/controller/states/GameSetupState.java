@@ -28,9 +28,9 @@ public class GameSetupState extends State {
 
         Collections.shuffle(schemaCardList);
 
-        for(int i=0; i<getController().getViewArrayList().size(); i++){
+        for(int i=0; i<getController().getPlayersList().length; i++){
             Event toDispatchEvent = new AskSchemaCardFaceEvent("GameSetupState",
-                    getController().getViewArrayList().get(i).getPlayer(),
+                    getController().getPlayersList()[i],
                     schemaCardList.subList(i*2, i*2+2).toArray(new SchemaCard[2]));
             controller.dispatchEvent(toDispatchEvent);
         }
@@ -48,8 +48,8 @@ public class GameSetupState extends State {
     private State handleSchemaCardSelection(SchemaCardSelectedEvent event, GameTableMultiplayer model) {
 
         int playerIndex =-1;
-        for(int i=0; i<getController().getViewArrayList().size(); i++) {
-            if(getController().getViewArrayList().get(i).getPlayer().equals(event.getPlayerName())){
+        for(int i=0; i<getController().getPlayersList().length; i++) {
+            if(getController().getPlayersList()[i].equals(event.getPlayerName())){
                 playerIndex=i;
                 break;
             }

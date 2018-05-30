@@ -277,6 +277,9 @@ public class GameTableMultiplayer extends Observable<Event> {
      * Draws the dice accordling to the player number
      */
     public void drawDice(){
+        if(draftBoard.getDiceNumber()>0){
+            throw new IllegalStateException("There are still dices on the Draft Board!");
+        }
         draftBoard.drawDices(players.length);
     }
 
@@ -326,10 +329,16 @@ public class GameTableMultiplayer extends Observable<Event> {
      * End the current turn
      */
     public void nextTurn() {
+        int oldRound=turnHolder.getRound();
         turnHolder.nextTurn();
         while(dropTurnPlayers.contains(playersName[turnHolder.getCurrentPlayer()]) && !turnHolder.isGameEnded()){
             dropTurnPlayers.remove(playersName[turnHolder.getCurrentPlayer()]);
             turnHolder.nextTurn();
+        }
+        if(oldRound!=turnHolder.getRound()){
+            while(draftBoard.getDiceNumber()>0){
+                diceHolder.addDice(oldRound, draftBoard.removeDice(0));
+            }
         }
 
         dispatchEvent(new TurnChangedEvent("nextTurn", players[turnHolder.getCurrentPlayer()].getName()

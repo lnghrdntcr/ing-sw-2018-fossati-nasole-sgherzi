@@ -21,10 +21,8 @@ public class Controller extends Observable<Event> implements Observer<Event> {
     private GameTableMultiplayer model;
 
     private State state;
-    private ArrayList<View> viewArrayList;
 
     public Controller(ArrayList<View> viewArrayList) {
-        this.viewArrayList = viewArrayList;
         ArrayList<String> pln = new ArrayList<>();
         //register the Controller as an observer
         //and the view as an observer of the controller
@@ -48,6 +46,7 @@ public class Controller extends Observable<Event> implements Observer<Event> {
 
     private Tool[] pickToolCards() {
         ArrayList<Tool> tools = new ArrayList<>();
+        tools.add(new CircularCutter());
         tools.add(new CopperReamer());
         tools.add(new CorkRow());
         tools.add(new DiamondPad());
@@ -80,49 +79,13 @@ public class Controller extends Observable<Event> implements Observer<Event> {
         return publicObjectives.subList(0, Settings.POBJECTIVES_N).toArray(new PublicObjective[Settings.POBJECTIVES_N]);
     }
 
-    private void connectViewWithModel(View view) {
-        this.model.register(view);
-    }
-
-    private void handleDicePlacement(Event e) {
-
-        PlaceDiceEvent event = (PlaceDiceEvent) e;
-        if (model.getCurrentPlayerName().equals(event.getPlayerName())) {
-            if (model.isDiceAllowed(event.getPlayerName(), event.getPoint(), model.getDiceFaceByIndex(event.getDiceFaceIndex()),
-                    SchemaCardFace.Ignore.NOTHING)) {
-                model.placeDice(event.getPlayerName(), event.getDiceFaceIndex(), event.getPoint());
-            } else Log.w("Tried to place a dice in a not allowed position");
-        } else {
-            Log.w("Only the current player can place a dice");
-        }
-    }
-
-
-
-    private void handleTurnEnding(Event e) {
-        EndTurnEvent event = (EndTurnEvent) e;
-        if (model.getCurrentPlayerName().equals(event.getPlayerName())) {
-            model.nextTurn();
-        } else {
-            Log.w("Only the current player can end its turn");
-        }
-    }
-
-    private void handleSchemaCardSelection(Event e) {
-
-        SchemaCardSelectedEvent event = (SchemaCardSelectedEvent) e;
-        String playerName = event.getPlayerName();
-        // TODO: add a method in model to associate the selection of a SchemaCardFace with a player
-    }
-
     @Override
     public void update(Event message) {
         state = state.handleEvent(message, model);
     }
 
-
-    public ArrayList<View> getViewArrayList() {
-        return viewArrayList;
+    public String[] getPlayersList(){
+        return model.getPlayersName();
     }
 
     public void dispatchEvent(Event toDispatchEvent) {
