@@ -1,6 +1,7 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.modelEvent.*;
+import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCard;
@@ -16,6 +17,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.List;
 
 /**
  * The main model entry point for multiplayer
@@ -30,16 +32,30 @@ public class GameTableMultiplayer extends Observable<Event> {
     final private TurnHolder turnHolder;
     final private String[] playersName;
 
-    private ArrayList<String> dropTurnPlayers=new ArrayList<>();
+    private ArrayList<String> dropTurnPlayers = new ArrayList<>();
 
     public GameTableMultiplayer(PublicObjective[] publicObjectives, String[] players, Tool[] toolCards) {
-        playersName=players.clone();
+
+        ArrayList<PrivateObjective> privateObjectives = new ArrayList<>();
+        playersName = players.clone();
         this.publicObjectives = publicObjectives;
 
         ArrayList<Player> playersList = new ArrayList<>();
         Arrays.stream(players).forEach((playerName) -> {
             playersList.add(new Player(playerName));
         });
+
+        for (GameColor gc : GameColor.values()) {
+            privateObjectives.add(new PrivateObjective(gc));
+        }
+
+        Collections.shuffle(privateObjectives);
+
+        playersList.forEach(player -> {
+            player.setPrivateObjective(privateObjectives.get(0));
+            privateObjectives.remove(0);
+        });
+
         this.players = playersList.toArray(new Player[0]);
 
 
@@ -106,7 +122,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         return publicObjectives[position];
     }
 
-    public ArrayList<ScoreHolder> computeAllScores(){
+    public ArrayList<ScoreHolder> computeAllScores() {
 
         ArrayList<ScoreHolder> scoreHolders = new ArrayList<>();
 
@@ -124,16 +140,16 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     }
 
-    private int getPlayerPosition(String playerName){
+    private int getPlayerPosition(String playerName) {
         for (int i = 0; i < this.players.length; i++) {
-            if(this.players[i].getName().equals(playerName)) return i;
+            if (this.players[i].getName().equals(playerName)) return i;
         }
         throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": No player with that name!");
     }
 
-    private int computePublicObjectivesScore(Schema schema){
+    private int computePublicObjectivesScore(Schema schema) {
         int publicObjectivesScore = 0;
-        for(PublicObjective puo: this.publicObjectives){
+        for (PublicObjective puo : this.publicObjectives) {
             publicObjectivesScore += puo.computeScore(schema);
         }
         return publicObjectivesScore;
@@ -214,7 +230,6 @@ public class GameTableMultiplayer extends Observable<Event> {
     }
 
 
-
     /**
      * Swap a DiceFace from the DraftBoard with a DiceFace from the DiceHolder area
      *
@@ -276,8 +291,8 @@ public class GameTableMultiplayer extends Observable<Event> {
     /**
      * Draws the dice accordling to the player number
      */
-    public void drawDice(){
-        if(draftBoard.getDiceNumber()>0){
+    public void drawDice() {
+        if (draftBoard.getDiceNumber() > 0) {
             throw new IllegalStateException("There are still dices on the Draft Board!");
         }
         draftBoard.drawDices(players.length);
@@ -311,7 +326,7 @@ public class GameTableMultiplayer extends Observable<Event> {
     /**
      * Move a dice in the schema of a player from position source to destination
      *
-     * @param playerName      the player to modify
+     * @param playerName  the player to modify
      * @param source      the source position where to pick up the dice
      * @param destination the destination where to put the dice
      * @param lastMove    if this is the last move of the set, if true signals a modify to the players
@@ -325,24 +340,36 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     //Turn stuff
 
+
+    public boolean hasNextTurn() {
+
+        if (
+            turnHolder.isGameEnded() &&
+                this.getCurrentPlayerName().equals(playersName[turnHolder.getCurrentPlayer()])
+            ) return false;
+
+        return true;
+
+    }
+
     /**
      * End the current turn
      */
     public void nextTurn() {
-        int oldRound=turnHolder.getRound();
+        int oldRound = turnHolder.getRound();
         turnHolder.nextTurn();
-        while(dropTurnPlayers.contains(playersName[turnHolder.getCurrentPlayer()]) && !turnHolder.isGameEnded()){
+        while (dropTurnPlayers.contains(playersName[turnHolder.getCurrentPlayer()]) && !turnHolder.isGameEnded()) {
             dropTurnPlayers.remove(playersName[turnHolder.getCurrentPlayer()]);
             turnHolder.nextTurn();
         }
-        if(oldRound!=turnHolder.getRound()){
-            while(draftBoard.getDiceNumber()>0){
+        if (oldRound != turnHolder.getRound()) {
+            while (draftBoard.getDiceNumber() > 0) {
                 diceHolder.addDice(oldRound, draftBoard.removeDice(0));
             }
         }
 
         dispatchEvent(new TurnChangedEvent("nextTurn", players[turnHolder.getCurrentPlayer()].getName()
-                , turnHolder.getRound()));
+            , turnHolder.getRound()));
     }
 
 
@@ -356,9 +383,9 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     /**
      * @param playerName the name of the player
-     * @param point the point where the dice face should be placed
-     * @param diceFace the dice face to check
-     * @param ignore if there is some restriction to ignore
+     * @param point      the point where the dice face should be placed
+     * @param diceFace   the dice face to check
+     * @param ignore     if there is some restriction to ignore
      * @return true if the dice face is allowed, false otherwise
      */
     public boolean isAloneDiceAllowed(String playerName, Point point, DiceFace diceFace, SchemaCardFace.Ignore ignore) {
@@ -374,15 +401,16 @@ public class GameTableMultiplayer extends Observable<Event> {
             getPlayerByName(playerName).setSchema(new Schema(schemaCardFace));
         } else {
             throw new IllegalStateException(this.getClass().getCanonicalName() +
-                    ": schema already set. Cannot set a new schema.");
+                ": schema already set. Cannot set a new schema.");
         }
     }
 
     /**
      * Get the players names
+     *
      * @return an array containing the names of the connected clients
      */
-    public String[] getPlayersName(){
+    public String[] getPlayersName() {
         return playersName.clone();
     }
 
@@ -402,11 +430,12 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     /**
      * Return the DiceFace in a particular position in a player's schema
-     * @param player the player's name
+     *
+     * @param player   the player's name
      * @param position the position of the dice face
      * @return the DiceFace placed here if there is any, null otherwise
      */
-    public DiceFace getPlayerDiceFace(String player, Point position){
+    public DiceFace getPlayerDiceFace(String player, Point position) {
         return getPlayerByName(player).getSchema().getDiceFace(position);
     }
 
@@ -419,6 +448,7 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     /**
      * Get a mutable copy of a player's Schema
+     *
      * @param playerName the player to get the Schema
      * @return the requested copy of the Schema
      */
@@ -426,18 +456,19 @@ public class GameTableMultiplayer extends Observable<Event> {
         return getPlayerByName(playerName).getSchema().clone();
     }
 
-    public boolean isColorInDiceHolder(GameColor gameColor){
+    public boolean isColorInDiceHolder(GameColor gameColor) {
         return diceHolder.isColorPresent(gameColor);
 
     }
 
     /**
      * The passed player will drop the next turn
+     *
      * @param player the player that will drop the turn
      */
-    public void playerWillDropTurn(String player){
-        for(String pl: playersName){
-            if(pl.equals(player)){
+    public void playerWillDropTurn(String player) {
+        for (String pl : playersName) {
+            if (pl.equals(player)) {
                 dropTurnPlayers.add(player);
                 return;
             }
