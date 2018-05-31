@@ -445,4 +445,11 @@ public class GameTableMultiplayer extends Observable<Event> {
 
         throw new IllegalArgumentException("Player does not exist!");
     }
+
+    /**
+     * @return the number of dice on the draft board in this moment
+     */
+    public int getDiceNumberOnDraftBoard(){
+        return draftBoard.getDiceNumber();
+    }
 }

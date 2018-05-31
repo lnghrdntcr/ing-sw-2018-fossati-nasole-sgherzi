@@ -250,4 +250,17 @@ public class Schema {
         newSchema.diceFaces=this.diceFaces.clone();
         return newSchema;
     }
+
+    public boolean isDiceAllowedSomewhere(DiceFace diceFace, SchemaCardFace.Ignore ignore){
+        for (int x = 0; x < Settings.CARD_HEIGHT; x++) {
+            for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
+                if(isDiceAllowed(new Point(x, y), diceFace, ignore)){
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
+    }
 }
