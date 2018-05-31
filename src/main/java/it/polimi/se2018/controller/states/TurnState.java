@@ -53,6 +53,8 @@ public class TurnState extends State {
      */
     private State handleToolcardUse(UseToolcardEvent event, GameTableMultiplayer model) {
 
+        if(event == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
+
         Tool tool = model.getToolCardByPosition(event.getToolCardIndex());
         int playerToken = model.getPlayerToken(event.getPlayerName());
 
@@ -127,15 +129,25 @@ public class TurnState extends State {
         if (!model.getCurrentPlayerName().equals(event.getPlayerName())) {
             Log.w(event.getPlayerName() + "Only the current player can end its turn!");
         } else {
-            model.nextTurn();
+            if(model.hasNextTurn()){
+                model.nextTurn();
+                return new TurnState(this.getController(), false, false);
+            } else {
+                return new GameEndState(this.getController(), model);
+            }
+
         }
 
-        return new TurnState(this.getController(), false, false);
+        return this;
 
     }
 
     public boolean isDicePlaced() {
-        return hasPlacedDice;
+        return this.hasPlacedDice;
+    }
+
+    public boolean isToolcardUsed(){
+        return this.hasUsedToolcard;
     }
 
 }
