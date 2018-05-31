@@ -1,6 +1,7 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.modelEvent.*;
+import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCard;
@@ -16,6 +17,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.List;
 
 /**
  * The main model entry point for multiplayer
@@ -33,6 +35,8 @@ public class GameTableMultiplayer extends Observable<Event> {
     private ArrayList<String> dropTurnPlayers=new ArrayList<>();
 
     public GameTableMultiplayer(PublicObjective[] publicObjectives, String[] players, Tool[] toolCards) {
+
+        ArrayList<PrivateObjective> privateObjectives = new ArrayList<>();
         playersName=players.clone();
         this.publicObjectives = publicObjectives;
 
@@ -40,6 +44,18 @@ public class GameTableMultiplayer extends Observable<Event> {
         Arrays.stream(players).forEach((playerName) -> {
             playersList.add(new Player(playerName));
         });
+
+        for (GameColor gc: GameColor.values()){
+            privateObjectives.add(new PrivateObjective(gc));
+        }
+
+        Collections.shuffle(privateObjectives);
+
+        playersList.forEach(player -> {
+            player.setPrivateObjective(privateObjectives.get(0));
+            privateObjectives.remove(0);
+        });
+
         this.players = playersList.toArray(new Player[0]);
 
 

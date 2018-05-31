@@ -1,7 +1,6 @@
 package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
-import it.polimi.se2018.controller.controllerEvent.EndGameEvent;
 import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
