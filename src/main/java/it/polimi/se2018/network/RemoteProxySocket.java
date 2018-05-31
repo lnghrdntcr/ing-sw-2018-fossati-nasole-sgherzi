@@ -65,15 +65,21 @@ public class RemoteProxySocket extends RemoteProxy {
         public void run() {
             Log.d("Listener thread started for " + RemoteProxySocket.this.remoteConnection.getInetAddress());
             Event event;
-            while (goAhead && RemoteProxySocket.this.remoteConnection.isConnected()) {
-                try {
-                    event = (Event) objectInputStream.readObject();
-                    Log.d("Received " + event);
-                    RemoteProxySocket.this.dispatchEventToRemoteView(event);
-                } catch (IOException | ClassNotFoundException | ClassCastException e) {
-                    Log.e("Invalid event received: " + e.getMessage());
+            try {
+                while (goAhead && !RemoteProxySocket.this.remoteConnection.isClosed()) {
+                    try {
+                        event = (Event) objectInputStream.readObject();
+                        Log.d("Received " + event);
+                        RemoteProxySocket.this.dispatchEventToRemoteView(event);
+                    } catch (ClassNotFoundException | ClassCastException e) {
+                        Log.e("Invalid event received: " + e.getMessage());
+                    }
                 }
+            }catch (IOException e){
+                Log.d("ListenerThread: IOException: "+e.getMessage());
             }
+
+            Log.d("Disconnected!");
         }
 
         /**

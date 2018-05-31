@@ -66,15 +66,20 @@ public class LocalProxySocket extends LocalProxy {
         public void run() {
             Log.d("Listener thread started for " + LocalProxySocket.this.remoteConnection.getInetAddress());
             Event event;
-            while (goAhead && LocalProxySocket.this.remoteConnection.isConnected()) {
-                try {
-                    event = (Event) objectInputStream.readObject();
-                    Log.d("Received " + event);
-                    LocalProxySocket.this.dispatchEventToVirtualView(event);
-                } catch (IOException | ClassNotFoundException | ClassCastException e) {
-                    Log.e("Invalid event received: " + e.getMessage());
+            try {
+                while (goAhead && !LocalProxySocket.this.remoteConnection.isClosed()) {
+                    try {
+                        event = (Event) objectInputStream.readObject();
+                        Log.d("Received " + event);
+                        LocalProxySocket.this.dispatchEventToVirtualView(event);
+                    } catch (ClassNotFoundException | ClassCastException e) {
+                        Log.e("Invalid event received: " + e.getMessage());
+                    }
                 }
+            }catch (IOException e){
+                Log.d("ListenerThread: IOException: "+e.getMessage());
             }
+            Log.d("Client disconnected!");
         }
 
         /**
