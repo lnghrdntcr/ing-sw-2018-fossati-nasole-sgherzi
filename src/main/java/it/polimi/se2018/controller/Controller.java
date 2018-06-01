@@ -19,22 +19,28 @@ import java.util.Collections;
 public class Controller extends Observable<Event> implements Observer<Event> {
 
     private GameTableMultiplayer model;
-
     private State state;
 
-    public Controller(ArrayList<View> viewArrayList) {
+    private long actionTimeout;
+
+    public Controller(ArrayList<View> viewArrayList, long actionTimeout) {
+
+        this.actionTimeout = actionTimeout;
+
         ArrayList<String> pln = new ArrayList<>();
         //register the Controller as an observer
         //and the view as an observer of the controller
         viewArrayList.forEach((view) -> {
             view.register(this);
             register(view);
-            model.register(view);
             pln.add(view.getPlayer());
         });
 
-
         model = new GameTableMultiplayer(pickPublicObjectives(), pln.toArray(new String[viewArrayList.size()]), pickToolCards());
+
+        viewArrayList.forEach(view -> model.register(view));
+
+        Log.i("Game started with " + pln.size() + " players");
 
     }
 

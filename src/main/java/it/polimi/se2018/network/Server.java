@@ -5,9 +5,7 @@ import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.VirtualView;
 
-import javax.xml.bind.Element;
 import java.io.IOException;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.net.*;
 import java.rmi.Naming;
@@ -15,17 +13,26 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * The entry point for the server. Manages all the connections and waits for client's connections
  */
 public class Server extends UnicastRemoteObject implements ServerInterface {
+
     private ArrayList<View> virtualViews = new ArrayList<>();
-    private int playersN;
     private ServerSocket serverSocket;
     private Thread listenerThread;
     boolean gameStarted;
+    private Thread timeoutThread;
+
+    // Config variables.
+    private int playersN;
+    private long serverTimeout;
+    private final long actionTimeout;
+    private final String customSchemaCardPath;
+
+    // The beginning time of the timeout.
+    private long beginTime;
 
     private final static int RMI_PORT = 1099;
     private final static int SOCKET_PORT = 2099;
@@ -37,8 +44,11 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
      * @param playersN the number of players to wait for
      * @throws RemoteException If a communicaton error occours
      */
-    public Server(int playersN) throws RemoteException {
+    public Server(int playersN, int serverTimeout, int actionTimeout, String customSchemaCardPath) throws RemoteException {
         this.playersN = playersN;
+        this.serverTimeout = serverTimeout * 1000L;
+        this.actionTimeout = actionTimeout * 1000L;
+        this.customSchemaCardPath = customSchemaCardPath;
     }
 
     /**
@@ -65,7 +75,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
             serverSocket = new ServerSocket(SOCKET_PORT);
             Log.i("Socket server listening on " + ip + ":" + SOCKET_PORT);
             listenerThread = new Thread(() -> {
-                // TODO while (virtualViews.size() < this.playersN)
+
                 try {
                     while (virtualViews.size() < this.playersN) {
                         Socket clientConnection = serverSocket.accept();
@@ -94,6 +104,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
                                 Log.d("Connected!");
                             }
                         }
+
                     }
 
                     Log.w(
@@ -111,6 +122,29 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void startTimeout(long timeout) {
+        this.timeoutThread = new Thread(() -> {
+            Log.d("Starting timeout with timeout of " + this.serverTimeout / 1000L + " seconds");
+            this.beginTime =  System.currentTimeMillis();
+            while((System.currentTimeMillis() - this.beginTime) < this.serverTimeout){
+                try{
+                    Thread.sleep(1000);
+                    Log.d("Remaining " + (this.serverTimeout / 1000L - this.getTimeout()) + " seconds");
+                } catch (InterruptedException ignored) {}
+            }
+
+            if(virtualViews.size() < 4 && virtualViews.size() > 1) this.startGame();
+
+        });
+
+        this.timeoutThread.start();
+
+    }
+
+    private int getTimeout(){
+        return (int) ((System.currentTimeMillis() - this.beginTime) / 1000L);
     }
 
     /**
@@ -180,7 +214,10 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
         if (virtualViews.size() == playersN) {
             startGame();
+            return;
         }
+
+        if(virtualViews.size() == 2) this.startTimeout(this.serverTimeout);
     }
 
     /**
@@ -191,7 +228,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         gameStarted = true;
         //listenerThread.stop();
 
-        new Controller(virtualViews).start();
+        new Controller(virtualViews, this.actionTimeout).start();
 
     }
 
