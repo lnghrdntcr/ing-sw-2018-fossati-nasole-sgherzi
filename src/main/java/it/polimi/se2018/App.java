@@ -69,12 +69,10 @@ public class App {
 
         if(args.length > 2){
             // It means that also the external config file is passed as an argument... maybe.
-            if(args[2].startsWith("--config")){
+            if(args[2].equals("--config") || args[2].startsWith("-c ")){
                 path = args[3];
             }
         }
-
-        //TODO: Check if another config file isn't passed as cli arg
 
         path = (path == null ? "gameData/resources/defaultConfig.json" : path);
 
