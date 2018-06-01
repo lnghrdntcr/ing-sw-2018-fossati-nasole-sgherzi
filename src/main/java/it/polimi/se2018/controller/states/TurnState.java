@@ -1,6 +1,7 @@
 package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
+import it.polimi.se2018.view.viewEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
@@ -39,8 +40,18 @@ public class TurnState extends State {
         if (event instanceof UseToolcardEvent) return this.handleToolcardUse((UseToolcardEvent) event, model);
         if (event instanceof PlaceDiceEvent) return this.handleDicePlacing((PlaceDiceEvent) event, model);
         if (event instanceof EndTurnEvent) return this.handleTurnEnding((EndTurnEvent) event, model);
+        if (event instanceof PlayerTimeoutEvent) return this.handlePlayerTimeout((PlayerTimeoutEvent) event, model);
 
         return new TurnState(this.getController(), this.hasPlacedDice, this.hasUsedToolcard);
+
+    }
+
+    private State handlePlayerTimeout(PlayerTimeoutEvent event, GameTableMultiplayer model) {
+
+        // TODO: What should I be doing if the player does not perform an action for {actionTime} seconds?
+        // Add things to do here and then...
+
+        return this.handleTurnEnding(new EndTurnEvent(event.getEmitterName(), event.getPlayerName()), model);
 
     }
 

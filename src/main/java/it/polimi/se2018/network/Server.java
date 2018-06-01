@@ -124,7 +124,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         }
     }
 
-    private void startTimeout(long timeout) {
+    private void startTimeout() {
         this.timeoutThread = new Thread(() -> {
             Log.d("Starting timeout with timeout of " + this.serverTimeout / 1000L + " seconds");
             this.beginTime =  System.currentTimeMillis();
@@ -217,7 +217,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
             return;
         }
 
-        if(virtualViews.size() == 2) this.startTimeout(this.serverTimeout);
+        if(virtualViews.size() == 2) this.startTimeout();
     }
 
     /**

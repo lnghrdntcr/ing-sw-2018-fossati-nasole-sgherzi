@@ -1,17 +1,13 @@
 package it.polimi.se2018.controller;
 
+import it.polimi.se2018.view.viewEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.controller.states.GameSetupState;
 import it.polimi.se2018.controller.states.State;
 import it.polimi.se2018.controller.tool.*;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.objectives.*;
-import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.*;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.view.viewEvent.EndTurnEvent;
-import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
-import it.polimi.se2018.view.viewEvent.SchemaCardSelectedEvent;
-import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +18,8 @@ public class Controller extends Observable<Event> implements Observer<Event> {
     private State state;
 
     private long actionTimeout;
+    private long beginTime;
+    private Thread actionTimeoutThread;
 
     public Controller(ArrayList<View> viewArrayList, long actionTimeout) {
 
@@ -42,12 +40,43 @@ public class Controller extends Observable<Event> implements Observer<Event> {
 
         Log.i("Game started with " + pln.size() + " players");
 
+
     }
 
     public void start() {
+
         if(state!=null) throw new IllegalStateException("Game already started!");
 
-        state=new GameSetupState(this);
+        Log.d("Starting timeout...");
+
+        this.startActionTimeout();
+
+        state = new GameSetupState(this);
+    }
+
+    private void startActionTimeout() {
+
+        this.actionTimeoutThread = new Thread(() -> {
+            this.beginTime = System.currentTimeMillis();
+            while((System.currentTimeMillis() - this.beginTime) < this.actionTimeout){
+                try {
+                    Thread.sleep(1000);
+                    Log.i("Remaining " + (this.actionTimeout / 1000L - this.getTimeout()) + " seconds");
+                } catch (InterruptedException ignored) {
+                    Log.d("The actionTimeoutThread was interrupted as an action was performed.");
+                }
+            }
+
+            this.update(new PlayerTimeoutEvent(this.getClass().getName(), this.model.getCurrentPlayerName()));
+
+        });
+
+        this.actionTimeoutThread.start();
+
+    }
+
+    public int getTimeout(){
+        return (int) ((System.currentTimeMillis() - this.beginTime) / 1000L);
     }
 
     private Tool[] pickToolCards() {
@@ -87,8 +116,16 @@ public class Controller extends Observable<Event> implements Observer<Event> {
 
     @Override
     public void update(Event message) {
+        // This
+        // this.resetActionTimeout();
+        // or
+        // that?
+        this.actionTimeoutThread.interrupt();
         state = state.handleEvent(message, model);
+        this.startActionTimeout();
+
     }
+
 
     public String[] getPlayersList(){
         return model.getPlayersName();

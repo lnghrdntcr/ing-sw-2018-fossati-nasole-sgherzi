@@ -95,7 +95,8 @@ public class App {
         //now we have the whole file loaded, let's parse the JSON
         JSONObject root = new JSONObject(builder.toString());
 
-        System.out.println(root.toString());
+        Log.d(root.toString());
+
         new Server(
             numPlayers,
             root.getInt("serverTimeout"),
