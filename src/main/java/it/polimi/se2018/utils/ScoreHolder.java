@@ -1,5 +1,9 @@
 package it.polimi.se2018.utils;
 
+/**
+ * Holds the point of the given player and how it obtainded them.
+ * @since 29/06/2018
+ */
 public class ScoreHolder implements Comparable<ScoreHolder> {
 
     private String player;
@@ -23,6 +27,10 @@ public class ScoreHolder implements Comparable<ScoreHolder> {
 
     }
 
+    /**
+     * Computes the score of the player, given the informations provided above.
+     * @return The total score of the player.
+     */
     public int getTotalScore(){
         return
             this.privateObjectivePoints +
@@ -47,6 +55,11 @@ public class ScoreHolder implements Comparable<ScoreHolder> {
         return player;
     }
 
+    /**
+     * Compares 2 ScoreHolders, according to the game logic.
+     * @param o The ScoreHolder to compare to.
+     * @return 1 if the actual ScoreHolder (this) has to come first in the leaderboard, -1 otherwise.
+     */
     @Override
     public int compareTo(ScoreHolder o) {
 
