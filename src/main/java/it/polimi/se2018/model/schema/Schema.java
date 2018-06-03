@@ -8,8 +8,6 @@ import java.awt.*;
 
 /**
  * Contains the actual schema of a player and the relative associated schemaCardFace
- *
- * @author Nicola Fossati
  * @since 09/05/2018
  */
 public class Schema {

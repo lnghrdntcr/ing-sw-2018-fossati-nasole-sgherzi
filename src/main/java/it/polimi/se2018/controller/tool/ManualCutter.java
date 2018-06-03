@@ -13,6 +13,9 @@ import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.DoubleMoveOfColorDiceEvent;
 
+/**
+ * Class for ToolCard 12: Taglierino manuale
+ */
 public class ManualCutter extends Tool {
     @Override
     public boolean isUsable(GameTableMultiplayer model, TurnState currentState) {

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 /**
  * DiceHolder to be used in View
- * @author Francesco Sgherzi and a useful hand by the good ol'Insaniteaparty
  * @since 18/05/2018
  */
 public class DiceHolderImmutable {

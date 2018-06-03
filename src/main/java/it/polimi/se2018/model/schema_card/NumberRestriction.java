@@ -3,7 +3,6 @@ package it.polimi.se2018.model.schema_card;
 import it.polimi.se2018.model.schema.DiceFace;
 
 /**
- * @author Nicola Fossati
  * @since 09/05/2018
  * A restriction based on the number of the dice
  */

@@ -1,5 +1,8 @@
 package it.polimi.se2018.controller.controllerEvent;
 
+/**
+ * Event that is used to ask player to place a redrawn dice
+ */
 public class AskPlaceRedrawDiceEvent extends ControllerEvent {
     private final int diceIndex;
 

@@ -11,6 +11,9 @@ import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
 import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 
+/**
+ * Class for ToolCard 8: Tenaglia a rotelle
+ */
 public class WheeledPincer extends Tool {
   @Override
   public boolean isUsable(GameTableMultiplayer model, TurnState currentState) {

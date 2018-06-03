@@ -5,7 +5,6 @@ import it.polimi.se2018.utils.Settings;
 /**
  * Utility class to compute the round sequence
  *
- * @author Nicola Fossati
  * @since 09/05/2018
  */
 public class TurnHolder {

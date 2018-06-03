@@ -12,6 +12,9 @@ import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 import it.polimi.se2018.view.viewEvent.MoveDiceEvent;
 
+/**
+ * Class for ToolCard 10: Tampone diamantato
+ */
 public class DiamondPad extends Tool {
     @Override
     public boolean isUsable(GameTableMultiplayer model, TurnState currentState) {

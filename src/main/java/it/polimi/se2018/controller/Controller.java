@@ -12,6 +12,9 @@ import it.polimi.se2018.view.View;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * The main Controller class that handles the communication between the Model and the Views
+ */
 public class Controller extends Observable<Event> implements Observer<Event> {
 
     private GameTableMultiplayer model;

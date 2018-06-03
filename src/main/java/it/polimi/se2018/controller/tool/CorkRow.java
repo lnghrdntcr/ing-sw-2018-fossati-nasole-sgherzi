@@ -11,6 +11,9 @@ import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.MoveDiceEvent;
 
+/**
+ * Class for ToolCard 9: Riga in sughero
+ */
 public class CorkRow extends Tool {
   @Override
   public boolean isUsable(GameTableMultiplayer model, TurnState currentState) {

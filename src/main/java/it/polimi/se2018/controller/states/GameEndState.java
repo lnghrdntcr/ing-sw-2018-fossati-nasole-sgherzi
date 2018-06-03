@@ -9,7 +9,7 @@ import it.polimi.se2018.utils.ScoreHolder;
 import java.util.*;
 
 /**
- * The state that handles the end of the game.
+ * The state that handles the end of the game, computing the score and declaring the winner
  * @since 29/05/2018
  */
 public class GameEndState extends State {

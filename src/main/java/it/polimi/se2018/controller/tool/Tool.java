@@ -9,20 +9,49 @@ import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Event;
 
+/**
+ * A general class for a tool card, that implements it's logic
+ */
 public abstract class Tool implements ImmutableCloneable<ToolCardImmutable> {
 
     private int token=0;
 
+    /**
+     * Checks if this ToolCard can be used in the current state
+     * @param model the model where obtain informations
+     * @param currentState the current state of the controller
+     * @return a new state for the controller
+     */
     public abstract boolean isUsable(GameTableMultiplayer model, TurnState currentState);
 
+    /**
+     * Handle the use of a toolcard putting the game in a correct state
+     * @param controller the controller, to obtain the information
+     * @param model the model to modify
+     * @param state the current state of the controller
+     * @param event the event to be handled
+     * @return a new state for the controller
+     */
     public abstract State use(Controller controller, GameTableMultiplayer model, TurnState state, Event event);
 
+    /**
+     * Obtains the number of tokens used on this toolcard
+     * @return the number of token
+     */
     public int getToken() {
         return token;
     }
 
+    /**
+     * Add the given token to this toolcard
+     * @param tokenAdded
+     */
     public void addToken(int tokenAdded) { this.token += tokenAdded; }
 
+    /**
+     * Obtain the number of token needed by the player to use this toolcard.
+     * @return 1 if there is no token on the card, 2 otherwise
+     */
     public int getNeededTokens() {
         return token > 0 ? 2 : 1;
     }

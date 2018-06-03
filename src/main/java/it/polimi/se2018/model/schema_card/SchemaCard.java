@@ -14,6 +14,9 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Links two SchemaCardFace, one per side.
+ */
 public class SchemaCard {
 
     private EnumMap<Side, SchemaCardFace> schemaCardFaces = new EnumMap<>(Side.class);

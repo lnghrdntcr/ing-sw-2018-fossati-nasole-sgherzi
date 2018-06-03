@@ -2,7 +2,6 @@ package it.polimi.se2018.model.schema;
 
 /**
  * Holds the logic for the dice to be placed in the schema card or the scoreboard
- * @author Francesco Sgherzi
  * @since 09/05/2018
  */
 public class DiceFace {

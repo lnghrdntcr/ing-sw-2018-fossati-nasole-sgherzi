@@ -8,7 +8,6 @@ import java.util.Random;
 /**
  * Creates DiceFaces and holds them.
  * It also checks that not more than a certain number of dice is created for each color.
- * @author Francesco Sgherzi
  * @since 09/05/2018
  */
 public class DiceBag {

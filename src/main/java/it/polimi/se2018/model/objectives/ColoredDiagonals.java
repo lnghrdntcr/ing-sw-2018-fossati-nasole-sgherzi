@@ -14,7 +14,6 @@ import static it.polimi.se2018.utils.Settings.CARD_WIDTH;
 /**
  * Represents public objective card that checks that computes score based on the repeated colors on diagonals.
  *
- * @author Angelo Nasole
  * @since 10/05/2018
  */
 public class ColoredDiagonals extends PublicObjective {

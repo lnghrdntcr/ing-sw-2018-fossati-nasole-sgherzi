@@ -1,16 +1,17 @@
 package it.polimi.se2018.model.objectives;
 
-import it.polimi.se2018.model.schema.Schema;
-
+/**
+ * A generic class to represent Public Objective. They can have different score
+ */
 public abstract class PublicObjective extends Objective {
 
-  private int points;
+    private int points;
 
-  public PublicObjective(int points) {
-    this.points = points;
-  }
+    public PublicObjective(int points) {
+        this.points = points;
+    }
 
-  public int getPoint() {
-    return points;
-  }
+    public int getPoint() {
+        return points;
+    }
 }

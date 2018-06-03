@@ -10,6 +10,9 @@ import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceSelectingNumberEvent;
 
+/**
+ * A state that handle the intermediate state after using {@link it.polimi.se2018.controller.tool.FirmPastaDiluent}
+ */
 public class PlaceRedrawnWithNumberDiceState extends State {
     private final State oldState;
 

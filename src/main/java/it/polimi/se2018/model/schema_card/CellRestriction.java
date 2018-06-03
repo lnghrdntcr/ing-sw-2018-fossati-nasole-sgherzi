@@ -4,7 +4,6 @@ import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 
 /**
- * @author Nicola Fossati
  * @since 09/05/2018
  * This class represents a general restriction used in SchemaCard
  */
@@ -19,34 +18,36 @@ public abstract class CellRestriction {
      * Get the correct restriction from a string. If it's a valid number, the restriction will be a NumberRestriction;
      * if it's a blank string, the restriction will be a NoRestriction; if it's a valid color, the restriction will be
      * a ClorRestriction
+     *
      * @param restr the restriction to parse
      * @return a CellRestriction based on the input
      * @throws IllegalArgumentException if no valid restriction can be found for the input
      */
-    public static CellRestriction getRestrictionFromString(String restr){
-        if (restr==null)
+    public static CellRestriction getRestrictionFromString(String restr) {
+        if (restr == null)
             throw new IllegalArgumentException("restr should not be null!");
 
-        if(restr.equals("")){
+        if (restr.equals("")) {
             return new NoRestriction();
         }
 
         Integer integer = null;
-        try{
+        try {
             integer = Integer.parseInt(restr);
-        }catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
-        if(integer!=null){
+        if (integer != null) {
             return new NumberRestriction(integer);
         }
 
-        for(GameColor gc : GameColor.values()){
-            if(restr.equals(gc.toString())){
+        for (GameColor gc : GameColor.values()) {
+            if (restr.equals(gc.toString())) {
                 return new ColorRestriction(gc);
             }
         }
 
-        throw new IllegalArgumentException("No restriction found for '"+restr+"'");
+        throw new IllegalArgumentException("No restriction found for '" + restr + "'");
 
     }
 }

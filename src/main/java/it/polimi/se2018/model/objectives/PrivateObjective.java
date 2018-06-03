@@ -12,7 +12,6 @@ import static it.polimi.se2018.utils.Settings.CARD_WIDTH;
 /**
  * Represents private objective cards.
  *
- * @author Angelo Nasole
  * @since 09/05/2018
  */
 

@@ -4,7 +4,6 @@ import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 
 /**
- * @author Nicola Fossati
  * @since 09/05/2018
  * A restriction based on the color of the dice
  */

@@ -13,6 +13,9 @@ import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The state that handles the start of the game and does all the setup things
+ */
 public class GameSetupState extends State {
     private List<SchemaCard> schemaCardList;
 
@@ -45,6 +48,12 @@ public class GameSetupState extends State {
         return this;
     }
 
+    /**
+     * Handle the selection of a SchemaCardFace by a player
+     * @param event the event received
+     * @param model the model to modify
+     * @return the new state of the game
+     */
     private State handleSchemaCardSelection(SchemaCardSelectedEvent event, GameTableMultiplayer model) {
 
         int playerIndex =-1;

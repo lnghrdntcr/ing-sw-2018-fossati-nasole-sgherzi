@@ -8,7 +8,6 @@ import it.polimi.se2018.utils.Settings;
 import java.util.ArrayList;
 
 /**
- * @author Francesco Sgherzi
  * @since 09/05/2018
  * Holds the dices remaining from every turn.
  */

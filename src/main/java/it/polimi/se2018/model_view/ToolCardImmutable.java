@@ -2,7 +2,6 @@ package it.polimi.se2018.model_view;
 
 /**
  * Toolcard to be used in View
- * @author Francesco Sgherzi
  * @since 18/05/2018
  */
 public class ToolCardImmutable {

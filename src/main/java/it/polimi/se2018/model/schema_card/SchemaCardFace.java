@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import java.awt.*;
 
 /**
- * @author Nicola Fossati
  * @since 09/05/2018
  * Class that represents a Schema, with its restrictions
  */

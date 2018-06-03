@@ -1,5 +1,8 @@
 package it.polimi.se2018.model.schema_card;
 
+/**
+ * An exception that is thrown when a SchemaCardFace is malformed
+ */
 public class MalformedSchemaCardFaceException extends IllegalArgumentException {
     public MalformedSchemaCardFaceException() {
         super();

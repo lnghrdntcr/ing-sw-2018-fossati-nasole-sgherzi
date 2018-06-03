@@ -15,7 +15,6 @@ import java.util.Scanner;
 /**
  * The client class.
  *
- * @author Francesco Sgherzi
  * @since 23/05/2018
  */
 public class Client {

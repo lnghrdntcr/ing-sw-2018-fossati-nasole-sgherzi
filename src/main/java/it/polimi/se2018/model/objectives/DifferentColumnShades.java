@@ -10,7 +10,6 @@ import static it.polimi.se2018.utils.Settings.CARD_WIDTH;
 /**
  * Represents public objective card that checks that in the columns are located no duplicate dice numbers.
  *
- * @author Angelo Nasole
  * @since 10/05/2018
  */
 public class DifferentColumnShades extends PublicObjective {

@@ -12,8 +12,6 @@ import it.polimi.se2018.model.schema.GameColor;
 
 /**
  * Represents public objective card that checks that in the column are located dice of as many colours as possible.
- *
- * @author Angelo Nasole
  * @since 09/05/2018
  */
 

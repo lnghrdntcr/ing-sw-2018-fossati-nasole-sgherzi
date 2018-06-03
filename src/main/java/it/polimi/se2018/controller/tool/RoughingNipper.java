@@ -11,6 +11,9 @@ import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.ChangeDiceNumberEvent;
 import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 
+/**
+ * Class for ToolCard 1: Pinza sgrossatrice
+ */
 public class RoughingNipper extends Tool {
     @Override
     public boolean isUsable(GameTableMultiplayer model, TurnState currentState) {

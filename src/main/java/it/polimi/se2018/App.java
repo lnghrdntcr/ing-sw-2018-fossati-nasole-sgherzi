@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Hello world!
+ * The main entry point
  **/
 
 public class App {

@@ -8,7 +8,6 @@ import java.awt.*;
 
 /**
  * Class that represents the Public Objective `Sfumature Chiare`.
- * @author Francesco Sgherzi
  * @since 11/05/2018
  */
 public class LightShades extends PublicObjective  {

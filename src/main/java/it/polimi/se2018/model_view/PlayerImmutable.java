@@ -5,7 +5,6 @@ import it.polimi.se2018.model.schema.Schema;
 
 /**
  * Player to be used in View
- * @author Francesco Sgherzi
  * @since 18/05/2018
  */
 public class PlayerImmutable {

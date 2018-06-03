@@ -9,11 +9,14 @@ import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
 
-public class PlaceRedrawedDiceState extends State {
+/**
+ * A state that handle the intermediate state after using {@link it.polimi.se2018.controller.tool.FirmPastaBrush}
+ */
+public class PlaceRedrawnDiceState extends State {
     private final State oldState;
     private final DiceFace redrawnDiceFace;
 
-    public PlaceRedrawedDiceState(Controller controller, State oldState, DiceFace redrawnDiceFace, String playerName, int diceNumberOnDraftBoard) {
+    public PlaceRedrawnDiceState(Controller controller, State oldState, DiceFace redrawnDiceFace, String playerName, int diceNumberOnDraftBoard) {
         super(controller);
         this.oldState = oldState;
         this.redrawnDiceFace = redrawnDiceFace;

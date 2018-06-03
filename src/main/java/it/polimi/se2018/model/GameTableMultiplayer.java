@@ -4,7 +4,6 @@ import it.polimi.se2018.model.modelEvent.*;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
-import it.polimi.se2018.model.schema_card.SchemaCard;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.model.objectives.PublicObjective;
@@ -12,12 +11,9 @@ import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.ScoreHolder;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.List;
 
 /**
  * The main model entry point for multiplayer
@@ -181,7 +177,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         DiceFace df = draftBoard.removeDice(diceIndex);
         p.getSchema().setDiceFace(point, df);
         dispatchEvent(new SchemaChangedEvent("placeDice", playerName, p.getSchema().clone()));
-        dispatchEvent(new DraftBoardChagedEvent("placeDice", null, draftBoard.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent("placeDice", null, draftBoard.getImmutableInstance()));
     }
 
 
@@ -226,7 +222,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         draftBoard.removeDice(diceIndex);
         draftBoard.addDice(new DiceFace(df.getColor(), df.getNumber() + direction));
 
-        dispatchEvent(new DraftBoardChagedEvent("increaseDecreaseDice", null, draftBoard.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent("increaseDecreaseDice", null, draftBoard.getImmutableInstance()));
     }
 
 
@@ -243,7 +239,7 @@ public class GameTableMultiplayer extends Observable<Event> {
 
         draftBoard.addDice(oldDfHolder);
         diceHolder.addDice(turn, oldDfDraft);
-        dispatchEvent(new DraftBoardChagedEvent("swapDraftDiceWithHolder", null, draftBoard.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent("swapDraftDiceWithHolder", null, draftBoard.getImmutableInstance()));
         dispatchEvent(new DiceHolderChangedEvent("swapDraftDiceWithHolder", null, diceHolder.getImmutableInstance()));
     }
 
@@ -261,7 +257,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         DiceFace df = draftBoard.removeDice(index);
         df = new DiceFace(df.getColor(), new Random().nextInt(6) + 1);
         draftBoard.addDice(df);
-        if (singal) dispatchEvent(new DraftBoardChagedEvent("redrawDice", null, draftBoard.getImmutableInstance()));
+        if (singal) dispatchEvent(new DraftBoardChangedEvent("redrawDice", null, draftBoard.getImmutableInstance()));
         return df;
     }
 
@@ -273,7 +269,7 @@ public class GameTableMultiplayer extends Observable<Event> {
             redrawDice(0, false);
         }
 
-        dispatchEvent(new DraftBoardChagedEvent("redrawAllDice", null, draftBoard.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent("redrawAllDice", null, draftBoard.getImmutableInstance()));
     }
 
     /**
@@ -285,7 +281,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         DiceFace df = draftBoard.removeDice(index);
         df = new DiceFace(df.getColor(), 7 - df.getNumber());
         draftBoard.addDice(df);
-        dispatchEvent(new DraftBoardChagedEvent("flipDice", null, draftBoard.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent("flipDice", null, draftBoard.getImmutableInstance()));
     }
 
     /**
@@ -308,7 +304,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         draftBoard.putBackDice(index);
         draftBoard.drawSingleDice();
         DiceFace df = draftBoard.getDiceFace(draftBoard.getDiceNumber() - 1);
-        dispatchEvent(new DraftBoardChagedEvent("putBackAndRedrawDice", null, draftBoard.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent("putBackAndRedrawDice", null, draftBoard.getImmutableInstance()));
         return df;
     }
 
@@ -320,7 +316,7 @@ public class GameTableMultiplayer extends Observable<Event> {
      */
     public void changeDiceNumber(int index, int number) {
         draftBoard.addDice(new DiceFace(draftBoard.removeDice(index).getColor(), number));
-        dispatchEvent(new DraftBoardChagedEvent("changeDiceNumber", null, draftBoard.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent("changeDiceNumber", null, draftBoard.getImmutableInstance()));
     }
 
     /**

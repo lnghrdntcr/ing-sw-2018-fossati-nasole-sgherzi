@@ -7,7 +7,6 @@ import java.rmi.RemoteException;
 
 /**
  * The LocalProxy, retained by the server.
- * @author Francesco Sgherzi
  * @since 23/05/2018
  */
 public class LocalProxyRMI extends LocalProxy implements LocalProxyRMIInterface{

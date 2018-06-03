@@ -3,10 +3,13 @@ package it.polimi.se2018.model.modelEvent;
 import it.polimi.se2018.model_view.DraftBoardImmutable;
 import it.polimi.se2018.utils.Event;
 
-public class DraftBoardChagedEvent extends ModelEvent {
+/**
+ * Event that is used to inform that the DraftBoard has been changed
+ */
+public class DraftBoardChangedEvent extends ModelEvent {
     DraftBoardImmutable draftBoardImmutable;
 
-    public DraftBoardChagedEvent(String emitter, String player, DraftBoardImmutable draftBoardImmutable) {
+    public DraftBoardChangedEvent(String emitter, String player, DraftBoardImmutable draftBoardImmutable) {
         super(emitter, player);
         this.draftBoardImmutable = draftBoardImmutable;
     }

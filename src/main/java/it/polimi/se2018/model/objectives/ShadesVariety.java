@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 /**
  * Class that represents the Public Objective `Sfumature diverse`
- * @author Francesco Sgherzi
  * @since 11/05/2018
  */
 public class ShadesVariety extends PublicObjective  {

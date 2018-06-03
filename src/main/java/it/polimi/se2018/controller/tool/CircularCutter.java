@@ -8,6 +8,9 @@ import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.view.viewEvent.SwapDiceFaceWithTurnHolderEvent;
 
+/**
+ * Class for ToolCard 5: Taglierina circolare
+ */
 public class CircularCutter extends Tool {
     @Override
     public boolean isUsable(GameTableMultiplayer model, TurnState currentState) {

@@ -11,6 +11,9 @@ import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 
+/**
+ * Class for ToolCard 11: Diluente per pasta salda
+ */
 public class FirmPastaDiluent extends Tool {
     @Override
     public boolean isUsable(GameTableMultiplayer model, TurnState currentState) {

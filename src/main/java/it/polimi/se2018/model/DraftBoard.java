@@ -11,7 +11,6 @@ import java.util.Random;
 /**
  * The DraftBoard that holds the dices drown in that turn.
  *
- * @author Francesco Sgherzi
  * @since 09/05/2018
  */
 public class DraftBoard implements ImmutableCloneable<DraftBoardImmutable>{

@@ -11,7 +11,6 @@ import java.util.EnumMap;
 
 /**
  * Class that represents the Public Objective `Varietà di colore`
- * @author Francesco Sgherzi
  * @since 11/05/2018
  */
 public class ColorVariety extends PublicObjective {
