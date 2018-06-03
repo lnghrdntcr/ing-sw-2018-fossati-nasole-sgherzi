@@ -123,7 +123,7 @@ public class Controller extends Observable<Event> implements Observer<Event> {
         // this.resetActionTimeout();
         // or
         // that?
-        this.actionTimeoutThread.interrupt();
+        this.beginTime = System.currentTimeMillis();
         state = state.handleEvent(message, model);
         this.startActionTimeout();
 

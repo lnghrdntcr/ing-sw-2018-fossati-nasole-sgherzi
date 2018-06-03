@@ -67,7 +67,7 @@ public class App {
         int numPlayers = Integer.parseInt(args[1]);
         String path = null;
 
-        if(args.length > 2){
+        if(args.length == 4){
             // It means that also the external config file is passed as an argument... maybe.
             if(args[2].equals("--config") || args[2].startsWith("-c ")){
                 path = args[3];
