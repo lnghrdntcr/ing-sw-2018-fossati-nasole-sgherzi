@@ -65,8 +65,9 @@ public class Controller extends Observable<Event> implements Observer<Event> {
                 try {
                     Thread.sleep(1000);
                     Log.i("Remaining " + (this.actionTimeout / 1000L - this.getTimeout()) + " seconds");
-                } catch (InterruptedException ignored) {
-                    Log.d("The actionTimeoutThread was interrupted as an action was performed.");
+                } catch (InterruptedException e) {
+                    Log.d("ActionTimeoutThread was interrupted, well... This may be a problem.");
+                    e.printStackTrace();
                 }
             }
 
