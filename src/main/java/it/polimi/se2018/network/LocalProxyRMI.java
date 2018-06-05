@@ -23,7 +23,7 @@ public class LocalProxyRMI extends LocalProxy implements LocalProxyRMIInterface{
         try {
             client.sendEventToClient(event);
         } catch (RemoteException e) {
-            Log.e("Failed to send modelEvent to client." + e.getMessage());
+            Log.e("Failed to send Event to client." + e.getMessage());
         }
     }
 

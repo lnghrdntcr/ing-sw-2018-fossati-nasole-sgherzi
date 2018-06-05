@@ -7,7 +7,9 @@ import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 abstract public class View extends Observable<ViewEvent> implements Observer<Event> {
 
-    String player;
+    private String player;
+
+    private boolean connected = true;
 
     public View(String player) {
         this.player = player;
@@ -15,5 +17,13 @@ abstract public class View extends Observable<ViewEvent> implements Observer<Eve
 
     public String getPlayer() {
         return player;
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    protected void setConnected(boolean connected) {
+        this.connected = connected;
     }
 }

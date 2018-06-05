@@ -9,8 +9,7 @@ public class VirtualView extends View {
 
     public VirtualView(String player, LocalProxy localProxy) {
         super(player);
-        this.localProxy = localProxy;
-        localProxy.setView(this);
+        this.connect(localProxy);
     }
 
     @Override
@@ -22,5 +21,20 @@ public class VirtualView extends View {
         notify(event);
     }
 
+    public void disconnect(){
+        this.setConnected(false);
+        this.localProxy = null;
+    }
+
+    public void connect(LocalProxy localProxy){
+
+        if(this.localProxy != null) throw new IllegalStateException(this.getClass().getCanonicalName() + " Attempting to connect with an already connected View ");
+
+        this.localProxy = localProxy;
+        localProxy.setView(this);
+        
+        this.setConnected(true);
+
+    }
 
 }

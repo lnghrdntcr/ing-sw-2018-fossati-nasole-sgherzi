@@ -14,8 +14,4 @@ public class RemoteView extends View {
         System.out.println(message.toString());
     }
 
-    private void moHoSchiacciatoOBottone(){
-        notify(new TurnChangedEvent("Bottone", "playyyy", 0));
-    }
-
 }

@@ -9,7 +9,7 @@ import it.polimi.se2018.view.viewEvent.ViewEvent;
  * It exposes the correct methods to send and receive event to the client
  */
 abstract public class LocalProxy {
-    VirtualView view;
+    private VirtualView view;
 
     /**
      * Sends the specified event to the client
