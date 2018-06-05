@@ -4,6 +4,7 @@ import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.AskSchemaCardFaceEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.schema_card.SchemaCard;
+import it.polimi.se2018.model.schema_card.Side;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
@@ -15,6 +16,7 @@ import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
 import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  * The state that handles the start of the game and does all the setup things
@@ -69,5 +71,16 @@ public class GameSetupState extends State {
         }
 
         return this;
+    }
+
+    @Override
+    public State handleUserTimeOutEvent() {
+        for(int i=0; i<getController().getPlayersList().length; i++) {
+            if(getModel().getPlayerSchemacardFace(getController().getPlayersList()[i]) == null){
+                //here the player does not have any schemacardface selected, selects the first card
+                getModel().setPlayerSchema(getController().getPlayersList()[i], schemaCardList.get(i*2).getFace(Math.random()>0.5?Side.FRONT:Side.BACK));
+            }
+        }
+        return new TurnState(getController(), getModel(),false, false);
     }
 }

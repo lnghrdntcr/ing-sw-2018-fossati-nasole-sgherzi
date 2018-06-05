@@ -45,15 +45,6 @@ public class TurnState extends State {
 
     }*/
 
-    private State handlePlayerTimeout(PlayerTimeoutEvent event) {
-
-        // TODO: What should I be doing if the player does not perform an action for {actionTime} seconds?
-        // Add things to do here and then...
-
-        return this.handleEndTurnEvent(new EndTurnEvent(event.getEmitterName(), event.getPlayerName()));
-
-    }
-
     /**
      * Handles the incoming UseToolcardEvent.
      * @param event The event to be handled.
@@ -122,6 +113,11 @@ public class TurnState extends State {
 
         return new TurnState(this.getController(),getModel(), true, this.hasUsedToolcard);
 
+    }
+
+    @Override
+    public State handleUserTimeOutEvent() {
+        return this.handleEndTurnEvent(new EndTurnEvent("UserTimeout", ""));
     }
 
     /**

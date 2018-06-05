@@ -25,9 +25,14 @@ public class GameEndState extends State {
         // TODO: Add the logic to do other stuff eg. write things to file.
     }
 
+    @Override
+    public State handleUserTimeOutEvent() {
+        //Basically do nothing at all
+        return this;
+    }
 
 
-     /**
+    /**
      * The event handler for the EndGameEvent triggered.
      * @return Null every time, as the game is up at this point.
      * @throws IllegalArgumentException If the model is null

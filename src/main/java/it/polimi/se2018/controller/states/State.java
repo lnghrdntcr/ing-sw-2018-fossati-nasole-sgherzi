@@ -50,6 +50,8 @@ public abstract class State {
         return this;
     }
 
+    public abstract State handleUserTimeOutEvent();
+
 
     public Controller getController() {
         return controller;

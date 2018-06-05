@@ -48,4 +48,10 @@ public class PlaceRedrawnDiceState extends State {
         }
 
     }
+
+    @Override
+    public State handleUserTimeOutEvent() {
+        //if the user timed out, simply do not let him place any dice
+        return oldState;
+    }
 }

@@ -479,4 +479,11 @@ public class GameTableMultiplayer extends Observable<Event> {
     public int getDiceNumberOnDraftBoard(){
         return draftBoard.getDiceNumber();
     }
+
+    /**
+     * @return the schema card face selected by a player
+     */
+    public SchemaCardFace getPlayerSchemacardFace(String playerName){
+        return getPlayerByName(playerName).getSchema().getSchemaCardFace();
+    }
 }

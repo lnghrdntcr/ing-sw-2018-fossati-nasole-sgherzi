@@ -48,4 +48,10 @@ public class PlaceRedrawnWithNumberDiceState extends State {
         }
 
     }
+
+    @Override
+    public State handleUserTimeOutEvent() {
+        //If the user disconnected or timed out, simply return, leaving the dice as it is
+        return oldState;
+    }
 }
