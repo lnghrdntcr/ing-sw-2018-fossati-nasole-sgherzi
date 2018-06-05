@@ -46,7 +46,7 @@ public class ManualCutter extends Tool {
             if(tempSchema.isDiceAllowed(ev.getDestination(1), tempDice, SchemaCardFace.Ignore.NOTHING)){
                 model.moveDice(ev.getPlayerName(), ev.getSource(0), ev.getDestination(0), false);
                 model.moveDice(ev.getPlayerName(), ev.getSource(1), ev.getDestination(1), true);
-                return new TurnState(controller, state.isDicePlaced(), true);
+                return new TurnState(controller, model, state.isDicePlaced(), true);
             }else{
                 Log.w(getClass().getCanonicalName()+": second move not allowed!");
                 return state;

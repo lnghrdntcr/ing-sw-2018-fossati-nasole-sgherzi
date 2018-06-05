@@ -29,10 +29,10 @@ public class FirmPastaBrush extends Tool {
 
             if (model.getPlayerSchemaCopy(ev.getPlayerName()).isDiceAllowedSomewhere(redrawed, SchemaCardFace.Ignore.NOTHING)) {
                 //the diceface can be placed
-                return new PlaceRedrawnDiceState(controller, new TurnState(controller, state.isDicePlaced(), true), redrawed, ev.getPlayerName(), model.getDiceNumberOnDraftBoard()-1);
+                return new PlaceRedrawnDiceState(controller, model, new TurnState(controller, model, state.isDicePlaced(), true), redrawed, ev.getPlayerName(), model.getDiceNumberOnDraftBoard()-1);
             } else {
                 //the diceface cannot be placed
-                return new TurnState(controller, state.isDicePlaced(), true);
+                return new TurnState(controller, model, state.isDicePlaced(), true);
             }
 
         } catch (Exception e) {

@@ -3,6 +3,8 @@ package it.polimi.se2018.network;
 import it.polimi.se2018.model.modelEvent.TurnChangedEvent;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.view.View;
+import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -65,11 +67,11 @@ public class LocalProxySocket extends LocalProxy {
         @Override
         public void run() {
             Log.d("Listener thread started for " + LocalProxySocket.this.remoteConnection.getInetAddress());
-            Event event;
+            ViewEvent event;
             try {
                 while (goAhead && !LocalProxySocket.this.remoteConnection.isClosed()) {
                     try {
-                        event = (Event) objectInputStream.readObject();
+                        event = (ViewEvent) objectInputStream.readObject();
                         Log.d("Received " + event);
                         LocalProxySocket.this.dispatchEventToVirtualView(event);
                     } catch (ClassNotFoundException | ClassCastException e) {

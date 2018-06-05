@@ -1,6 +1,6 @@
 package it.polimi.se2018.controller;
 
-import it.polimi.se2018.view.viewEvent.PlayerTimeoutEvent;
+import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.controller.states.GameSetupState;
 import it.polimi.se2018.controller.states.State;
 import it.polimi.se2018.controller.tool.*;
@@ -8,6 +8,7 @@ import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.objectives.*;
 import it.polimi.se2018.utils.*;
 import it.polimi.se2018.view.View;
+import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +16,7 @@ import java.util.Collections;
 /**
  * The main Controller class that handles the communication between the Model and the Views
  */
-public class Controller extends Observable<Event> implements Observer<Event> {
+public class Controller extends Observable<Event> implements Observer<ViewEvent> {
 
     private GameTableMultiplayer model;
     private State state;
@@ -54,7 +55,7 @@ public class Controller extends Observable<Event> implements Observer<Event> {
 
         this.startActionTimeout();
 
-        state = new GameSetupState(this);
+        state = new GameSetupState(this, model);
     }
 
     private void startActionTimeout() {
@@ -70,8 +71,9 @@ public class Controller extends Observable<Event> implements Observer<Event> {
                 }
             }
 
-            this.update(new PlayerTimeoutEvent(this.getClass().getName(), this.model.getCurrentPlayerName()));
-
+            //this.update(new PlayerTimeoutEvent(this.getClass().getName(), this.model.getCurrentPlayerName()));
+            //TODO: chiamare il metodo sullo stato corrente
+            //TODO: inviare messaggio ai clients
         });
 
         this.actionTimeoutThread.start();
@@ -118,7 +120,7 @@ public class Controller extends Observable<Event> implements Observer<Event> {
     }
 
     @Override
-    public void update(Event message) {
+    public void update(ViewEvent message) {
         // This
         // this.resetActionTimeout();
         // or

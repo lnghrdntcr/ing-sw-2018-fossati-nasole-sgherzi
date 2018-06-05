@@ -1,10 +1,11 @@
 package it.polimi.se2018.view.viewEvent;
 
+import it.polimi.se2018.controller.states.State;
 import it.polimi.se2018.utils.Event;
 
 import java.awt.*;
 
-public class PlaceDiceEvent extends Event {
+public class PlaceDiceEvent extends ViewEvent {
 
     private Point point;
     private int diceFaceIndex;
@@ -22,5 +23,10 @@ public class PlaceDiceEvent extends Event {
 
     public Point getPoint() {
         return point;
+    }
+
+    @Override
+    public State visit(State state) {
+        return state.handlePlaceDiceEvent(this);
     }
 }

@@ -7,7 +7,10 @@ import it.polimi.se2018.model.schema_card.SchemaCard;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.viewEvent.EndTurnEvent;
+import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 import it.polimi.se2018.view.viewEvent.SchemaCardSelectedEvent;
+import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
 
 import java.io.FileNotFoundException;
 import java.util.Collections;
@@ -19,8 +22,8 @@ import java.util.List;
 public class GameSetupState extends State {
     private List<SchemaCard> schemaCardList;
 
-    public GameSetupState(Controller controller) {
-        super(controller);
+    public GameSetupState(Controller controller, GameTableMultiplayer model) {
+        super(controller, model);
 
         try {
             schemaCardList=SchemaCard.loadSchemaCardsFromJson(Settings.SCHEMACARD_DATABASE);
@@ -40,21 +43,14 @@ public class GameSetupState extends State {
 
     }
 
-    @Override
-    public State handleEvent(Event event, GameTableMultiplayer model) {
-
-        if(event instanceof SchemaCardSelectedEvent) return handleSchemaCardSelection((SchemaCardSelectedEvent) event, model);
-
-        return this;
-    }
 
     /**
      * Handle the selection of a SchemaCardFace by a player
      * @param event the event received
-     * @param model the model to modify
      * @return the new state of the game
      */
-    private State handleSchemaCardSelection(SchemaCardSelectedEvent event, GameTableMultiplayer model) {
+    @Override
+    public State handleSchemaCardSelectedEvent(SchemaCardSelectedEvent event) {
 
         int playerIndex =-1;
         for(int i=0; i<getController().getPlayersList().length; i++) {
@@ -66,10 +62,10 @@ public class GameSetupState extends State {
 
         if(playerIndex==-1) throw new IllegalArgumentException("Player not found: "+event.getPlayerName());
 
-        model.setPlayerSchema(event.getPlayerName(), schemaCardList.get(playerIndex*2+event.getSchemaCardId()).getFace(event.getSide()));
+        getModel().setPlayerSchema(event.getPlayerName(), schemaCardList.get(playerIndex*2+event.getSchemaCardId()).getFace(event.getSide()));
 
-        if(model.allPlayersHaveSelectedSchemaCardFace()){
-            return new TurnState(getController(), false, false);
+        if(getModel().allPlayersHaveSelectedSchemaCardFace()){
+            return new TurnState(getController(), getModel(),false, false);
         }
 
         return this;

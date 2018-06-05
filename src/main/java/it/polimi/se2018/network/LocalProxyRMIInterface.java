@@ -1,6 +1,7 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.utils.Event;
+import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -13,5 +14,5 @@ public interface LocalProxyRMIInterface extends Remote {
      * @param event the
      * @throws RemoteException if an error occours
      */
-    public void sendEventToServer(Event event) throws RemoteException;
+    public void sendEventToServer(ViewEvent event) throws RemoteException;
 }

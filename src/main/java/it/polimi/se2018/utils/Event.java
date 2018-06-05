@@ -1,5 +1,7 @@
 package it.polimi.se2018.utils;
 
+import it.polimi.se2018.controller.states.State;
+
 import java.io.Serializable;
 
 /**
@@ -28,7 +30,9 @@ public abstract class Event implements Serializable {
         return "Event{" +
                 "player='" + player + '\'' +
                 ", emitter='" + emitter + '\'' +
-                ", class='" + getClass().getSimpleName() +'\''+
+                ", class='" + getClass().getSimpleName() + '\'' +
                 '}';
     }
+
+
 }

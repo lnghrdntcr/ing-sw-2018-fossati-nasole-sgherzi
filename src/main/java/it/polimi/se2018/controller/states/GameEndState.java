@@ -4,7 +4,12 @@ import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.EndGameEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.utils.Event;
+import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.ScoreHolder;
+import it.polimi.se2018.view.viewEvent.EndTurnEvent;
+import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
+import it.polimi.se2018.view.viewEvent.SchemaCardSelectedEvent;
+import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
 
 import java.util.*;
 
@@ -15,30 +20,24 @@ import java.util.*;
 public class GameEndState extends State {
 
     public GameEndState(Controller controller, GameTableMultiplayer model) {
-        super(controller);
-        this.computeScore(model);
+        super(controller, model);
+        this.computeScore();
         // TODO: Add the logic to do other stuff eg. write things to file.
     }
 
 
 
-    @Override
-    public State handleEvent(Event event, GameTableMultiplayer model) {
-        return null;
-    }
-
      /**
      * The event handler for the EndGameEvent triggered.
-     * @param model The model.
      * @return Null every time, as the game is up at this point.
      * @throws IllegalArgumentException If the model is null
      * @throws IllegalStateException If there are no players on which compute the score.
      */
-    private void computeScore(GameTableMultiplayer model){
+    private void computeScore(){
 
-        if(model == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Model cannot be null.");
+        if(getModel() == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Model cannot be null.");
 
-        ArrayList<ScoreHolder> scoreHolders = model.computeAllScores();
+        ArrayList<ScoreHolder> scoreHolders = getModel().computeAllScores();
 
         if(scoreHolders.isEmpty()) throw new IllegalStateException(this.getClass().getCanonicalName() + ": There are no players on which compute the score.");
         if(scoreHolders.size() != 1) Collections.sort(scoreHolders);

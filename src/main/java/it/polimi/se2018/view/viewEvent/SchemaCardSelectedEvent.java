@@ -1,10 +1,11 @@
 package it.polimi.se2018.view.viewEvent;
 
+import it.polimi.se2018.controller.states.State;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model.schema_card.Side;
 import it.polimi.se2018.utils.Event;
 
-public class SchemaCardSelectedEvent extends Event {
+public class SchemaCardSelectedEvent extends ViewEvent {
 
     private final Side side;
     private int schemaCardId;
@@ -24,5 +25,10 @@ public class SchemaCardSelectedEvent extends Event {
 
     public Side getSide() {
         return side;
+    }
+
+    @Override
+    public State visit(State state) {
+        return state.handleSchemaCardSelectedEvent(this);
     }
 }

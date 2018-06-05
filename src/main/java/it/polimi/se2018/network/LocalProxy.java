@@ -2,6 +2,7 @@ package it.polimi.se2018.network;
 
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.view.VirtualView;
+import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 /**
  * A class that represents the remote client on the server side.
@@ -20,7 +21,7 @@ abstract public class LocalProxy {
      * Dipatch a previously received event to the connected {@link VirtualView}
      * @param event the event to dispatch
      */
-    public void dispatchEventToVirtualView(Event event){
+    public void dispatchEventToVirtualView(ViewEvent event){
         view.dispatchProxyEvent(event);
     }
 

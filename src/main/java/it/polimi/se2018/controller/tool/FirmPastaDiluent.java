@@ -26,7 +26,7 @@ public class FirmPastaDiluent extends Tool {
         try {
             model.putBackAndRedrawDice(ev.getDicePosition());
 
-            return new PlaceRedrawnWithNumberDiceState(controller, new TurnState(controller, state.isDicePlaced(), true),
+            return new PlaceRedrawnWithNumberDiceState(controller, model, new TurnState(controller, model, state.isDicePlaced(), true),
                     ev.getPlayerName(), model.getDiceNumberOnDraftBoard() - 1);
         } catch (Exception e) {
             Log.w("W");

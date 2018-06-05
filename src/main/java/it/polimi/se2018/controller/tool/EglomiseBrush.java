@@ -31,7 +31,7 @@ public class EglomiseBrush extends Tool {
         if (tempSchema.isDiceAllowed(e.getDestination(), tempDiceFace,SchemaCardFace.Ignore.COLOR)){
             model.useTokenOnToolcard(event.getPlayerName(), this);
             model.moveDice(name, e.getSource(), e.getDestination(), true);
-            return new TurnState(controller, state.isDicePlaced(), true);
+            return new TurnState(controller, model, state.isDicePlaced(), true);
         }
     else{
             Log.w("Destination not allowed");

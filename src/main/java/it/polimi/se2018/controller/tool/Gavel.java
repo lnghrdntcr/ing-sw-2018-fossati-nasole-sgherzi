@@ -24,7 +24,7 @@ public class Gavel extends Tool {
     public State use(Controller controller, GameTableMultiplayer model, TurnState state, Event event) {
         try {
             model.redrawAllDice();
-            return new TurnState(controller, state.isDicePlaced(), true);
+            return new TurnState(controller, model, state.isDicePlaced(), true);
         } catch (Exception e){
             Log.w("Use not allowed: "+e.getMessage());
             return state;

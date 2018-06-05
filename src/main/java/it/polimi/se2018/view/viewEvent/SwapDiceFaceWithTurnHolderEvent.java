@@ -1,5 +1,7 @@
 package it.polimi.se2018.view.viewEvent;
 
+import it.polimi.se2018.controller.states.State;
+
 public class SwapDiceFaceWithTurnHolderEvent extends UseToolcardEvent {
     private final int draftBoardIndex;
     private final int turn;
@@ -23,4 +25,6 @@ public class SwapDiceFaceWithTurnHolderEvent extends UseToolcardEvent {
     public int getIndexInTurn() {
         return indexInTurn;
     }
+
+
 }

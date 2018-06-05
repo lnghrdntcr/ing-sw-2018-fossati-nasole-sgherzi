@@ -22,7 +22,7 @@ public class CircularCutter extends Tool {
         SwapDiceFaceWithTurnHolderEvent ev = (SwapDiceFaceWithTurnHolderEvent) event;
         try{
             model.swapDraftDiceWithHolder(ev.getDraftBoardIndex(), ev.getTurn(), ev.getIndexInTurn());
-            return new TurnState(controller, state.isDicePlaced(), true);
+            return new TurnState(controller, model, state.isDicePlaced(), true);
         }catch (Exception e){
 
             return state;

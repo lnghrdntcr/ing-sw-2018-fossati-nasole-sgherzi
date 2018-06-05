@@ -8,6 +8,7 @@ import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
+import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
 
 /**
  * A state that handle the intermediate state after using {@link it.polimi.se2018.controller.tool.FirmPastaBrush}
@@ -16,21 +17,21 @@ public class PlaceRedrawnDiceState extends State {
     private final State oldState;
     private final DiceFace redrawnDiceFace;
 
-    public PlaceRedrawnDiceState(Controller controller, State oldState, DiceFace redrawnDiceFace, String playerName, int diceNumberOnDraftBoard) {
-        super(controller);
+    public PlaceRedrawnDiceState(Controller controller, GameTableMultiplayer model, State oldState, DiceFace redrawnDiceFace, String playerName, int diceNumberOnDraftBoard) {
+        super(controller, model);
         this.oldState = oldState;
         this.redrawnDiceFace = redrawnDiceFace;
         getController().dispatchEvent(new AskPlaceRedrawDiceEvent(getClass().getCanonicalName(), playerName, diceNumberOnDraftBoard));
     }
 
     @Override
-    public State handleEvent(Event event, GameTableMultiplayer model) {
+    public State handleToolcardEvent(UseToolcardEvent event) {
         try{
             PlaceAnotherDiceEvent ev = (PlaceAnotherDiceEvent) event;
             //checks if user is placing the redrawn face
-            if(model.getDiceFaceByIndex(ev.getDiceFaceIndex()).equals(redrawnDiceFace)){
-                if(model.isDiceAllowed(ev.getPlayerName(), ev.getPoint(), redrawnDiceFace, SchemaCardFace.Ignore.NOTHING )){
-                    model.placeDice(ev.getPlayerName(), ev.getDiceFaceIndex(), ev.getPoint());
+            if(getModel().getDiceFaceByIndex(ev.getDiceFaceIndex()).equals(redrawnDiceFace)){
+                if(getModel().isDiceAllowed(ev.getPlayerName(), ev.getPoint(), redrawnDiceFace, SchemaCardFace.Ignore.NOTHING )){
+                    getModel().placeDice(ev.getPlayerName(), ev.getDiceFaceIndex(), ev.getPoint());
                     return oldState;
                 }else{
                     Log.w(getClass().getCanonicalName()+": the dice face can't be placed here!");

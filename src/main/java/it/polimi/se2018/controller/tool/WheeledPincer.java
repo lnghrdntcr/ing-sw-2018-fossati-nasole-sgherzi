@@ -31,7 +31,7 @@ public class WheeledPincer extends Tool {
       }
 
       model.playerWillDropTurn(event.getPlayerName());
-      return new TurnState(controller, state.isDicePlaced(), true);
+      return new TurnState(controller, model, state.isDicePlaced(), true);
   }
 
 

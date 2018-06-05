@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.viewEvent;
+package it.polimi.se2018.controller.controllerEvent;
 
 import it.polimi.se2018.controller.controllerEvent.ControllerEvent;
 

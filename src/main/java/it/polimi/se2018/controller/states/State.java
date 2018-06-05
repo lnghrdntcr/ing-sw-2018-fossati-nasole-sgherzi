@@ -3,15 +3,19 @@ package it.polimi.se2018.controller.states;
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.utils.Event;
+import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.view.viewEvent.*;
 
 /**
  * A generic State used by the controller to handle a player event
  */
 public abstract class State {
     private Controller controller;
+    private GameTableMultiplayer model;
 
-    public State(Controller controller) {
+    public State(Controller controller, GameTableMultiplayer model) {
         this.controller = controller;
+        this.model = model;
     }
 
     /**
@@ -20,9 +24,38 @@ public abstract class State {
      * @param model the model to modify
      * @return the new State for the controller
      */
-    abstract public State handleEvent(Event event, GameTableMultiplayer model);
+    public State handleEvent(ViewEvent event, GameTableMultiplayer model){
+        return event.visit(this);
+    }
+
+
+    public State handleToolcardEvent(UseToolcardEvent event) {
+        Log.i(getClass().getCanonicalName()+": cannot handle ToolcardEvent here!");
+        return this;
+    }
+
+
+    public State handleEndTurnEvent(EndTurnEvent event) {
+        Log.i(getClass().getCanonicalName()+": cannot handle EndTurnEvent here!");
+        return this;
+    }
+
+    public State handlePlaceDiceEvent(PlaceDiceEvent event) {
+        Log.i(getClass().getCanonicalName()+": cannot handle PlaceDiceEvent here!");
+        return this;
+    }
+
+    public State handleSchemaCardSelectedEvent(SchemaCardSelectedEvent event) {
+        Log.i(getClass().getCanonicalName()+": cannot handle SchemaCardSelectedEvent here!");
+        return this;
+    }
+
 
     public Controller getController() {
         return controller;
+    }
+
+    public GameTableMultiplayer getModel() {
+        return model;
     }
 }

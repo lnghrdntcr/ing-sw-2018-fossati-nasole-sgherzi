@@ -9,6 +9,7 @@ import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceSelectingNumberEvent;
+import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
 
 /**
  * A state that handle the intermediate state after using {@link it.polimi.se2018.controller.tool.FirmPastaDiluent}
@@ -16,21 +17,21 @@ import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceSelectingNumberEvent;
 public class PlaceRedrawnWithNumberDiceState extends State {
     private final State oldState;
 
-    public PlaceRedrawnWithNumberDiceState(Controller controller, State oldState, String playerName, int diceNumberOnDraftBoard) {
-        super(controller);
+    public PlaceRedrawnWithNumberDiceState(Controller controller, GameTableMultiplayer model, State oldState, String playerName, int diceNumberOnDraftBoard) {
+        super(controller, model);
         this.oldState = oldState;
         getController().dispatchEvent(new AskPlaceRedrawDiceWithNumberSelectionEvent(getClass().getCanonicalName(), playerName, diceNumberOnDraftBoard));
     }
 
     @Override
-    public State handleEvent(Event event, GameTableMultiplayer model) {
+    public State handleToolcardEvent(UseToolcardEvent event) {
         try{
             PlaceAnotherDiceSelectingNumberEvent ev = (PlaceAnotherDiceSelectingNumberEvent) event;
             //checks if user is placing the redrawn face
-            if(ev.getDiceFaceIndex()==model.getDiceNumberOnDraftBoard()-1){
-                model.changeDiceNumber(ev.getDiceFaceIndex(), ev.getNumber());
-                if(model.isDiceAllowed(ev.getPlayerName(), ev.getPoint(), model.getDiceFaceByIndex(model.getDiceNumberOnDraftBoard()-1), SchemaCardFace.Ignore.NOTHING )){
-                    model.placeDice(ev.getPlayerName(), ev.getDiceFaceIndex(), ev.getPoint());
+            if(ev.getDiceFaceIndex()==getModel().getDiceNumberOnDraftBoard()-1){
+                getModel().changeDiceNumber(ev.getDiceFaceIndex(), ev.getNumber());
+                if(getModel().isDiceAllowed(ev.getPlayerName(), ev.getPoint(), getModel().getDiceFaceByIndex(getModel().getDiceNumberOnDraftBoard()-1), SchemaCardFace.Ignore.NOTHING )){
+                    getModel().placeDice(ev.getPlayerName(), ev.getDiceFaceIndex(), ev.getPoint());
                     return oldState;
                 }else{
                     Log.w(getClass().getCanonicalName()+": the dice face can't be placed here!");

@@ -26,7 +26,7 @@ public class RoughingNipper extends Tool {
 
         try {
             model.increaseDecreaseDice(ev.getDicePosition(), ev.getDicePosition());
-            return new TurnState(controller, state.isDicePlaced(), true);
+            return new TurnState(controller, model, state.isDicePlaced(), true);
         } catch (Exception e){
             Log.w("Unable to flip the dice: "+e.getMessage());
             return state;
