@@ -3,6 +3,7 @@ package it.polimi.se2018.network;
 import it.polimi.se2018.model.modelEvent.TurnChangedEvent;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -47,7 +48,7 @@ public class RemoteProxySocket extends RemoteProxy {
      * @param event the event that should me dispatched
      */
     @Override
-    void sendEventToServer(Event event) {
+    void sendEventToServer(ViewEvent event) {
         try {
             objectOutputStream.writeObject(event);
         } catch (IOException e) {

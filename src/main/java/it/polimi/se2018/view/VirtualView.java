@@ -32,7 +32,7 @@ public class VirtualView extends View {
 
         this.localProxy = localProxy;
         localProxy.setView(this);
-        
+
         this.setConnected(true);
 
     }

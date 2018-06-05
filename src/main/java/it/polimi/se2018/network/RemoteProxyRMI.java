@@ -2,6 +2,7 @@ package it.polimi.se2018.network;
 
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 import java.rmi.RemoteException;
 
@@ -18,9 +19,9 @@ public class RemoteProxyRMI extends RemoteProxy implements RemoteProxyRMIInterfa
      * @param event The modelEvent to be sent.
      */
     @Override
-    void sendEventToServer(Event event) {
+    void sendEventToServer(ViewEvent event) {
         try {
-            localProxyRMI.sendEventToServer(event);
+            localProxyRMI.sendEventToServer( event);
         } catch (RemoteException e) {
             Log.e("Failed to send modelEvent to server: " + e.getMessage());
         }
