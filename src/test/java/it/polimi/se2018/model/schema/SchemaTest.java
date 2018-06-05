@@ -3,6 +3,7 @@ package it.polimi.se2018.model.schema;
 import it.polimi.se2018.model.schema_card.SchemaCard;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model.schema_card.Side;
+import it.polimi.se2018.utils.Settings;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -67,6 +68,22 @@ public class SchemaTest {
         assertNull(virtus.getDiceFace(new Point(0, 0)));
         virtus.removeDiceFace(new Point(1, 3));
         assertNull(virtus.getDiceFace(new Point(1, 3)));
+
+        virtus.setDiceFace(new Point(1, 3), new DiceFace(GameColor.RED, 2));
+
+        // Try to set a DiceFace in a non empty place.
+        try{
+            virtus.setDiceFace(new Point(1, 3), new DiceFace(GameColor.RED, 2));
+            fail();
+            empty.setDiceFace(new Point(3, 1), new DiceFace(GameColor.BLUE, 1));
+            fail();
+        } catch (IllegalStateException ignored){}
+
+        // Try to set a DiceFace which is null.
+        try{
+            virtus.setDiceFace(new Point(1, 4), null);
+            fail();
+        } catch (IllegalArgumentException ignored){}
 
         try{
             virtus.setDiceFace(new Point(-1, 0), new DiceFace(GameColor.RED, 2));
@@ -138,6 +155,7 @@ public class SchemaTest {
             empty.isDiceAllowed(new Point(1, -1), new DiceFace(GameColor.RED, 2), SchemaCardFace.Ignore.NOTHING);
             fail();
         }catch (IllegalArgumentException ignored){}
+
     }
 
     @Test
@@ -156,5 +174,42 @@ public class SchemaTest {
     public void getSchemaCardFace() {
         assertTrue(virtus.getSchemaCardFace().getName().equalsIgnoreCase("virtus"));
         assertTrue(empty.getSchemaCardFace().getName().equalsIgnoreCase("empty front"));
+    }
+
+
+    @Test
+    public void computeFreeSpaces() {
+
+        int freeSpaces = 20;
+
+        // Testing normal behaviour
+        assertEquals(freeSpaces, virtus.computeFreeSpaces());
+        virtus.setDiceFace(new Point(1, 3), new DiceFace(GameColor.RED, 2));
+        assertEquals(freeSpaces - 1, virtus.computeFreeSpaces());
+
+        for (int x = 0; x < Settings.CARD_WIDTH; x++) {
+            for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
+                empty.setDiceFace(new Point(x, y), new DiceFace(GameColor.RED, 1));
+                assertEquals(--freeSpaces, empty.computeFreeSpaces());
+            }
+        }
+
+    }
+
+    @Test
+    public void cloneSchema(){
+        Schema clone = virtus.cloneSchema();
+
+        for (int x = 0; x < Settings.CARD_WIDTH; x++) {
+            for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
+                assertEquals(clone.getDiceFace(new Point(x, y)), virtus.getDiceFace(new Point(x, y)));
+            }
+        }
+
+    }
+
+
+    @Test
+    public void isDiceAllowedSomewhere() {
     }
 }

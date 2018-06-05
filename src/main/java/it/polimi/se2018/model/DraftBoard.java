@@ -6,7 +6,6 @@ import it.polimi.se2018.model_view.DraftBoardImmutable;
 import it.polimi.se2018.utils.Settings;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * The DraftBoard that holds the dices drown in that turn.
@@ -89,8 +88,7 @@ public class DraftBoard implements ImmutableCloneable<DraftBoardImmutable>{
      */
     public DiceFace[] getDices() {
 
-        if (this.getDiceNumber() == 0)
-            throw new IllegalStateException(this.getClass().getCanonicalName() + ": Cannot draw any more dice!");
+        if (this.getDiceNumber() == 0) throw new IllegalStateException(this.getClass().getCanonicalName() + ": Cannot draw any more dice!");
 
         return diceFaces.toArray(new DiceFace[0]);
 
@@ -108,8 +106,10 @@ public class DraftBoard implements ImmutableCloneable<DraftBoardImmutable>{
      * @param index the index of the dice to put back
      */
     public void putBackDice(int index){
+
         diceBag.putBackDice(diceFaces.get(index));
         diceFaces.remove(index);
+
     }
 
     /**
@@ -121,12 +121,12 @@ public class DraftBoard implements ImmutableCloneable<DraftBoardImmutable>{
 
     /**
      * Returns a dice in a specific position
-     * @param position position of the dice in the DraftBoard
-     * @return the DiceFace
+     * @param position The zero based position of the dice in the DraftBoard
+     * @return The DiceFace
      * @throws IllegalArgumentException if position is invalid
      */
     public DiceFace getDiceFace(int position){
-        if (position > this.getDiceNumber() || position < 0)
+        if (position >= this.getDiceNumber() || position < 0)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + "Trying to get an already taken dice or accessing a non existing position.");
 
         return diceFaces.get(position);

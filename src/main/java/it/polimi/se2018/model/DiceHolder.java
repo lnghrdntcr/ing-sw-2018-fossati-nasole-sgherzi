@@ -34,7 +34,7 @@ public class DiceHolder implements ImmutableCloneable<DiceHolderImmutable> {
         DiceFace removedDice;
         ArrayList<DiceFace> turnDices;
 
-        if (turn > Settings.TURNS)
+        if (turn >= Settings.TURNS)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Tryig to access a turn greater than " + Settings.TURNS);
 
         try {
@@ -63,7 +63,7 @@ public class DiceHolder implements ImmutableCloneable<DiceHolderImmutable> {
     public void addDice(int turn, DiceFace diceFace) {
 
         if (turn < 0) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Turn less than 0");
-        if (turn > Settings.TURNS)
+        if (turn >= Settings.TURNS)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Tryig to access a turn greater than " + Settings.TURNS);
         if (diceFace == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": diceFace cannot be null.");

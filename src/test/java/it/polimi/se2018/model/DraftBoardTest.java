@@ -2,9 +2,13 @@ package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
+import it.polimi.se2018.model_view.DraftBoardImmutable;
 import it.polimi.se2018.utils.Settings;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -158,5 +162,86 @@ public class DraftBoardTest {
         assertEquals(j, this.draftBoard.getDiceNumber());
       }
     }
+  }
+
+  @Test
+  public void putBackDice() {
+
+    // Testing normal behaviour
+    for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
+
+      this.draftBoard.drawDices(i);
+
+      for (int j = (2 * i); j > 0; j--) {
+        this.draftBoard.putBackDice(j); // As of here, i've drawn 2 * i dices
+      }
+
+      assertEquals(1, this.draftBoard.getDices().length);
+
+      // remove an additional dice to be prepared for the next turn
+      this.draftBoard.removeDice(0);
+
+    }
+
+  }
+
+  @Test
+  public void drawSingleDice() {
+    for (int i = 0; i <= Settings.MAX_NUM_PLAYERS ; i++) {
+      this.draftBoard.drawSingleDice();
+      assertEquals(i + 1, this.draftBoard.getDices().length);
+    }
+  }
+
+  @Test
+  public void getDiceFace() {
+
+    // Testing against an illegal position: Out of bounds.
+    try{
+      this.draftBoard.getDiceFace(this.draftBoard.getDiceNumber());
+      fail();
+    } catch (IllegalArgumentException ignored){}
+
+    // Testing against an illegal position: Negative number.
+    try{
+      this.draftBoard.getDiceFace(-1);
+      fail();
+    } catch(IllegalArgumentException ignored){}
+
+    // Testing normal behaviour.
+    for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
+
+      for (int j = 2 * i; j >= 0; j--) {
+        this.draftBoard.addDice(new DiceFace(GameColor.RED, 1));
+      }
+
+      for (int j = 2 * i; j >= 0; j--) {
+
+        assertEquals(GameColor.RED, this.draftBoard.getDiceFace(j).getColor());
+        assertEquals(1, this.draftBoard.getDiceFace(j).getNumber());
+      }
+
+    }
+  }
+
+  @Test
+  public void getImmutableInstance() {
+
+    for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
+      this.draftBoard.drawDices(i);
+
+      DraftBoardImmutable dfImmutable = this.draftBoard.getImmutableInstance();
+
+      assertTrue(Arrays.equals(dfImmutable.getDices(), this.draftBoard.getDices()));
+
+      for (int j = 0; j < 2 * i + 1; j++) {
+        this.draftBoard.removeDice(0);
+      }
+
+    }
+
+
+
+
   }
 }

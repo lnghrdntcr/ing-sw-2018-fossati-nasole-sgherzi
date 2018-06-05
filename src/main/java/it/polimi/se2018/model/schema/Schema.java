@@ -225,11 +225,15 @@ public class Schema {
         return true;
     }
 
+    /**
+     * Computes the number of empty spaces in the SchemaCard
+     * @return The number of empty spaces.
+     */
     public int computeFreeSpaces(){
 
         int freeSpaces = 0;
 
-        for (int x = 0; x < Settings.CARD_HEIGHT; x++) {
+        for (int x = 0; x < Settings.CARD_WIDTH; x++) {
             for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
                 if(this.diceFaces[x][y] == null) freeSpaces++;
             }
@@ -243,12 +247,17 @@ public class Schema {
         return schemaCardFace;
     }
 
-    public Schema clone() {
+    /**
+     * Clones the schema in order to apply local changes.
+     * @return A cloned schema.
+     */
+    public Schema cloneSchema() {
         Schema newSchema = new Schema(schemaCardFace);
         newSchema.diceFaces=this.diceFaces.clone();
         return newSchema;
     }
 
+    // TODO: Add docs
     public boolean isDiceAllowedSomewhere(DiceFace diceFace, SchemaCardFace.Ignore ignore){
         for (int x = 0; x < Settings.CARD_HEIGHT; x++) {
             for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
@@ -260,5 +269,6 @@ public class Schema {
         }
 
         return false;
+
     }
 }

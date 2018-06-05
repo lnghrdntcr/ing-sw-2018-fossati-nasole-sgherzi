@@ -176,7 +176,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         Player p = getPlayerByName(playerName);
         DiceFace df = draftBoard.removeDice(diceIndex);
         p.getSchema().setDiceFace(point, df);
-        dispatchEvent(new SchemaChangedEvent("placeDice", playerName, p.getSchema().clone()));
+        dispatchEvent(new SchemaChangedEvent("placeDice", playerName, p.getSchema().cloneSchema()));
         dispatchEvent(new DraftBoardChangedEvent("placeDice", null, draftBoard.getImmutableInstance()));
     }
 
@@ -331,7 +331,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         Player p = getPlayerByName(playerName);
         p.getSchema().setDiceFace(destination, p.getSchema().removeDiceFace(source));
 
-        if (lastMove) dispatchEvent(new SchemaChangedEvent("moveDice", playerName, p.getSchema().clone()));
+        if (lastMove) dispatchEvent(new SchemaChangedEvent("moveDice", playerName, p.getSchema().cloneSchema()));
     }
 
     //Turn stuff
@@ -449,7 +449,7 @@ public class GameTableMultiplayer extends Observable<Event> {
      * @return the requested copy of the Schema
      */
     public Schema getPlayerSchemaCopy(String playerName) {
-        return getPlayerByName(playerName).getSchema().clone();
+        return getPlayerByName(playerName).getSchema().cloneSchema();
     }
 
     public boolean isColorInDiceHolder(GameColor gameColor) {

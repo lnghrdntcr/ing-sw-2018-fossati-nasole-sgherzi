@@ -3,6 +3,7 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.model.schema.DiceBag;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
+import it.polimi.se2018.model_view.DiceHolderImmutable;
 import it.polimi.se2018.utils.Settings;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,7 @@ public class DiceHolderTest {
   public void setUp() throws Exception {
 
     this.diceHolder = new DiceHolder();
+
     // Adds two diceFace(s) for each turn.
     for(int i = 0; i < Settings.TURNS; i++ ){
       if(i != MISSING_TURN){
@@ -33,6 +35,13 @@ public class DiceHolderTest {
 
   @Test
   public void addDice() {
+
+    // Testing against a null diceFace.
+    try{
+      this.diceHolder.addDice(1, null);
+      fail();
+    } catch (IllegalArgumentException e){}
+
     // Testing against a turn not in range.
     try{
       this.diceHolder.addDice(Settings.TURNS , new DiceFace(GameColor.PURPLE, 2));
@@ -134,6 +143,37 @@ public class DiceHolderTest {
         this.diceHolder.getTurnDices(i);
       }
     }
+
+  }
+
+  @Test
+  public void getImmutableInstance() {
+
+    DiceHolderImmutable immutableDiceHolder = this.diceHolder.getImmutableInstance();
+
+    for (int i = 0; i < Settings.TURNS; i++) {
+      if(i != MISSING_TURN) assertTrue(Arrays.equals(immutableDiceHolder.getDiceFaces(i), this.diceHolder.getTurnDices(i)));
+    }
+
+
+  }
+
+  @Test
+  public void isColorPresent() {
+
+    // A new DiceHolder with all red dices in order to test the false result of this function.
+    DiceHolder actualDiceHolder = new DiceHolder();
+
+    for (int i = 0; i < Settings.TURNS; i++) {
+      actualDiceHolder.addDice(i, new DiceFace(GameColor.RED, 1));
+    }
+
+    for(GameColor gc: GameColor.values()){
+      assertTrue(this.diceHolder.isColorPresent(gc));
+    }
+
+    // As the `actualDiceHolder` was created only to have RED dices.
+    assertFalse(actualDiceHolder.isColorPresent(GameColor.BLUE));
 
   }
 }
