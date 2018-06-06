@@ -9,6 +9,7 @@ import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
+import it.polimi.se2018.view.viewEvent.PlayerDisconnectedEvent;
 import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
 
 /**
@@ -117,7 +118,7 @@ public class TurnState extends State {
 
     @Override
     public State handleUserTimeOutEvent() {
-        return this.handleEndTurnEvent(new EndTurnEvent("UserTimeout", ""));
+        return this.handleEndTurnEvent(new EndTurnEvent("UserTimeout", this.getModel().getCurrentPlayerName()));
     }
 
     /**

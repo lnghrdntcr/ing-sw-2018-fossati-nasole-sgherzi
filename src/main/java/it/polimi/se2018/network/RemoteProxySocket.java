@@ -52,7 +52,7 @@ public class RemoteProxySocket extends RemoteProxy {
         try {
             objectOutputStream.writeObject(event);
         } catch (IOException e) {
-            Log.e("Unbale to send an event to the server!");
+            Log.e("Unable to send an event to the server!");
         }
     }
 

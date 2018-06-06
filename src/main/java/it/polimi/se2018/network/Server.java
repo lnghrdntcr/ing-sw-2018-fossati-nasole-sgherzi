@@ -224,7 +224,8 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
      * When the required number of players are connected, starts the match
      */
     private void startGame() {
-        //TODO
+        // TODO
+        // Ma chi l'ha messo sto t0d0? spiegare
         gameStarted = true;
         //listenerThread.stop();
 

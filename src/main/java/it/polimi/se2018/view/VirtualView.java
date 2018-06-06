@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.network.LocalProxy;
 import it.polimi.se2018.utils.Event;
+import it.polimi.se2018.view.viewEvent.PlayerDisconnectedEvent;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 public class VirtualView extends View {
@@ -14,7 +15,7 @@ public class VirtualView extends View {
 
     @Override
     public void update(Event message) {
-        localProxy.sendEventToClient(message);
+        if(this.isConnected() && localProxy != null) localProxy.sendEventToClient(message);
     }
 
     public void dispatchProxyEvent(ViewEvent event) {
@@ -24,6 +25,7 @@ public class VirtualView extends View {
     public void disconnect(){
         this.setConnected(false);
         this.localProxy = null;
+        this.dispatchProxyEvent(new PlayerDisconnectedEvent(this.getClass().getName(), this.getPlayer()));
     }
 
     public void connect(LocalProxy localProxy){

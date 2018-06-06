@@ -4,6 +4,7 @@ import it.polimi.se2018.model.modelEvent.TurnChangedEvent;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.View;
+import it.polimi.se2018.view.viewEvent.PlayerDisconnectedEvent;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class LocalProxySocket extends LocalProxy {
 
     /**
      * Create a new proxy, associating the specified remoteConnection
+     *
      * @param remoteConnection the socket to associate with this instance of the proxy
      * @throws IOException if an error occours
      */
@@ -47,6 +49,7 @@ public class LocalProxySocket extends LocalProxy {
 
     /**
      * Sends the event to the connected client, using socket connection
+     *
      * @param event the event that should me dispatched
      */
     @Override
@@ -54,7 +57,10 @@ public class LocalProxySocket extends LocalProxy {
         try {
             objectOutputStream.writeObject(event);
         } catch (IOException e) {
-            Log.e("Unbale to send an event to the client!");
+            // If it catches an exception it means that the client is disconnected.
+            // TODO: send the PlayerDisconnectedEvent
+            this.getView().disconnect();
+            Log.e("Unable to send an event to the client, client disconnected!");
         }
     }
 
@@ -78,8 +84,8 @@ public class LocalProxySocket extends LocalProxy {
                         Log.e("Invalid event received: " + e.getMessage());
                     }
                 }
-            }catch (IOException e){
-                Log.d("ListenerThread: IOException: "+e.getMessage());
+            } catch (IOException e) {
+                Log.d("ListenerThread: IOException: " + e.getMessage());
             }
             Log.d("Client disconnected!");
         }

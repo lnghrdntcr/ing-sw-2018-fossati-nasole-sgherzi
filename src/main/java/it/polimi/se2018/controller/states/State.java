@@ -60,4 +60,9 @@ public abstract class State {
     public GameTableMultiplayer getModel() {
         return model;
     }
+
+    public State handlePlayerDisconnected(PlayerDisconnectedEvent playerDisconnectedEvent) {
+        this.getController().dispatchEvent(playerDisconnectedEvent);
+        return this;
+    }
 }

@@ -35,7 +35,7 @@ public class Observable<T> {
 
     /**
      * Notify the observers about changes in this class
-     * @param message the message to be passeg
+     * @param message the message to be passed
      */
     protected void notify(T message) {
         synchronized (observers) {
