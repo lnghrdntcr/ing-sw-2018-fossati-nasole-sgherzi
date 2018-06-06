@@ -32,4 +32,9 @@ public class NumberRestriction extends CellRestriction {
     public boolean isDiceAllowed(DiceFace diceFace) {
         return (number == diceFace.getNumber());
     }
+
+    @Override
+    public String toString() {
+        return Integer.toString(number);
+    }
 }

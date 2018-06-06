@@ -5,6 +5,12 @@
 * Angelo Nasole
 * Nicola Fossati
 
+## TODO
+* Aggiugnere un altro layer di comunicazione per eliminare serializable
+* Sistemare Toolcard oo
+* finire i test
+
+
 
 ## Caratteristiche file JSON per le carte schema
 Il file JSON deve essere un array di oggetti. Ogni oggetto deve avere due elementi di tipo SchemaCardFace: uno associato

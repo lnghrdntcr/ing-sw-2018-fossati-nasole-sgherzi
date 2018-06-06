@@ -16,4 +16,9 @@ public class NoRestriction extends CellRestriction {
     public boolean isDiceAllowed(DiceFace diceFace) {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

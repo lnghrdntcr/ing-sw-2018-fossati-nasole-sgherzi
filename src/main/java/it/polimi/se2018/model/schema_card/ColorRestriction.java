@@ -33,4 +33,9 @@ public class ColorRestriction extends CellRestriction {
     public boolean isDiceAllowed(DiceFace diceFace) {
         return diceFace.getColor().equals(color);
     }
+
+    @Override
+    public String toString() {
+        return color.toString();
+    }
 }
