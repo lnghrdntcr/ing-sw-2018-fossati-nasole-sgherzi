@@ -44,7 +44,13 @@ public class Settings {
      */
     public static final int POBJECTIVES_N = 3;
 
-    //TODO: this must become a resource!
-    public static final String SCHEMACARD_DATABASE="./gameData/resources/schemaCards/schemaCardBase.scf";
+    private static String schemaCardDatabase ="./gameData/resources/schemaCards/schemaCardBase.scf";
 
+    public static void setSchemaCardDatabase(String customSchemaCardPath) {
+        schemaCardDatabase = customSchemaCardPath;
+    }
+
+    public static String getSchemaCardDatabase(){
+        return schemaCardDatabase;
+    }
 }

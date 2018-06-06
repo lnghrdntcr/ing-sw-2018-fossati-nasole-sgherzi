@@ -21,7 +21,8 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
     private GameTableMultiplayer model;
     private State state;
-    private ConcurrentLinkedQueue<Event> eventLoop = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<Event> outboundEventLoop = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<ViewEvent> inboundEventLoop = new ConcurrentLinkedQueue<>();
 
     private long actionTimeout;
     private long beginTime;
@@ -136,7 +137,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         // or
         // that?
         this.beginTime = System.currentTimeMillis();
-        state = state.handleEvent(message, model);
+        this.inboundEventLoop.add(message);
         this.startActionTimeout();
 
     }
@@ -146,7 +147,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
             while (true) {
 
                 // Adds a TimeoutCommunicationEvent to the event loop.
-                this.eventLoop.add(new TimeoutCommunicationEvent(this.getClass().getName(), this.model.getCurrentPlayerName(), this.getTimeout()));
+                this.outboundEventLoop.add(new TimeoutCommunicationEvent(this.getClass().getName(), this.model.getCurrentPlayerName(), this.getTimeout()));
 
                 // Then waits for 1000ms
                 try {
@@ -165,17 +166,25 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     }
 
     private void startEventLoopHandlerThread() {
+
         this.eventLoopHandlerThread = new Thread(() -> {
+
             while (true) {
 
-                if (!this.eventLoop.isEmpty()) {
-                    for (Event ev : this.eventLoop) {
-                        this.notify(this.eventLoop.poll());
+                if (!this.outboundEventLoop.isEmpty()) {
+                    for (Event ev : this.outboundEventLoop) {
+                        this.notify(this.outboundEventLoop.poll());
+                    }
+                }
+
+                if (!this.inboundEventLoop.isEmpty()) {
+                    for (ViewEvent ev : this.inboundEventLoop) {
+                        this.state = state.handleEvent(this.inboundEventLoop.poll(), this.model);
                     }
                 }
 
                 try {
-                    Thread.sleep(50 );
+                    Thread.sleep(50);
                 } catch (InterruptedException ignored) {
                     // TODO: What should I do if this thread gets interrupted?
                     Log.d("eventLoopHandlerThread was interrupted");
@@ -190,12 +199,16 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
     }
 
+    public GameTableMultiplayer getModel() {
+        return model;
+    }
+
     public String[] getPlayersList() {
         return model.getPlayersName();
     }
 
     public void dispatchEvent(Event toDispatchEvent) {
-        this.eventLoop.add(toDispatchEvent);
+        this.outboundEventLoop.add(toDispatchEvent);
     }
 
 }

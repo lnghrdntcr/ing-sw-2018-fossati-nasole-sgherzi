@@ -27,7 +27,6 @@ public class LocalProxyRMI extends LocalProxy implements LocalProxyRMIInterface 
             client.sendEventToClient(event);
         } catch (RemoteException e) {
             // If it catches an exception it means that the client is disconnected.
-            // TODO: send the PlayerDisconnectedEvent
             this.getView().disconnect();
             Log.e("Unable to send an event to the client, client disconnected!");
         }

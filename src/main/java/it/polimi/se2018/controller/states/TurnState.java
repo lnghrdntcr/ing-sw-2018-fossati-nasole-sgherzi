@@ -7,10 +7,7 @@ import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
-import it.polimi.se2018.view.viewEvent.EndTurnEvent;
-import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
-import it.polimi.se2018.view.viewEvent.PlayerDisconnectedEvent;
-import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
+import it.polimi.se2018.view.viewEvent.*;
 
 /**
  * The state that handles the state of the turn.
@@ -57,10 +54,10 @@ public class TurnState extends State {
 
         if(event == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
 
+        if (!getModel().getCurrentPlayerName().equals(event.getPlayerName())) Log.w("Only current player can use a toolcard");
+
         Tool tool = getModel().getToolCardByPosition(event.getToolCardIndex());
         int playerToken = getModel().getPlayerToken(event.getPlayerName());
-
-        if (!getModel().getCurrentPlayerName().equals(event.getPlayerName())) Log.w("Only current player can use a toolcard");
 
         if (!tool.isUsable(getModel(), this)) Log.i(tool.getClass().getName() + "not usable in this turn.");
 

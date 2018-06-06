@@ -31,11 +31,14 @@ public class Player implements ImmutableCloneable<PlayerImmutable>{
 
     /**
      * Associate a player with his schema
-     * Moreover sets the number of token of the player
+     * Additionally sets the number of token of the player
      * @param schema the player's schema
      */
     public void setSchema(Schema schema) {
+
         if(schema==null)throw new IllegalArgumentException(getClass().getCanonicalName()+": schema cannot be null!");
+        if(this.schema != null) throw new IllegalStateException(this.getClass().getCanonicalName() + ": Trying to set a schema on an already set schema!");
+
         this.schema = schema;
         this.token = schema.getSchemaCardFace().getDifficulty();
     }

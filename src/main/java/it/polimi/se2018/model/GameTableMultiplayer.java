@@ -454,7 +454,6 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     public boolean isColorInDiceHolder(GameColor gameColor) {
         return diceHolder.isColorPresent(gameColor);
-
     }
 
     /**

@@ -131,7 +131,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
             while((System.currentTimeMillis() - this.beginTime) < this.serverTimeout){
                 try{
                     Thread.sleep(1000);
-                    Log.d("Remaining " + (this.serverTimeout / 1000L - this.getTimeout()) + " seconds");
+                    Log.d("[CONNECTION] Remaining " + (this.serverTimeout / 1000L - this.getTimeout()) + " seconds");
                 } catch (InterruptedException ignored) {}
             }
 

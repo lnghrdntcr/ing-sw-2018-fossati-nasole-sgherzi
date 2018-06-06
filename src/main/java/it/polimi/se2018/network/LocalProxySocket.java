@@ -58,7 +58,6 @@ public class LocalProxySocket extends LocalProxy {
             objectOutputStream.writeObject(event);
         } catch (IOException e) {
             // If it catches an exception it means that the client is disconnected.
-            // TODO: send the PlayerDisconnectedEvent
             this.getView().disconnect();
             Log.e("Unable to send an event to the client, client disconnected!");
         }

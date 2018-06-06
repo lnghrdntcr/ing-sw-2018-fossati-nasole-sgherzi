@@ -3,6 +3,7 @@ package it.polimi.se2018;
 import it.polimi.se2018.network.Client;
 import it.polimi.se2018.network.Server;
 import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.utils.Settings;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -94,6 +95,9 @@ public class App {
         JSONObject root = new JSONObject(builder.toString());
 
         Log.d(root.toString());
+
+        // Setting schema card path
+        Settings.setSchemaCardDatabase(root.getString("customSchemaCardPath"));
 
         new Server(
             numPlayers,

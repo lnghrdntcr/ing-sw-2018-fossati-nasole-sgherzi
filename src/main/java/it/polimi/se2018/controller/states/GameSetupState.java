@@ -28,9 +28,9 @@ public class GameSetupState extends State {
         super(controller, model);
 
         try {
-            schemaCardList=SchemaCard.loadSchemaCardsFromJson(Settings.SCHEMACARD_DATABASE);
+            schemaCardList = SchemaCard.loadSchemaCardsFromJson(Settings.getSchemaCardDatabase());
         } catch (FileNotFoundException e) {
-            Log.e("SchemaCardFile "+Settings.SCHEMACARD_DATABASE + " not valid!");
+            Log.e("SchemaCardFile "+Settings.getSchemaCardDatabase() + " not valid!");
             return;
         }
 
