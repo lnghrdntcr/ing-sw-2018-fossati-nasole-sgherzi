@@ -250,6 +250,7 @@ public class GameTableMultiplayer extends Observable<Event> {
      * @return the DiceFace just redrawn
      */
     public DiceFace redrawDice(int index) {
+        if(index >= this.getDiceNumberOnDraftBoard() || index < 0) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Trying to access an illegal position => " + index);
         return redrawDice(index, true);
     }
 
@@ -278,6 +279,9 @@ public class GameTableMultiplayer extends Observable<Event> {
      * @param index the index of the dice to flip in the DraftBoard
      */
     public void flipDice(int index) {
+
+        if(index >= this.getDiceNumberOnDraftBoard() || index < 0) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Trying to access an illegal position => " + index);
+
         DiceFace df = draftBoard.removeDice(index);
         df = new DiceFace(df.getColor(), 7 - df.getNumber());
         draftBoard.addDice(df);
