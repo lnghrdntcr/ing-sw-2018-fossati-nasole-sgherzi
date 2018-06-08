@@ -1,6 +1,7 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.view.CLI.CLI;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -19,8 +20,9 @@ import java.util.Scanner;
  */
 public class Client {
 
-    private static String host, name;
+    private static String host, name, graphics;
     private static int port;
+    private CLI cli;
 
     /**
      * Begins the connection with the RMI server.
@@ -91,6 +93,8 @@ public class Client {
         port = Integer.parseInt(scanner.nextLine());
         System.out.print("Name: ");
         name = scanner.nextLine();
+        System.out.println("GUI or CLI?");
+        graphics = scanner.nextLine();
 
         if (method.equalsIgnoreCase("RMI")) {
             connectRMI();
@@ -98,6 +102,11 @@ public class Client {
             connectSocket();
         } else {
             Log.w("Not implemented.");
+        }
+        if(graphics.equalsIgnoreCase("gui")){
+            //TODO start gui
+        } else {
+            new CLI(name);
         }
 
 

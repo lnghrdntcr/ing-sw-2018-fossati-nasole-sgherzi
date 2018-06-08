@@ -32,7 +32,7 @@ public class CLISchemaChoice implements CLIState {
 
         cli.setMyRestrictions(faces[choice-1]);
 
-        //TODO: magari continua
+        //TODO: magari continua altri schema
 
         return null;
     }

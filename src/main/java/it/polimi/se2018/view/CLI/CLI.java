@@ -15,10 +15,13 @@ import it.polimi.se2018.view.RemoteView;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CLI extends RemoteView {
-
+/**
+ * The CLI state machine context
+ */
+public class CLI {
     private CLIState state;
 
+    String playerName;
     private PrivateObjective myPrivateO;
     private ArrayList<PublicObjective> PublicOs;
     private SchemaCardFace myRestrictions;
@@ -30,6 +33,11 @@ public class CLI extends RemoteView {
     private DiceHolderImmutable diceHolder;
 
     private Scanner input = new Scanner(System.in);
+
+    public CLI(String playerName){
+        this.playerName=playerName;
+        this.state=new CLIStart(playerName).doAction(this, null);
+    }
 
 
     public ArrayList<ToolCardImmutable> getTool() {
@@ -49,15 +57,6 @@ public class CLI extends RemoteView {
     }
 
 
-    public CLI(String player) {
-        super(player);
-    }
-
-
-    @Override
-    public void update(Event message) {
-        this.handleEvent(message);
-    }
 
     public void handleEvent(Event e) {
         this.state = this.state.doAction(this, e);
