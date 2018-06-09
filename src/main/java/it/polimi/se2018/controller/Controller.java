@@ -49,6 +49,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
         Log.i("Game started with " + pln.size() + " players");
 
+        this.start();
         this.startTimeoutCommunicationThread();
         this.startEventLoopHandlerThread();
 

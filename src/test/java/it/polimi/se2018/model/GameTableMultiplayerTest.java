@@ -10,10 +10,11 @@ import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.RemoteView;
 import it.polimi.se2018.view.View;
 import org.junit.Test;
-import sun.font.FontRunIterator;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -365,7 +366,8 @@ public class GameTableMultiplayerTest {
                 try {
                     this.model.flipDice(this.model.getDiceNumberOnDraftBoard());
                     fail();
-                } catch (IllegalArgumentException ignored){}
+                } catch (IllegalArgumentException ignored) {
+                }
 
                 // Testing normal behaviour.
                 this.model.flipDice(j);
@@ -401,7 +403,8 @@ public class GameTableMultiplayerTest {
             try {
                 this.model.drawDice();
                 fail();
-            }catch (IllegalStateException ignored){}
+            } catch (IllegalStateException ignored) {
+            }
 
         }
     }
@@ -443,69 +446,289 @@ public class GameTableMultiplayerTest {
 
     @Test
     public void changeDiceNumber() {
-    }
 
-    @Test
-    public void moveDice() {
-    }
+        for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
 
-    @Test
-    public void hasNextTurn() {
+            this.views = new ArrayList<>();
+
+            for (int j = 0; j < i; j++) {
+                this.views.add(new RemoteView("Player" + j));
+            }
+
+            this.controller = new Controller(this.views, 10);
+            this.model = controller.getModel();
+
+            // Draw the dices
+            this.model.drawDice();
+
+            for (int j = 0; j < this.model.getDiceNumberOnDraftBoard(); j++) {
+
+                // Testing normal behaviour
+                DiceFace oldDice = this.model.getDiceFaceByIndex(j);
+                int newNumber = (int) Math.floor(Math.random() * 5) + 1;
+                this.model.changeDiceNumber(j, newNumber);
+
+                DiceFace newDice = this.model.getDiceFaceByIndex(this.model.getDiceNumberOnDraftBoard() - 1);
+
+                assertEquals(oldDice.getColor(), newDice.getColor());
+
+                assertEquals(newNumber, newDice.getNumber());
+
+                // Testing against invalid inputs.
+
+                // Illegal dice index.
+                try {
+                    this.model.changeDiceNumber(this.model.getDiceNumberOnDraftBoard(), 1);
+                    fail();
+                } catch (IllegalArgumentException ignored) {
+                }
+
+                // Illegal dice number.
+                try {
+                    this.model.changeDiceNumber(j, (int) Math.floor(Math.random() * 100) + 7);
+                } catch (IllegalArgumentException ignored) {
+                }
+
+
+            }
+
+        }
     }
 
     @Test
     public void nextTurn() {
+
+        // This test is... MEH
+        for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
+
+            this.views = new ArrayList<>();
+
+            for (int j = 0; j < i; j++) {
+                this.views.add(new RemoteView("Player" + j));
+            }
+
+            this.controller = new Controller(this.views, 10);
+            this.model = controller.getModel();
+
+            for (int j = 0; j < i; j++) {
+
+                String nextPlayerName = j+1 < i ?  this.model.getPlayersName()[j+1] : this.model.getPlayersName()[i - 1];
+
+                this.model.nextTurn();
+
+                String currentPlayerName = this.model.getCurrentPlayerName();
+
+                assertEquals(nextPlayerName, currentPlayerName);
+
+            }
+
+        }
     }
 
-    @Test
-    public void isDiceAllowed() {
-    }
 
     @Test
-    public void isAloneDiceAllowed() {
-    }
+    public void setPlayerSchema() throws FileNotFoundException {
 
-    @Test
-    public void getDiceFaceByIndex() {
-    }
+        for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
 
-    @Test
-    public void setPlayerSchema() {
+            this.views = new ArrayList<>();
+
+            for (int j = 0; j < i; j++) {
+                this.views.add(new RemoteView("Player" + j));
+            }
+
+            this.controller = new Controller(this.views, 10);
+            this.model = controller.getModel();
+
+            // Draw the dices
+            this.model.drawDice();
+
+            SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
+
+            for (int j = 0; j < i; j++) {
+                this.model.setPlayerSchema("Player"+j, schemaCardFace);
+
+                // I can only test if, in those circumstances, an exception is thrown.
+
+                // Trying to assign a schema twice
+                try{
+                    this.model.setPlayerSchema("Player" + j, schemaCardFace);
+                    fail();
+                } catch(IllegalStateException ignored){}
+
+                // Trying to assign a null schema.
+                try{
+                    this.model.setPlayerSchema("Player" + j, null);
+                    fail();
+                } catch (IllegalArgumentException ignored){}
+
+                // Try to assign a schema to a non existing player.
+                try{
+                    this.model.setPlayerSchema("giannino", schemaCardFace);
+                    fail();
+                } catch (IllegalArgumentException ignored){}
+
+            }
+
+        }
+
     }
 
     @Test
     public void getPlayersName() {
+
+        for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
+
+            this.views = new ArrayList<>();
+
+            ArrayList<String> players = new ArrayList<>();
+
+            for (int j = 0; j < i; j++) {
+                this.views.add(new RemoteView("Player" + j));
+                players.add("Player" + j);
+            }
+
+            this.controller = new Controller(this.views, 10);
+            this.model = controller.getModel();
+
+            assertTrue(Arrays.equals(players.toArray(), this.model.getPlayersName()));
+
+        }
+
     }
 
     @Test
-    public void allPlayersHaveSelectedSchemaCardFace() {
-    }
+    public void allPlayersHaveSelectedSchemaCardFace() throws FileNotFoundException {
 
-    @Test
-    public void getPlayerDiceFace() {
+        for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
+
+            this.views = new ArrayList<>();
+
+            ArrayList<String> players = new ArrayList<>();
+
+            for (int j = 0; j < i; j++) {
+                this.views.add(new RemoteView("Player" + j));
+            }
+
+            this.controller = new Controller(this.views, 10);
+            this.model = controller.getModel();
+
+            SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
+
+            for (int j = 0; j < i; j++) {
+                assertFalse(this.model.allPlayersHaveSelectedSchemaCardFace());
+                this.model.setPlayerSchema("Player" + j, schemaCardFace);
+            }
+
+            assertTrue(this.model.allPlayersHaveSelectedSchemaCardFace());
+
+        }
     }
 
     @Test
     public void isFirstTurnInRound() {
+
+        for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
+
+            this.views = new ArrayList<>();
+
+            ArrayList<String> players = new ArrayList<>();
+
+            for (int j = 0; j < i; j++) {
+                this.views.add(new RemoteView("Player" + j));
+            }
+
+            this.controller = new Controller(this.views, 10);
+            this.model = controller.getModel();
+
+            for (int j = 0; j < i; j++) {
+
+                assertTrue(this.model.isFirstTurnInRound());
+                this.model.nextTurn();
+
+            }
+
+            for (int j = 0; j < i; j++) {
+                assertFalse(this.model.isFirstTurnInRound());
+                this.model.nextTurn();
+            }
+
+
+        }
+
     }
 
     @Test
-    public void getPlayerSchemaCopy() {
+    public void getDiceNumberOnDraftBoard() throws FileNotFoundException {
+
+        for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
+
+            this.views = new ArrayList<>();
+
+            ArrayList<String> players = new ArrayList<>();
+
+            for (int j = 0; j < i; j++) {
+                this.views.add(new RemoteView("Player" + j));
+            }
+
+            this.controller = new Controller(this.views, 10);
+            this.model = controller.getModel();
+
+            SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
+
+            for (int j = 0; j < i; j++) {
+                this.model.setPlayerSchema("Player" + j, schemaCardFace);
+            }
+
+            int dices = this.model.getPlayersName().length * 2 + 1;
+            int position = 0;
+
+            this.model.drawDice();
+
+            for (int j = 0; j < i; j++) {
+
+
+                assertEquals(dices, this.model.getDiceNumberOnDraftBoard());
+
+                this.model.placeDice("Player" + j, 0, new Point(position, position));
+
+                dices--;
+                position++;
+
+            }
+
+        }
     }
 
     @Test
-    public void isColorInDiceHolder() {
-    }
+    public void getPlayerSchemacardFace() throws FileNotFoundException {
 
-    @Test
-    public void playerWillDropTurn() {
-    }
+        for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
 
-    @Test
-    public void getDiceNumberOnDraftBoard() {
-    }
+            this.views = new ArrayList<>();
 
-    @Test
-    public void getPlayerSchemacardFace() {
+            ArrayList<String> players = new ArrayList<>();
+
+            for (int j = 0; j < i; j++) {
+                this.views.add(new RemoteView("Player" + j));
+            }
+
+            this.controller = new Controller(this.views, 10);
+            this.model = controller.getModel();
+
+            SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
+
+            // Testing normal behaviour
+            for (int j = 0; j < i; j++) {
+                this.model.setPlayerSchema("Player" + j, schemaCardFace);
+                assertEquals(schemaCardFace, this.model.getPlayerSchemacardFace("Player" + j));
+            }
+
+            try{
+                this.model.getPlayerSchemacardFace("Player" + (int) Math.floor(Math.random() * 100) + 7);
+                fail();
+            }catch (IllegalArgumentException ignored){}
+
+        }
     }
 }

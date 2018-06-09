@@ -9,7 +9,7 @@ public class MoveDiceEvent extends UseToolcardEvent {
     Point source;
     Point destination;
 
-    protected MoveDiceEvent(String emitter, String player, int position, Point source, Point destination) {
+    public MoveDiceEvent(String emitter, String player, int position, Point source, Point destination) {
         super(emitter, player, position);
         this.source = source;
         this.destination = destination;

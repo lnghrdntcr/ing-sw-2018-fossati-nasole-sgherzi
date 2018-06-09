@@ -319,6 +319,10 @@ public class GameTableMultiplayer extends Observable<Event> {
      * @param number new value to assign to the dice. Must be between 1 and 6.
      */
     public void changeDiceNumber(int index, int number) {
+
+        if(index < 0 || index >= this.getDiceNumberOnDraftBoard()) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Illegal index: given " + index + " max: " + this.getDiceNumberOnDraftBoard());
+        if(number < 1 || number > 6) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Illegal number: given " + number + " bounds: [1, 6]");
+
         draftBoard.addDice(new DiceFace(draftBoard.removeDice(index).getColor(), number));
         dispatchEvent(new DraftBoardChangedEvent("changeDiceNumber", null, draftBoard.getImmutableInstance()));
     }
@@ -339,7 +343,6 @@ public class GameTableMultiplayer extends Observable<Event> {
     }
 
     //Turn stuff
-
 
     public boolean hasNextTurn() {
 
@@ -397,6 +400,15 @@ public class GameTableMultiplayer extends Observable<Event> {
     }
 
     public void setPlayerSchema(String playerName, SchemaCardFace schemaCardFace) {
+
+        if(schemaCardFace == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Schema cannot be null.");
+
+        try{
+           this.getPlayerByName(playerName);
+        } catch (NoSuchElementException e){
+            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": No player with that name");
+        }
+
         if (getPlayerByName(playerName).getSchema() == null) {
             getPlayerByName(playerName).setSchema(new Schema(schemaCardFace));
         } else {
@@ -421,6 +433,7 @@ public class GameTableMultiplayer extends Observable<Event> {
      * @return true if all players have selected a schemaCardFace, false otherwise
      */
     public boolean allPlayersHaveSelectedSchemaCardFace() {
+
         for (Player p : players) {
             if (p.getSchema() == null)
                 return false;
@@ -487,6 +500,21 @@ public class GameTableMultiplayer extends Observable<Event> {
      * @return the schema card face selected by a player
      */
     public SchemaCardFace getPlayerSchemacardFace(String playerName){
+
+        try{
+            this.getPlayerByName(playerName);
+        } catch (NoSuchElementException e){
+            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": " + playerName + " does not exist");
+        }
+
         return getPlayerByName(playerName).getSchema().getSchemaCardFace();
+    }
+
+    /**
+     * Returns the current round.
+     * @return The current round
+     */
+    public int getRound() {
+        return turnHolder.getRound();
     }
 }

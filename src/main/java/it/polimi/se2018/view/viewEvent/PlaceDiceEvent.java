@@ -11,7 +11,7 @@ public class PlaceDiceEvent extends ViewEvent {
     private int diceFaceIndex;
 
 
-    protected PlaceDiceEvent(String emitter, String player, int diceFaceIndex, Point point) {
+    public PlaceDiceEvent(String emitter, String player, int diceFaceIndex, Point point) {
         super(emitter, player);
         this.point=point;
         this.diceFaceIndex=diceFaceIndex;

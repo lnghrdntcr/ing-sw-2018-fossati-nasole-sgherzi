@@ -4,6 +4,7 @@ import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.GameTableMultiplayer;
+import it.polimi.se2018.model.modelEvent.TurnChangedEvent;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
@@ -87,15 +88,16 @@ public class TurnState extends State {
         if(event == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
         if(getModel() == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Model cannot be null");
 
+        if (!getModel().getCurrentPlayerName().equals(event.getPlayerName())) {
+            Log.w(event.getPlayerName() + ": Only the current player can place a dice!");
+            return this;
+        }
+
         if (this.hasPlacedDice) {
             Log.w(event.getPlayerName() + " has already placed a dice.");
             return this;
         }
 
-        if (!getModel().getCurrentPlayerName().equals(event.getPlayerName())) {
-            Log.w(event.getPlayerName() + ": Only the current player can place a dice!");
-            return this;
-        }
         if (getModel().isDiceAllowed(
                 event.getPlayerName(),
                 event.getPoint(),
@@ -135,6 +137,7 @@ public class TurnState extends State {
         } else {
             if(getModel().hasNextTurn()){
                 getModel().nextTurn();
+                this.getController().dispatchEvent(new TurnChangedEvent(this.getClass().getName(), this.getModel().getCurrentPlayerName(), this.getModel().getRound()));
                 return new TurnState(this.getController(), getModel(),false, false);
             } else {
                 return new GameEndState(this.getController(), getModel());
