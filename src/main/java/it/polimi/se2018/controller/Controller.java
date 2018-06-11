@@ -3,7 +3,6 @@ package it.polimi.se2018.controller;
 import it.polimi.se2018.controller.controllerEvent.TimeoutCommunicationEvent;
 import it.polimi.se2018.controller.states.GameSetupState;
 import it.polimi.se2018.controller.states.State;
-import it.polimi.se2018.controller.tool.*;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.objectives.*;
 import it.polimi.se2018.utils.*;
@@ -96,23 +95,23 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         return (int) ((System.currentTimeMillis() - this.beginTime) / 1000L);
     }
 
-    private Tool[] pickToolCards() {
-        ArrayList<Tool> tools = new ArrayList<>();
-        tools.add(new CircularCutter());
-        tools.add(new CopperReamer());
-        tools.add(new CorkRow());
-        tools.add(new DiamondPad());
-        tools.add(new EglomiseBrush());
-        tools.add(new FirmPastaDiluent());
-        tools.add(new FirmPastaBrush());
-        tools.add(new Gavel());
-        tools.add(new Lathekin());
-        tools.add(new ManualCutter());
-        tools.add(new RoughingNipper());
-        tools.add(new WheeledPincer());
+    private String[] pickToolCards() {
+        ArrayList<String> tools = new ArrayList<>();
+        tools.add("CircularCutter");
+        tools.add("CopperReamer");
+        tools.add("CorkRow");
+        tools.add("DiamondPad");
+        tools.add("EglomiseBrush");
+        tools.add("FirmPastaDiluent");
+        tools.add("FirmPastaBrush");
+        tools.add("Gavel");
+        tools.add("Lathekin");
+        tools.add("ManualCutter");
+        tools.add("RoughingNipper");
+        tools.add("WheeledPincer");
 
         Collections.shuffle(tools);
-        return tools.subList(0, Settings.TOOLCARDS_N).toArray(new Tool[Settings.TOOLCARDS_N]);
+        return tools.subList(0, Settings.TOOLCARDS_N).toArray(new String[Settings.TOOLCARDS_N]);
     }
 
     private PublicObjective[] pickPublicObjectives() {

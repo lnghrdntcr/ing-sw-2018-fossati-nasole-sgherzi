@@ -1,7 +1,6 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.controller.Controller;
-import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema_card.SchemaCard;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;

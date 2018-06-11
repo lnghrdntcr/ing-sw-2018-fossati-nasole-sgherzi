@@ -1,13 +1,17 @@
 package it.polimi.se2018.view.gui;
 
+import it.polimi.se2018.model.schema.DiceFace;
+import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCard;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model.schema_card.Side;
 import it.polimi.se2018.utils.Log;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -45,5 +49,17 @@ public class MainView extends Application {
         Schema schema = new Schema(cardFace);
         schemaPanel.updateSchema(schema);
         schemaPanel.updateToken(3);
+        //schemaPanel.highlightAllowedPoints(new DiceFace(GameColor.GREEN, 2), SchemaCardFace.Ignore.NOTHING, false);
+
+
+        Dice dice1 = new Dice();
+        dice1.setDiceFace(new DiceFace(GameColor.GREEN, 2));
+        dice1.setOnMouseClicked(event -> schemaPanel.highlightAllowedPoints(new DiceFace(GameColor.GREEN, 2), SchemaCardFace.Ignore.NOTHING, false));
+        root.getChildren().add(dice1);
+
+        Dice dice2 = new Dice();
+        dice2.setDiceFace(new DiceFace(GameColor.RED, 3));
+        dice2.setOnMouseClicked(event -> schemaPanel.highlightAllowedPoints(new DiceFace(GameColor.RED, 3), SchemaCardFace.Ignore.NOTHING, false));
+        root.getChildren().add(dice2);
     }
 }

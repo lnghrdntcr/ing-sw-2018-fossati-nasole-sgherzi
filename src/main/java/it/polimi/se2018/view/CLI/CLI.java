@@ -1,16 +1,13 @@
 package it.polimi.se2018.view.CLI;
 
-import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
-import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model_view.DiceHolderImmutable;
 import it.polimi.se2018.model_view.DraftBoardImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Event;
-import it.polimi.se2018.view.RemoteView;
 
 import java.util.ArrayList;
 import java.util.Scanner;

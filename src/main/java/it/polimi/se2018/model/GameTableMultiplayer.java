@@ -7,10 +7,10 @@ import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.model.objectives.PublicObjective;
-import it.polimi.se2018.controller.tool.Tool;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.ScoreHolder;
+import it.polimi.se2018.utils.Settings;
 
 import java.awt.*;
 import java.util.*;
@@ -30,7 +30,7 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     private ArrayList<String> dropTurnPlayers = new ArrayList<>();
 
-    public GameTableMultiplayer(PublicObjective[] publicObjectives, String[] players, Tool[] toolCards) {
+    public GameTableMultiplayer(PublicObjective[] publicObjectives, String[] players, String[] toolCards) {
 
         ArrayList<PrivateObjective> privateObjectives = new ArrayList<>();
         playersName = players.clone();
@@ -56,10 +56,17 @@ public class GameTableMultiplayer extends Observable<Event> {
 
 
         turnHolder = new TurnHolder(players.length);
-        this.toolCards = toolCards;
+
+        this.toolCards = new Tool[Settings.TOOLCARDS_N];
+        for(int i=0; i<Settings.TOOLCARDS_N; i++){
+            this.toolCards[i]=new Tool(toolCards[i]);
+        }
+
         draftBoard = new DraftBoard();
         diceHolder = new DiceHolder();
     }
+
+
 
 
     /**

@@ -1,4 +1,4 @@
-package it.polimi.se2018.controller.tool;
+package it.polimi.se2018.model;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.states.State;
@@ -12,27 +12,17 @@ import it.polimi.se2018.utils.Event;
 /**
  * A general class for a tool card, that implements it's logic
  */
-public abstract class Tool implements ImmutableCloneable<ToolCardImmutable> {
+public class Tool implements ImmutableCloneable<ToolCardImmutable> {
+
+
 
     private int token=0;
+    private String name;
 
-    /**
-     * Checks if this ToolCard can be used in the current state
-     * @param model the model where obtain informations
-     * @param currentState the current state of the controller
-     * @return a new state for the controller
-     */
-    public abstract boolean isUsable(GameTableMultiplayer model, TurnState currentState);
 
-    /**
-     * Handle the use of a toolcard putting the game in a correct state
-     * @param controller the controller, to obtain the information
-     * @param model the model to modify
-     * @param state the current state of the controller
-     * @param event the event to be handled
-     * @return a new state for the controller
-     */
-    public abstract State use(Controller controller, GameTableMultiplayer model, TurnState state, Event event);
+    public Tool(String name){
+        this.name = name;
+    }
 
     /**
      * Obtains the number of tokens used on this toolcard
@@ -54,5 +44,14 @@ public abstract class Tool implements ImmutableCloneable<ToolCardImmutable> {
      */
     public int getNeededTokens() {
         return token > 0 ? 2 : 1;
+    }
+
+    @Override
+    public ToolCardImmutable getImmutableInstance() {
+        return new ToolCardImmutable(name, token);
+    }
+
+    public String getName() {
+        return name;
     }
 }
