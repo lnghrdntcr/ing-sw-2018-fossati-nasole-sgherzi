@@ -7,9 +7,11 @@ import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema_card.SchemaCard;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model.schema_card.Side;
+import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.RemoteView;
 import it.polimi.se2018.view.View;
+import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 import it.polimi.se2018.view.viewEvent.MoveDiceEvent;
 import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
@@ -33,13 +35,15 @@ public class TurnStateTest {
 
     @Before
     public void setUp() throws Exception {
-        for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
+        // A: These were right after the first for loop. I think they belong here.
+        this.games = new ArrayList<>();
+        this.models = new ArrayList<>();
+        this.turnStates = new ArrayList<>();
 
-            // Maybe I should move them to the top...
+        for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
+            //I don't get what this is. I actually think it goes here,
+            // because of the second for loop creating duplicates otherwise.
             this.views = new ArrayList<>();
-            this.games = new ArrayList<>();
-            this.models = new ArrayList<>();
-            this.turnStates = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
                 this.views.add(new RemoteView("Player" + j));
@@ -48,12 +52,12 @@ public class TurnStateTest {
             this.games.add(new Controller(this.views, 10));
             this.models.add(this.games.get(0).getModel());
             this.turnStates.add(
-                new TurnState(
-                    this.games.get(0),
-                    this.games.get(0).getModel(),
-                    false,
-                    false
-            ));
+                    new TurnState(
+                            this.games.get(0),
+                            this.games.get(0).getModel(),
+                            false,
+                            false
+                    ));
         }
     }
 
@@ -104,9 +108,6 @@ public class TurnStateTest {
             }
 
 
-
-
-
         }
 
     }
@@ -117,6 +118,41 @@ public class TurnStateTest {
 
     @Test
     public void handleEndTurnEvent() {
+        for (int i = 0; i < this.games.size(); i++) {
+            Controller actualController = this.games.get(i);
+            GameTableMultiplayer actualModel = actualController.getModel();
+            TurnState actualTurnState = this.turnStates.get(i);
+
+            try {
+                SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
+            } catch (FileNotFoundException e) {
+                Log.e("This is not supposed to happen here...");
+            }
+            actualModel.drawDice();
+
+            for (int j = 0; j < views.size(); j++) {
+
+                try {
+                    actualTurnState.handleEndTurnEvent(null);
+                } catch (IllegalArgumentException e) {
+                    Log.w("the event cant be null");
+                }
+
+                //can't test the "null model" exception...
+
+                TurnState newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(
+                        this.getClass().getName(), "Player" + j, 0, new Point(0, 0)));
+                assertTrue(newState.isDicePlaced());
+
+                newState = (TurnState) actualTurnState.handleEndTurnEvent(new EndTurnEvent(this.getClass().getName(), "Player" + j));
+                assertFalse(newState.isDicePlaced());
+            }
+
+            for(int j = 0; j < 2*views.size() * 9 + views.size(); j++){
+                TurnState newState = (TurnState) actualTurnState.handleEndTurnEvent(new EndTurnEvent(this.getClass().getName(), "Player" + j));
+            }
+            assertFalse(actualModel.hasNextTurn());
+        }
     }
 
     @Test
