@@ -49,12 +49,14 @@ public class TurnStateTest {
                 this.views.add(new RemoteView("Player" + j));
             }
 
-            this.games.add(new Controller(this.views, 10));
-            this.models.add(this.games.get(0).getModel());
+            Controller actualController = new Controller(this.views, 10);
+
+            this.games.add(actualController);
+            this.models.add(actualController.getModel());
             this.turnStates.add(
                     new TurnState(
-                            this.games.get(0),
-                            this.games.get(0).getModel(),
+                            actualController,
+                            actualController.getModel(),
                             false,
                             false
                     ));
@@ -79,7 +81,7 @@ public class TurnStateTest {
             actualModel.drawDice();
 
             // Testing normal behaviour
-            for (int j = 0; j < this.views.size(); j++) {
+            for (int j = 0; j < actualModel.getPlayersName().length; j++) {
 
                 actualModel.setPlayerSchema("Player" + j, schemaCardFace);
 
@@ -108,6 +110,8 @@ public class TurnStateTest {
             }
 
 
+
+
         }
 
     }
@@ -117,17 +121,15 @@ public class TurnStateTest {
     }
 
     @Test
-    public void handleEndTurnEvent() {
+    public void handleEndTurnEvent() throws FileNotFoundException {
         for (int i = 0; i < this.games.size(); i++) {
             Controller actualController = this.games.get(i);
             GameTableMultiplayer actualModel = actualController.getModel();
             TurnState actualTurnState = this.turnStates.get(i);
 
-            try {
-                SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
-            } catch (FileNotFoundException e) {
-                Log.e("This is not supposed to happen here...");
-            }
+
+            SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
+
             actualModel.drawDice();
 
             for (int j = 0; j < views.size(); j++) {
@@ -141,7 +143,7 @@ public class TurnStateTest {
                 //can't test the "null model" exception...
 
                 TurnState newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(
-                        this.getClass().getName(), "Player" + j, 0, new Point(0, 0)));
+                this.getClass().getName(), "Player" + j, 0, new Point(0, 0)));
                 assertTrue(newState.isDicePlaced());
 
                 newState = (TurnState) actualTurnState.handleEndTurnEvent(new EndTurnEvent(this.getClass().getName(), "Player" + j));
