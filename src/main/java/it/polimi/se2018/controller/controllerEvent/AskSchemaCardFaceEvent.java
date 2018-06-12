@@ -33,6 +33,6 @@ public class AskSchemaCardFaceEvent extends ControllerEvent {
 
     @Override
     public void visit(SelectScheaCardFace selectScheaCardFace) {
-
+        selectScheaCardFace.showSchemaCardFaceSelection(this);
     }
 }

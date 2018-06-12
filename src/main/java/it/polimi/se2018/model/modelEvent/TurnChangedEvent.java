@@ -27,7 +27,7 @@ public class TurnChangedEvent extends ModelEvent {
 
     @Override
     public void visit(GameTable gameTable) {
-
+        gameTable.handleTurnChanged(this);
     }
 
     @Override

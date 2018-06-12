@@ -29,7 +29,7 @@ public class ToolCardChanged extends ModelEvent {
 
     @Override
     public void visit(GameTable gameTable) {
-
+        gameTable.handleToolcardChanged(this);
     }
 
     @Override

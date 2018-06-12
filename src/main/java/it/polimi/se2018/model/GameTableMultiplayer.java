@@ -194,7 +194,7 @@ public class GameTableMultiplayer extends Observable<Event> {
      * Performs the transaction of token to use a toolcard
      *
      * @param player   the player who uses the toolcard
-     * @param toolCard the toolcard used
+     * @param index the index of the toolcard used
      */
     public void useTokenOnToolcard(String player, int index) {
 

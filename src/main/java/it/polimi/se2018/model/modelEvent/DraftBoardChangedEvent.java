@@ -23,7 +23,7 @@ public class DraftBoardChangedEvent extends ModelEvent {
 
     @Override
     public void visit(GameTable gameTable) {
-
+        gameTable.handleDraftBoardChanged(this);
     }
 
     @Override

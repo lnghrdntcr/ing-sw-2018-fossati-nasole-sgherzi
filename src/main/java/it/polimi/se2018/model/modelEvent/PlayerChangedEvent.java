@@ -23,7 +23,7 @@ public class PlayerChangedEvent extends ModelEvent {
 
     @Override
     public void visit(GameTable gameTable) {
-
+        gameTable.handlePlayerChanged(this);
     }
 
     @Override

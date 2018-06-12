@@ -23,7 +23,7 @@ public class DiceHolderChangedEvent extends ModelEvent {
 
     @Override
     public void visit(GameTable gameTable) {
-
+        gameTable.handleDiceHolderChanged(this);
     }
 
     @Override
