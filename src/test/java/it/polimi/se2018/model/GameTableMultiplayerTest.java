@@ -197,7 +197,7 @@ public class GameTableMultiplayerTest {
                             currentTokenForPlayer -= 2;
                         }
 
-                        this.model.useTokenOnToolcard("Player" + j, currentToolcard);
+                        this.model.useTokenOnToolcard("Player" + j, k);
                         assertEquals(currentTokenForPlayer, this.model.getPlayerToken("Player" + j));
 
                     }

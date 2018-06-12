@@ -227,7 +227,7 @@ public class TurnState extends State {
         try {
             ChangeDiceNumberEvent ev = (ChangeDiceNumberEvent) event;
             getModel().increaseDecreaseDice(ev.getDicePosition(), ev.getDicePosition());
-            getModel().useTokenOnToolcard(event.getPlayerName(), getModel().getToolCardByPosition(event.getToolCardIndex()));
+            getModel().useTokenOnToolcard(event.getPlayerName(),event.getToolCardIndex());
             return new TurnState(getController(), getModel(), isDicePlaced(), true);
         } catch (Exception e){
             Log.w("Unable to flip the dice: "+e.getMessage());
@@ -243,7 +243,7 @@ public class TurnState extends State {
             DiceFace tempDiceFace = tempSchema.removeDiceFace(e.getSource());
             if (tempSchema.isDiceAllowed(e.getDestination(), tempDiceFace, ignore)){
                 getModel().moveDice(name, e.getSource(), e.getDestination(), true);
-                getModel().useTokenOnToolcard(event.getPlayerName(), getModel().getToolCardByPosition(e.getToolCardIndex()));
+                getModel().useTokenOnToolcard(event.getPlayerName(),e.getToolCardIndex());
                 return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
             }
             else{
@@ -269,7 +269,7 @@ public class TurnState extends State {
                 if (tempSchema.isDiceAllowed(ev.getDestination(1), tempDice, SchemaCardFace.Ignore.NOTHING)) {
                     getModel().moveDice(ev.getPlayerName(), ev.getSource(0), ev.getDestination(0), false);
                     getModel().moveDice(ev.getPlayerName(), ev.getSource(1), ev.getDestination(1), true);
-                    getModel().useTokenOnToolcard(event.getPlayerName(), getModel().getToolCardByPosition(ev.getToolCardIndex()));
+                    getModel().useTokenOnToolcard(event.getPlayerName(), ev.getToolCardIndex());
                     return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
                 } else {
                     Log.w(getClass().getCanonicalName() + ": second move not allowed!");
@@ -291,7 +291,7 @@ public class TurnState extends State {
         try{
             SwapDiceFaceWithTurnHolderEvent ev = (SwapDiceFaceWithTurnHolderEvent) event;
             getModel().swapDraftDiceWithHolder(ev.getDraftBoardIndex(), ev.getTurn(), ev.getIndexInTurn());
-            getModel().useTokenOnToolcard(event.getPlayerName(), getModel().getToolCardByPosition(ev.getToolCardIndex()));
+            getModel().useTokenOnToolcard(event.getPlayerName(), ev.getToolCardIndex());
             return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
         }catch (Exception e){
             Log.w("Unable to use CircularCutter: "+e.getMessage());
@@ -304,7 +304,7 @@ public class TurnState extends State {
             DiceActionEvent ev = (DiceActionEvent) event;
             DiceFace redrawed = getModel().redrawDice(ev.getDicePosition());
 
-            getModel().useTokenOnToolcard(event.getPlayerName(), getModel().getToolCardByPosition(ev.getToolCardIndex()));
+            getModel().useTokenOnToolcard(event.getPlayerName(), ev.getToolCardIndex());
             if (getModel().getPlayerSchemaCopy(ev.getPlayerName()).isDiceAllowedSomewhere(redrawed, SchemaCardFace.Ignore.NOTHING)) {
                 //the diceface can be placed
                 return new PlaceRedrawnDiceState(getController(), getModel(), new TurnState(getController(), getModel(), isDicePlaced(), true), redrawed, ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard()-1);
@@ -322,7 +322,7 @@ public class TurnState extends State {
     private State useGavel(UseToolcardEvent event) {
         try {
             getModel().redrawAllDice();
-            getModel().useTokenOnToolcard(event.getPlayerName(), getModel().getToolCardByPosition(event.getToolCardIndex()));
+            getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
             return new TurnState(getController(), getModel(), isDicePlaced(), true);
         } catch (Exception e){
             Log.w("Use not allowed: "+e.getMessage());
@@ -337,7 +337,7 @@ public class TurnState extends State {
 
             if (getModel().isDiceAllowed(event.getPlayerName(), ev.getPoint(), getModel().getDiceFaceByIndex(ev.getDiceFaceIndex()), SchemaCardFace.Ignore.NOTHING)) {
                 getModel().placeDice(event.getPlayerName(), ev.getDiceFaceIndex(), ev.getPoint());
-                getModel().useTokenOnToolcard(event.getPlayerName(), getModel().getToolCardByPosition(event.getToolCardIndex()));
+                getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
             } else {
                 Log.w("Cannot place a dice here: ");
                 return this;
@@ -358,7 +358,7 @@ public class TurnState extends State {
             if (getModel().isAloneDiceAllowed(name, e.getDestination(), getModel().getPlayerDiceFace(e.getPlayerName(), e.getSource()), SchemaCardFace.Ignore.NOTHING)) {
 
                 getModel().moveDice(name, e.getSource(), e.getDestination(), true);
-                getModel().useTokenOnToolcard(event.getPlayerName(), getModel().getToolCardByPosition(event.getToolCardIndex()));
+                getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
                 return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
             } else {
                 Log.w("Destination not allowed!");
@@ -374,7 +374,7 @@ public class TurnState extends State {
         try {
             DiceActionEvent ev = (DiceActionEvent) event;
             getModel().flipDice(ev.getDicePosition());
-            getModel().useTokenOnToolcard(event.getPlayerName(), getModel().getToolCardByPosition(event.getToolCardIndex()));
+            getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
             return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
         } catch (Exception e){
             Log.w("Unable to flip the dice: "+e.getMessage());
@@ -386,7 +386,7 @@ public class TurnState extends State {
         try {
             DiceActionEvent ev = (DiceActionEvent) event;
             getModel().putBackAndRedrawDice(ev.getDicePosition());
-            getModel().useTokenOnToolcard(event.getPlayerName(), getModel().getToolCardByPosition(event.getToolCardIndex()));
+            getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
             return new PlaceRedrawnWithNumberDiceState(getController(), getModel(), new TurnState(getController(), getModel(), this.isDicePlaced(), true),
                     ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard() - 1);
         } catch (Exception e) {
@@ -420,7 +420,7 @@ public class TurnState extends State {
                 if (tempSchema.isDiceAllowed(ev.getDestination(1), tempDice, SchemaCardFace.Ignore.NOTHING)) {
                     getModel().moveDice(ev.getPlayerName(), ev.getSource(0), ev.getDestination(0), false);
                     getModel().moveDice(ev.getPlayerName(), ev.getSource(1), ev.getDestination(1), true);
-                    getModel().useTokenOnToolcard(event.getPlayerName(), getModel().getToolCardByPosition(event.getToolCardIndex()));
+                    getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
                     return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
                 } else {
                     Log.w(getClass().getCanonicalName() + ": second move not allowed!");

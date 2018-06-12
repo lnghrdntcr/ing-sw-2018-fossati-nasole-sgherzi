@@ -196,12 +196,21 @@ public class GameTableMultiplayer extends Observable<Event> {
      * @param player   the player who uses the toolcard
      * @param toolCard the toolcard used
      */
-    public void useTokenOnToolcard(String player, Tool toolCard) {
+    public void useTokenOnToolcard(String player, int index) {
+
         Player p = getPlayerByName(player);
+        Tool toolCard = this.getToolCardByPosition(index);
         int neededToken = toolCard.getNeededTokens();
         p.setToken(p.getToken() - neededToken);
         toolCard.addToken(neededToken);
-        dispatchEvent(new ToolCardChanged("useTokenOnToolcard", null, toolCard.getImmutableInstance()));
+        dispatchEvent(
+            new ToolCardChanged(
+                "useTokenOnToolcard",
+                null,
+                toolCard.getImmutableInstance(),
+                index
+            )
+        );
         dispatchEvent(new PlayerChangedEvent("useTokenOnToolcard", player, p.getImmutableInstance()));
     }
 
