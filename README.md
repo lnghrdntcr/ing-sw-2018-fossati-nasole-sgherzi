@@ -7,7 +7,6 @@
 
 ## TODO
 * Aggiugnere un altro layer di comunicazione per eliminare serializable
-* Sistemare Toolcard oo
 * finire i test
 * aggiungere caricamento schema card da cartella resources (usando getResources)
 * Spostare generazione PublicObjective in model

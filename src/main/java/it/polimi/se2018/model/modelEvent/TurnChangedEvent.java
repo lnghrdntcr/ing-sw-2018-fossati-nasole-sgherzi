@@ -2,16 +2,16 @@ package it.polimi.se2018.model.modelEvent;
 
 import it.polimi.se2018.view.GameEnding;
 import it.polimi.se2018.view.GameTable;
-import it.polimi.se2018.view.SelectScheaCardFace;
+import it.polimi.se2018.view.SelectSchemaCardFace;
 
 /**
  * Event to inform that the turn has changed
  */
 public class TurnChangedEvent extends ModelEvent {
     private int round;
-    private int direction;
+    private boolean direction;
 
-    public TurnChangedEvent(String emitter, String player, int round, int direction) {
+    public TurnChangedEvent(String emitter, String player, int round, boolean direction) {
         super(emitter, player);
         this.round = round;
         this.direction = direction;
@@ -21,7 +21,7 @@ public class TurnChangedEvent extends ModelEvent {
         return round;
     }
 
-    public int getDirection() {
+    public boolean getDirection() {
         return direction;
     }
 
@@ -36,7 +36,7 @@ public class TurnChangedEvent extends ModelEvent {
     }
 
     @Override
-    public void visit(SelectScheaCardFace selectScheaCardFace) {
+    public void visit(SelectSchemaCardFace selectSchemaCardFace) {
 
     }
 }

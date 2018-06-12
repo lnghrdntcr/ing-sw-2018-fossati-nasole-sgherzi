@@ -4,6 +4,7 @@ import it.polimi.se2018.network.Client;
 import it.polimi.se2018.network.Server;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.CLI.CLIPrinter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -26,6 +27,9 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws RemoteException {
+
+        CLIPrinter.setup();
+
         if (args.length <= 0) {
             Log.e("You have to pass at least one parameter");
             printUsage();

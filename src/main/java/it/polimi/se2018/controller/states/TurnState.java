@@ -172,7 +172,14 @@ public class TurnState extends State {
         } else {
             if (getModel().hasNextTurn()) {
                 getModel().nextTurn();
-                this.getController().dispatchEvent(new TurnChangedEvent(this.getClass().getName(), this.getModel().getCurrentPlayerName(), this.getModel().getRound()));
+                this.getController().dispatchEvent(
+                    new TurnChangedEvent(
+                        this.getClass().getName(),
+                        this.getModel().getCurrentPlayerName(),
+                        this.getModel().getRound(),
+                        this.getModel().isFirstTurnInRound()
+                    )
+                );
                 return new TurnState(this.getController(), getModel(), false, false);
             } else {
                 return new GameEndState(this.getController(), getModel());

@@ -1,10 +1,9 @@
 package it.polimi.se2018.model.modelEvent;
 
 import it.polimi.se2018.model_view.DraftBoardImmutable;
-import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.view.GameEnding;
 import it.polimi.se2018.view.GameTable;
-import it.polimi.se2018.view.SelectScheaCardFace;
+import it.polimi.se2018.view.SelectSchemaCardFace;
 
 /**
  * Event that is used to inform that the DraftBoard has been changed
@@ -32,7 +31,7 @@ public class DraftBoardChangedEvent extends ModelEvent {
     }
 
     @Override
-    public void visit(SelectScheaCardFace selectScheaCardFace) {
+    public void visit(SelectSchemaCardFace selectSchemaCardFace) {
 
     }
 }

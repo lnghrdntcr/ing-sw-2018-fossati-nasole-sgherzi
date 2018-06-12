@@ -2,6 +2,7 @@ package it.polimi.se2018.network;
 
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.CLI.CLI;
+import it.polimi.se2018.view.CLI.CLIPrinter;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -81,6 +82,8 @@ public class Client {
      * Starts the client getting basic informations about the connection.
      */
     public static void startClient() {
+
+        CLIPrinter.setup();
 
 
         Scanner scanner = new Scanner(System.in);

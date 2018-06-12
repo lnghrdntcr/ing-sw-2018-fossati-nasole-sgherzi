@@ -10,13 +10,13 @@ public class RemoteView extends View {
 
     private ConcurrentLinkedQueue<VisitableFromView> eventLoop = new ConcurrentLinkedQueue<>();
     private Thread eventLoopHandler;
-    private SelectScheaCardFace selectScheaCardFace;
+    private SelectSchemaCardFace selectSchemaCardFace;
     private GameEnding gameEnding;
     private GameTable gameTable;
 
     public RemoteView(String player) {
         super(player);
-        // TODO: Instantiate SelectScheaCardFace, GameEnding, GameTable.
+        // TODO: Instantiate SelectSchemaCardFace, GameEnding, GameTable.
         this.startEventLoopHandler();
 
     }
@@ -29,7 +29,7 @@ public class RemoteView extends View {
                     // TODO: Send event to the CLI/GUI
                     VisitableFromView actualEvent = this.eventLoop.poll();
 
-                    actualEvent.visit(selectScheaCardFace);
+                    actualEvent.visit(selectSchemaCardFace);
                     actualEvent.visit(gameTable);
                     actualEvent.visit(gameEnding);
 
@@ -61,4 +61,9 @@ public class RemoteView extends View {
         this.notify(event);
     }
 
+    public void activateGameTable() {
+        // TODO: deactivate selectSchemaCardFace
+        // TODO: deactivate gameEnding
+        this.gameTable.setActive();
+    }
 }

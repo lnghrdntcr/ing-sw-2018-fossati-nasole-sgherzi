@@ -2,7 +2,7 @@ package it.polimi.se2018.controller.controllerEvent;
 
 import it.polimi.se2018.view.GameEnding;
 import it.polimi.se2018.view.GameTable;
-import it.polimi.se2018.view.SelectScheaCardFace;
+import it.polimi.se2018.view.SelectSchemaCardFace;
 
 public class TimeoutCommunicationEvent extends ControllerEvent {
 
@@ -24,7 +24,11 @@ public class TimeoutCommunicationEvent extends ControllerEvent {
     }
 
     @Override
-    public void visit(SelectScheaCardFace selectScheaCardFace) {
+    public void visit(SelectSchemaCardFace selectSchemaCardFace) {
 
+    }
+
+    public int getTimeout() {
+        return timeout;
     }
 }

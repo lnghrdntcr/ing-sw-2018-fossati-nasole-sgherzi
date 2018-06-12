@@ -1,5 +1,6 @@
 package it.polimi.se2018.controller;
 
+import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.controller.controllerEvent.TimeoutCommunicationEvent;
 import it.polimi.se2018.controller.states.GameSetupState;
 import it.polimi.se2018.controller.states.State;
@@ -66,36 +67,9 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
         state = new GameSetupState(this, model);
 
-        this.startTimeoutCommunicationThread();
+/*        this.startTimeoutCommunicationThread();*/
         this.startEventLoopHandlerThread();
         this.startActionTimeout();
-
-    }
-
-    private void startActionTimeout() {
-
-        this.actionTimeoutThread = new Thread(() -> {
-
-            while (true) {
-                this.beginTime = System.currentTimeMillis();
-                while ((System.currentTimeMillis() - this.beginTime) < this.actionTimeout) {
-                    try {
-                        Thread.sleep(1000);
-                        Log.i("[ACTION_TIMEOUT_THREAD] Remaining " + (this.actionTimeout / 1000L - this.getTimeout()) + " seconds");
-                    } catch (InterruptedException e) {
-                        Log.d("ActionTimeoutThread was interrupted, well... This may be a problem.");
-                        e.printStackTrace();
-                    }
-                }
-
-                this.state = this.state.handleUserTimeOutEvent();
-            }
-            //this.update(new PlayerTimeoutEvent(this.getClass().getName(), this.model.getCurrentPlayerName()));
-            //TODO: chiamare il metodo sullo stato corrente
-            //TODO: inviare messaggio ai clients
-        }, "ActionTimeoutThread");
-
-        this.actionTimeoutThread.start();
 
     }
 
@@ -146,11 +120,39 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         // that?
         this.beginTime = System.currentTimeMillis();
         this.inboundEventLoop.add(message);
-        this.beginTime = System.currentTimeMillis();
 
     }
 
-    private void startTimeoutCommunicationThread() {
+    private void startActionTimeout() {
+
+        this.actionTimeoutThread = new Thread(() -> {
+
+            while (true) {
+                this.beginTime = System.currentTimeMillis();
+                while ((System.currentTimeMillis() - this.beginTime) < this.actionTimeout) {
+
+                    this.outboundEventLoop.add(new TimeoutCommunicationEvent(this.getClass().getName(), this.model.getCurrentPlayerName(), this.getTimeout()));
+
+                    try {
+                        Thread.sleep(1000);
+                        Log.i("[ACTION_TIMEOUT_THREAD] Remaining " + (this.actionTimeout / 1000L - this.getTimeout()) + " seconds");
+                    } catch (InterruptedException e) {
+                        Log.d("ActionTimeoutThread was interrupted, well... This may be a problem.");
+                        e.printStackTrace();
+                    }
+                }
+
+                this.outboundEventLoop.add(new PlayerTimeoutEvent(this.getClass().getName(), this.model.getCurrentPlayerName()));
+                this.state = this.state.handleUserTimeOutEvent();
+            }
+        }, "ActionTimeoutThread");
+
+        this.actionTimeoutThread.start();
+
+    }
+
+
+    /*private void startTimeoutCommunicationThread() {
         this.timeoutCommunicationThread = new Thread(() -> {
             while (true) {
 
@@ -161,7 +163,6 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ignored) {
-                    // TODO: What should I do if this thread gets interrupted?
                     Log.d("TimeoutCommunication Thread was interrupted");
                     // Should I restart it?
                     //this.timeoutCommunicationThread.start();
@@ -172,7 +173,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
         this.timeoutCommunicationThread.start();
     }
-
+*/
     private void startEventLoopHandlerThread() {
 
         this.eventLoopHandlerThread = new Thread(() -> {
@@ -194,7 +195,6 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException ignored) {
-                    // TODO: What should I do if this thread gets interrupted?
                     Log.d("eventLoopHandlerThread was interrupted");
                     // Should I restart it?
                     // this.eventLoopHandlerThread.start();
@@ -233,7 +233,6 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     }
 
     public void reconnectPlayer(LocalProxy localProxy, String playerName) {
-        // TODO: Implement this one.
 
         for (View v : this.views) {
             if(v.getPlayer().equals(playerName) && !v.isConnected()){

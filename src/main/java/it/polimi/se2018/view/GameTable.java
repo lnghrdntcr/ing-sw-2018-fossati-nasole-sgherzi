@@ -1,5 +1,6 @@
 package it.polimi.se2018.view;
 
+import it.polimi.se2018.controller.controllerEvent.*;
 import it.polimi.se2018.model.modelEvent.*;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model_view.DiceHolderImmutable;
@@ -23,7 +24,8 @@ public abstract class GameTable {
     private boolean isMyTurn;
     private String currentPlayer;
     private int roundNumber;
-    private int roundDirection;
+    private boolean roundDirection;
+    private int secondsRemaining;
 
     public GameTable(RemoteView view) {
         this.view = view;
@@ -76,6 +78,29 @@ public abstract class GameTable {
         renderTurn();
     }
 
+    // Handle Controller events.
+
+    final public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event){
+        // TODO: MACHECCAZZO
+    }
+
+    final public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event){
+        // TODO: MACHECCAZZ2
+    }
+
+    final public void handleEndGame(EndGameEvent event){
+        // TODO: closes everything
+    }
+
+    final public void handlePlayerTimeout(PlayerTimeoutEvent event){
+        // TODO: Dismiss windows
+    }
+
+    final public void handleTimeoutCommunication(TimeoutCommunicationEvent event){
+        this.secondsRemaining = event.getTimeout();
+    }
+    
+
 
     //updates
     protected abstract void renderDiceHolder();
@@ -89,6 +114,10 @@ public abstract class GameTable {
     protected abstract void renderToolcard(int index);
 
     protected abstract void renderTurn();
+
+    public abstract void setActive();
+
+    public abstract void setInactive();
 
 
     //getters
@@ -129,7 +158,11 @@ public abstract class GameTable {
         return roundNumber;
     }
 
-    public int getRoundDirection() {
+    public int getSecondsRemaining() {
+        return secondsRemaining;
+    }
+
+    public boolean getRoundDirection() {
         return roundDirection;
     }
 }

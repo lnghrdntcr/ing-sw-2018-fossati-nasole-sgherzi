@@ -248,10 +248,8 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
      * When the required number of players are connected, starts the match
      */
     private void startGame() {
-        // TODO
-        // Ma chi l'ha messo sto t0d0? spiegare
+        // TODO: a futura memoria
         gameStarted = true;
-        //listenerThread.stop();
 
         this.controller = new Controller(virtualViews, this.actionTimeout);
         this.controller.start();
