@@ -7,7 +7,7 @@ import it.polimi.se2018.view.viewEvent.SchemaCardSelectedEvent;
 public abstract class SelectScheaCardFace {
     private RemoteView view;
 
-    private SelectScheaCardFace(RemoteView view) {
+    public SelectScheaCardFace(RemoteView view) {
         this.view = view;
     }
 
