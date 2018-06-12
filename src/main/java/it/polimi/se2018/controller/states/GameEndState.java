@@ -27,7 +27,6 @@ public class GameEndState extends State {
 
     /**
      * The event handler for the EndGameEvent triggered.
-     * @return Null every time, as the game is up at this point.
      * @throws IllegalArgumentException If the model is null
      * @throws IllegalStateException If there are no players on which compute the score.
      */

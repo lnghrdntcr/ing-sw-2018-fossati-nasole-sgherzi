@@ -12,7 +12,7 @@ import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceSelectingNumberEvent;
 import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
 
 /**
- * A state that handle the intermediate state after using {@link it.polimi.se2018.controller.tool.FirmPastaDiluent}
+ * A state that handle the intermediate state after using "Firm Pasta Diluent" tool card.
  */
 public class PlaceRedrawnWithNumberDiceState extends State {
     private final State oldState;

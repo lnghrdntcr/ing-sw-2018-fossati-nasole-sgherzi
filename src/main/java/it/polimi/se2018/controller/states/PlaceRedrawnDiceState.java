@@ -11,7 +11,7 @@ import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
 import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
 
 /**
- * A state that handle the intermediate state after using {@link it.polimi.se2018.controller.tool.FirmPastaBrush}
+ * A state that handle the intermediate state after using "Firm Pasta Brush" tool card.
  */
 public class PlaceRedrawnDiceState extends State {
     private final State oldState;
