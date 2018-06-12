@@ -1,6 +1,7 @@
 it.polimi.se2018
 it.polimi.se2018.controller
-it.polimi.se2018.controller.tool
+it.polimi.se2018.controller.controllerEvent
+it.polimi.se2018.controller.states
 it.polimi.se2018.model
 it.polimi.se2018.model.modelEvent
 it.polimi.se2018.model.objectives
@@ -10,4 +11,6 @@ it.polimi.se2018.model_view
 it.polimi.se2018.network
 it.polimi.se2018.utils
 it.polimi.se2018.view
+it.polimi.se2018.view.CLI
+it.polimi.se2018.view.gui
 it.polimi.se2018.view.viewEvent
