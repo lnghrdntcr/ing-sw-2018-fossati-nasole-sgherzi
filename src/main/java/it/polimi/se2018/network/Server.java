@@ -37,6 +37,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     private final static int RMI_PORT = 1099;
     private final static int SOCKET_PORT = 2099;
     private String ip = "127.0.0.1";
+    private Controller controller;
 
     /**
      * Instantiate a new server
@@ -90,27 +91,35 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
                         if (playerName != null) {
                             Log.i("Hello " + playerName + "! Nice to meet you!");
-                            for (View el : virtualViews) {
-                                if (el.getPlayer().equals(playerName)) {
-                                    Log.w("A player with an already existent name tried to join this match!");
-                                    clientConnection.close();
+
+                            if (this.controller != null && this.controller.isPlayerDisconnected(playerName)) {
+                                this.controller.reconnectPlayer(new LocalProxySocket(clientConnection), playerName);
+                            } else {
+
+                                for (View el : virtualViews) {
+                                    if (el.getPlayer().equals(playerName)) {
+                                        Log.w("A player with an already existent name tried to join this match!");
+                                        clientConnection.close();
+                                    }
+                                }
+
+                                if (!clientConnection.isClosed()) {
+                                    //inputStream.close();
+                                    LocalProxySocket localProxySocket = new LocalProxySocket(clientConnection);
+                                    addClient(localProxySocket, playerName);
+                                    Log.d("Connected!");
                                 }
                             }
 
-                            if (!clientConnection.isClosed()) {
-                                //inputStream.close();
-                                LocalProxySocket localProxySocket = new LocalProxySocket(clientConnection);
-                                addClient(localProxySocket, playerName);
-                                Log.d("Connected!");
-                            }
+
                         }
 
                     }
 
                     Log.w(
-                            "No more player are allowed as the maximum of "
-                                    + this.playersN
-                                    + " players is already reached."
+                        "No more player are allowed as the maximum of "
+                            + this.playersN
+                            + " players is already reached."
                     );
 
                 } catch (IOException e) {
@@ -127,15 +136,16 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     private void startTimeout() {
         this.timeoutThread = new Thread(() -> {
             Log.d("Starting timeout with timeout of " + this.serverTimeout / 1000L + " seconds");
-            this.beginTime =  System.currentTimeMillis();
-            while((System.currentTimeMillis() - this.beginTime) < this.serverTimeout){
-                try{
+            this.beginTime = System.currentTimeMillis();
+            while ((System.currentTimeMillis() - this.beginTime) < this.serverTimeout) {
+                try {
                     Thread.sleep(1000);
                     Log.d("[CONNECTION] Remaining " + (this.serverTimeout / 1000L - this.getTimeout()) + " seconds");
-                } catch (InterruptedException ignored) {}
+                } catch (InterruptedException ignored) {
+                }
             }
 
-            if(virtualViews.size() < 4 && virtualViews.size() > 1) this.startGame();
+            if (virtualViews.size() < 4 && virtualViews.size() > 1) this.startGame();
 
         });
 
@@ -143,7 +153,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
     }
 
-    private int getTimeout(){
+    private int getTimeout() {
         return (int) ((System.currentTimeMillis() - this.beginTime) / 1000L);
     }
 
@@ -182,6 +192,20 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
         if (virtualViews.size() >= this.playersN) return false;
 
+        if (this.controller != null && this.controller.isPlayerDisconnected(player)) {
+
+            LocalProxyRMI localProxyRMI = new LocalProxyRMI();
+            LocalProxyRMIInterface localProxyRMIInterface = (LocalProxyRMIInterface) UnicastRemoteObject.exportObject(localProxyRMI, 0);
+            localProxyRMI.setClient(remoteProxyRMI);
+
+            remoteProxyRMI.setServer(localProxyRMIInterface);
+
+            this.controller.reconnectPlayer(localProxyRMI, player);
+
+            Log.i("Client with name " + player + " reconnected!");
+            return true;
+        }
+
         for (View el : virtualViews) {
             if (el.getPlayer().equals(player)) {
                 Log.w("A player with an already existent name tried to join this match!");
@@ -217,7 +241,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
             return;
         }
 
-        if(virtualViews.size() == 2) this.startTimeout();
+        if (virtualViews.size() == 2) this.startTimeout();
     }
 
     /**
@@ -229,7 +253,8 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         gameStarted = true;
         //listenerThread.stop();
 
-        new Controller(virtualViews, this.actionTimeout).start();
+        this.controller = new Controller(virtualViews, this.actionTimeout);
+        this.controller.start();
 
     }
 

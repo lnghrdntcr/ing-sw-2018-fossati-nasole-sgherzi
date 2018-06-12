@@ -5,12 +5,17 @@ import it.polimi.se2018.controller.states.GameSetupState;
 import it.polimi.se2018.controller.states.State;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.objectives.*;
+import it.polimi.se2018.network.LocalProxy;
+import it.polimi.se2018.network.LocalProxySocket;
 import it.polimi.se2018.utils.*;
+import it.polimi.se2018.view.RemoteView;
 import it.polimi.se2018.view.View;
+import it.polimi.se2018.view.VirtualView;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -20,6 +25,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
     private GameTableMultiplayer model;
     private State state;
+    private List<View> views;
     private ConcurrentLinkedQueue<Event> outboundEventLoop = new ConcurrentLinkedQueue<>();
     private ConcurrentLinkedQueue<ViewEvent> inboundEventLoop = new ConcurrentLinkedQueue<>();
 
@@ -32,6 +38,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     public Controller(ArrayList<View> viewArrayList, long actionTimeout) {
 
         this.actionTimeout = actionTimeout;
+        this.views = viewArrayList;
 
         ArrayList<String> pln = new ArrayList<>();
         //register the Controller as an observer
@@ -46,11 +53,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
         viewArrayList.forEach(view -> model.register(view));
 
-        Log.i("Game started with " + pln.size() + " players");
-
-        this.start();
-        this.startTimeoutCommunicationThread();
-        this.startEventLoopHandlerThread();
+        Log.i("Game created with " + pln.size() + " players");
 
     }
 
@@ -61,31 +64,36 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
         Log.d("Starting timeout...");
 
+        state = new GameSetupState(this, model);
+
+        this.startTimeoutCommunicationThread();
+        this.startEventLoopHandlerThread();
         this.startActionTimeout();
 
-        state = new GameSetupState(this, model);
     }
 
     private void startActionTimeout() {
 
         this.actionTimeoutThread = new Thread(() -> {
-            this.beginTime = System.currentTimeMillis();
-            while ((System.currentTimeMillis() - this.beginTime) < this.actionTimeout) {
-                try {
-                    Thread.sleep(1000);
-                    Log.i("Remaining " + (this.actionTimeout / 1000L - this.getTimeout()) + " seconds");
-                } catch (InterruptedException e) {
-                    Log.d("ActionTimeoutThread was interrupted, well... This may be a problem.");
-                    e.printStackTrace();
+
+            while (true) {
+                this.beginTime = System.currentTimeMillis();
+                while ((System.currentTimeMillis() - this.beginTime) < this.actionTimeout) {
+                    try {
+                        Thread.sleep(1000);
+                        Log.i("[ACTION_TIMEOUT_THREAD] Remaining " + (this.actionTimeout / 1000L - this.getTimeout()) + " seconds");
+                    } catch (InterruptedException e) {
+                        Log.d("ActionTimeoutThread was interrupted, well... This may be a problem.");
+                        e.printStackTrace();
+                    }
                 }
+
+                this.state = this.state.handleUserTimeOutEvent();
             }
-
-            this.state = this.state.handleUserTimeOutEvent();
-
             //this.update(new PlayerTimeoutEvent(this.getClass().getName(), this.model.getCurrentPlayerName()));
             //TODO: chiamare il metodo sullo stato corrente
             //TODO: inviare messaggio ai clients
-        });
+        }, "ActionTimeoutThread");
 
         this.actionTimeoutThread.start();
 
@@ -138,7 +146,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         // that?
         this.beginTime = System.currentTimeMillis();
         this.inboundEventLoop.add(message);
-        this.startActionTimeout();
+        this.beginTime = System.currentTimeMillis();
 
     }
 
@@ -160,7 +168,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
                 }
 
             }
-        });
+        }, "TimeoutCommunicationThread");
 
         this.timeoutCommunicationThread.start();
     }
@@ -193,10 +201,23 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
                 }
 
             }
-        });
+        }, "EventLoopHandler");
 
         this.eventLoopHandlerThread.start();
 
+    }
+
+    /**
+     * Checks if a player was connected and then disconnected.
+     *
+     * @param playerName The player to check the connection to.
+     * @return true if the player connected before, false otherwise.
+     */
+    public boolean isPlayerDisconnected(String playerName) {
+        for (View v : this.views) {
+            if (playerName.equals(v.getPlayer()) && !v.isConnected()) return true;
+        }
+        return false;
     }
 
     public GameTableMultiplayer getModel() {
@@ -211,4 +232,15 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         this.outboundEventLoop.add(toDispatchEvent);
     }
 
+    public void reconnectPlayer(LocalProxy localProxy, String playerName) {
+        // TODO: Implement this one.
+
+        for (View v : this.views) {
+            if(v.getPlayer().equals(playerName) && !v.isConnected()){
+                ((VirtualView) v).connect(localProxy);
+                Log.d("Player " + playerName + " reconnected successfully ");
+            }
+        }
+
+    }
 }
