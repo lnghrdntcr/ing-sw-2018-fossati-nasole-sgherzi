@@ -10,13 +10,19 @@ public class ScoreHolder implements Comparable<ScoreHolder> {
     private int privateObjectivePoints;
     private int tokenPoints;
     private int orderInFinalRound;
+    private int publicObjectivePoints;
     private int missing;
 
 
-    private int publicObjectivePoints;
-
-
     public ScoreHolder(String player, int privateObjectivePoints, int publicObjectivePoints, int tokenPoints, int missing, int orderInFinalRound) {
+
+        if(
+            tokenPoints < 0 ||
+            privateObjectivePoints < 0 ||
+            publicObjectivePoints < 0 ||
+            missing < 0 ||
+            orderInFinalRound < 0
+            ) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": None of the attributes can be negative");
 
         this.player = player;
         this.privateObjectivePoints = privateObjectivePoints;
@@ -39,15 +45,15 @@ public class ScoreHolder implements Comparable<ScoreHolder> {
             this.missing;
     }
 
-    public int getTokenPoints() {
+    private int getTokenPoints() {
         return tokenPoints;
     }
 
-    public int getOrderInFinalRound() {
+    private int getOrderInFinalRound() {
         return orderInFinalRound;
     }
 
-    public int getPublicObjectivePoints() {
+    private int getPublicObjectivePoints() {
         return publicObjectivePoints;
     }
 
@@ -62,6 +68,10 @@ public class ScoreHolder implements Comparable<ScoreHolder> {
      */
     @Override
     public int compareTo(ScoreHolder o) {
+
+        if(o == null) throw new NullPointerException();
+
+        if(this.equals(o)) return 0;
 
         if(this.getTotalScore() > o.getTotalScore()) return 1;
         if(this.getTotalScore() == o.getTotalScore()){

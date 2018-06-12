@@ -2,6 +2,7 @@ package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.AskSchemaCardFaceEvent;
+import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.schema_card.SchemaCard;
 import it.polimi.se2018.model.schema_card.Side;
@@ -75,6 +76,7 @@ public class GameSetupState extends State {
 
     @Override
     public State handleUserTimeOutEvent() {
+
         for(int i=0; i<getController().getPlayersList().length; i++) {
             if(getModel().getPlayerSchemacardFace(getController().getPlayersList()[i]) == null){
                 //here the player does not have any schemacardface selected, selects the first card

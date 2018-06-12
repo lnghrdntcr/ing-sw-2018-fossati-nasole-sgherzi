@@ -27,7 +27,8 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     private long beginTime;
     private Thread actionTimeoutThread;
     private Thread timeoutCommunicationThread;
-    private Thread eventLoopHandlerThread;
+    private Thread inboundEventLoopHandlerThread;
+    private Thread outboundEventLoopHandlerThread;
 
     public Controller(ArrayList<View> viewArrayList, long actionTimeout) {
 
@@ -48,9 +49,9 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
         Log.i("Game started with " + pln.size() + " players");
 
-        this.start();
         this.startTimeoutCommunicationThread();
         this.startEventLoopHandlerThread();
+        this.start();
 
     }
 
@@ -138,6 +139,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         // that?
         this.beginTime = System.currentTimeMillis();
         this.inboundEventLoop.add(message);
+        this.inboundEventLoop.notify();
         this.startActionTimeout();
 
     }
@@ -167,35 +169,41 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
     private void startEventLoopHandlerThread() {
 
-        this.eventLoopHandlerThread = new Thread(() -> {
+        this.inboundEventLoopHandlerThread = new Thread(() -> {
 
-            while (true) {
-
-                if (!this.outboundEventLoop.isEmpty()) {
-                    for (Event ev : this.outboundEventLoop) {
-                        this.notify(this.outboundEventLoop.poll());
-                    }
-                }
-
-                if (!this.inboundEventLoop.isEmpty()) {
-                    for (ViewEvent ev : this.inboundEventLoop) {
-                        this.state = state.handleEvent(this.inboundEventLoop.poll(), this.model);
-                    }
-                }
-
+            if (this.inboundEventLoop.isEmpty()) {
                 try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ignored) {
-                    // TODO: What should I do if this thread gets interrupted?
-                    Log.d("eventLoopHandlerThread was interrupted");
-                    // Should I restart it?
-                    // this.eventLoopHandlerThread.start();
+                    this.inboundEventLoop.wait();
+                } catch (InterruptedException e) {
+                    //e.printStackTrace();
+                    Log.d("inboundEventLoopHandler thread was interrupted");
                 }
-
             }
+
+            for (ViewEvent ev : this.inboundEventLoop) {
+                this.state = state.handleEvent(this.inboundEventLoop.poll(), this.model);
+            }
+
         });
 
-        this.eventLoopHandlerThread.start();
+        this.outboundEventLoopHandlerThread = new Thread(() -> {
+
+           if (this.outboundEventLoop.isEmpty()) {
+               try {
+                   this.outboundEventLoop.wait();
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+               }
+           }
+
+           for (Event ev: this.outboundEventLoop){
+               this.notify(this.outboundEventLoop.poll());
+           }
+
+        });
+
+        this.inboundEventLoopHandlerThread.start();
+        this.outboundEventLoopHandlerThread.start();
 
     }
 
@@ -209,6 +217,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
     public void dispatchEvent(Event toDispatchEvent) {
         this.outboundEventLoop.add(toDispatchEvent);
+        this.outboundEventLoop.notify();
     }
 
 }

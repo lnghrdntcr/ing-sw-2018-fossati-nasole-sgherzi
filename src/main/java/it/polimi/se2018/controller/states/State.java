@@ -1,6 +1,7 @@
 package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
+import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
@@ -9,7 +10,7 @@ import it.polimi.se2018.view.viewEvent.*;
 /**
  * A generic State used by the controller to handle a player event
  */
-public abstract class State {
+public class State {
     private Controller controller;
     private GameTableMultiplayer model;
 
@@ -50,7 +51,10 @@ public abstract class State {
         return this;
     }
 
-    public abstract State handleUserTimeOutEvent();
+    public State handleUserTimeOutEvent(){
+        Log.i(this.getClass().getCanonicalName() + ": cannot handle PlayerTimeoutEvent here");
+        return this;
+    }
 
 
     public Controller getController() {
