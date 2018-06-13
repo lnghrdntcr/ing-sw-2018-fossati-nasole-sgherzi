@@ -35,13 +35,12 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
 
         System.out.println("Choose your Schema Card: \n\n");
 
-        //TODO
         for (int i = 0; i < 4; i++) {
             System.out.println(i+1 + "for:\n");
             CLIPrinter.printSchemaCardFace(faces[i]);
         }
 
-        subState = subState.CHOICE;
+        subState = CLISelectSchemaSubState.CHOICE;
 
     }
 
@@ -77,7 +76,7 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
     @Override
     public void onCommandRecived(String input) {
 
-        if (subState == subState.CHOICE) {
+        if (subState == CLISelectSchemaSubState.CHOICE) {
             try {
                 choice = Integer.parseInt(input);
             } catch (RuntimeException e) {
@@ -86,7 +85,7 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
             }
             if (choice < 1 || choice > 4) System.out.println("Invalid choice, try again");
             else {
-                subState = subState.USURE;
+                subState = CLISelectSchemaSubState.USURE;
             }
         } else {
             System.out.println("You chose" + faces[choice - 1].getName() + "\nAre you sure? [Y] [N]");
