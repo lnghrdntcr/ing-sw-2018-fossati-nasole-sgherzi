@@ -3,6 +3,7 @@ package it.polimi.se2018.view.CLI;
 import it.polimi.se2018.model.TurnHolder;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
+import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model_view.DiceHolderImmutable;
@@ -117,7 +118,24 @@ public class CLIPrinter {
     }
 
     public static void printSchema(Schema schema){
+        System.out.println("Name: " + schema.getSchemaCardFace().getName() + "\nDifficulty: " + schema.getSchemaCardFace().getDifficulty());
+        for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
+            printLineSeparator(Settings.CARD_WIDTH);
+            for (int x = 0; x < Settings.CARD_WIDTH; x++) {
+                Point point = new Point(x, y);
+                if(schema.getDiceFace(point)==null) {
+                    printRestriction(schema.getSchemaCardFace().getRestriction(new Point(x, y)));
+                }else{
+                    printDice(schema.getDiceFace(point));
+                }
+            }
+            System.out.println("|\n");
+        }
+        printLineSeparator(Settings.CARD_WIDTH);
+    }
 
+    private static void printDice(DiceFace diceFace) {
+        System.out.println("|" + ansi().bg(diceFace.getColor().getAnsiColor()).a(""+diceFace.getNumber()).reset());
     }
 
     public static void printTokens(int remaining, int total) {
