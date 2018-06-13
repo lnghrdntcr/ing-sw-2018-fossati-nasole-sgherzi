@@ -39,6 +39,11 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
     }
 
     @Override
+    protected void renderPublicObjective(int index) {
+
+    }
+
+    @Override
     protected void renderTurn() {
 
     }

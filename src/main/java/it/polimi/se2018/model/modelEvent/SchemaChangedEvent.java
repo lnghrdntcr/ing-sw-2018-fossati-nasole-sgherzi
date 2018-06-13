@@ -22,7 +22,7 @@ public class SchemaChangedEvent extends ModelEvent {
 
     @Override
     public void visit(GameTable gameTable) {
-        gameTable.handleShcemaChanged(this);
+        gameTable.handleSchemaChanged(this);
     }
 
     @Override

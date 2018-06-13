@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.controller.controllerEvent.*;
 import it.polimi.se2018.model.modelEvent.*;
+import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model_view.DiceHolderImmutable;
 import it.polimi.se2018.model_view.DraftBoardImmutable;
@@ -18,6 +19,7 @@ public abstract class GameTable {
     private RemoteView view;
     private DiceHolderImmutable diceHolderImmutable;
     private DraftBoardImmutable draftBoardImmutable;
+    private PublicObjective[] publicObjectives;
     private HashMap<String, PlayerImmutable> players = new HashMap<>();
     private HashMap<String, Schema> schemas = new HashMap<>();
     private ToolCardImmutable[] toolCardImmutables = new ToolCardImmutable[Settings.TOOLCARDS_N];
@@ -60,7 +62,7 @@ public abstract class GameTable {
         renderPlayer(event.getPlayerImmutable().getName());
     }
 
-    final public void handleShcemaChanged(SchemaChangedEvent event) {
+    final public void handleSchemaChanged(SchemaChangedEvent event) {
         schemas.put(event.getPlayerName(), event.getSchema());
         renderSchema(event.getPlayerName());
     }
@@ -68,6 +70,11 @@ public abstract class GameTable {
     final public void handleToolcardChanged(ToolCardChanged event) {
         toolCardImmutables[event.getIndex()] = event.getToolCardImmutable();
         renderToolcard(event.getIndex());
+    }
+
+    final public void handlePublicObjective(PublicObjectiveEvent event){
+        publicObjectives[event.getIndex()] = event.getPublicObjective();
+        renderPublicObjective(event.getIndex());
     }
 
     final public void handleTurnChanged(TurnChangedEvent event) {
@@ -112,6 +119,8 @@ public abstract class GameTable {
     protected abstract void renderSchema(String player);
 
     protected abstract void renderToolcard(int index);
+
+    protected abstract void renderPublicObjective(int index);
 
     protected abstract void renderTurn();
 
@@ -165,4 +174,9 @@ public abstract class GameTable {
     public boolean getRoundDirection() {
         return roundDirection;
     }
+
+    public PublicObjective getPublicObjective(int index) {
+        return publicObjectives[index];
+    }
+
 }
