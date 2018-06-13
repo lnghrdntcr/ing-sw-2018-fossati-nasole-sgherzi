@@ -38,7 +38,7 @@ public class CLIPrinter {
             for (int x = 0; x < Settings.CARD_WIDTH; x++) {
                 printRestriction(schemaCardFace.getRestriction(new Point(x, y)));
             }
-            System.out.println("|\n");
+            System.out.println("|");
         }
         printLineSeparator(Settings.CARD_WIDTH);
     }
@@ -46,20 +46,20 @@ public class CLIPrinter {
     //support method for printSchemaCardFace
     private static void printRestriction(CellRestriction cellRestriction) {
         if (cellRestriction instanceof NoRestriction) {
-            System.out.println("| ");
+            System.out.print("| ");
         } else if (cellRestriction instanceof NumberRestriction) {
-            System.out.println("|" + ((NumberRestriction) cellRestriction).getNumber());
+            System.out.print("|" + ((NumberRestriction) cellRestriction).getNumber());
         } else {
-            System.out.println("|" + ansi().bg(((ColorRestriction) cellRestriction).getColor().getAnsiColor()).a(" ").reset());
+            System.out.print("|" + ansi().bg(((ColorRestriction) cellRestriction).getColor().getAnsiColor()).a(" ").reset());
         }
     }
 
     //support method for printSchemaCardFace
     private static void printLineSeparator(int param) {
         for (int x = 0; x < param; x++) {
-            System.out.println("+-");
+            System.out.print("+-");
         }
-        System.out.println("+\n");
+        System.out.println("+");
     }
 
     public static void printPrivateObjective(PrivateObjective privateObjective){
@@ -135,13 +135,13 @@ public class CLIPrinter {
                     printDice(schema.getDiceFace(point));
                 }
             }
-            System.out.println("|\n");
+            System.out.println("|");
         }
         printLineSeparator(Settings.CARD_WIDTH);
     }
 
     private static void printDice(DiceFace diceFace) {
-        System.out.println("|" + ansi().bg(diceFace.getColor().getAnsiColor()).a(""+diceFace.getNumber()).reset());
+        System.out.print("|" + ansi().bg(diceFace.getColor().getAnsiColor()).a(""+diceFace.getNumber()).reset());
     }
 
     public static void printTokens(int remaining, int total) {
