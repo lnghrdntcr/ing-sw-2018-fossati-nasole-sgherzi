@@ -7,10 +7,11 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
 
     private boolean iAmActive = false;
     private InputListenerThread inputListenerThread;
+    private State realeState;
 
     public CLIGameTable(RemoteView view) {
         super(view);
-
+        this.realeState = new MainMenuState(this);
     }
 
     @Override
