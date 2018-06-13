@@ -1,10 +1,12 @@
 package it.polimi.se2018.utils;
 
+import java.io.Serializable;
+
 /**
  * Holds the point of the given player and how it obtainded them.
  * @since 29/06/2018
  */
-public class ScoreHolder implements Comparable<ScoreHolder> {
+public class ScoreHolder implements Comparable<ScoreHolder>, Serializable {
 
     private String player;
     private int privateObjectivePoints;

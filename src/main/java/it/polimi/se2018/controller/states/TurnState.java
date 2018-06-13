@@ -80,7 +80,7 @@ public class TurnState extends State {
      */
     @Override
     public State handleToolcardEvent(UseToolcardEvent event) {
-
+        Log.d(getClass().getCanonicalName()+" handling useToolcardEvent...");
         if (event == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
 
@@ -115,7 +115,7 @@ public class TurnState extends State {
      */
     @Override
     public State handlePlaceDiceEvent(PlaceDiceEvent event) {
-
+        Log.d(getClass().getCanonicalName()+" handling PlaceDiceEvent...");
         if (event == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
         if (getModel() == null)
@@ -161,7 +161,7 @@ public class TurnState extends State {
      */
     @Override
     public State handleEndTurnEvent(EndTurnEvent event) {
-
+        Log.d(getClass().getCanonicalName()+" handling EndTurnEvent...");
         if (event == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
         if (getModel() == null)
@@ -445,5 +445,14 @@ public class TurnState extends State {
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "TurnState{" +
+                "hasPlacedDice=" + hasPlacedDice +
+                ", hasUsedToolcard=" + hasUsedToolcard +
+                ", player="+getModel().getCurrentPlayerName()+
+                ", round="+getModel().getRound()+
+                ", firstTurn="+getModel().isFirstTurnInRound()+
+                '}';
+    }
 }

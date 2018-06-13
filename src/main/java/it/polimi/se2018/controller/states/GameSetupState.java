@@ -54,7 +54,7 @@ public class GameSetupState extends State {
      */
     @Override
     public State handleSchemaCardSelectedEvent(SchemaCardSelectedEvent event) {
-
+        Log.d(getClass().getCanonicalName()+" handling SchemaCardSelectEvent");
         int playerIndex =-1;
         for(int i=0; i<getController().getPlayersList().length; i++) {
             if(getController().getPlayersList()[i].equals(event.getPlayerName())){
@@ -76,7 +76,7 @@ public class GameSetupState extends State {
 
     @Override
     public State handleUserTimeOutEvent() {
-
+        Log.d(getClass().getCanonicalName()+" handling UserTimeoutEvent");
         for(int i=0; i<getController().getPlayersList().length; i++) {
             if(getModel().getPlayerSchemacardFace(getController().getPlayersList()[i]) == null){
                 //here the player does not have any schemacardface selected, selects the first card

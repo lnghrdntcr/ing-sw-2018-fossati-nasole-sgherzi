@@ -144,6 +144,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
                 this.outboundEventLoop.add(new PlayerTimeoutEvent(this.getClass().getName(), this.model.getCurrentPlayerName()));
                 this.state = this.state.handleUserTimeOutEvent();
+                Log.d(getClass().getName()+" Going in new state: "+state);
             }
         }, "ActionTimeoutThread");
 
@@ -189,6 +190,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
                 if (!this.inboundEventLoop.isEmpty()) {
                     for (ViewEvent ev : this.inboundEventLoop) {
                         this.state = state.handleEvent(this.inboundEventLoop.poll(), this.model);
+                        Log.d(getClass().getName()+" Going in new state: "+state);
                     }
                 }
 
@@ -196,8 +198,6 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
                     Thread.sleep(50);
                 } catch (InterruptedException ignored) {
                     Log.d("eventLoopHandlerThread was interrupted");
-                    // Should I restart it?
-                    // this.eventLoopHandlerThread.start();
                 }
 
             }

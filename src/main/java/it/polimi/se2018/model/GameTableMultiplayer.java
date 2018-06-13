@@ -64,8 +64,18 @@ public class GameTableMultiplayer extends Observable<Event> {
 
         draftBoard = new DraftBoard();
         diceHolder = new DiceHolder();
+
     }
 
+    /**
+     * Resend a copy of the whole model to the specified client
+     * @param playerName the client to resync
+     */
+    public void sync(String playerName){
+        for(Player player: players){
+            dispatchEvent(new PlayerChangedEvent(getClass().getName()+"::constructor", playerName, player.getImmutableInstance()));
+        }
+    }
 
 
 

@@ -7,6 +7,7 @@ import java.io.Serializable;
 /**
  * A generic event.
  * Each event should extend this class
+ * The player is the receiver of the event. Only this player will receive the event
  */
 public abstract class Event implements Serializable {
     private final String player;

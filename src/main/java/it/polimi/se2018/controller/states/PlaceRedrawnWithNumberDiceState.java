@@ -25,6 +25,7 @@ public class PlaceRedrawnWithNumberDiceState extends State {
 
     @Override
     public State handleToolcardEvent(UseToolcardEvent event) {
+        Log.d(getClass().getCanonicalName()+" handling ToolcardEvent");
         try{
             PlaceAnotherDiceSelectingNumberEvent ev = (PlaceAnotherDiceSelectingNumberEvent) event;
             //checks if user is placing the redrawn face
@@ -51,6 +52,7 @@ public class PlaceRedrawnWithNumberDiceState extends State {
 
     @Override
     public State handleUserTimeOutEvent() {
+        Log.d(getClass().getCanonicalName()+" handling UserTimeoutEvent");
         //If the user disconnected or timed out, simply return, leaving the dice as it is
         return oldState;
     }

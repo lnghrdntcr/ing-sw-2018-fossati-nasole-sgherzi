@@ -53,9 +53,10 @@ public class LocalProxySocket extends LocalProxy {
      * @param event the event that should me dispatched
      */
     @Override
-    public void sendEventToClient(Event event) {
+    synchronized public void sendEventToClient(Event event) {
         try {
             objectOutputStream.writeObject(event);
+            objectOutputStream.flush();
         } catch (IOException e) {
             // If it catches an exception it means that the client is disconnected.
             this.getView().disconnect();

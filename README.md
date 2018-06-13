@@ -10,6 +10,7 @@
 * finire i test
 * aggiungere caricamento schema card da cartella resources (usando getResources)
 * Spostare generazione PublicObjective in model
+* Eventi devono arrivare solo al player giusto! Il campo stringa dell'evento (quello generico) è il destinatario: se vuoto o null il messaggio è per tutti, altrimenti solo per il player giusto
 
 
 ## Caratteristiche file JSON per le carte schema

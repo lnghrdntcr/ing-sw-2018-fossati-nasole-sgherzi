@@ -26,6 +26,7 @@ public class PlaceRedrawnDiceState extends State {
 
     @Override
     public State handleToolcardEvent(UseToolcardEvent event) {
+        Log.d(getClass().getCanonicalName()+" handling ToolcardEvent");
         try{
             PlaceAnotherDiceEvent ev = (PlaceAnotherDiceEvent) event;
             //checks if user is placing the redrawn face
@@ -51,6 +52,7 @@ public class PlaceRedrawnDiceState extends State {
 
     @Override
     public State handleUserTimeOutEvent() {
+        Log.d(getClass().getCanonicalName()+" handling UserTimeoutEvent");
         //if the user timed out, simply do not let him place any dice
         return oldState;
     }
