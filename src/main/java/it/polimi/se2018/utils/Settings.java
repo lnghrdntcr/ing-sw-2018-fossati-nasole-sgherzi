@@ -47,6 +47,7 @@ public class Settings {
     private static String schemaCardDatabase ="./gameData/resources/schemaCards/schemaCardBase.scf";
 
     public static void setSchemaCardDatabase(String customSchemaCardPath) {
+        if(customSchemaCardPath==null || customSchemaCardPath.equals("")) return;
         schemaCardDatabase = customSchemaCardPath;
     }
 

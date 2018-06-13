@@ -5,10 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -17,7 +14,7 @@ import java.util.Scanner;
 /**
  * Links two SchemaCardFace, one per side.
  */
-public class SchemaCard {
+public class SchemaCard implements Serializable {
 
     private EnumMap<Side, SchemaCardFace> schemaCardFaces = new EnumMap<>(Side.class);
 

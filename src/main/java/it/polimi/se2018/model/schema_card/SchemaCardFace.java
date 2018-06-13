@@ -7,12 +7,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * @since 09/05/2018
  * Class that represents a Schema, with its restrictions
  */
-public class SchemaCardFace {
+public class SchemaCardFace implements Serializable {
 
     private int difficulty;
     private String name;

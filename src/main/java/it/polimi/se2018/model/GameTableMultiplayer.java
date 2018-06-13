@@ -523,7 +523,7 @@ public class GameTableMultiplayer extends Observable<Event> {
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": " + playerName + " does not exist");
         }
 
-        return getPlayerByName(playerName).getSchema().getSchemaCardFace();
+        return getPlayerByName(playerName).getSchema()==null?null:getPlayerByName(playerName).getSchema().getSchemaCardFace();
     }
 
     /**
