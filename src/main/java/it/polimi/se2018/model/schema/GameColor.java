@@ -15,4 +15,7 @@ public enum GameColor {
         this.color = color;
     }
 
+    public Ansi.Color getAnsiColor() {
+        return color;
+    }
 }

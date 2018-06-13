@@ -22,7 +22,6 @@ public class Client {
 
     private static String host, name, graphics;
     private static int port;
-    private CLI cli;
 
     /**
      * Begins the connection with the RMI server.
@@ -108,7 +107,7 @@ public class Client {
         if(graphics.equalsIgnoreCase("gui")){
             //TODO start gui
         } else {
-            new CLI(name);
+            //TODO start cli
         }
 
 
