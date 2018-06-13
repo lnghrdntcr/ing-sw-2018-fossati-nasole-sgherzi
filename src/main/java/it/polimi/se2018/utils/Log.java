@@ -16,7 +16,7 @@ public class Log {
      * @param message the message to log
      */
     public static void i(String message) {
-        System.out.println(ansi().fg(Ansi.Color.GREEN).a("[INFO]" + message));
+        System.out.println(ansi().fg(Ansi.Color.GREEN).a("[INFO] " + message).reset());
     }
 
     /**
@@ -25,7 +25,7 @@ public class Log {
      * @param message
      */
     public static void w(String message) {
-        System.out.println(ansi().fg(Ansi.Color.YELLOW).a("[WARNING]" + message));
+        System.out.println(ansi().fg(Ansi.Color.YELLOW).a("[WARNING] " + message).reset());
     }
 
     /**
@@ -43,6 +43,6 @@ public class Log {
      * @param message
      */
     public static void e(String message) {
-        System.out.println(ansi().fg(Ansi.Color.RED).a("[ERROR]" + message));
+        System.out.println(ansi().fg(Ansi.Color.RED).a("[ERROR] " + message).reset());
     }
 }

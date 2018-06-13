@@ -49,7 +49,7 @@ public class CLIPrinter {
         } else if (cellRestriction instanceof NumberRestriction) {
             System.out.println("|" + ((NumberRestriction) cellRestriction).getNumber());
         } else {
-            System.out.println("|" + ansi().bg(((ColorRestriction) cellRestriction).getColor().getAnsiColor()).a(" "));
+            System.out.println("|" + ansi().bg(((ColorRestriction) cellRestriction).getColor().getAnsiColor()).a(" ").reset());
         }
     }
 
@@ -63,10 +63,10 @@ public class CLIPrinter {
 
     public static void printPrivateObjective(PrivateObjective privateObjective){
         Ansi.Color color = privateObjective.getColor().getAnsiColor();
-        System.out.println(ansi().bg(color).a(" "));
-        System.out.println(ansi().fg(color).a(">") + "Sum the values of all the" + ansi().fg(color).a(color.toString()) + "dice");
-        System.out.println(ansi().fg(color).a("<"));
-        System.out.println(ansi().bg(color).a(" "));
+        System.out.println(ansi().bg(color).a(" ").reset());
+        System.out.println(ansi().fg(color).a(">").reset() + "Sum the values of all the" + ansi().fg(color).a(color.toString()).reset() + "dice");
+        System.out.println(ansi().fg(color).a("<").reset());
+        System.out.println(ansi().bg(color).a(" ").reset());
     }
 
     public static void printPlayer(PlayerImmutable player) {
@@ -103,16 +103,13 @@ public class CLIPrinter {
 
     }
 
-    public static void printPrivateObjective(PrivateObjective privateObjective) {
-    }
-
     public static void printTokens(int remaining, int total) {
 
         for (int i = 0; i < remaining; i++) {
-            System.out.println(ansi().bg(WHITE));
+            System.out.println(ansi().bg(WHITE).reset());
         }
         for (int i = 0; i < (total - remaining); i++) {
-            System.out.println(ansi().bg(RED));
+            System.out.println(ansi().bg(RED).reset());
         }
 
     }
