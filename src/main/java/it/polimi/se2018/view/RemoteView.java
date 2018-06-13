@@ -2,6 +2,8 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.view.CLI.CLIGameTable;
+import it.polimi.se2018.view.CLI.CLISelectSchema;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -14,18 +16,24 @@ public class RemoteView extends View {
     private GameEnding gameEnding;
     private GameTable gameTable;
 
-    public RemoteView(String player) {
+    public RemoteView(String player, Graphics graphics) {
         super(player);
-        // TODO: Instantiate SelectSchemaCardFace, GameEnding, GameTable.
+        if (graphics == Graphics.CLI) {
+            selectSchemaCardFace = new CLISelectSchema(this);
+            gameEnding = null;
+            gameTable = new CLIGameTable(this);
+        }
         this.startEventLoopHandler();
+
+        activateSelectSchemaCard();
 
     }
 
     private void startEventLoopHandler() {
         this.eventLoopHandler = new Thread(() -> {
 
-            while (true){
-                if(!this.eventLoop.isEmpty()){
+            while (true) {
+                if (!this.eventLoop.isEmpty()) {
                     // TODO: Send event to the CLI/GUI
                     VisitableFromView actualEvent = this.eventLoop.poll();
 
@@ -45,25 +53,40 @@ public class RemoteView extends View {
 
             }
 
-        },"RemoteViewEventLoopHandler");
+        }, "RemoteViewEventLoopHandler");
     }
 
     @Override
     public void update(Event message) {
-        try{
+        try {
             this.eventLoop.add((VisitableFromView) message);
-        } catch (ClassCastException e ){
+        } catch (ClassCastException e) {
             Log.d("I couldn't recive this event! " + message);
         }
     }
 
-    public void sendEventToController(ViewEvent event){
+    public void sendEventToController(ViewEvent event) {
         this.notify(event);
     }
 
+    public void activateSelectSchemaCard(){
+
+        this.gameEnding.setInactive();
+        this.gameTable.setInactive();
+        this.selectSchemaCardFace.setActive();
+    }
+
     public void activateGameTable() {
-        // TODO: deactivate selectSchemaCardFace
-        // TODO: deactivate gameEnding
+        this.selectSchemaCardFace.setInactive();
+        this.gameEnding.setInactive();
         this.gameTable.setActive();
     }
+
+    public void activateGameEnding() {
+        this.selectSchemaCardFace.setInactive();
+        this.gameTable.setInactive();
+        this.gameEnding.setActive();
+    }
+
+    public enum Graphics {GUI, CLI}
 }

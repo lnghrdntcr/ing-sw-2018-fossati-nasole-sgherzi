@@ -46,7 +46,7 @@ public class TurnStateTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             Controller actualController = new Controller(this.views, 10);

@@ -31,7 +31,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -52,7 +52,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -88,7 +88,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -135,7 +135,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -165,7 +165,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -220,7 +220,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -273,7 +273,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -316,7 +316,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -342,7 +342,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -390,7 +390,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -417,7 +417,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -451,7 +451,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -503,7 +503,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -533,7 +533,7 @@ public class GameTableMultiplayerTest {
             this.views = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -583,7 +583,7 @@ public class GameTableMultiplayerTest {
             ArrayList<String> players = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
                 players.add("Player" + j);
             }
 
@@ -606,7 +606,7 @@ public class GameTableMultiplayerTest {
             ArrayList<String> players = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -634,7 +634,7 @@ public class GameTableMultiplayerTest {
             ArrayList<String> players = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -667,7 +667,7 @@ public class GameTableMultiplayerTest {
             ArrayList<String> players = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
@@ -709,7 +709,7 @@ public class GameTableMultiplayerTest {
             ArrayList<String> players = new ArrayList<>();
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j));
+                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
             this.controller = new Controller(this.views, 10);
