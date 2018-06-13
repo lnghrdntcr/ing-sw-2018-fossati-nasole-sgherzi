@@ -33,13 +33,13 @@ public class CLIPrinter {
     public static void printSchemaCardFace(SchemaCardFace schemaCardFace) {
         System.out.println("Name: " + schemaCardFace.getName() + "\nDifficulty: " + schemaCardFace.getDifficulty());
         for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
-            printLineSeparator();
+            printLineSeparator(Settings.CARD_WIDTH);
             for (int x = 0; x < Settings.CARD_WIDTH; x++) {
                 printRestriction(schemaCardFace.getRestriction(new Point(x, y)));
             }
             System.out.println("|\n");
         }
-        printLineSeparator();
+        printLineSeparator(Settings.CARD_WIDTH);
     }
 
     //support method for printSchemaCardFace
@@ -54,8 +54,8 @@ public class CLIPrinter {
     }
 
     //support method for printSchemaCardFace
-    private static void printLineSeparator() {
-        for (int x = 0; x < Settings.CARD_WIDTH; x++) {
+    private static void printLineSeparator(int param) {
+        for (int x = 0; x < param; x++) {
             System.out.println("+-");
         }
         System.out.println("+\n");
@@ -69,16 +69,17 @@ public class CLIPrinter {
         System.out.println(ansi().bg(color).a(" ").reset());
     }
 
-    public static void printPlayer(PlayerImmutable player) {
-        System.out.println("TODO: stampa player!!");
+    public static void printPlayer(CLIGameTable cliGameTable, PlayerImmutable player) {
+        System.out.println(player.getName());
+        printSchema(cliGameTable.getSchemas(player.getName()));
     }
 
-    public static void printError(String errore) {
-        System.out.println("TODO: stampa errore: " + errore);
+    public static void printError(String error) {
+        System.out.println(ansi().fg(Ansi.Color.RED).a(error).reset());
     }
 
     public static void printQuestion(String question) {
-        System.out.println("TODO: stampa domanda: " + question);
+        System.out.println(ansi().fg(Ansi.Color.BLUE).a(question).reset());
     }
 
     public static void printMenuLine(int option, String line) {
@@ -86,9 +87,25 @@ public class CLIPrinter {
     }
 
     public static void printDraftBoard(DraftBoardImmutable draftBoardImmutable) {
+        printLineSeparator(draftBoardImmutable.getDices().length);
+        for(int i = 0; i < draftBoardImmutable.getDices().length; i++){
+            System.out.println("|" +
+                    ansi().bg(draftBoardImmutable.getDices()[i].getColor().getAnsiColor())
+                            .a(draftBoardImmutable.getDices()[i].getNumber()));
+        }
+        System.out.println("|\n");
+
+        printLineSeparator(draftBoardImmutable.getDices().length);
+
+        for(int i = 0; i < draftBoardImmutable.getDices().length; i++){
+            System.out.println(" " + (i));
+        }
     }
 
     public static void printDiceHolder(DiceHolderImmutable diceHolderImmutable) {
+        for(int i=0; i<Settings.TURNS; i++){
+            //TODO:
+        }
 
     }
 
