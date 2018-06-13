@@ -1,6 +1,7 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.utils.Event;
+import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.VirtualView;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
 
@@ -22,7 +23,11 @@ abstract public class LocalProxy {
      * @param event the event to dispatch
      */
     public void dispatchEventToVirtualView(ViewEvent event){
-        view.dispatchProxyEvent(event);
+        if(event.getPlayerName().equals(view.getPlayer())) {
+            view.dispatchProxyEvent(event);
+        }else {
+            Log.w("Listener for player "+view.getPlayer()+" received an event for "+event.getPlayerName()+", so strange, this motherfather il trying to hack the game...");
+        }
     }
 
     public VirtualView getView() {

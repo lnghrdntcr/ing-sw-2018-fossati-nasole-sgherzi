@@ -54,6 +54,8 @@ public class LocalProxySocket extends LocalProxy {
      */
     @Override
     synchronized public void sendEventToClient(Event event) {
+        //check if this event is for me
+        if(event.getPlayerName()!=null && !event.getPlayerName().equals("") && !event.getPlayerName().equals(getView().getPlayer())) return;
         try {
             objectOutputStream.writeObject(event);
             objectOutputStream.flush();
