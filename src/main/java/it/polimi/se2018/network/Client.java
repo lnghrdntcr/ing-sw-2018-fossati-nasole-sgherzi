@@ -1,7 +1,6 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.utils.Log;
-import it.polimi.se2018.view.CLI.CLI;
 import it.polimi.se2018.view.CLI.CLIPrinter;
 
 import java.io.IOException;
