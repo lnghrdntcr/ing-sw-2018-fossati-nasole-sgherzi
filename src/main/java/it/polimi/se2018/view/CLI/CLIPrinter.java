@@ -147,11 +147,12 @@ public class CLIPrinter {
     public static void printTokens(int remaining, int total) {
 
         for (int i = 0; i < remaining; i++) {
-            System.out.println(ansi().bg(WHITE).reset());
+            System.out.print(ansi().bg(WHITE).reset());
         }
         for (int i = 0; i < (total - remaining); i++) {
-            System.out.println(ansi().bg(RED).reset());
+            System.out.print(ansi().bg(RED).reset());
         }
+        System.out.println();
 
     }
     public static Point decodePosition(String input) {
