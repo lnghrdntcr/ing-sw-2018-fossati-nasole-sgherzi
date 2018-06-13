@@ -32,6 +32,6 @@ public class PlayerChangedEvent extends ModelEvent {
 
     @Override
     public void visit(SelectSchemaCardFace selectSchemaCardFace) {
-
+        selectSchemaCardFace.handlePlayerCanged(this);
     }
 }

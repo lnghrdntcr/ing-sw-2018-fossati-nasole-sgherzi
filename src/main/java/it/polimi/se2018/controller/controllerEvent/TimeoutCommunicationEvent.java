@@ -15,7 +15,7 @@ public class TimeoutCommunicationEvent extends ControllerEvent {
 
     @Override
     public void visit(GameTable gameTable) {
-
+        gameTable.handleTimeoutCommunication(this);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class TimeoutCommunicationEvent extends ControllerEvent {
 
     @Override
     public void visit(SelectSchemaCardFace selectSchemaCardFace) {
-
+        selectSchemaCardFace.handleTimeoutCommunication(this);
     }
 
     public int getTimeout() {
