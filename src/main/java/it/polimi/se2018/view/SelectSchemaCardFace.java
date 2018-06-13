@@ -24,7 +24,7 @@ public abstract class SelectSchemaCardFace {
 
     public void handlePlayerCanged(PlayerChangedEvent e){
         this. privateObjective = e.getPlayerImmutable().getPrivateObjective();
-        renderPrivateObjective();
+        renderPrivateObjective(privateObjective);
     }
 
     final public void handleTimeoutCommunication(TimeoutCommunicationEvent event){
@@ -39,7 +39,7 @@ public abstract class SelectSchemaCardFace {
 
     public abstract void setInactive();
 
-    public abstract void renderPrivateObjective();
+    public abstract void renderPrivateObjective(PrivateObjective privateObjective);
 
 
 }

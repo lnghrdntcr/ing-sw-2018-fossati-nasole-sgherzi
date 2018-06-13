@@ -2,6 +2,7 @@ package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.controller.controllerEvent.AskSchemaCardFaceEvent;
 import it.polimi.se2018.model.CLISelectSchemaSubState;
+import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model.schema_card.Side;
 import it.polimi.se2018.view.RemoteView;
@@ -37,7 +38,8 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
 
         //TODO
         for (int i = 0; i < 4; i++) {
-            System.out.println(i + "for" + faces[i].getName());
+            System.out.println(i+1 + "for:\n");
+            CLIPrinter.printSchemaCardFace(faces[i]);
         }
 
         subState = subState.CHOICE;
@@ -48,9 +50,8 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
      * Shows the player's private objective as soon as it's assigned.
      */
     @Override
-    public void renderPrivateObjective() {
-        //TODO
-        System.out.println("Private objective assigned!");
+    public void renderPrivateObjective(PrivateObjective privateObjective) {
+        CLIPrinter.printPrivateObjective(privateObjective);
     }
 
     @Override
