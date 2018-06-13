@@ -5,12 +5,13 @@ import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Contains the actual schema of a player and the relative associated schemaCardFace
  * @since 09/05/2018
  */
-public class Schema {
+public class Schema implements Serializable {
 
     private DiceFace[][] diceFaces = new DiceFace[Settings.CARD_WIDTH][Settings.CARD_HEIGHT];
     private SchemaCardFace schemaCardFace;

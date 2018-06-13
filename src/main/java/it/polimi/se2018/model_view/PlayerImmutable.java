@@ -3,11 +3,13 @@ package it.polimi.se2018.model_view;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema.Schema;
 
+import java.io.Serializable;
+
 /**
  * Player to be used in View
  * @since 18/05/2018
  */
-public class PlayerImmutable {
+public class PlayerImmutable implements Serializable {
 
   private String name;
   private int token;

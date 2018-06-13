@@ -3,13 +3,14 @@ package it.polimi.se2018.model_view;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.utils.Settings;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * DiceHolder to be used in View
  * @since 18/05/2018
  */
-public class DiceHolderImmutable {
+public class DiceHolderImmutable implements Serializable {
 
   private DiceFace[][] turnHolder;
 

@@ -3,11 +3,13 @@ package it.polimi.se2018.model.schema_card;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 
+import java.io.Serializable;
+
 /**
  * @since 09/05/2018
  * This class represents a general restriction used in SchemaCard
  */
-public abstract class CellRestriction {
+public abstract class CellRestriction implements Serializable {
     /**
      * @param diceFace the DiceFace to check
      * @return true if the diceface can be placed over this restriction, false otherwise
@@ -25,7 +27,7 @@ public abstract class CellRestriction {
      */
     public static CellRestriction getRestrictionFromString(String restr) {
         if (restr == null)
-            throw new IllegalArgumentException("restr should not be null!");
+            throw new IllegalArgumentException("restr must not be null!");
 
         if (restr.equals("")) {
             return new NoRestriction();

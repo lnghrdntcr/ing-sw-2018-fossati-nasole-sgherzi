@@ -1,10 +1,12 @@
 package it.polimi.se2018.model.schema;
 
+import java.io.Serializable;
+
 /**
  * Holds the logic for the dice to be placed in the schema card or the scoreboard
  * @since 09/05/2018
  */
-public class DiceFace {
+public class DiceFace implements Serializable {
 
     private GameColor color;
     private int number;
