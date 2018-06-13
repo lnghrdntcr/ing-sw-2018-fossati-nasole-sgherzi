@@ -25,7 +25,7 @@ public class State {
      * @param model the model to modify
      * @return the new State for the controller
      */
-    public State handleEvent(ViewEvent event, GameTableMultiplayer model){
+    public final State handleEvent(ViewEvent event, GameTableMultiplayer model){
         return event.visit(this);
     }
 

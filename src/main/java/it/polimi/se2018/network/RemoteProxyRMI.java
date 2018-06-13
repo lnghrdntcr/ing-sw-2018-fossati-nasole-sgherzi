@@ -35,6 +35,7 @@ public class RemoteProxyRMI extends RemoteProxy implements RemoteProxyRMIInterfa
     @Override
     public void sendEventToClient(Event event) throws RemoteException {
         // This method is called from server side when an modelEvent occurs on the server.
+        Log.d("Received " + event);
         this.dispatchEventToRemoteView(event);
     }
 

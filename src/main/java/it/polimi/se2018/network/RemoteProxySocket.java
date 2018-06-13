@@ -74,6 +74,7 @@ public class RemoteProxySocket extends RemoteProxy {
                         RemoteProxySocket.this.dispatchEventToRemoteView(event);
                     } catch (ClassNotFoundException | ClassCastException e) {
                         Log.e("Invalid event received: " + e.getMessage());
+                        e.printStackTrace();
                     }
                 }
             }catch (IOException e){

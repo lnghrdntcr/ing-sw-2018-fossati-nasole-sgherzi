@@ -2,6 +2,7 @@ package it.polimi.se2018.controller;
 
 import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.controller.controllerEvent.TimeoutCommunicationEvent;
+import it.polimi.se2018.controller.controllerEvent.ViewPlayerTimeoutEvent;
 import it.polimi.se2018.controller.states.GameSetupState;
 import it.polimi.se2018.controller.states.State;
 import it.polimi.se2018.model.GameTableMultiplayer;
@@ -67,7 +68,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
         state = new GameSetupState(this, model);
 
-/*        this.startTimeoutCommunicationThread();*/
+        /*        this.startTimeoutCommunicationThread();*/
         this.startEventLoopHandlerThread();
         this.startActionTimeout();
 
@@ -143,8 +144,8 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
                 }
 
                 this.outboundEventLoop.add(new PlayerTimeoutEvent(this.getClass().getName(), this.model.getCurrentPlayerName()));
-                this.state = this.state.handleUserTimeOutEvent();
-                Log.d(getClass().getName()+" Going in new state: "+state);
+                this.inboundEventLoop.add(new ViewPlayerTimeoutEvent(this.getClass().getName(), this.getModel().getCurrentPlayerName()));
+
             }
         }, "ActionTimeoutThread");
 
@@ -181,17 +182,19 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
             while (true) {
 
-                if (!this.outboundEventLoop.isEmpty()) {
-                    for (Event ev : this.outboundEventLoop) {
-                        this.notify(this.outboundEventLoop.poll());
-                    }
+                while (!this.outboundEventLoop.isEmpty()) {
+
+                    this.notify(this.outboundEventLoop.poll());
+
                 }
 
-                if (!this.inboundEventLoop.isEmpty()) {
-                    for (ViewEvent ev : this.inboundEventLoop) {
-                        this.state = state.handleEvent(this.inboundEventLoop.poll(), this.model);
-                        Log.d(getClass().getName()+" Going in new state: "+state);
-                    }
+                while (!this.inboundEventLoop.isEmpty()) {
+
+                    ViewEvent inboundEvent = this.inboundEventLoop.poll();
+
+                    this.state = state.handleEvent(inboundEvent, this.model);
+                    Log.d(getClass().getName() + " Going in new state: " + state + " event: " + inboundEvent);
+
                 }
 
                 try {
@@ -235,7 +238,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     public void reconnectPlayer(LocalProxy localProxy, String playerName) {
 
         for (View v : this.views) {
-            if(v.getPlayer().equals(playerName) && !v.isConnected()){
+            if (v.getPlayer().equals(playerName) && !v.isConnected()) {
                 ((VirtualView) v).connect(localProxy);
                 Log.d("Player " + playerName + " reconnected successfully ");
             }

@@ -23,6 +23,9 @@ public class GameEndState extends State {
         super(controller, model);
         this.computeScore();
         // TODO: Add the logic to do other stuff eg. write things to file.
+        // TODO: Figure out a slightly better idea to end the game.
+        throw new NullPointerException();
+        /*System.exit(0);*/
     }
 
     /**
