@@ -16,7 +16,7 @@ public class SchemaCardSelectedEvent extends ViewEvent {
         if (schemaCardId >= 0 && schemaCardId < 2) {
             this.schemaCardId = schemaCardId;
         } else
-            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": number must be between 0 and 3.");
+            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": number must be between 0 and 1.");
     }
 
     public int getSchemaCardId() {

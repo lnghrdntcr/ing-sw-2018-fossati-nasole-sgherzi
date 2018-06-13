@@ -95,7 +95,7 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
                 System.out.println("Invalid choice, try again");
             else {
                 if(input.trim().equalsIgnoreCase("y")) {
-                    selectFace(choice / 2, choice % 2 == 0 ? Side.FRONT : Side.BACK);
+                    selectFace((choice-1) / 2 , choice % 2 == 0 ? Side.FRONT : Side.BACK);
                     subState = CLISelectSchemaSubState.END;
                 } else {
                     subState = CLISelectSchemaSubState.CHOICE;
