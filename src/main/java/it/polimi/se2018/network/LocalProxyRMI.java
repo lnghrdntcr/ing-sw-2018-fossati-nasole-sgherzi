@@ -23,6 +23,7 @@ public class LocalProxyRMI extends LocalProxy implements LocalProxyRMIInterface 
      */
     @Override
     public void sendEventToClient(Event event) {
+        if(event.getPlayerName()!=null && !event.getPlayerName().equals("") && !event.getPlayerName().equals(getView().getPlayer())) return;
         try {
             client.sendEventToClient(event);
         } catch (RemoteException e) {
