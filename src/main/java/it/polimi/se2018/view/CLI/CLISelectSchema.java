@@ -1,7 +1,6 @@
 package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.controller.controllerEvent.AskSchemaCardFaceEvent;
-import it.polimi.se2018.model.CLISelectSchemaSubState;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model.schema_card.Side;
@@ -71,6 +70,10 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
         }
     }
 
+    /**
+     * Reacts to players' inputs
+     * @param input the input
+     */
     @Override
     public void onCommandRecived(String input) {
 
@@ -94,5 +97,9 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
             }
         }
 
+    }
+
+    public enum CLISelectSchemaSubState {
+        CHOICE, USURE;
     }
 }
