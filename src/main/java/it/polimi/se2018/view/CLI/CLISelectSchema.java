@@ -4,6 +4,7 @@ import it.polimi.se2018.controller.controllerEvent.AskSchemaCardFaceEvent;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model.schema_card.Side;
+import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.RemoteView;
 import it.polimi.se2018.view.SelectSchemaCardFace;
 
@@ -16,7 +17,7 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
     private boolean iAmActive = false;
     private InputListenerThread inputListenerThread;
     private SchemaCardFace[] faces = new SchemaCardFace[4];
-    private CLISelectSchemaSubState subState;
+    private CLISelectSchemaSubState subState = CLISelectSchemaSubState.CHOICE;
     private int choice;
 
     public CLISelectSchema(RemoteView view) {
@@ -79,6 +80,7 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
         if (subState == CLISelectSchemaSubState.CHOICE) {
             try {
                 choice = Integer.parseInt(input);
+
             } catch (RuntimeException e) {
                 System.out.println("Invalid choice, try again");
                 return;
@@ -86,19 +88,27 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
             if (choice < 1 || choice > 4) System.out.println("Invalid choice, try again");
             else {
                 subState = CLISelectSchemaSubState.USURE;
+                System.out.println("You chose" + faces[choice - 1].getName() + "\nAre you sure? [Y] [N]");
             }
-        } else {
-            System.out.println("You chose" + faces[choice - 1].getName() + "\nAre you sure? [Y] [N]");
-            if (!input.equalsIgnoreCase("y") || !input.equalsIgnoreCase("n"))
+        } else if(subState == CLISelectSchemaSubState.USURE) {
+            if (!input.trim().equalsIgnoreCase("y") && !input.trim().equalsIgnoreCase("n"))
                 System.out.println("Invalid choice, try again");
             else {
-                selectFace(choice / 2, choice % 2 == 0 ? Side.FRONT : Side.BACK);
+                if(input.trim().equalsIgnoreCase("y")) {
+                    selectFace(choice / 2, choice % 2 == 0 ? Side.FRONT : Side.BACK);
+                    subState = CLISelectSchemaSubState.END;
+                } else {
+                    subState = CLISelectSchemaSubState.CHOICE;
+                }
             }
+
+        } else {
+            CLIPrinter.printQuestion("Waitin for other people...");
         }
 
     }
 
     public enum CLISelectSchemaSubState {
-        CHOICE, USURE;
+        CHOICE, USURE, END;
     }
 }

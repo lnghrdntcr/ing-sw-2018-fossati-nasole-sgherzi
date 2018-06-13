@@ -120,7 +120,7 @@ public class Client {
             RemoteView remoteView = new RemoteView(name, RemoteView.Graphics.CLI);
             remoteProxy.register(remoteView);
             remoteView.register(remoteProxy);
-            remoteView.start();;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+            remoteView.start();
         }
 
 

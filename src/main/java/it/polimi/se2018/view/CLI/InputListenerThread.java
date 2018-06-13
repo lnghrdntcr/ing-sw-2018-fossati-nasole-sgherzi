@@ -8,7 +8,7 @@ public class InputListenerThread extends Thread {
 
     private Scanner scanner;
     private InputListener inputListener;
-    private boolean goAhead;
+    private boolean goAhead = true;
 
 
     public InputListenerThread(InputListener inputListener){
@@ -20,8 +20,12 @@ public class InputListenerThread extends Thread {
         scanner = new Scanner(System.in);
         while (goAhead){
             try {
-                inputListener.onCommandRecived(scanner.nextLine());
-            } catch (IllegalStateException ignored){}
+                String input = scanner.nextLine();
+                inputListener.onCommandRecived(input);
+            } catch (RuntimeException ignored){
+                Log.d("Input listener " + ignored.getMessage());
+                goAhead = false;
+            }
         }
     }
 

@@ -70,7 +70,7 @@ public class RemoteProxySocket extends RemoteProxy {
                 while (goAhead && !RemoteProxySocket.this.remoteConnection.isClosed()) {
                     try {
                         event = (Event) objectInputStream.readObject();
-                        Log.d("Received " + event);
+                        /*Log.d("Received " + event);*/
                         RemoteProxySocket.this.dispatchEventToRemoteView(event);
                     } catch (ClassNotFoundException | ClassCastException e) {
                         Log.e("Invalid event received: " + e.getMessage());

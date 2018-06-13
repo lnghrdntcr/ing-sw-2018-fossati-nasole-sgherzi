@@ -19,7 +19,6 @@ public abstract class SelectSchemaCardFace {
 
     protected final void selectFace(int index, Side side){
        view.sendEventToController(new SchemaCardSelectedEvent(getClass().getCanonicalName(), view.getPlayer(), index, side));
-       view.activateGameTable();
     }
 
     public void handlePlayerCanged(PlayerChangedEvent e){
