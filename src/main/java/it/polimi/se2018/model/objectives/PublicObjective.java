@@ -14,4 +14,12 @@ public abstract class PublicObjective extends Objective {
     public int getPoint() {
         return points;
     }
+
+    @Override
+    public String toString() {
+        return "PublicObjective{" +
+            "points=" + points +
+            "Class" + this.getClass().getName() +
+            '}';
+    }
 }

@@ -83,7 +83,6 @@ public class Client {
 
         CLIPrinter.setup();
 
-
         Scanner scanner = new Scanner(System.in);
         System.out.print("Connection method?");
         String method = scanner.nextLine();

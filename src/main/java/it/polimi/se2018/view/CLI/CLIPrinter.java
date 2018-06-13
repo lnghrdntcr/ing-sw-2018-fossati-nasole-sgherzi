@@ -110,10 +110,16 @@ public class CLIPrinter {
     }
 
     public static void printToolcard(ToolCardImmutable toolCardImmutable){
+        // TODO: Do a better job than this - fra
+        System.out.println(ansi().bg(RED).fg(BLUE).a("Still not implemented").reset());
+        System.out.println(ansi().bg(GREEN).a(toolCardImmutable.toString()).reset());
 
     }
 
     public static void printPublicObjectives(PublicObjective publicObjective) {
+        // TODO: Do a better job than this - fra
+        System.out.println(ansi().bg(RED).fg(BLUE).a("Still not implemented"));
+        System.out.println(ansi().bg(GREEN).a(publicObjective.toString()).reset());
     }
 
     public static void printSchema(Schema schema){
