@@ -1,5 +1,5 @@
 {
   "serverTimeout": 5,
-  "actionTimeout": 1,
+  "actionTimeout": 30,
   "customSchemaCardPath": ""
 }

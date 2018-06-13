@@ -2,6 +2,7 @@ package it.polimi.se2018.network;
 
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.CLI.CLIPrinter;
+import it.polimi.se2018.view.RemoteView;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -26,7 +27,7 @@ public class Client {
     /**
      * Begins the connection with the RMI server.
      */
-    private static void connectRMI() {
+    private static RemoteProxy connectRMI() {
 
         try {
             Registry registry = LocateRegistry.getRegistry(host, port);
@@ -41,17 +42,18 @@ public class Client {
             } else {
                 Log.e("Error during connection... Duplicate name or the maximum number of players is already reached.");
             }
+            return remoteRMI;
         } catch (NotBoundException | RemoteException e) {
             Log.e("Cannot connect to server: " + e.getMessage());
             e.printStackTrace();
         }
-
+        return null;
     }
 
     /**
      * Begins the connection with the RMI server.
      */
-    private static void connectSocket() {
+    private static RemoteProxy connectSocket() {
         try {
             Log.d("Connecting...");
 
@@ -66,10 +68,11 @@ public class Client {
 
 
             Log.d("Connected!");
+            return remoteProxySocket;
         } catch (IllegalArgumentException | IOException e) {
             Log.e("Cannot connect to server: " + e.getMessage());
         }
-
+        return null;
     }
 
     public Client() {
@@ -96,17 +99,28 @@ public class Client {
         System.out.println("GUI or CLI?");
         graphics = scanner.nextLine();
 
+        RemoteProxy remoteProxy=null;
         if (method.equalsIgnoreCase("RMI")) {
-            connectRMI();
+            remoteProxy=connectRMI();
         } else if (method.equalsIgnoreCase("socket")) {
-            connectSocket();
+            remoteProxy=connectSocket();
         } else {
             Log.w("Not implemented.");
         }
+
+        if(remoteProxy==null){
+            Log.e("Connection error!");
+            return;
+        }
+
+
         if(graphics.equalsIgnoreCase("gui")){
             //TODO start gui
         } else {
-            //TODO start cli
+            RemoteView remoteView = new RemoteView(name, RemoteView.Graphics.CLI);
+            remoteProxy.register(remoteView);
+            remoteView.register(remoteProxy);
+            remoteView.start();;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
         }
 
 

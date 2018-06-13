@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.view.CLI.CLIGameEnding;
 import it.polimi.se2018.view.CLI.CLIGameTable;
 import it.polimi.se2018.view.CLI.CLISelectSchema;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
@@ -20,13 +21,16 @@ public class RemoteView extends View {
         super(player);
         if (graphics == Graphics.CLI) {
             selectSchemaCardFace = new CLISelectSchema(this);
-            gameEnding = null;
+            gameEnding = new CLIGameEnding(this);
             gameTable = new CLIGameTable(this);
         }
+
+
+    }
+
+    public void start(){
         this.startEventLoopHandler();
-
         activateSelectSchemaCard();
-
     }
 
     private void startEventLoopHandler() {
