@@ -26,12 +26,11 @@ public class EndGameEvent extends ControllerEvent {
 
     @Override
     public void visit(GameTable gameTable) {
-
     }
 
     @Override
     public void visit(GameEnding gameEnding) {
-
+        gameEnding.handleEndGameEvent(this);
     }
 
     @Override

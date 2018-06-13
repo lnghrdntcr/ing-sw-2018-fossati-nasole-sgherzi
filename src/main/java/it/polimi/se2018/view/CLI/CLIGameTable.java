@@ -47,6 +47,7 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
     protected void renderTurn() {
 
     }
+
     @Override
     public void setActive(){
         if(!iAmActive){
