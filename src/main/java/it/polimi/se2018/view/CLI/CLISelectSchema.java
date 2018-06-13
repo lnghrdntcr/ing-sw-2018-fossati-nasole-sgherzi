@@ -7,6 +7,10 @@ import it.polimi.se2018.model.schema_card.Side;
 import it.polimi.se2018.view.RemoteView;
 import it.polimi.se2018.view.SelectSchemaCardFace;
 
+/**
+ * the CLI implementation for the selection of the schema.
+ */
+
 public class CLISelectSchema extends SelectSchemaCardFace implements InputListenerThread.InputListener {
 
     private boolean iAmActive = false;
@@ -19,6 +23,10 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
         super(view);
     }
 
+    /**
+     * Shows the schema cards the player can choose via CLI.
+     * @param event the model event asking the choice of the schema in a set of 4.
+     */
     @Override
     public void showSchemaCardFaceSelection(AskSchemaCardFaceEvent event) {
         for (int i = 0; i < 4; i++) {
@@ -36,6 +44,15 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
 
     }
 
+    /**
+     * Shows the player's private objective as soon as it's assigned.
+     */
+    @Override
+    public void renderPrivateObjective() {
+        //TODO
+        System.out.println("Private objective assigned!");
+    }
+
     @Override
     public void setActive() {
         if (!iAmActive) {
@@ -43,12 +60,6 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
             inputListenerThread.start();
             iAmActive = true;
         }
-    }
-
-    @Override
-    public void renderPrivateObjective() {
-        //TODO
-        System.out.println("Private objective assigned!");
     }
 
     @Override
@@ -61,12 +72,11 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
 
     @Override
     public void onCommandRecived(String input) {
-        //TODO:
 
         if (subState == subState.CHOICE) {
             try {
                 choice = Integer.parseInt(input);
-            } catch(RuntimeException e){
+            } catch (RuntimeException e) {
                 System.out.println("Invalid choice, try again");
                 return;
             }
@@ -76,8 +86,9 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
             }
         } else {
             System.out.println("You chose" + faces[choice - 1].getName() + "\nAre you sure? [Y] [N]");
-            if(!input.equalsIgnoreCase("y")||!input.equalsIgnoreCase("n")) System.out.println("Invalid choice, try again");
-            else{
+            if (!input.equalsIgnoreCase("y") || !input.equalsIgnoreCase("n"))
+                System.out.println("Invalid choice, try again");
+            else {
                 selectFace(choice / 2, choice % 2 == 0 ? Side.FRONT : Side.BACK);
             }
         }
