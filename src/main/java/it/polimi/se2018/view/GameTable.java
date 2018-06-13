@@ -134,7 +134,7 @@ public abstract class GameTable {
         return draftBoardImmutable;
     }
 
-    public PlayerImmutable getPlayers(String player) {
+    public PlayerImmutable getPlayer(String player) {
         return players.get(player);
     }
 
