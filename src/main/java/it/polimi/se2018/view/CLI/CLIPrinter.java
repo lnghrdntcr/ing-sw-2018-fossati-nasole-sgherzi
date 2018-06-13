@@ -8,7 +8,10 @@ import it.polimi.se2018.model_view.DiceHolderImmutable;
 import it.polimi.se2018.model_view.DraftBoardImmutable;
 import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
+import it.polimi.se2018.utils.Settings;
 import org.fusesource.jansi.AnsiConsole;
+
+import java.awt.*;
 
 import static org.fusesource.jansi.Ansi.Color.BLUE;
 import static org.fusesource.jansi.Ansi.Color.RED;
@@ -26,7 +29,7 @@ public class CLIPrinter {
 
     }
 
-    public static void printPlayer(PlayerImmutable player) {
+    public static void printPlayer(CLIGameTable gameTable, PlayerImmutable player) {
         System.out.println("TODO: stampa player!!");
     }
 
@@ -59,4 +62,20 @@ public class CLIPrinter {
 
     }
 
+    public static Point decodePosition(String input) {
+        if(input==null) throw new NullPointerException("Input should not be null!");
+        if(input.length()>2) return null;
+        int x = input.toUpperCase().charAt(0)-'A';
+        if(x<0||x>= Settings.CARD_WIDTH) return null;
+
+
+        try {
+            int y = Integer.parseInt(input.substring(1));
+            if(y<0||y>= Settings.CARD_HEIGHT) return null;
+            return new Point(x, y);
+        }catch (NumberFormatException ex){
+            return null;
+        }
+
+    }
 }

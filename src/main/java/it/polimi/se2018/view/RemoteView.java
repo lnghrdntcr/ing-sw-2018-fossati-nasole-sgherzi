@@ -57,7 +57,7 @@ public class RemoteView extends View {
         }
     }
 
-    void sendEventToController(ViewEvent event){
+    public void sendEventToController(ViewEvent event){
         this.notify(event);
     }
 

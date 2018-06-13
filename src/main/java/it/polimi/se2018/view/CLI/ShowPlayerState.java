@@ -8,8 +8,10 @@ public class ShowPlayerState extends State{
 
     @Override
     public State process(String input) {
-        if(getGameTable().getPlayer(input)!=null){
-            CLIPrinter.printPlayer(getGameTable().getPlayer(input));
+        if(input.equals("cancel")){
+            return new MainMenuState(getGameTable());
+        }else if(getGameTable().getPlayer(input)!=null){
+            CLIPrinter.printPlayer(getGameTable(), getGameTable().getPlayer(input));
             return new MainMenuState(getGameTable());
         }else{
             CLIPrinter.printError("No such player!");
@@ -19,6 +21,6 @@ public class ShowPlayerState extends State{
 
     @Override
     public void render() {
-        CLIPrinter.printQuestion("Insert the name of a player: ");
+        CLIPrinter.printQuestion("Insert the name of a player or cancel: ");
     }
 }
