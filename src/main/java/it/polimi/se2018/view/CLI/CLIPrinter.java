@@ -1,6 +1,7 @@
 package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.model.TurnHolder;
+import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
@@ -19,8 +20,8 @@ import java.awt.*;
 
 import static org.fusesource.jansi.Ansi.Color.BLUE;
 import static org.fusesource.jansi.Ansi.Color.RED;
+import static org.fusesource.jansi.Ansi.Color.*;
 import static org.fusesource.jansi.Ansi.ansi;
-import static org.fusesource.jansi.Ansi.Color.GREEN;
 
 public class CLIPrinter {
 
@@ -102,6 +103,19 @@ public class CLIPrinter {
 
     }
 
+    public static void printPrivateObjective(PrivateObjective privateObjective) {
+    }
+
+    public static void printTokens(int remaining, int total) {
+
+        for (int i = 0; i < remaining; i++) {
+            System.out.println(ansi().bg(WHITE));
+        }
+        for (int i = 0; i < (total - remaining); i++) {
+            System.out.println(ansi().bg(RED));
+        }
+
+    }
     public static Point decodePosition(String input) {
         if(input==null) throw new NullPointerException("Input should not be null!");
         if(input.length()>2) return null;
