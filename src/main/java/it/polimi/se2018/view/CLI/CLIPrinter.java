@@ -1,6 +1,9 @@
 package it.polimi.se2018.view.CLI;
 
+import it.polimi.se2018.model.TurnHolder;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
+import it.polimi.se2018.model_view.DiceHolderImmutable;
+import it.polimi.se2018.model_view.DraftBoardImmutable;
 import it.polimi.se2018.model_view.PlayerImmutable;
 import org.fusesource.jansi.AnsiConsole;
 
@@ -35,4 +38,9 @@ public class CLIPrinter {
         System.out.println(ansi().fg(RED).a(option).fg(BLUE).a(line).reset());
     }
 
+    public static void renderDraftboard(DraftBoardImmutable draftBoardImmutable) {
+    }
+
+    public static void renderRoundTrack(DiceHolderImmutable diceHolderImmutable) {
+    }
 }
