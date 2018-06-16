@@ -160,7 +160,7 @@ public abstract class GameTable {
     }
 
     public String getCurrentPlayer() {
-        return currentPlayer;
+        return view.getPlayer();
     }
 
     public int getRoundNumber() {
@@ -179,4 +179,5 @@ public abstract class GameTable {
         return publicObjectives[index];
     }
 
+    public abstract void handleGameStart(GameStartEvent gameStartEvent);
 }

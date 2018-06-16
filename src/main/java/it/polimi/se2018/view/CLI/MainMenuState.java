@@ -1,6 +1,7 @@
 package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
+import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -92,6 +93,8 @@ public class MainMenuState extends State {
 
         int selection;
 
+        Log.d("HANDLING PROCESSING OF INPUT" + input);
+
         try {
             selection = Integer.parseInt(input);
         } catch (NumberFormatException exception) {
@@ -130,7 +133,7 @@ public class MainMenuState extends State {
         CLIPrinter.printMenuLine(3, "View Round Track");
         CLIPrinter.printMenuLine(4, "View Toolcards and Public Objectives");
         CLIPrinter.printMenuLine(5, "View your Table");
-        if (this.getGameTable().getCurrentPlayer().equals(this.getGameTable().getView().getPlayer())) {
+        if (this.getGameTable().isMyTurn()) {
             CLIPrinter.printMenuLine(6, "Place dice");
             CLIPrinter.printMenuLine(7, "Use Toolcard");
             CLIPrinter.printMenuLine(8, "End Turn");

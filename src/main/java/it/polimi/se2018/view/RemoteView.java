@@ -1,5 +1,7 @@
 package it.polimi.se2018.view;
 
+import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
+import it.polimi.se2018.controller.controllerEvent.TimeoutCommunicationEvent;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.CLI.CLIGameEnding;
@@ -28,7 +30,7 @@ public class RemoteView extends View {
 
     }
 
-    public void start(){
+    public void start() {
         this.startEventLoopHandler();
         activateSelectSchemaCard();
     }
@@ -38,8 +40,12 @@ public class RemoteView extends View {
 
             while (true) {
                 if (!this.eventLoop.isEmpty()) {
-                    // TODO: Send event to the CLI/GUI
+
                     VisitableFromView actualEvent = this.eventLoop.poll();
+
+                    if(actualEvent instanceof GameStartEvent){
+                        Log.d("Expecting to call visit on gameTable");
+                    }
 
                     actualEvent.visit(selectSchemaCardFace);
                     actualEvent.visit(gameTable);
@@ -63,22 +69,42 @@ public class RemoteView extends View {
 
     @Override
     public void update(Event message) {
-        if(!message.getPlayerName().equals(getPlayer())){
-            Log.w("Received an event not for me! Discarding...");
-            return;
+
+        /*if (getPlayer().equals("asdf")) {
+
+            if (!(message instanceof TimeoutCommunicationEvent)) {
+                Log.d(
+                    "Emitter: " + message.getEmitterName() +
+                    "\nReciver: " + message.getPlayerName() +
+                    "\nClass: " + message.getClass()
+                );
+            }
+
+
+        }*/
+
+        if (
+            message.getPlayerName().equals(getPlayer()) || // Message is for me
+            message.getPlayerName() == null ||             // Message is for everyone
+            message.getPlayerName().equals("")             // Message is for everyone v2
+            ) {
+            try {
+                /*Log.d("Recived this event!" + message.toString());*/
+
+                this.eventLoop.add((VisitableFromView) message);
+            } catch (ClassCastException e) {
+                Log.d("I couldn't recive this event! " + message);
+            }
         }
-        try {
-            this.eventLoop.add((VisitableFromView) message);
-        } catch (ClassCastException e) {
-            Log.d("I couldn't recive this event! " + message);
-        }
+
+
     }
 
     public void sendEventToController(ViewEvent event) {
         this.notify(event);
     }
 
-    public void activateSelectSchemaCard(){
+    public void activateSelectSchemaCard() {
 
         this.gameEnding.setInactive();
         this.gameTable.setInactive();
@@ -86,9 +112,10 @@ public class RemoteView extends View {
     }
 
     public void activateGameTable() {
+        // TODO: selectSchemaCardFace hangs on scanner.close()
         this.selectSchemaCardFace.setInactive();
-        this.gameEnding.setInactive();
         this.gameTable.setActive();
+        this.gameEnding.setInactive();
     }
 
     public void activateGameEnding() {

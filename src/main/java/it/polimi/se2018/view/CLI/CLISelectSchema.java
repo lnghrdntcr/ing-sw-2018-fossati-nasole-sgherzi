@@ -26,6 +26,7 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
 
     /**
      * Shows the schema cards the player can choose via CLI.
+     *
      * @param event the model event asking the choice of the schema in a set of 4.
      */
     @Override
@@ -34,10 +35,10 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
             faces[i] = event.getSchemas()[i / 2].getFace(i % 2 == 0 ? Side.FRONT : Side.BACK);
         }
 
-        System.out.println("Choose your Schema Card: \n\n");
+        CLIPrinter.printQuestion("Choose your Schema Card: \n\n");
 
         for (int i = 0; i < 4; i++) {
-            System.out.println(i+1 + "for:\n");
+            CLIPrinter.printQuestion(i + 1 + "for:\n");
             CLIPrinter.printSchemaCardFace(faces[i]);
         }
 
@@ -55,6 +56,7 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
 
     @Override
     public void setActive() {
+        Log.d("CLISELECTSCHEMA ACTIVE");
         if (!iAmActive) {
             inputListenerThread = new InputListenerThread(this);
             inputListenerThread.start();
@@ -64,6 +66,7 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
 
     @Override
     public void setInactive() {
+        Log.d("CLISELECTSCHEMA INACTIVE " + iAmActive);
         if (iAmActive) {
             if (inputListenerThread != null) inputListenerThread.kill();
             iAmActive = false;
@@ -72,43 +75,47 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
 
     /**
      * Reacts to players' inputs
+     *
      * @param input the input
      */
     @Override
     public void onCommandRecived(String input) {
 
         if (subState == CLISelectSchemaSubState.CHOICE) {
+
             try {
                 choice = Integer.parseInt(input);
-
             } catch (RuntimeException e) {
-                System.out.println("Invalid choice, try again");
-                return;
-            }
-            if (choice < 1 || choice > 4) System.out.println("Invalid choice, try again");
-            else {
-                subState = CLISelectSchemaSubState.USURE;
-                System.out.println("You chose" + faces[choice - 1].getName() + "\nAre you sure? [Y] [N]");
-            }
-        } else if(subState == CLISelectSchemaSubState.USURE) {
-            if (!input.trim().equalsIgnoreCase("y") && !input.trim().equalsIgnoreCase("n"))
-                System.out.println("Invalid choice, try again");
-            else {
-                if(input.trim().equalsIgnoreCase("y")) {
-                    selectFace((choice-1) / 2 , choice % 2 == 0 ? Side.FRONT : Side.BACK);
-                    subState = CLISelectSchemaSubState.END;
-                } else {
-                    subState = CLISelectSchemaSubState.CHOICE;
-                }
+                CLIPrinter.printError("Invalid choice, try again");
             }
 
+            if (choice >= 1 && choice <= 4) {
+                subState = CLISelectSchemaSubState.USURE;
+                CLIPrinter.printQuestion("You chose " + faces[choice - 1].getName() + ", are you sure? [y] [N]");
+            } else {
+                CLIPrinter.printError("Invalid choice, try again");
+            }
+
+        } else if (subState == CLISelectSchemaSubState.USURE) {
+            if (
+                !input.trim().equalsIgnoreCase("y") &&
+                !input.trim().equalsIgnoreCase("n") &&
+                !input.trim().equals("")
+                ) {
+                CLIPrinter.printError("Invalid choice, try again");
+            } else if (input.trim().equalsIgnoreCase("y")) {
+                selectFace((choice - 1) / 2, choice % 2 == 0 ? Side.FRONT : Side.BACK);
+                subState = CLISelectSchemaSubState.END;
+            } else {
+                subState = CLISelectSchemaSubState.CHOICE;
+            }
         } else {
-            CLIPrinter.printQuestion("Waitin for other people...");
+            CLIPrinter.printError("Waiting for other players...");
         }
 
     }
 
     public enum CLISelectSchemaSubState {
-        CHOICE, USURE, END;
+        CHOICE, USURE, END
     }
 }

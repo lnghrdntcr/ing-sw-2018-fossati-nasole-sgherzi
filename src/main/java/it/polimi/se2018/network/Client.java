@@ -87,17 +87,29 @@ public class Client {
         CLIPrinter.setup();
 
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Connection method?");
+        CLIPrinter.printQuestion("Connection method? [rmi]");
         String method = scanner.nextLine();
+        method = method.equals("") ? "rmi" : method;
 
-        System.out.print("ip: ");
+        int defaultPort = method.equalsIgnoreCase("rmi") ? 1099 : 2099;
+
+        CLIPrinter.printQuestion("ip [localhost]: ");
         host = scanner.nextLine();
-        System.out.print("port: ");
-        port = Integer.parseInt(scanner.nextLine());
-        System.out.print("Name: ");
+        host = host.equals("") ? "localhost" : host;
+
+        CLIPrinter.printQuestion("port" + "[" + defaultPort + "]: ");
+        try {
+            port = Integer.parseInt(scanner.nextLine());
+        } catch (RuntimeException e){
+            port = defaultPort;
+        }
+
+        CLIPrinter.printQuestion("Name: ");
         name = scanner.nextLine();
-        System.out.println("GUI or CLI?");
+
+        System.out.println("GUI or CLI? [CLI]");
         graphics = scanner.nextLine();
+        graphics = graphics.equals("") ? "CLI" : graphics;
 
         RemoteProxy remoteProxy=null;
         if (method.equalsIgnoreCase("RMI")) {

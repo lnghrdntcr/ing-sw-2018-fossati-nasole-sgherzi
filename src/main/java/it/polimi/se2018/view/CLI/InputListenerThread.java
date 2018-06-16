@@ -24,6 +24,7 @@ public class InputListenerThread extends Thread {
                 inputListener.onCommandRecived(input);
             } catch (RuntimeException ignored){
                 Log.d("Input listener " + ignored.getMessage());
+                Log.d(inputListener.getClass().getName());
                 goAhead = false;
             }
         }
@@ -31,6 +32,7 @@ public class InputListenerThread extends Thread {
 
     public void kill(){
         goAhead = false;
+        // TODO: fix the hangin in here.
         scanner.close();
     }
 

@@ -1,6 +1,7 @@
 package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
+import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
 import it.polimi.se2018.model.Tool;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.modelEvent.TurnChangedEvent;
@@ -50,9 +51,20 @@ public class TurnState extends State {
         //TODO qui dovrebbe essere tirato un evento per avvertire la view che il gioco è iniziato, e comunque per avvertire a che punto siamo (cosa è possibile fare ecc)
         //l'evento deve essere per tutti
 
+        if (
+            model.getRound() == 0 &&
+            model.isFirstTurnInRound() &&
+            model.getPlayersName()[0].equals(model.getCurrentPlayerName())) {
+            Log.d("A NEW GAME HAS STARTED!!!");
+            this.getController().dispatchEvent(
+                new GameStartEvent(
+                    this.getClass().getName(),
+                    "")
+            );
+        }
+
+
     }
-
-
 
 
     /**
@@ -83,7 +95,7 @@ public class TurnState extends State {
      */
     @Override
     public State handleToolcardEvent(UseToolcardEvent event) {
-        Log.d(getClass().getCanonicalName()+" handling useToolcardEvent...");
+        Log.d(getClass().getCanonicalName() + " handling useToolcardEvent...");
         if (event == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
 
@@ -97,10 +109,10 @@ public class TurnState extends State {
 
         if (playerToken < tool.getNeededTokens()) {
             Log.i(
-                    event.getPlayerName()
-                            + " cannot use the " + tool.getClass().getName() + " toolcard:\n "
-                            + "Tokens needed:\t" + tool.getNeededTokens()
-                            + "\n Actual tokens:\t" + playerToken
+                event.getPlayerName()
+                    + " cannot use the " + tool.getClass().getName() + " toolcard:\n "
+                    + "Tokens needed:\t" + tool.getNeededTokens()
+                    + "\n Actual tokens:\t" + playerToken
             );
             return this;
         } else {
@@ -118,7 +130,7 @@ public class TurnState extends State {
      */
     @Override
     public State handlePlaceDiceEvent(PlaceDiceEvent event) {
-        Log.d(getClass().getCanonicalName()+" handling PlaceDiceEvent...");
+        Log.d(getClass().getCanonicalName() + " handling PlaceDiceEvent...");
         if (event == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
         if (getModel() == null)
@@ -135,12 +147,12 @@ public class TurnState extends State {
         }
 
         if (getModel().isDiceAllowed(
-                event.getPlayerName(),
-                event.getPoint(),
-                getModel().getDiceFaceByIndex(
-                        event.getDiceFaceIndex()
-                ),
-                SchemaCardFace.Ignore.NOTHING)) {
+            event.getPlayerName(),
+            event.getPoint(),
+            getModel().getDiceFaceByIndex(
+                event.getDiceFaceIndex()
+            ),
+            SchemaCardFace.Ignore.NOTHING)) {
             getModel().placeDice(event.getPlayerName(), event.getDiceFaceIndex(), event.getPoint());
         } else {
             return this;
@@ -164,7 +176,7 @@ public class TurnState extends State {
      */
     @Override
     public State handleEndTurnEvent(EndTurnEvent event) {
-        Log.d(getClass().getCanonicalName()+" handling EndTurnEvent...");
+        Log.d(getClass().getCanonicalName() + " handling EndTurnEvent...");
         if (event == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
         if (getModel() == null)
@@ -237,31 +249,30 @@ public class TurnState extends State {
         try {
             ChangeDiceNumberEvent ev = (ChangeDiceNumberEvent) event;
             getModel().increaseDecreaseDice(ev.getDicePosition(), ev.getDicePosition());
-            getModel().useTokenOnToolcard(event.getPlayerName(),event.getToolCardIndex());
+            getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
             return new TurnState(getController(), getModel(), isDicePlaced(), true);
-        } catch (Exception e){
-            Log.w("Unable to flip the dice: "+e.getMessage());
+        } catch (Exception e) {
+            Log.w("Unable to flip the dice: " + e.getMessage());
             return this;
         }
     }
 
     private State useMoveDice(UseToolcardEvent event, SchemaCardFace.Ignore ignore) {
-        try{
+        try {
             MoveDiceEvent e = (MoveDiceEvent) event;
             String name = getModel().getCurrentPlayerName();
             Schema tempSchema = getModel().getPlayerSchemaCopy(e.getPlayerName());
             DiceFace tempDiceFace = tempSchema.removeDiceFace(e.getSource());
-            if (tempSchema.isDiceAllowed(e.getDestination(), tempDiceFace, ignore)){
+            if (tempSchema.isDiceAllowed(e.getDestination(), tempDiceFace, ignore)) {
                 getModel().moveDice(name, e.getSource(), e.getDestination(), true);
-                getModel().useTokenOnToolcard(event.getPlayerName(),e.getToolCardIndex());
+                getModel().useTokenOnToolcard(event.getPlayerName(), e.getToolCardIndex());
                 return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
-            }
-            else{
+            } else {
                 Log.w("Destination not allowed");
                 return this;
             }
-        }catch (Exception e){
-            Log.w("Unable to move dice: "+e.getMessage());
+        } catch (Exception e) {
+            Log.w("Unable to move dice: " + e.getMessage());
             return this;
         }
 
@@ -291,20 +302,20 @@ public class TurnState extends State {
                 return this;
             }
 
-        }catch (Exception e){
-            Log.w("Unable to move dices: "+e.getMessage());
+        } catch (Exception e) {
+            Log.w("Unable to move dices: " + e.getMessage());
             return this;
         }
     }
 
     private State useCircularCutter(UseToolcardEvent event) {
-        try{
+        try {
             SwapDiceFaceWithTurnHolderEvent ev = (SwapDiceFaceWithTurnHolderEvent) event;
             getModel().swapDraftDiceWithHolder(ev.getDraftBoardIndex(), ev.getTurn(), ev.getIndexInTurn());
             getModel().useTokenOnToolcard(event.getPlayerName(), ev.getToolCardIndex());
             return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
-        }catch (Exception e){
-            Log.w("Unable to use CircularCutter: "+e.getMessage());
+        } catch (Exception e) {
+            Log.w("Unable to use CircularCutter: " + e.getMessage());
             return this;
         }
     }
@@ -317,7 +328,7 @@ public class TurnState extends State {
             getModel().useTokenOnToolcard(event.getPlayerName(), ev.getToolCardIndex());
             if (getModel().getPlayerSchemaCopy(ev.getPlayerName()).isDiceAllowedSomewhere(redrawed, SchemaCardFace.Ignore.NOTHING)) {
                 //the diceface can be placed
-                return new PlaceRedrawnDiceState(getController(), getModel(), new TurnState(getController(), getModel(), isDicePlaced(), true), redrawed, ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard()-1);
+                return new PlaceRedrawnDiceState(getController(), getModel(), new TurnState(getController(), getModel(), isDicePlaced(), true), redrawed, ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard() - 1);
             } else {
                 //the diceface cannot be placed
                 return new TurnState(getController(), getModel(), isDicePlaced(), true);
@@ -334,8 +345,8 @@ public class TurnState extends State {
             getModel().redrawAllDice();
             getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
             return new TurnState(getController(), getModel(), isDicePlaced(), true);
-        } catch (Exception e){
-            Log.w("Use not allowed: "+e.getMessage());
+        } catch (Exception e) {
+            Log.w("Use not allowed: " + e.getMessage());
             return this;
         }
     }
@@ -355,8 +366,8 @@ public class TurnState extends State {
 
             getModel().playerWillDropTurn(event.getPlayerName());
             return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
-        }catch (Exception e){
-            Log.w("Cannot use WheeledPincer: "+e.getMessage());
+        } catch (Exception e) {
+            Log.w("Cannot use WheeledPincer: " + e.getMessage());
             return this;
         }
     }
@@ -374,8 +385,8 @@ public class TurnState extends State {
                 Log.w("Destination not allowed!");
                 return this;
             }
-        }catch (Exception e){
-            Log.w("Cannot use CorkRow: "+e.getMessage());
+        } catch (Exception e) {
+            Log.w("Cannot use CorkRow: " + e.getMessage());
             return this;
         }
     }
@@ -386,8 +397,8 @@ public class TurnState extends State {
             getModel().flipDice(ev.getDicePosition());
             getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
             return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
-        } catch (Exception e){
-            Log.w("Unable to flip the dice: "+e.getMessage());
+        } catch (Exception e) {
+            Log.w("Unable to flip the dice: " + e.getMessage());
             return this;
         }
     }
@@ -398,9 +409,9 @@ public class TurnState extends State {
             getModel().putBackAndRedrawDice(ev.getDicePosition());
             getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
             return new PlaceRedrawnWithNumberDiceState(getController(), getModel(), new TurnState(getController(), getModel(), this.isDicePlaced(), true),
-                    ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard() - 1);
+                ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard() - 1);
         } catch (Exception e) {
-            Log.w("Unable to use FirmPastaDiluent: "+e.getMessage());
+            Log.w("Unable to use FirmPastaDiluent: " + e.getMessage());
             return this;
         }
 
@@ -416,7 +427,7 @@ public class TurnState extends State {
             }
 
             if (!ev.getColor().equals(getModel().getPlayerDiceFace(ev.getPlayerName(), ev.getSource(0)).getColor()) ||
-                    !ev.getColor().equals(getModel().getPlayerDiceFace(ev.getPlayerName(), ev.getSource(1)).getColor())) {
+                !ev.getColor().equals(getModel().getPlayerDiceFace(ev.getPlayerName(), ev.getSource(1)).getColor())) {
                 Log.w(getClass().getCanonicalName() + ": trying to move a dice of a wrong color");
                 return this;
             }
@@ -441,9 +452,8 @@ public class TurnState extends State {
                 Log.w(getClass().getCanonicalName() + ": first move no allowed!");
                 return this;
             }
-        }
-        catch (Exception e){
-            Log.w("Unable to use ManualCutter: "+e.getMessage());
+        } catch (Exception e) {
+            Log.w("Unable to use ManualCutter: " + e.getMessage());
             return this;
         }
     }
@@ -451,11 +461,11 @@ public class TurnState extends State {
     @Override
     public String toString() {
         return "TurnState{" +
-                "hasPlacedDice=" + hasPlacedDice +
-                ", hasUsedToolcard=" + hasUsedToolcard +
-                ", player="+getModel().getCurrentPlayerName()+
-                ", round="+getModel().getRound()+
-                ", firstTurn="+getModel().isFirstTurnInRound()+
-                '}';
+            "hasPlacedDice=" + hasPlacedDice +
+            ", hasUsedToolcard=" + hasUsedToolcard +
+            ", player=" + getModel().getCurrentPlayerName() +
+            ", round=" + getModel().getRound() +
+            ", firstTurn=" + getModel().isFirstTurnInRound() +
+            '}';
     }
 }

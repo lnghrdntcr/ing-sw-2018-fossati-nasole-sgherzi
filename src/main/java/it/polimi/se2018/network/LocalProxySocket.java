@@ -55,14 +55,19 @@ public class LocalProxySocket extends LocalProxy {
     @Override
     synchronized public void sendEventToClient(Event event) {
         //check if this event is for me
-        if(event.getPlayerName()!=null && !event.getPlayerName().equals("") && !event.getPlayerName().equals(getView().getPlayer())) return;
-        try {
-            objectOutputStream.writeObject(event);
-            objectOutputStream.flush();
-        } catch (IOException e) {
-            // If it catches an exception it means that the client is disconnected.
-            this.getView().disconnect();
-            Log.e("Unable to send an event to the client, client disconnected!");
+        if (
+                event.getPlayerName().equals(getView().getPlayer()) || // Message is for me.
+                event.getPlayerName().equals("") ||                    // Message is for everyone.
+                event.getPlayerName() == null                          // Message is for everyone v2.
+            ) {
+            try {
+                objectOutputStream.writeObject(event);
+                objectOutputStream.flush();
+            } catch (IOException e) {
+                // If it catches an exception it means that the client is disconnected.
+                this.getView().disconnect();
+                Log.e("Unable to send an event to the client, client disconnected!");
+            }
         }
     }
 

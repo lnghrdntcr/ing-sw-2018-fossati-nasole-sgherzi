@@ -84,7 +84,7 @@ public class CLIPrinter {
     }
 
     public static void printMenuLine(int option, String line) {
-        System.out.println(ansi().fg(RED).a(option).fg(BLUE).a(line).reset());
+        System.out.println(ansi().fg(RED).a(option + " => ").fg(BLUE).a(line).reset());
     }
 
     public static void printDraftBoard(DraftBoardImmutable draftBoardImmutable) {
