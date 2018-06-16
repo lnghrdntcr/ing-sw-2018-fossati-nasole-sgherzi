@@ -30,7 +30,7 @@ public class Restriction extends StackPane {
 
     void setRestriction(CellRestriction restriction) {
         if (restriction.toString().equals("")) {
-            diceColour.setImage(null);
+            diceColour.setImage(new Image("gui/restrictions/no.png"));
             return;
         }
 

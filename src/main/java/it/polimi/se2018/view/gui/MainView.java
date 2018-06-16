@@ -6,6 +6,7 @@ import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCard;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model.schema_card.Side;
+import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Log;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -61,5 +62,12 @@ public class MainView extends Application {
         dice2.setDiceFace(new DiceFace(GameColor.RED, 3));
         dice2.setOnMouseClicked(event -> schemaPanel.highlightAllowedPoints(new DiceFace(GameColor.RED, 3), SchemaCardFace.Ignore.NOTHING, false));
         root.getChildren().add(dice2);
+
+
+
+        //ToolCard
+        ToolCard toolCard = new ToolCard();
+        toolCard.setToolCard(new ToolCardImmutable("CircularCutter", 3));
+        root.getChildren().add(toolCard);
     }
 }

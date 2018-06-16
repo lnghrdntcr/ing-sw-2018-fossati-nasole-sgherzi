@@ -63,6 +63,10 @@ public class RemoteView extends View {
 
     @Override
     public void update(Event message) {
+        if(!message.getPlayerName().equals(getPlayer())){
+            Log.w("Received an event not for me! Discarding...");
+            return;
+        }
         try {
             this.eventLoop.add((VisitableFromView) message);
         } catch (ClassCastException e) {

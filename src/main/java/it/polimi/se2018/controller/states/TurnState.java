@@ -47,6 +47,9 @@ public class TurnState extends State {
 
         this.hasPlacedDice = hasPlacedDice;
         this.hasUsedToolcard = hasUsedToolcard;
+        //TODO qui dovrebbe essere tirato un evento per avvertire la view che il gioco è iniziato, e comunque per avvertire a che punto siamo (cosa è possibile fare ecc)
+        //l'evento deve essere per tutti
+
     }
 
 
