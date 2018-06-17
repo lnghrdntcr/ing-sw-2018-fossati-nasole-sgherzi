@@ -89,9 +89,9 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         CLIPrinter.printQuestion("Connection method? [rmi]");
         String method = scanner.nextLine();
-        method = method.equals("") ? "rmi" : method;
+        method = (method.equals("") || (!method.equalsIgnoreCase("rmi") && !method.equalsIgnoreCase("socket"))) ? "rmi" : method;
 
-        int defaultPort = method.equalsIgnoreCase("rmi") ? 1099 : 2099;
+        int defaultPort = method.equalsIgnoreCase("rmi") || (!method.equalsIgnoreCase("rmi") && !method.equalsIgnoreCase("socket")) ? 1099 : 2099;
 
         CLIPrinter.printQuestion("ip [localhost]: ");
         host = scanner.nextLine();
@@ -100,33 +100,35 @@ public class Client {
         CLIPrinter.printQuestion("port" + "[" + defaultPort + "]: ");
         try {
             port = Integer.parseInt(scanner.nextLine());
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             port = defaultPort;
         }
 
         CLIPrinter.printQuestion("Name: ");
-        name = scanner.nextLine();
+        while ((name = scanner.nextLine()).equals("")) {
+            CLIPrinter.printError("Invalid name");
+        }
 
-        System.out.println("GUI or CLI? [CLI]");
+        CLIPrinter.printQuestion("GUI or CLI? [CLI]");
         graphics = scanner.nextLine();
-        graphics = graphics.equals("") ? "CLI" : graphics;
+        graphics = (graphics.equals("") || (!graphics.equalsIgnoreCase("cli") && !graphics.equalsIgnoreCase("gui"))) ? "CLI" : graphics;
 
-        RemoteProxy remoteProxy=null;
+        RemoteProxy remoteProxy = null;
         if (method.equalsIgnoreCase("RMI")) {
-            remoteProxy=connectRMI();
+            remoteProxy = connectRMI();
         } else if (method.equalsIgnoreCase("socket")) {
-            remoteProxy=connectSocket();
+            remoteProxy = connectSocket();
         } else {
             Log.w("Not implemented.");
         }
 
-        if(remoteProxy==null){
+        if (remoteProxy == null) {
             Log.e("Connection error!");
             return;
         }
 
 
-        if(graphics.equalsIgnoreCase("gui")){
+        if (graphics.equalsIgnoreCase("gui")) {
             //TODO start gui
         } else {
             RemoteView remoteView = new RemoteView(name, RemoteView.Graphics.CLI);
