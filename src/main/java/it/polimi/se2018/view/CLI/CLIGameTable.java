@@ -8,7 +8,6 @@ import it.polimi.se2018.view.RemoteView;
 public class CLIGameTable extends GameTable implements InputListenerThread.InputListener {
 
     private boolean iAmActive = false;
-    private InputListenerThread inputListenerThread;
     private State realeState;
 
     public CLIGameTable(RemoteView view) {
@@ -54,8 +53,7 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
     public void setActive(){
         Log.d("CLIGAMETABLE ACTIVE");
         if(!iAmActive){
-            inputListenerThread = new InputListenerThread(this);
-            inputListenerThread.start();
+            InputListenerThread.getInstance().setInputListener(this);
             iAmActive = true;
         }
 
@@ -66,7 +64,6 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
     public void setInactive(){
         Log.d("CLIGAMETABLE INACTIVE");
         if(iAmActive){
-            if(inputListenerThread != null) inputListenerThread.kill();
             iAmActive = false;
         }
     }

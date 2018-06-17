@@ -10,10 +10,10 @@ public class InputListenerThread extends Thread {
     private InputListener inputListener;
     private boolean goAhead = true;
 
+    private static InputListenerThread instance;
 
-    public InputListenerThread(InputListener inputListener){
-        this.inputListener = inputListener;
-    }
+
+    private InputListenerThread(){super("InputListenerThread");}
 
     @Override
     public void run() {
@@ -21,7 +21,9 @@ public class InputListenerThread extends Thread {
         while (goAhead){
             try {
                 String input = scanner.nextLine();
-                inputListener.onCommandRecived(input);
+                if(inputListener!=null) {
+                    inputListener.onCommandRecived(input);
+                }
             } catch (RuntimeException ignored){
                 Log.d("Input listener " + ignored.getMessage());
                 Log.d(inputListener.getClass().getName());
@@ -30,14 +32,21 @@ public class InputListenerThread extends Thread {
         }
     }
 
-    public void kill(){
-        goAhead = false;
-        // TODO: fix the hangin in here.
-        scanner.close();
+    void setInputListener(InputListener inputListener) {
+        this.inputListener = inputListener;
     }
 
     public interface InputListener {
         public void onCommandRecived(String input);
+    }
+
+    public synchronized static InputListenerThread getInstance(){
+        if(instance== null){
+            instance=new InputListenerThread();
+            instance.start();
+        }
+
+        return instance;
     }
 
 }

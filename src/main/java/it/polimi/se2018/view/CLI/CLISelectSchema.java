@@ -15,7 +15,6 @@ import it.polimi.se2018.view.SelectSchemaCardFace;
 public class CLISelectSchema extends SelectSchemaCardFace implements InputListenerThread.InputListener {
 
     private boolean iAmActive = false;
-    private InputListenerThread inputListenerThread;
     private SchemaCardFace[] faces = new SchemaCardFace[4];
     private CLISelectSchemaSubState subState = CLISelectSchemaSubState.CHOICE;
     private int choice;
@@ -58,8 +57,7 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
     public void setActive() {
         Log.d("CLISELECTSCHEMA ACTIVE");
         if (!iAmActive) {
-            inputListenerThread = new InputListenerThread(this);
-            inputListenerThread.start();
+            InputListenerThread.getInstance().setInputListener(this);
             iAmActive = true;
         }
     }
@@ -68,7 +66,6 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
     public void setInactive() {
         Log.d("CLISELECTSCHEMA INACTIVE " + iAmActive);
         if (iAmActive) {
-            if (inputListenerThread != null) inputListenerThread.kill();
             iAmActive = false;
         }
     }

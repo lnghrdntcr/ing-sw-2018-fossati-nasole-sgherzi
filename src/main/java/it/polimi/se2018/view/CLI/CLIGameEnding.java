@@ -7,7 +7,6 @@ import it.polimi.se2018.view.RemoteView;
 public class CLIGameEnding extends GameEnding implements InputListenerThread.InputListener {
 
     private boolean iAmActive = false;
-    private InputListenerThread inputListenerThread;
 
     public CLIGameEnding(RemoteView view) {
         super(view);
@@ -26,8 +25,9 @@ public class CLIGameEnding extends GameEnding implements InputListenerThread.Inp
     @Override
     public void setActive() {
         if (!iAmActive) {
-            inputListenerThread = new InputListenerThread(this);
-            inputListenerThread.start();
+            //inputListenerThread = new InputListenerThread(this);
+            //inputListenerThread.start();
+            InputListenerThread.getInstance().setInputListener(this);
             iAmActive = true;
         }
     }
@@ -35,7 +35,6 @@ public class CLIGameEnding extends GameEnding implements InputListenerThread.Inp
     @Override
     public void setInactive() {
         if (iAmActive) {
-            if (inputListenerThread != null) inputListenerThread.kill();
             iAmActive = false;
         }
     }
