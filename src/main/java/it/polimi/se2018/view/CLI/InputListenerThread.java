@@ -25,6 +25,7 @@ public class InputListenerThread extends Thread {
                     inputListener.onCommandRecived(input);
                 }
             } catch (RuntimeException ignored){
+                ignored.printStackTrace();
                 Log.d("Input listener " + ignored.getMessage());
                 Log.d(inputListener.getClass().getName());
                 goAhead = false;
