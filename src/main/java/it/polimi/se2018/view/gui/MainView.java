@@ -1,5 +1,7 @@
 package it.polimi.se2018.view.gui;
 
+import it.polimi.se2018.model.objectives.MediumShades;
+import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
@@ -69,5 +71,16 @@ public class MainView extends Application {
         ToolCard toolCard = new ToolCard();
         toolCard.setToolCard(new ToolCardImmutable("CircularCutter", 3));
         root.getChildren().add(toolCard);
+
+
+        //ToolCard
+        ObjectiveView privateObj = new ObjectiveView();
+        privateObj.setToolCard(new PrivateObjective(GameColor.RED));
+        root.getChildren().add(privateObj);
+
+        //ToolCard
+        ObjectiveView PublicObj = new ObjectiveView();
+        PublicObj.setToolCard(new MediumShades());
+        root.getChildren().add(PublicObj);
     }
 }
