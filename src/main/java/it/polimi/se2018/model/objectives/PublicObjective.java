@@ -1,9 +1,11 @@
 package it.polimi.se2018.model.objectives;
 
+import java.io.Serializable;
+
 /**
  * A generic class to represent Public Objective. They can have different score
  */
-public abstract class PublicObjective extends Objective {
+public abstract class PublicObjective extends Objective implements Serializable{
 
     private int points;
 

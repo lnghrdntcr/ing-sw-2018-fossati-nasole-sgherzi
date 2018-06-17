@@ -5,8 +5,7 @@ import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
-import it.polimi.se2018.model_view.DiceHolderImmutable;
-import it.polimi.se2018.model_view.DraftBoardImmutable;
+import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.schema.DiceFace;
@@ -60,25 +59,28 @@ public class GameTableMultiplayer extends Observable<Event> {
         turnHolder = new TurnHolder(players.length);
 
         this.toolCards = new Tool[Settings.TOOLCARDS_N];
-        for(int i=0; i<Settings.TOOLCARDS_N; i++){
-            this.toolCards[i]=new Tool(toolCards[i]);
+        for (int i = 0; i < Settings.TOOLCARDS_N; i++) {
+            this.toolCards[i] = new Tool(toolCards[i]);
         }
 
         draftBoard = new DraftBoard();
         diceHolder = new DiceHolder();
 
+        // The first time the dices are drawn, does it make sense to draw it in the constructor?
+        draftBoard.drawDices(this.players.length);
+
     }
 
     /**
      * Resend a copy of the whole model to the specified client
+     *
      * @param playerName the client to resync
      */
-    public void sync(String playerName){
-        for(Player player: players){
-            dispatchEvent(new PlayerChangedEvent(getClass().getName()+"::constructor", playerName, player.getImmutableInstance()));
+    public void sync(String playerName) {
+        for (Player player : players) {
+            dispatchEvent(new PlayerChangedEvent(getClass().getName() + "::constructor", playerName, player.getImmutableInstance()));
         }
     }
-
 
 
     /**
@@ -205,8 +207,8 @@ public class GameTableMultiplayer extends Observable<Event> {
     /**
      * Performs the transaction of token to use a toolcard
      *
-     * @param player   the player who uses the toolcard
-     * @param index the index of the toolcard used
+     * @param player the player who uses the toolcard
+     * @param index  the index of the toolcard used
      */
     public void useTokenOnToolcard(String player, int index) {
 
@@ -216,7 +218,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         p.setToken(p.getToken() - neededToken);
         toolCard.addToken(neededToken);
         dispatchEvent(
-            new ToolCardChanged(
+            new ToolCardChangedEvent(
                 "useTokenOnToolcard",
                 null,
                 toolCard.getImmutableInstance(),
@@ -278,7 +280,8 @@ public class GameTableMultiplayer extends Observable<Event> {
      * @return the DiceFace just redrawn
      */
     public DiceFace redrawDice(int index) {
-        if(index >= this.getDiceNumberOnDraftBoard() || index < 0) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Trying to access an illegal position => " + index);
+        if (index >= this.getDiceNumberOnDraftBoard() || index < 0)
+            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Trying to access an illegal position => " + index);
         return redrawDice(index, true);
     }
 
@@ -308,7 +311,8 @@ public class GameTableMultiplayer extends Observable<Event> {
      */
     public void flipDice(int index) {
 
-        if(index >= this.getDiceNumberOnDraftBoard() || index < 0) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Trying to access an illegal position => " + index);
+        if (index >= this.getDiceNumberOnDraftBoard() || index < 0)
+            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Trying to access an illegal position => " + index);
 
         DiceFace df = draftBoard.removeDice(index);
         df = new DiceFace(df.getColor(), 7 - df.getNumber());
@@ -348,8 +352,10 @@ public class GameTableMultiplayer extends Observable<Event> {
      */
     public void changeDiceNumber(int index, int number) {
 
-        if(index < 0 || index >= this.getDiceNumberOnDraftBoard()) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Illegal index: given " + index + " max: " + this.getDiceNumberOnDraftBoard());
-        if(number < 1 || number > 6) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Illegal number: given " + number + " bounds: [1, 6]");
+        if (index < 0 || index >= this.getDiceNumberOnDraftBoard())
+            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Illegal index: given " + index + " max: " + this.getDiceNumberOnDraftBoard());
+        if (number < 1 || number > 6)
+            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Illegal number: given " + number + " bounds: [1, 6]");
 
         draftBoard.addDice(new DiceFace(draftBoard.removeDice(index).getColor(), number));
         dispatchEvent(new DraftBoardChangedEvent("changeDiceNumber", null, draftBoard.getImmutableInstance()));
@@ -429,11 +435,12 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     public void setPlayerSchema(String playerName, SchemaCardFace schemaCardFace) {
 
-        if(schemaCardFace == null) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Schema cannot be null.");
+        if (schemaCardFace == null)
+            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Schema cannot be null.");
 
-        try{
-           this.getPlayerByName(playerName);
-        } catch (NoSuchElementException e){
+        try {
+            this.getPlayerByName(playerName);
+        } catch (NoSuchElementException e) {
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": No player with that name");
         }
 
@@ -520,29 +527,62 @@ public class GameTableMultiplayer extends Observable<Event> {
     /**
      * @return the number of dice on the draft board in this moment
      */
-    public int getDiceNumberOnDraftBoard(){
+    public int getDiceNumberOnDraftBoard() {
         return draftBoard.getDiceNumber();
     }
 
     /**
      * @return the schema card face selected by a player
      */
-    public SchemaCardFace getPlayerSchemacardFace(String playerName){
+    public SchemaCardFace getPlayerSchemacardFace(String playerName) {
 
-        try{
+        try {
             this.getPlayerByName(playerName);
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": " + playerName + " does not exist");
         }
 
-        return getPlayerByName(playerName).getSchema()==null?null:getPlayerByName(playerName).getSchema().getSchemaCardFace();
+        return getPlayerByName(playerName).getSchema() == null ? null : getPlayerByName(playerName).getSchema().getSchemaCardFace();
     }
 
     /**
      * Returns the current round.
+     *
      * @return The current round
      */
     public int getRound() {
         return turnHolder.getRound();
     }
+
+    public void onGameStart() {
+
+        dispatchEvent(new DraftBoardChangedEvent(this.getClass().getName(), "", this.draftBoard.getImmutableInstance()));
+        for (int i = 0; i < Settings.POBJECTIVES_N; i++) {
+
+            dispatchEvent(
+                new PublicObjectiveEvent(
+                    this.getClass().getName(),
+                    "",
+                    this.publicObjectives[i],
+                    i
+                )
+            );
+
+        }
+        for (int i = 0; i < Settings.TOOLCARDS_N; i++) {
+
+            dispatchEvent(
+                new ToolCardChangedEvent(
+                    this.getClass().getName(),
+                    "",
+                    new ToolCardImmutable(
+                        this.toolCards[i].getName(),
+                        this.toolCards[i].getToken())
+                    , i)
+            );
+
+        }
+
+    }
+
 }

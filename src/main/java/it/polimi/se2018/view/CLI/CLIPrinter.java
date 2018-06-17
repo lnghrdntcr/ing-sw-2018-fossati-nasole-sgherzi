@@ -95,16 +95,16 @@ public class CLIPrinter {
     public static void printDraftBoard(DraftBoardImmutable draftBoardImmutable) {
         printLineSeparator(draftBoardImmutable.getDices().length);
         for (int i = 0; i < draftBoardImmutable.getDices().length; i++) {
-            System.out.println("|" +
+            System.out.print("|" +
                 ansi().bg(draftBoardImmutable.getDices()[i].getColor().getAnsiColor())
-                    .a(draftBoardImmutable.getDices()[i].getNumber()));
+                    .a(draftBoardImmutable.getDices()[i].getNumber()).reset());
         }
-        System.out.println("|\n");
+        System.out.println("|");
 
         printLineSeparator(draftBoardImmutable.getDices().length);
 
         for (int i = 0; i < draftBoardImmutable.getDices().length; i++) {
-            System.out.println(" " + (i));
+            System.out.print(" " + (i));
         }
     }
 
@@ -134,7 +134,9 @@ public class CLIPrinter {
 
     }
 
-    public static void printToolcard(ToolCardImmutable toolCardImmutable) {
+    public static void printToolcard(ToolCardImmutable toolCardImmutable, int index) {
+
+        System.out.println(ansi().bg(WHITE).fg(RED).a("Toolcard n: " + index).reset());
 
         String path = "gameData/resources/cli/toolcards/" + toolCardImmutable.getName() + ".json";
 
@@ -168,9 +170,14 @@ public class CLIPrinter {
             System.out.println(ansi().fg(RED).a(root.getString("restriction")).reset());
         } catch (Exception ignored){}
 
+        // Yes, I want to print 2 newlines
+        System.out.println("\n");
+
     }
 
-    public static void printPublicObjectives(PublicObjective publicObjective) {
+    public static void printPublicObjectives(PublicObjective publicObjective, int index) {
+
+        System.out.println(ansi().bg(WHITE).fg(RED).a("Public Objective n: " + index).reset());
 
         String path = "gameData/resources/cli/publicObjectives/" + publicObjective.getClass().getSimpleName() + ".json";
 
@@ -200,7 +207,8 @@ public class CLIPrinter {
         System.out.println(ansi().fg(Ansi.Color.RED).a(root.getString("title")).reset());
         System.out.println(ansi().fg(Ansi.Color.BLUE).a("Points: " + publicObjective.getPoint()).reset());
         System.out.println(ansi().fg(Ansi.Color.BLUE).a(root.getString("description")).reset());
-
+        // Yes, I want to print 2 newlines
+        System.out.println("\n");
     }
 
     public static void printSchema(Schema schema) {

@@ -9,7 +9,7 @@ public class PublicObjectiveEvent extends ModelEvent {
     private PublicObjective publicObjective;
     private int index;
 
-    protected PublicObjectiveEvent(String emitter, String player, PublicObjective publicObjective, int index) {
+    public PublicObjectiveEvent(String emitter, String player, PublicObjective publicObjective, int index) {
         super(emitter, player);
         this.publicObjective = publicObjective;
         this.index = index;
@@ -17,7 +17,7 @@ public class PublicObjectiveEvent extends ModelEvent {
 
     @Override
     public void visit(GameTable gameTable) {
-
+        gameTable.handlePublicObjective(this);
     }
 
     @Override

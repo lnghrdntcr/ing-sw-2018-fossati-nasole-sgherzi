@@ -37,10 +37,10 @@ public class MainMenuState extends State {
         provider.put(4, () -> {
 
             for (int i = 0; i < Settings.TOOLCARDS_N; i++) {
-                CLIPrinter.printToolcard(this.getGameTable().getToolCardImmutable(i));
+                CLIPrinter.printToolcard(this.getGameTable().getToolCardImmutable(i), i);
             }
             for (int i = 0; i < Settings.POBJECTIVES_N; i++) {
-                CLIPrinter.printPublicObjectives(this.getGameTable().getPublicObjective(i));
+                CLIPrinter.printPublicObjectives(this.getGameTable().getPublicObjective(i), i);
             }
 
             return this;
@@ -48,6 +48,8 @@ public class MainMenuState extends State {
 
         provider.put(5, () -> {
 
+            // TODO: This fails because the schemas, the privateObjectives and the tokens are null in the game table
+            // The fix is easy, it is needed to dispatch an event from the model sending those elements
             CLIPrinter.printSchema(
                 this.getGameTable().getSchemas(
                     this.getGameTable().getView().getPlayer()

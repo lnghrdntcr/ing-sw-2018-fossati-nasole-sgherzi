@@ -8,11 +8,11 @@ import it.polimi.se2018.view.SelectSchemaCardFace;
 /**
  * Event to inform that a ToolCard property has been changed
  */
-public class ToolCardChanged extends ModelEvent {
+public class ToolCardChangedEvent extends ModelEvent {
     private ToolCardImmutable toolCardImmutable;
     private int index;
 
-    public ToolCardChanged(String emitter, String player, ToolCardImmutable toolCardImmutable, int index) {
+    public ToolCardChangedEvent(String emitter, String player, ToolCardImmutable toolCardImmutable, int index) {
         super(emitter, player);
         this.toolCardImmutable = toolCardImmutable;
         this.index = index;

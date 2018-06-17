@@ -19,7 +19,7 @@ public abstract class GameTable {
     private RemoteView view;
     private DiceHolderImmutable diceHolderImmutable;
     private DraftBoardImmutable draftBoardImmutable;
-    private PublicObjective[] publicObjectives;
+    private PublicObjective[] publicObjectives = new PublicObjective[Settings.POBJECTIVES_N];
     private HashMap<String, PlayerImmutable> players = new HashMap<>();
     private HashMap<String, Schema> schemas = new HashMap<>();
     private ToolCardImmutable[] toolCardImmutables = new ToolCardImmutable[Settings.TOOLCARDS_N];
@@ -67,7 +67,7 @@ public abstract class GameTable {
         renderSchema(event.getPlayerName());
     }
 
-    final public void handleToolcardChanged(ToolCardChanged event) {
+    final public void handleToolcardChanged(ToolCardChangedEvent event) {
         toolCardImmutables[event.getIndex()] = event.getToolCardImmutable();
         renderToolcard(event.getIndex());
     }

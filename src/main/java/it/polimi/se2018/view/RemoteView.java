@@ -1,7 +1,8 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
-import it.polimi.se2018.controller.controllerEvent.TimeoutCommunicationEvent;
+import it.polimi.se2018.model.modelEvent.DraftBoardChangedEvent;
+import it.polimi.se2018.model.modelEvent.PublicObjectiveEvent;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.CLI.CLIGameEnding;
@@ -70,7 +71,9 @@ public class RemoteView extends View {
     @Override
     public void update(Event message) {
 
-        Log.d("Recived this event!" + message.toString());
+        if(message instanceof PublicObjectiveEvent || message instanceof DraftBoardChangedEvent){
+            Log.d(message.toString());
+        }
 
         if (
             message.getPlayerName().equals(getPlayer()) || // Message is for me

@@ -4,6 +4,8 @@ import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.AskSchemaCardFaceEvent;
 import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
+import it.polimi.se2018.model.modelEvent.DraftBoardChangedEvent;
+import it.polimi.se2018.model.modelEvent.PublicObjectiveEvent;
 import it.polimi.se2018.model.schema_card.SchemaCard;
 import it.polimi.se2018.model.schema_card.Side;
 import it.polimi.se2018.utils.Event;
@@ -43,7 +45,8 @@ public class GameSetupState extends State {
                     schemaCardList.subList(i*2, i*2+2).toArray(new SchemaCard[2]));
             controller.dispatchEvent(toDispatchEvent);
         }
-
+        // TODO: I'm not sure that doing this here is legit...
+        model.onGameStart();
     }
 
 

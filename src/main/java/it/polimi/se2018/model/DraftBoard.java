@@ -88,7 +88,7 @@ public class DraftBoard implements ImmutableCloneable<DraftBoardImmutable>{
      */
     public DiceFace[] getDices() {
 
-        if (this.getDiceNumber() == 0) throw new IllegalStateException(this.getClass().getCanonicalName() + ": Cannot draw any more dice!");
+        if (this.getDiceNumber() == 0) throw new IllegalStateException(this.getClass().getCanonicalName() + ": Empty Draftboard!");
 
         return diceFaces.toArray(new DiceFace[0]);
 
