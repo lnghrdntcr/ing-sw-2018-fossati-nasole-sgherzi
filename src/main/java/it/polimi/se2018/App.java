@@ -38,18 +38,18 @@ public class App {
 
         switch (args[0]) {
             case "server":
-                if(args.length<=1){
+                if (args.length <= 1) {
                     Log.e("Missing parameter: players");
                     printUsage();
                     return;
                 }
-                try{
+                try {
                     loadConfigAndStartServer(args);
-                }catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     Log.e("Players not a number!");
                     printUsage();
                     return;
-                } catch (RemoteException e){
+                } catch (RemoteException e) {
                     Log.w("Couldn't start server.");
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -62,7 +62,7 @@ public class App {
                 break;
             default:
                 printUsage();
- /*I'M ONE STEP CLOSER TO THE EDGE, AND I'M ABOUT TO */
+                /*I'M ONE STEP CLOSER TO THE EDGE, AND I'M ABOUT TO */
                 break;
         }
     }
@@ -72,16 +72,16 @@ public class App {
         int numPlayers = Integer.parseInt(args[1]);
         String path = null;
 
-        if(args.length == 4){
+        if (args.length == 4) {
             // It means that also the external config file is passed as an argument... maybe.
-            if(args[2].equals("--config") || args[2].startsWith("-c ")){
+            if (args[2].equals("--config") || args[2].startsWith("-c ")) {
                 path = args[3];
             }
         }
 
         path = (path == null ? "gameData/resources/defaultConfig.json" : path);
 
-        File configFile= new File(path);
+        File configFile = new File(path);
 
         FileInputStream fileInputStream = new FileInputStream(configFile);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);

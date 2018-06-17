@@ -70,18 +70,7 @@ public class RemoteView extends View {
     @Override
     public void update(Event message) {
 
-        /*if (getPlayer().equals("asdf")) {
-
-            if (!(message instanceof TimeoutCommunicationEvent)) {
-                Log.d(
-                    "Emitter: " + message.getEmitterName() +
-                    "\nReciver: " + message.getPlayerName() +
-                    "\nClass: " + message.getClass()
-                );
-            }
-
-
-        }*/
+        Log.d("Recived this event!" + message.toString());
 
         if (
             message.getPlayerName().equals(getPlayer()) || // Message is for me
@@ -89,8 +78,6 @@ public class RemoteView extends View {
             message.getPlayerName().equals("")             // Message is for everyone v2
             ) {
             try {
-                /*Log.d("Recived this event!" + message.toString());*/
-
                 this.eventLoop.add((VisitableFromView) message);
             } catch (ClassCastException e) {
                 Log.d("I couldn't recive this event! " + message);
@@ -112,7 +99,6 @@ public class RemoteView extends View {
     }
 
     public void activateGameTable() {
-        // TODO: selectSchemaCardFace hangs on scanner.close()
         this.selectSchemaCardFace.setInactive();
         this.gameTable.setActive();
         this.gameEnding.setInactive();

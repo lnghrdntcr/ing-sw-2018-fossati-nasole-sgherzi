@@ -1,0 +1,5 @@
+{
+  "title": "Gavel", 
+  "description": "Roll again every dice in the Draftboard.", 
+  "restriction": "This card can be used only on your second turn, before choosing a dice."
+}

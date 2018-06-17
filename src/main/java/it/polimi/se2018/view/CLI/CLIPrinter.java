@@ -1,5 +1,6 @@
 package it.polimi.se2018.view.CLI;
 
+import it.polimi.se2018.model.DiceHolder;
 import it.polimi.se2018.model.TurnHolder;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
@@ -12,12 +13,16 @@ import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema_card.*;
 import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
+import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.utils.Settings;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
+import org.json.JSONObject;
 
 import java.awt.*;
+import java.io.*;
+import java.util.Scanner;
 
 import static org.fusesource.jansi.Ansi.Color.BLUE;
 import static org.fusesource.jansi.Ansi.Color.RED;
@@ -28,7 +33,7 @@ public class CLIPrinter {
 
     public static void setup() {
         AnsiConsole.systemInstall();
-        /*        System.out.println( ansi().eraseScreen().fg(RED).a("Hello").fg(GREEN).a(" World").reset() );*/
+
     }
 
     public static void printSchemaCardFace(SchemaCardFace schemaCardFace) {
@@ -62,7 +67,7 @@ public class CLIPrinter {
         System.out.println("+");
     }
 
-    public static void printPrivateObjective(PrivateObjective privateObjective){
+    public static void printPrivateObjective(PrivateObjective privateObjective) {
         Ansi.Color color = privateObjective.getColor().getAnsiColor();
         System.out.println(ansi().bg(color).a(" ").reset());
         System.out.println(ansi().fg(color).a(">").reset() + "Sum the values of all the" + ansi().fg(color).a(color.toString()).reset() + "dice");
@@ -89,49 +94,124 @@ public class CLIPrinter {
 
     public static void printDraftBoard(DraftBoardImmutable draftBoardImmutable) {
         printLineSeparator(draftBoardImmutable.getDices().length);
-        for(int i = 0; i < draftBoardImmutable.getDices().length; i++){
+        for (int i = 0; i < draftBoardImmutable.getDices().length; i++) {
             System.out.println("|" +
-                    ansi().bg(draftBoardImmutable.getDices()[i].getColor().getAnsiColor())
-                            .a(draftBoardImmutable.getDices()[i].getNumber()));
+                ansi().bg(draftBoardImmutable.getDices()[i].getColor().getAnsiColor())
+                    .a(draftBoardImmutable.getDices()[i].getNumber()));
         }
         System.out.println("|\n");
 
         printLineSeparator(draftBoardImmutable.getDices().length);
 
-        for(int i = 0; i < draftBoardImmutable.getDices().length; i++){
+        for (int i = 0; i < draftBoardImmutable.getDices().length; i++) {
             System.out.println(" " + (i));
         }
     }
 
     public static void printDiceHolder(DiceHolderImmutable diceHolderImmutable) {
-        for(int i=0; i<Settings.TURNS; i++){
-            //TODO:
+
+        int pastTurns = diceHolderImmutable.getDoneTurns();
+
+        for (int i = 0; i < pastTurns; i++) {
+
+            DiceFace[] dices = diceHolderImmutable.getDiceFaces(i);
+            System.out.print("Turn " + (i + 1) + (i == 9 ? "" : " ") +" => ");
+
+
+            for (int j = 0; j < dices.length; j++) {
+                printDice(dices[j]);
+                System.out.print("|");
+            }
+            System.out.println();
+
+        }
+
+        for (int i = pastTurns; i < Settings.TURNS; i++) {
+            System.out.print("Turn " + (i + 1) + (i == 9 ? "" : " ") +" => ");
+            System.out.print("|" + ansi().bg(Ansi.Color.WHITE).fg(Ansi.Color.BLACK).a("X").reset() + "|");
+            System.out.println();
         }
 
     }
 
-    public static void printToolcard(ToolCardImmutable toolCardImmutable){
-        // TODO: Do a better job than this - fra
-        System.out.println(ansi().bg(RED).fg(BLUE).a("Still not implemented").reset());
-        System.out.println(ansi().bg(GREEN).a(toolCardImmutable.toString()).reset());
+    public static void printToolcard(ToolCardImmutable toolCardImmutable) {
+
+        String path = "gameData/resources/cli/toolcards/" + toolCardImmutable.getName() + ".json";
+
+        File toolcardResources = new File(path);
+
+        FileInputStream fileInputStream = null;
+
+        try {
+            fileInputStream = new FileInputStream(toolcardResources);
+        } catch (FileNotFoundException e) {
+            Log.d("Resource file linked to " + toolCardImmutable.getName() + " not found.");
+            return;
+        }
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+        StringBuilder builder;
+        try (Scanner scanner = new Scanner(bufferedInputStream)) {
+            builder = new StringBuilder();
+
+            while (scanner.hasNextLine()) {
+                builder.append(scanner.nextLine());
+            }
+        }
+
+        JSONObject root = new JSONObject(builder.toString());
+
+        System.out.println(ansi().fg(GREEN).a(root.getString("title")).reset());
+        System.out.println(ansi().fg(BLUE).a("Tokens needed: " + toolCardImmutable.getToken()).reset());
+        System.out.println(ansi().fg(BLUE).a(root.getString("description")).reset());
+
+        try{
+            System.out.println(ansi().fg(RED).a(root.getString("restriction")).reset());
+        } catch (Exception ignored){}
 
     }
 
     public static void printPublicObjectives(PublicObjective publicObjective) {
-        // TODO: Do a better job than this - fra
-        System.out.println(ansi().bg(RED).fg(BLUE).a("Still not implemented"));
-        System.out.println(ansi().bg(GREEN).a(publicObjective.toString()).reset());
+
+        String path = "gameData/resources/cli/publicObjectives/" + publicObjective.getClass().getSimpleName() + ".json";
+
+        File publicObjectiveResource = null;
+
+        publicObjectiveResource = new File(path);
+
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(publicObjectiveResource);
+        } catch (FileNotFoundException e) {
+            Log.d("Resource file linked to " + publicObjective.getClass().getSimpleName() + " not found.");
+            return;
+        }
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+        StringBuilder builder;
+        try (Scanner scanner = new Scanner(bufferedInputStream)) {
+            builder = new StringBuilder();
+
+            while (scanner.hasNextLine()) {
+                builder.append(scanner.nextLine());
+            }
+        }
+
+        JSONObject root = new JSONObject(builder.toString());
+
+        System.out.println(ansi().fg(Ansi.Color.RED).a(root.getString("title")).reset());
+        System.out.println(ansi().fg(Ansi.Color.BLUE).a("Points: " + publicObjective.getPoint()).reset());
+        System.out.println(ansi().fg(Ansi.Color.BLUE).a(root.getString("description")).reset());
+
     }
 
-    public static void printSchema(Schema schema){
+    public static void printSchema(Schema schema) {
         System.out.println("Name: " + schema.getSchemaCardFace().getName() + "\nDifficulty: " + schema.getSchemaCardFace().getDifficulty());
         for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
             printLineSeparator(Settings.CARD_WIDTH);
             for (int x = 0; x < Settings.CARD_WIDTH; x++) {
                 Point point = new Point(x, y);
-                if(schema.getDiceFace(point)==null) {
+                if (schema.getDiceFace(point) == null) {
                     printRestriction(schema.getSchemaCardFace().getRestriction(new Point(x, y)));
-                }else{
+                } else {
                     printDice(schema.getDiceFace(point));
                 }
             }
@@ -141,7 +221,7 @@ public class CLIPrinter {
     }
 
     private static void printDice(DiceFace diceFace) {
-        System.out.print("|" + ansi().bg(diceFace.getColor().getAnsiColor()).a(""+diceFace.getNumber()).reset());
+        System.out.print("|" + ansi().bg(diceFace.getColor().getAnsiColor()).fg(Ansi.Color.BLACK).a("" + diceFace.getNumber()).reset());
     }
 
     public static void printTokens(int remaining, int total) {
@@ -155,18 +235,19 @@ public class CLIPrinter {
         System.out.println();
 
     }
+
     public static Point decodePosition(String input) {
-        if(input==null) throw new NullPointerException("Input should not be null!");
-        if(input.length()>2) return null;
-        int x = input.toUpperCase().charAt(0)-'A';
-        if(x<0||x>= Settings.CARD_WIDTH) return null;
+        if (input == null) throw new NullPointerException("Input should not be null!");
+        if (input.length() > 2) return null;
+        int x = input.toUpperCase().charAt(0) - 'A';
+        if (x < 0 || x >= Settings.CARD_WIDTH) return null;
 
 
         try {
             int y = Integer.parseInt(input.substring(1));
-            if(y<0||y>= Settings.CARD_HEIGHT) return null;
+            if (y < 0 || y >= Settings.CARD_HEIGHT) return null;
             return new Point(x, y);
-        }catch (NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             return null;
         }
 

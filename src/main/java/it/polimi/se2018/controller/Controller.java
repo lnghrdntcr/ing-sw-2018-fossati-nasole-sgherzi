@@ -68,7 +68,6 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
         state = new GameSetupState(this, model);
 
-        /*        this.startTimeoutCommunicationThread();*/
         this.startEventLoopHandlerThread();
         this.startActionTimeout();
 

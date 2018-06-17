@@ -21,6 +21,10 @@ public class DiceHolderImmutable implements Serializable {
 
   }
 
+  public int getDoneTurns(){
+    return this.turnHolder.length;
+  }
+
   public DiceFace[] getDiceFaces(int turn) {
 
     if(turn < 0 || turn >= this.turnHolder.length) throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Trying to access an illegal turn");

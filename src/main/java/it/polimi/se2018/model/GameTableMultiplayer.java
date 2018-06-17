@@ -5,6 +5,8 @@ import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
+import it.polimi.se2018.model_view.DiceHolderImmutable;
+import it.polimi.se2018.model_view.DraftBoardImmutable;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.schema.DiceFace;

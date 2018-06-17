@@ -1,0 +1,5 @@
+{
+  "title": "Roughing Nipper", 
+  "description": "After choosing a dice on the Draftboard, increase it or decrease it by one.",
+  "restriction": "6 cannot become 1, 1 cannot become 6."
+}
