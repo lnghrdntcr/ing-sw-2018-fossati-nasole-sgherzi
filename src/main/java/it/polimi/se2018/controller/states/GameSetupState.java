@@ -6,7 +6,10 @@ import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.modelEvent.DraftBoardChangedEvent;
 import it.polimi.se2018.model.modelEvent.PublicObjectiveEvent;
+import it.polimi.se2018.model.modelEvent.SchemaChangedEvent;
+import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCard;
+import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model.schema_card.Side;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
@@ -25,6 +28,7 @@ import java.util.Random;
  * The state that handles the start of the game and does all the setup things
  */
 public class GameSetupState extends State {
+
     private List<SchemaCard> schemaCardList;
 
     public GameSetupState(Controller controller, GameTableMultiplayer model) {
@@ -70,6 +74,9 @@ public class GameSetupState extends State {
 
         getModel().setPlayerSchema(event.getPlayerName(), schemaCardList.get(playerIndex*2+event.getSchemaCardId()).getFace(event.getSide()));
 
+        // Sends the appropriate combination of <Player, Schema> to the view.
+        getController().dispatchEvent(new SchemaChangedEvent(this.getClass().getName(), event.getPlayerName(), new Schema(schemaCardList.get(playerIndex * 2 + event.getSchemaCardId()).getFace(event.getSide()))));
+
         if(getModel().allPlayersHaveSelectedSchemaCardFace()){
             return new TurnState(getController(), getModel(),false, false);
         }
@@ -80,11 +87,24 @@ public class GameSetupState extends State {
 
     @Override
     public State handleUserTimeOutEvent() {
+
         Log.d(getClass().getCanonicalName()+" handling UserTimeoutEvent");
+
         for(int i=0; i<getController().getPlayersList().length; i++) {
+
             if(getModel().getPlayerSchemacardFace(getController().getPlayersList()[i]) == null){
+
                 //here the player does not have any schemacardface selected, selects the first card
-                getModel().setPlayerSchema(getController().getPlayersList()[i], schemaCardList.get(i*2).getFace(Math.random()>0.5?Side.FRONT:Side.BACK));
+
+                String player = getController().getPlayersList()[i];
+
+                SchemaCardFace schema = schemaCardList.get(i*2).getFace(Math.random()>0.5?Side.FRONT:Side.BACK);
+
+                getModel().setPlayerSchema(player, schema);
+
+                // Send the event to the view.
+                getController().dispatchEvent(new SchemaChangedEvent(this.getClass().getName(), player, new Schema(schema)));
+
             }
         }
         return new TurnState(getController(), getModel(),false, false);

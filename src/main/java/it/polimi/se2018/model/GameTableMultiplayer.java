@@ -5,6 +5,7 @@ import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
+import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.model.objectives.PublicObjective;
@@ -581,6 +582,11 @@ public class GameTableMultiplayer extends Observable<Event> {
                     , i)
             );
 
+        }
+
+        for (int i = 0; i < this.players.length; i++) {
+
+            dispatchEvent(new PlayerChangedEvent(this.getClass().getName(), this.players[i].getName(), this.players[i].getImmutableInstance()));
         }
 
     }

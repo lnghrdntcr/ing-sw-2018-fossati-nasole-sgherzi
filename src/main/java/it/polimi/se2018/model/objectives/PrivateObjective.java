@@ -5,6 +5,7 @@ import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 
 import java.awt.*;
+import java.io.Serializable;
 
 import static it.polimi.se2018.utils.Settings.CARD_HEIGHT;
 import static it.polimi.se2018.utils.Settings.CARD_WIDTH;
@@ -15,7 +16,7 @@ import static it.polimi.se2018.utils.Settings.CARD_WIDTH;
  * @since 09/05/2018
  */
 
-public class PrivateObjective extends Objective {
+public class PrivateObjective extends Objective implements Serializable {
 
     private GameColor color;
 

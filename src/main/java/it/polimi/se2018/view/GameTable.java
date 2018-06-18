@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.controller.controllerEvent.*;
 import it.polimi.se2018.model.modelEvent.*;
+import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model_view.DiceHolderImmutable;
@@ -180,4 +181,5 @@ public abstract class GameTable {
     }
 
     public abstract void handleGameStart(GameStartEvent gameStartEvent);
+
 }

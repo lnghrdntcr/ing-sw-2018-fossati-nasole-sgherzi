@@ -5,6 +5,8 @@ import it.polimi.se2018.view.GameEnding;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.SelectSchemaCardFace;
 
+import java.io.Serializable;
+
 /**
  * Event that is used to inform that a payer has been changed
  */

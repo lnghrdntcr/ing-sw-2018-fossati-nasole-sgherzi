@@ -70,7 +70,7 @@ public class CLIPrinter {
     public static void printPrivateObjective(PrivateObjective privateObjective) {
         Ansi.Color color = privateObjective.getColor().getAnsiColor();
         System.out.println(ansi().bg(color).a(" ").reset());
-        System.out.println(ansi().fg(color).a(">").reset() + "Sum the values of all the" + ansi().fg(color).a(color.toString()).reset() + "dice");
+        System.out.print(ansi().fg(color).a(">").reset() + "Sum the values of all the " + ansi().fg(color).a(color.toString().toLowerCase()).reset() + "dice");
         System.out.println(ansi().fg(color).a("<").reset());
         System.out.println(ansi().bg(color).a(" ").reset());
     }
@@ -226,19 +226,24 @@ public class CLIPrinter {
             System.out.println("|");
         }
         printLineSeparator(Settings.CARD_WIDTH);
+
+        System.out.println();
+
     }
 
     private static void printDice(DiceFace diceFace) {
         System.out.print("|" + ansi().bg(diceFace.getColor().getAnsiColor()).fg(Ansi.Color.BLACK).a("" + diceFace.getNumber()).reset());
     }
 
-    public static void printTokens(int remaining, int total) {
+    public static void printTokens(int used, int total) {
 
-        for (int i = 0; i < remaining; i++) {
-            System.out.print(ansi().bg(WHITE).reset());
+        System.out.print(ansi().fg(BLUE).a("Tokens "));
+
+        for (int i = 0; i < (total - used); i++) {
+            System.out.print(ansi().bg(WHITE).a("O").reset());
         }
-        for (int i = 0; i < (total - remaining); i++) {
-            System.out.print(ansi().bg(RED).reset());
+        for (int i = 0; i < used; i++) {
+            System.out.print(ansi().bg(RED).a("X").reset());
         }
         System.out.println();
 
