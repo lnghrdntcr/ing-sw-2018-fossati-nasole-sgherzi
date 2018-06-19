@@ -34,8 +34,6 @@ public class CLIMoveDice extends State {
 
     }
 
-    //TODO
-
     @Override
     public State process(String input) {
 
