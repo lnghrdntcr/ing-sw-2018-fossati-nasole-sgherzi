@@ -89,15 +89,20 @@ public class CLIPrinter {
     }
 
     public static void printMenuLine(int option, String line) {
-        System.out.println(ansi().fg(RED).a(option + " => ").fg(BLUE).a(line).reset());
+        printMenuLine(option, line, true);
     }
+
+    public static void printMenuLine(int option, String line, boolean enabled) {
+        System.out.println(ansi().fg(RED).a(option + " => ").fg(enabled ? BLUE : MAGENTA).a(line).reset());
+    }
+
 
     public static void printDraftBoard(DraftBoardImmutable draftBoardImmutable) {
         printLineSeparator(draftBoardImmutable.getDices().length);
         for (int i = 0; i < draftBoardImmutable.getDices().length; i++) {
             System.out.print("|" +
-                ansi().bg(draftBoardImmutable.getDices()[i].getColor().getAnsiColor())
-                    .a(draftBoardImmutable.getDices()[i].getNumber()).reset());
+                    ansi().bg(draftBoardImmutable.getDices()[i].getColor().getAnsiColor())
+                            .a(draftBoardImmutable.getDices()[i].getNumber()).reset());
         }
         System.out.println("|");
 
@@ -116,7 +121,7 @@ public class CLIPrinter {
         for (int i = 0; i < pastTurns; i++) {
 
             DiceFace[] dices = diceHolderImmutable.getDiceFaces(i);
-            System.out.print("Turn " + (i + 1) + (i == 9 ? "" : " ") +" => ");
+            System.out.print("Turn " + (i + 1) + (i == 9 ? "" : " ") + " => ");
 
 
             for (int j = 0; j < dices.length; j++) {
@@ -128,7 +133,7 @@ public class CLIPrinter {
         }
 
         for (int i = pastTurns; i < Settings.TURNS; i++) {
-            System.out.print("Turn " + (i + 1) + (i == 9 ? "" : " ") +" => ");
+            System.out.print("Turn " + (i + 1) + (i == 9 ? "" : " ") + " => ");
             System.out.print("|" + ansi().bg(Ansi.Color.WHITE).fg(Ansi.Color.BLACK).a("X").reset() + "|");
             System.out.println();
         }
@@ -167,9 +172,10 @@ public class CLIPrinter {
         System.out.println(ansi().fg(BLUE).a("Tokens needed: " + toolCardImmutable.getToken()).reset());
         System.out.println(ansi().fg(BLUE).a(root.getString("description")).reset());
 
-        try{
+        try {
             System.out.println(ansi().fg(RED).a(root.getString("restriction")).reset());
-        } catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         // Yes, I want to print 2 newlines
         System.out.println("\n");
@@ -215,7 +221,7 @@ public class CLIPrinter {
     public static void printSchema(Schema schema) {
         System.out.println("Name: " + schema.getSchemaCardFace().getName() + "\nDifficulty: " + schema.getSchemaCardFace().getDifficulty());
         System.out.print("  "); //two spaces
-        for (char a = 'A'; a < 'A' + Settings.CARD_WIDTH; a++){
+        for (char a = 'A'; a < 'A' + Settings.CARD_WIDTH; a++) {
             System.out.print(" " + a);
         }
         System.out.println();

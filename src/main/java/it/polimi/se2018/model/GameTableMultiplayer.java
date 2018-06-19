@@ -407,12 +407,12 @@ public class GameTableMultiplayer extends Observable<Event> {
             }
         }
 
-        dispatchEvent(
+        /*dispatchEvent(
             new TurnChangedEvent(
                 this.getClass().getName() + ": nextTurn()",
                 "",
                 players[turnHolder.getCurrentPlayer()].getName()
-                , turnHolder.getRound(), this.isFirstTurnInRound()));
+                , turnHolder.getRound(), this.isFirstTurnInRound()));*/
     }
 
 

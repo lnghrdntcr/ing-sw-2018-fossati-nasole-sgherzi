@@ -52,25 +52,27 @@ public class TurnState extends State {
         if (!getController().isGameStarted()) {
             Log.d("A NEW GAME HAS STARTED!!!");
             this.getController().dispatchEvent(
-                new GameStartEvent(
-                    this.getClass().getName(),
-                    "",
-                    ""
-                )
+                    new GameStartEvent(
+                            this.getClass().getName(),
+                            "",
+                            ""
+                    )
             );
-            this.getController().dispatchEvent(
-                new TurnChangedEvent(
-                    this.getClass().getName(),
-                    "",
-                    this.getModel().getCurrentPlayerName(),
-                    this.getModel().getRound(),
-                    this.getModel().isFirstTurnInRound()
-                )
-            );
-
             this.getController().setGameStarted();
 
         }
+
+        this.getController().dispatchEvent(
+                new TurnChangedEvent(
+                        this.getClass().getName(),
+                        "",
+                        this.getModel().getCurrentPlayerName(),
+                        this.getModel().getRound(),
+                        this.getModel().isFirstTurnInRound(),
+                        isDicePlaced(),
+                        isToolcardUsed()
+                )
+        );
 
 
     }
@@ -98,10 +100,10 @@ public class TurnState extends State {
 
         if (playerToken < tool.getNeededTokens()) {
             Log.i(
-                event.getPlayerName()
-                    + " cannot use the " + tool.getClass().getName() + " toolcard:\n "
-                    + "Tokens needed:\t" + tool.getNeededTokens()
-                    + "\n Actual tokens:\t" + playerToken
+                    event.getPlayerName()
+                            + " cannot use the " + tool.getClass().getName() + " toolcard:\n "
+                            + "Tokens needed:\t" + tool.getNeededTokens()
+                            + "\n Actual tokens:\t" + playerToken
             );
             return this;
         } else {
@@ -136,12 +138,12 @@ public class TurnState extends State {
         }
 
         if (getModel().isDiceAllowed(
-            event.getPlayerName(),
-            event.getPoint(),
-            getModel().getDiceFaceByIndex(
-                event.getDiceFaceIndex()
-            ),
-            SchemaCardFace.Ignore.NOTHING)) {
+                event.getPlayerName(),
+                event.getPoint(),
+                getModel().getDiceFaceByIndex(
+                        event.getDiceFaceIndex()
+                ),
+                SchemaCardFace.Ignore.NOTHING)) {
             getModel().placeDice(event.getPlayerName(), event.getDiceFaceIndex(), event.getPoint());
         } else {
             return this;
@@ -176,7 +178,7 @@ public class TurnState extends State {
         } else {
             if (getModel().hasNextTurn()) {
                 getModel().nextTurn();
-                this.getController().dispatchEvent(
+                /*this.getController().dispatchEvent(
                     new TurnChangedEvent(
                         this.getClass().getName(),
                         "",
@@ -184,7 +186,7 @@ public class TurnState extends State {
                         this.getModel().getRound(),
                         this.getModel().isFirstTurnInRound()
                     )
-                );
+                );*/
                 return new TurnState(this.getController(), getModel(), false, false);
             } else {
                 return new GameEndState(this.getController(), getModel());
@@ -198,6 +200,7 @@ public class TurnState extends State {
 
     /**
      * Check if the current player has already placed a dice
+     *
      * @return true if it has, false otherwise
      */
     public boolean isDicePlaced() {
@@ -206,6 +209,7 @@ public class TurnState extends State {
 
     /**
      * Checks if the current player has already used a toolcard
+     *
      * @return true if it has, false otherwise
      */
     public boolean isToolcardUsed() {
@@ -251,6 +255,7 @@ public class TurnState extends State {
 
     /**
      * Helper method to use RoughingNipper toolcard
+     *
      * @param event where to get event data
      * @return the new state of the game
      */
@@ -268,6 +273,7 @@ public class TurnState extends State {
 
     /**
      * Helper method to use MoveDice toolcard (paramterized)
+     *
      * @param event where to get event data
      * @return the new state of the game
      */
@@ -294,6 +300,7 @@ public class TurnState extends State {
 
     /**
      * Helper method to use MoveDiceTwice toolcard
+     *
      * @param event where to get event data
      * @return the new state of the game
      */
@@ -329,6 +336,7 @@ public class TurnState extends State {
 
     /**
      * Helper method to use CircularCutter toolcard
+     *
      * @param event where to get event data
      * @return the new state of the game
      */
@@ -346,6 +354,7 @@ public class TurnState extends State {
 
     /**
      * Helper method to use FirmPastaBrush toolcard
+     *
      * @param event where to get event data
      * @return the new state of the game
      */
@@ -371,6 +380,7 @@ public class TurnState extends State {
 
     /**
      * Helper method to use Gavel toolcard
+     *
      * @param event where to get event data
      * @return the new state of the game
      */
@@ -387,6 +397,7 @@ public class TurnState extends State {
 
     /**
      * Helper method to use WheeledPincher toolcard
+     *
      * @param event where to get event data
      * @return the new state of the game
      */
@@ -412,6 +423,7 @@ public class TurnState extends State {
 
     /**
      * Helper method to use CorkRow toolcard
+     *
      * @param event where to get event data
      * @return the new state of the game
      */
@@ -436,6 +448,7 @@ public class TurnState extends State {
 
     /**
      * Helper method to use DiamondPad toolcard
+     *
      * @param event where to get event data
      * @return the new state of the game
      */
@@ -453,6 +466,7 @@ public class TurnState extends State {
 
     /**
      * Helper method to use FirmPastaDiluent toolcard
+     *
      * @param event where to get event data
      * @return the new state of the game
      */
@@ -462,7 +476,7 @@ public class TurnState extends State {
             getModel().putBackAndRedrawDice(ev.getDicePosition());
             getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
             return new PlaceRedrawnWithNumberDiceState(getController(), getModel(), new TurnState(getController(), getModel(), this.isDicePlaced(), true),
-                ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard() - 1);
+                    ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard() - 1);
         } catch (Exception e) {
             Log.w("Unable to use FirmPastaDiluent: " + e.getMessage());
             return this;
@@ -472,6 +486,7 @@ public class TurnState extends State {
 
     /**
      * Helper method to use ManualCutter toolcard
+     *
      * @param event where to get event data
      * @return the new state of the game
      */
@@ -485,7 +500,7 @@ public class TurnState extends State {
             }
 
             if (!ev.getColor().equals(getModel().getPlayerDiceFace(ev.getPlayerName(), ev.getSource(0)).getColor()) ||
-                !ev.getColor().equals(getModel().getPlayerDiceFace(ev.getPlayerName(), ev.getSource(1)).getColor())) {
+                    !ev.getColor().equals(getModel().getPlayerDiceFace(ev.getPlayerName(), ev.getSource(1)).getColor())) {
                 Log.w(getClass().getCanonicalName() + ": trying to move a dice of a wrong color");
                 return this;
             }
@@ -519,11 +534,11 @@ public class TurnState extends State {
     @Override
     public String toString() {
         return "TurnState{" +
-            "hasPlacedDice=" + hasPlacedDice +
-            ", hasUsedToolcard=" + hasUsedToolcard +
-            ", player=" + getModel().getCurrentPlayerName() +
-            ", round=" + getModel().getRound() +
-            ", firstTurn=" + getModel().isFirstTurnInRound() +
-            '}';
+                "hasPlacedDice=" + hasPlacedDice +
+                ", hasUsedToolcard=" + hasUsedToolcard +
+                ", player=" + getModel().getCurrentPlayerName() +
+                ", round=" + getModel().getRound() +
+                ", firstTurn=" + getModel().isFirstTurnInRound() +
+                '}';
     }
 }

@@ -75,7 +75,7 @@ public class MainMenuState extends State {
         provider.put(6, () -> new PlaceDiceState(this.getGameTable(), SchemaCardFace.Ignore.NOTHING));
 
         // TODO: add selection 7
-        //provider.put(7, () -> new UseToolState(this.getGameTable()));
+        provider.put(7, () -> new UseToolState(this.getGameTable()));
 
         provider.put(8, () -> {
             this.getGameTable().getView().sendEventToController(
@@ -114,14 +114,28 @@ public class MainMenuState extends State {
             return this;
         }
 
-        // TODO: Remove this after the implementation of selection 7.
-        if (selection == 7) {
-            throw new NotImplementedException();
-        }
+
 
         if (!this.getGameTable().getCurrentPlayer().equals(this.getGameTable().getView().getPlayer()) && selection > 5) {
             CLIPrinter.printError("It's not your turn, you motherfather!");
             return this;
+        }
+
+        // TODO: Remove this after the implementation of selection 7.
+        if (selection == 7) {
+            if(getGameTable().isToolcardUsed()){
+                CLIPrinter.printError("You have already used a toolcard in this turn");
+                return this;
+            }else{
+                throw new NotImplementedException();
+            }
+        }
+
+        if (selection == 6) {
+            if(getGameTable().isDicePlaced()){
+                CLIPrinter.printError("You have already placed a dice in this turn");
+                return this;
+            }
         }
 
         return provider.get(selection).get();
@@ -139,8 +153,8 @@ public class MainMenuState extends State {
         CLIPrinter.printMenuLine(4, "View Toolcards and Public Objectives");
         CLIPrinter.printMenuLine(5, "View your Table");
         if (this.getGameTable().isMyTurn()) {
-            CLIPrinter.printMenuLine(6, "Place dice");
-            CLIPrinter.printMenuLine(7, "Use Toolcard");
+            CLIPrinter.printMenuLine(6, "Place dice", !getGameTable().isDicePlaced());
+            CLIPrinter.printMenuLine(7, "Use Toolcard", !getGameTable().isToolcardUsed());
             CLIPrinter.printMenuLine(8, "End Turn");
         }
     }

@@ -10,11 +10,15 @@ import it.polimi.se2018.view.SelectSchemaCardFace;
 public class TurnChangedEvent extends ModelEvent {
     private int round;
     private boolean direction;
+    private final boolean dicePlaced;
+    private final boolean toolcardUsed;
 
-    public TurnChangedEvent(String emitter, String receiver, String player, int round, boolean direction) {
+    public TurnChangedEvent(String emitter, String receiver, String player, int round, boolean direction, boolean dicePlaced, boolean toolcardUsed) {
         super(emitter, player, receiver);
         this.round = round;
         this.direction = direction;
+        this.dicePlaced = dicePlaced;
+        this.toolcardUsed = toolcardUsed;
     }
 
     public int getRound() {
@@ -38,5 +42,13 @@ public class TurnChangedEvent extends ModelEvent {
     @Override
     public void visit(SelectSchemaCardFace selectSchemaCardFace) {
 
+    }
+
+    public boolean isDicePlaced() {
+        return dicePlaced;
+    }
+
+    public boolean isToolcardUsed() {
+        return toolcardUsed;
     }
 }

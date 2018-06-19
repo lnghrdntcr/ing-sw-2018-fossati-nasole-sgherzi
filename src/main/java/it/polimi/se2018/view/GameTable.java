@@ -29,6 +29,7 @@ public abstract class GameTable {
     private int roundNumber;
     private boolean roundDirection;
     private int secondsRemaining;
+    private boolean toolcardUsed, dicePlaced;
 
     public GameTable(RemoteView view) {
         this.view = view;
@@ -83,6 +84,8 @@ public abstract class GameTable {
         currentPlayer = event.getPlayerName();
         roundNumber = event.getRound();
         roundDirection = event.getDirection();
+        toolcardUsed=event.isToolcardUsed();
+        dicePlaced=event.isDicePlaced();
         renderTurn();
     }
 
@@ -185,4 +188,11 @@ public abstract class GameTable {
 
     public abstract void handleGameStart(GameStartEvent gameStartEvent);
 
+    public boolean isToolcardUsed() {
+        return toolcardUsed;
+    }
+
+    public boolean isDicePlaced() {
+        return dicePlaced;
+    }
 }
