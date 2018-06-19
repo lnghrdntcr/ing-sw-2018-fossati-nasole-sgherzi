@@ -213,8 +213,15 @@ public class CLIPrinter {
 
     public static void printSchema(Schema schema) {
         System.out.println("Name: " + schema.getSchemaCardFace().getName() + "\nDifficulty: " + schema.getSchemaCardFace().getDifficulty());
+        System.out.print("  "); //two spaces
+        for (char a = 'A'; a < 'A' + Settings.CARD_WIDTH; a++){
+            System.out.print(" " + a);
+        }
+        System.out.println();
         for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
+            System.out.print("  ");
             printLineSeparator(Settings.CARD_WIDTH);
+            System.out.print(y + " ");
             for (int x = 0; x < Settings.CARD_WIDTH; x++) {
                 Point point = new Point(x, y);
                 if (schema.getDiceFace(point) == null) {
@@ -225,6 +232,7 @@ public class CLIPrinter {
             }
             System.out.println("|");
         }
+        System.out.print("  ");
         printLineSeparator(Settings.CARD_WIDTH);
 
         System.out.println();
@@ -251,11 +259,9 @@ public class CLIPrinter {
 
     public static Point decodePosition(String input) {
         if (input == null) throw new NullPointerException("Input should not be null!");
-        if (input.length() < 2) return null;
-        if (input.length() > 2) return null;
+        if (input.length() != 2) return null;
         int x = input.toUpperCase().charAt(0) - 'A';
         if (x < 0 || x >= Settings.CARD_WIDTH) return null;
-
 
         try {
             int y = Integer.parseInt(input.substring(1));
