@@ -262,7 +262,7 @@ public class TurnState extends State {
     private State useRoughingNipper(UseToolcardEvent event) {
         try {
             ChangeDiceNumberEvent ev = (ChangeDiceNumberEvent) event;
-            getModel().increaseDecreaseDice(ev.getDicePosition(), ev.getDicePosition());
+            getModel().increaseDecreaseDice(ev.getDicePosition(), ev.getNumber());
             getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
             return new TurnState(getController(), getModel(), isDicePlaced(), true);
         } catch (Exception e) {

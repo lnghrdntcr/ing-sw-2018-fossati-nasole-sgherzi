@@ -52,7 +52,6 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
      */
     @Override
     public void renderPrivateObjective(PrivateObjective privateObjective) {
-        CLIPrinter.printPrivateObjective(privateObjective);
     }
 
     @Override

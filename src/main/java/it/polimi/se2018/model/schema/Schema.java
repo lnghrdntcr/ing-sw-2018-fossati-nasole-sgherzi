@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 /**
  * Contains the actual schema of a player and the relative associated schemaCardFace
+ *
  * @since 09/05/2018
  */
 public class Schema implements Serializable {
@@ -71,10 +72,11 @@ public class Schema implements Serializable {
 
     /**
      * Remove and returns a DiceFace in the Schema
+     *
      * @param point where to remove the DiceFace
      * @return the removed DiceFace
      */
-    public DiceFace removeDiceFace(Point point){
+    public DiceFace removeDiceFace(Point point) {
         if (diceFaces[point.x][point.y] == null)
             throw new IllegalStateException(getClass().getCanonicalName() + ": cannot remove dice from an empty cell!");
 
@@ -88,7 +90,7 @@ public class Schema implements Serializable {
      *
      * @param point    the position where the dice should be placed, 0 based
      * @param diceFace the diceFace to place
-     * @param ignore the type of restricton to ignore
+     * @param ignore   the type of restricton to ignore
      * @return true if the diceFace can be placed, false otherwise
      */
     public boolean isDiceAllowed(Point point, DiceFace diceFace, SchemaCardFace.Ignore ignore) {
@@ -98,9 +100,9 @@ public class Schema implements Serializable {
     /**
      * Check if a given diceFace can be placed here, checking both the Schema and the SchemaCardFace
      *
-     * @param point    the position where the dice should be placed, 0 based
-     * @param diceFace the diceFace to place
-     * @param ignore the type of restricton to ignore
+     * @param point           the position where the dice should be placed, 0 based
+     * @param diceFace        the diceFace to place
+     * @param ignore          the type of restricton to ignore
      * @param forceLoneliness if this diceFace should be kept alone (as for toolcard 9)
      * @return true if the diceFace can be placed, false otherwise
      */
@@ -118,9 +120,9 @@ public class Schema implements Serializable {
 
         if (!schemaCardFace.isDiceAllowed(point, diceFace, ignore)) return false;
 
-        if(forceLoneliness){
+        if (forceLoneliness) {
             return !hasOneNeighbour(point);
-        }else {
+        } else {
 
             if (isEmpty()) {
                 //If the schema is empty -> alias is the first dice
@@ -228,15 +230,16 @@ public class Schema implements Serializable {
 
     /**
      * Computes the number of empty spaces in the SchemaCard
+     *
      * @return The number of empty spaces.
      */
-    public int computeFreeSpaces(){
+    public int computeFreeSpaces() {
 
         int freeSpaces = 0;
 
         for (int x = 0; x < Settings.CARD_WIDTH; x++) {
             for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
-                if(this.diceFaces[x][y] == null) freeSpaces++;
+                if (this.diceFaces[x][y] == null) freeSpaces++;
             }
 
         }
@@ -250,19 +253,24 @@ public class Schema implements Serializable {
 
     /**
      * Clones the schema in order to apply local changes.
+     *
      * @return A cloned schema.
      */
     public Schema cloneSchema() {
         Schema newSchema = new Schema(schemaCardFace);
-        newSchema.diceFaces=this.diceFaces.clone();
+        newSchema.diceFaces = new DiceFace[diceFaces.length][diceFaces[0].length];
+        for (int x = 0; x < diceFaces.length; x++) {
+            System.arraycopy(diceFaces[x], 0, newSchema.diceFaces[x], 0, diceFaces[0].length);
+        }
+
         return newSchema;
     }
 
     // TODO: Add docs
-    public boolean isDiceAllowedSomewhere(DiceFace diceFace, SchemaCardFace.Ignore ignore){
+    public boolean isDiceAllowedSomewhere(DiceFace diceFace, SchemaCardFace.Ignore ignore) {
         for (int x = 0; x < Settings.CARD_HEIGHT; x++) {
             for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
-                if(isDiceAllowed(new Point(x, y), diceFace, ignore)){
+                if (isDiceAllowed(new Point(x, y), diceFace, ignore)) {
                     return true;
                 }
             }
