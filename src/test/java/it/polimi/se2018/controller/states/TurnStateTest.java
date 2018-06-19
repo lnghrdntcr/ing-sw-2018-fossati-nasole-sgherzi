@@ -85,26 +85,26 @@ public class TurnStateTest {
 
                 actualModel.setPlayerSchema("Player" + j, schemaCardFace);
 
-                TurnState newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(), "Player" + j, 0, new Point(0, 0)));
+                TurnState newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(),"",  "Player" + j, 0, new Point(0, 0)));
 
                 assertFalse(newState.isToolcardUsed());
                 assertTrue(newState.isDicePlaced());
 
                 // Trying to place a dice twice in the same turn.
                 // In this case the returned state must be the SAME of the state before.
-                newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(), "Player" + j, 0, new Point(2, 2)));
+                newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(),"",  "Player" + j, 0, new Point(2, 2)));
                 assertSame(actualTurnState, newState);
 
                 // Testing against a dice which is in the same position.
                 // In this case the returned state must be the SAME of the state before.
-                newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(), "Player" + j, 0, new Point(0, 0)));
+                newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(),"",  "Player" + j, 0, new Point(0, 0)));
                 assertSame(newState, actualTurnState);
 
                 actualModel.nextTurn();
 
                 // Testing against another player trying to do the action.
                 // In this case the returned state must be the SAME of the state before.
-                newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(), "Player" + j, 0, new Point(3, 2)));
+                newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(),"",  "Player" + j, 0, new Point(3, 2)));
                 assertSame(newState, actualTurnState);
 
             }
