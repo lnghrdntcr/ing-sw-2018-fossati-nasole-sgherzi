@@ -49,7 +49,7 @@ public class PlaceDiceState extends State {
 
             DiceFace diceFace = getGameTable().getDraftBoardImmutable().getDices()[selectedDice];
 
-            if (getGameTable().getSchemas(getGameTable().getView().getPlayer()).isDiceAllowed(point, diceFace, ignore)) {
+            if (getGameTable().getSchemas(getGameTable().getView().getPlayer()).isDiceAllowed(point, diceFace, ignore, forceLoneliness)) {
                 if(isFromTool && forceLoneliness){
                     getGameTable().getView().sendEventToController(
                             new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getCurrentPlayer(),
