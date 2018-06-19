@@ -26,7 +26,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     private Thread timeoutThread;
 
     // Config variables.
-    private int playersN;
     private long serverTimeout;
     private final long actionTimeout;
     private final String customSchemaCardPath;
@@ -42,11 +41,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     /**
      * Instantiate a new server
      *
-     * @param playersN the number of players to wait for
      * @throws RemoteException If a communicaton error occours
      */
-    public Server(int playersN, int serverTimeout, int actionTimeout, String customSchemaCardPath) throws RemoteException {
-        this.playersN = playersN;
+    public Server( int serverTimeout, int actionTimeout, String customSchemaCardPath) throws RemoteException {
         this.serverTimeout = serverTimeout * 1000L;
         this.actionTimeout = actionTimeout * 1000L;
         this.customSchemaCardPath = customSchemaCardPath;
@@ -78,7 +75,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
             listenerThread = new Thread(() -> {
 
                 try {
-                    while (virtualViews.size() < this.playersN) {
+                    while (virtualViews.size() < 4) {
                         Socket clientConnection = serverSocket.accept();
                         ObjectInputStream inputStream = new ObjectInputStream(clientConnection.getInputStream());
                         String playerName = null;
@@ -117,9 +114,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
                     }
 
                     Log.w(
-                        "No more player are allowed as the maximum of "
-                            + this.playersN
-                            + " players is already reached."
+                        "No more player are allowed as the maximum of 4 players is already reached."
                     );
 
                 } catch (IOException e) {
@@ -137,7 +132,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         this.timeoutThread = new Thread(() -> {
             Log.d("Starting timeout with timeout of " + this.serverTimeout / 1000L + " seconds");
             this.beginTime = System.currentTimeMillis();
-            while ((System.currentTimeMillis() - this.beginTime) < this.serverTimeout) {
+            while ((System.currentTimeMillis() - this.beginTime) < this.serverTimeout && !gameStarted) {
                 try {
                     Thread.sleep(1000);
                     Log.d("[CONNECTION] Remaining " + (this.serverTimeout / 1000L - this.getTimeout()) + " seconds");
@@ -145,7 +140,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
                 }
             }
 
-            if (virtualViews.size() < 4 && virtualViews.size() > 1) this.startGame();
+            if (virtualViews.size() < 4 && virtualViews.size() > 1 && !gameStarted) this.startGame();
 
         });
 
@@ -190,7 +185,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     @Override
     public boolean connectRMIClient(RemoteProxyRMIInterface remoteProxyRMI, String player) throws RemoteException {
 
-        if (virtualViews.size() >= this.playersN) return false;
+        if (virtualViews.size() >= 4) return false;
 
         if (this.controller != null && this.controller.isPlayerDisconnected(player)) {
 
@@ -236,7 +231,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
         virtualViews.add(virtualView);
 
-        if (virtualViews.size() == playersN) {
+        if (virtualViews.size() == 4 && !gameStarted) {
             startGame();
             return;
         }

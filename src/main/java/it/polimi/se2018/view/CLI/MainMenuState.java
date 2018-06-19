@@ -75,7 +75,7 @@ public class MainMenuState extends State {
         provider.put(6, () -> new PlaceDiceState(this.getGameTable(), SchemaCardFace.Ignore.NOTHING));
 
         // TODO: add selection 7
-        provider.put(7, () -> new UseToolState(this.getGameTable()));
+        //provider.put(7, () -> new UseToolState(this.getGameTable()));
 
         provider.put(8, () -> {
             this.getGameTable().getView().sendEventToController(

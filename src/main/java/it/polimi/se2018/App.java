@@ -104,7 +104,6 @@ public class App {
         Settings.setSchemaCardDatabase(root.getString("customSchemaCardPath"));
 
         new Server(
-            numPlayers,
             root.getInt("serverTimeout"),
             root.getInt("actionTimeout"),
             root.getString("customSchemaCardPath")
