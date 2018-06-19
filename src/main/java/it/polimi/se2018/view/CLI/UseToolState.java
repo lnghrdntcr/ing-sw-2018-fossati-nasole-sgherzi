@@ -16,6 +16,7 @@ public class UseToolState extends State {
 
     public UseToolState(CLIGameTable gameTable) {
         super(gameTable);
+        this.setupProvider();
     }
 
     private void setupProvider(){
