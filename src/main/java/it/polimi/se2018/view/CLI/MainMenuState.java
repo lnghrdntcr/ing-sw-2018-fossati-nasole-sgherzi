@@ -126,7 +126,7 @@ public class MainMenuState extends State {
                 CLIPrinter.printError("You have already used a toolcard in this turn");
                 return this;
             }else{
-                throw new NotImplementedException();
+                provider.get(7).get();
             }
         }
 

@@ -1,6 +1,7 @@
 package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.model.schema.DiceFace;
+import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.CellRestriction;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
@@ -15,6 +16,7 @@ public class CLIMoveDice extends State {
     SchemaCardFace.Ignore ignore;
     String toolName;
     private Times times;
+    private final GameColor color;
     private ActionState actionState;
 
     private Point firstSource;
@@ -24,15 +26,22 @@ public class CLIMoveDice extends State {
     private Schema playerSchema;
 
     public CLIMoveDice(CLIGameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times) {
+        this(gameTable, ignore, toolName, times, null);
+    }
+
+    public CLIMoveDice(CLIGameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times, GameColor color) {
+
         super(gameTable);
         this.ignore = ignore;
         this.toolName = toolName;
         this.times = times;
+        this.color = color;
         actionState = ActionState.CHOOSE;
 
         playerSchema = this.getGameTable().getSchemas(this.getGameTable().getView().getPlayer()).cloneSchema();
 
     }
+
 
     //TODO
 
@@ -51,12 +60,22 @@ public class CLIMoveDice extends State {
                     return this;
                 }
 
+                if (color != null && !playerSchema.getDiceFace(firstSource).equals(color)) {
+                    CLIPrinter.printError("You cannot move a dice of this color!");
+                    return this;
+                }
+
             } else if (times == Times.SECOND) {
 
                 secondSource = CLIPrinter.decodePosition(input);
 
                 if (secondSource == null) {
                     CLIPrinter.printError("Invalid input");
+                    return this;
+                }
+
+                if (color != null && !playerSchema.getDiceFace(secondSource).equals(color)) {
+                    CLIPrinter.printError("You cannot move a dice of this color!");
                     return this;
                 }
 
@@ -76,6 +95,7 @@ public class CLIMoveDice extends State {
                     CLIPrinter.printError("Invalid input");
                     return this;
                 }
+
 
                 DiceFace prevDice = playerSchema.removeDiceFace(firstSource);
 
