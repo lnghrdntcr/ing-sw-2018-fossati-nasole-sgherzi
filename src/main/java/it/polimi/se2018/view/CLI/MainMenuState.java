@@ -78,11 +78,10 @@ public class MainMenuState extends State {
         provider.put(7, () -> new UseToolState(this.getGameTable()));
 
         provider.put(8, () -> {
-            // TODO: Check why it does change turn but the name is not changed on the view.
             this.getGameTable().getView().sendEventToController(
                     new EndTurnEvent(
                             this.getClass().getName(),
-                            "",
+                            this.getGameTable().getView().getPlayer(),
                             this.getGameTable().getView().getPlayer()
                     )
             );
