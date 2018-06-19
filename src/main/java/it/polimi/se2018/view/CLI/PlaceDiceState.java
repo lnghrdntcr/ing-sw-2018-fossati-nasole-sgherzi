@@ -50,11 +50,22 @@ public class PlaceDiceState extends State {
             DiceFace diceFace = getGameTable().getDraftBoardImmutable().getDices()[selectedDice];
 
             if (getGameTable().getSchemas(getGameTable().getView().getPlayer()).isDiceAllowed(point, diceFace, ignore)) {
-                //todo gestisci indice tool dai bool
-                getGameTable().getView().sendEventToController((isFromTool?
-                        new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getCurrentPlayer(), getGameTable().getToolIndexByName("WheeledPincer"), point, selectedDice)
-                        : new PlaceDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), selectedDice, point)));
+                if(isFromTool && forceLoneliness){
+                    getGameTable().getView().sendEventToController(
+                            new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getCurrentPlayer(),
+                                    getGameTable().getToolIndexByName("CorkRow"), point, selectedDice));
+                }
+                else if(isFromTool && !forceLoneliness){
+                    getGameTable().getView().sendEventToController(
+                            new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getCurrentPlayer(),
+                                    getGameTable().getToolIndexByName("WheeledPincer"), point, selectedDice));
+                }
+                else {
+                    getGameTable().getView().sendEventToController(new PlaceDiceEvent(getClass().getName(), "",
+                            getGameTable().getView().getPlayer(), selectedDice, point));
+                }
                 return new MainMenuState(getGameTable());
+
             } else {
                 CLIPrinter.printError("This dice cannot be placed here!");
                 return this;
