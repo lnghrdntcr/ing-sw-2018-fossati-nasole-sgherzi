@@ -75,6 +75,7 @@ public class MainMenuState extends State {
         provider.put(6, () -> new PlaceDiceState(this.getGameTable(), SchemaCardFace.Ignore.NOTHING));
 
         // TODO: add selection 7
+        provider.put(7, () -> new UseToolState(this.getGameTable()));
 
         provider.put(8, () -> {
             // TODO: Check why it does change turn but the name is not changed on the view.
@@ -130,6 +131,8 @@ public class MainMenuState extends State {
 
     @Override
     public void render() {
+        System.out.println();
+        System.out.println("Round:" + getGameTable().getRoundNumber() + "Turn:" + (getGameTable().getRoundDirection()? "1" : "2"));
         CLIPrinter.printMenuLine(1, "View Draft Board");
         CLIPrinter.printMenuLine(2, "View Players");
         CLIPrinter.printMenuLine(3, "View Round Track");

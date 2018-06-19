@@ -75,7 +75,7 @@ public class TurnHolder {
      * @return true if it's the first turn, false otherwise
      */
     public boolean isFirstTurnInRound() {
-        //if the direction is 1 we are going in the first direction, meaning we have not changed direction in thi turn
+        //if the direction is 1 we are going in the first direction, meaning we have not changed direction in this turn
         // yet, so basically the player is playing the first turn in this round
         return direction == 1;
     }

@@ -59,7 +59,7 @@ public class CLIPrinter {
         }
     }
 
-    //support method for printSchemaCardFace
+    //support method for EVERYTHING
     private static void printLineSeparator(int param) {
         for (int x = 0; x < param; x++) {
             System.out.print("+-");
@@ -106,6 +106,7 @@ public class CLIPrinter {
         for (int i = 0; i < draftBoardImmutable.getDices().length; i++) {
             System.out.print(" " + (i));
         }
+        System.out.println();
     }
 
     public static void printDiceHolder(DiceHolderImmutable diceHolderImmutable) {
