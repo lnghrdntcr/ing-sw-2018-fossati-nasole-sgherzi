@@ -22,13 +22,13 @@ import java.util.*;
  */
 public class GameTableMultiplayer extends Observable<Event> {
 
-    final private PublicObjective[] publicObjectives;
-    final private Player[] players;
-    final private Tool[] toolCards;
-    final private DraftBoard draftBoard;
-    final private DiceHolder diceHolder;
-    final private TurnHolder turnHolder;
-    final private String[] playersName;
+    private final PublicObjective[] publicObjectives;
+    private final Player[] players;
+    private final Tool[] toolCards;
+    private final DraftBoard draftBoard;
+    private final DiceHolder diceHolder;
+    private final TurnHolder turnHolder;
+    private final String[] playersName;
 
     private ArrayList<String> dropTurnPlayers = new ArrayList<>();
 
@@ -130,7 +130,6 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     /**
      * Returns the PublicObjectiveCard by position
-     *
      * @param position zero based position of the card. Position is grater than or equal to zero and lesser than 3
      * @return the PublicObjectiveCard
      * @throws IllegalArgumentException if position outside of range
@@ -147,12 +146,12 @@ public class GameTableMultiplayer extends Observable<Event> {
 
         Arrays.stream(this.players).forEach(player -> {
             scoreHolders.add(new ScoreHolder(
-                    player.getName(),
-                    player.computeScoreFromPrivateObjective(),
-                    this.computePublicObjectivesScore(player.getSchema()),
-                    player.getToken(),
-                    player.computeFreeSpaces(),
-                    this.getPlayerPosition(player.getName())));
+                player.getName(),
+                player.computeScoreFromPrivateObjective(),
+                this.computePublicObjectivesScore(player.getSchema()),
+                player.getToken(),
+                player.computeFreeSpaces(),
+                this.getPlayerPosition(player.getName())));
         });
 
         return scoreHolders;
@@ -220,13 +219,13 @@ public class GameTableMultiplayer extends Observable<Event> {
         p.setToken(p.getToken() - neededToken);
         toolCard.addToken(neededToken);
         dispatchEvent(
-                new ToolCardChangedEvent(
-                        "useTokenOnToolcard",
-                        "",
-                        player,
-                        toolCard.getImmutableInstance(),
-                        index
-                )
+            new ToolCardChangedEvent(
+                "useTokenOnToolcard",
+                "",
+                player,
+                toolCard.getImmutableInstance(),
+                index
+            )
         );
         dispatchEvent(new PlayerChangedEvent("useTokenOnToolcard", "", player, p.getImmutableInstance()));
     }
@@ -384,9 +383,9 @@ public class GameTableMultiplayer extends Observable<Event> {
     public boolean hasNextTurn() {
 
         if (
-                turnHolder.isGameEnded() &&
-                        this.getCurrentPlayerName().equals(playersName[turnHolder.getCurrentPlayer()])
-                ) return false;
+            turnHolder.isGameEnded() &&
+                this.getCurrentPlayerName().equals(playersName[turnHolder.getCurrentPlayer()])
+            ) return false;
 
         return true;
 
@@ -409,11 +408,11 @@ public class GameTableMultiplayer extends Observable<Event> {
         }
 
         dispatchEvent(
-                new TurnChangedEvent(
-                        this.getClass().getName() + ": nextTurn()",
-                        "",
-                        players[turnHolder.getCurrentPlayer()].getName()
-                        , turnHolder.getRound(), this.isFirstTurnInRound()));
+            new TurnChangedEvent(
+                this.getClass().getName() + ": nextTurn()",
+                "",
+                players[turnHolder.getCurrentPlayer()].getName()
+                , turnHolder.getRound(), this.isFirstTurnInRound()));
     }
 
 
@@ -455,7 +454,7 @@ public class GameTableMultiplayer extends Observable<Event> {
             getPlayerByName(playerName).setSchema(new Schema(schemaCardFace));
         } else {
             throw new IllegalStateException(this.getClass().getCanonicalName() +
-                    ": schema already set. Cannot set a new schema.");
+                ": schema already set. Cannot set a new schema.");
         }
     }
 
@@ -568,27 +567,27 @@ public class GameTableMultiplayer extends Observable<Event> {
         for (int i = 0; i < Settings.POBJECTIVES_N; i++) {
 
             dispatchEvent(
-                    new PublicObjectiveEvent(
-                            this.getClass().getName() + "::gameStart",
-                            "",
-                            "",
-                            this.publicObjectives[i],
-                            i
-                    )
+                new PublicObjectiveEvent(
+                    this.getClass().getName() + "::gameStart",
+                    "",
+                    "",
+                    this.publicObjectives[i],
+                    i
+                )
             );
 
         }
         for (int i = 0; i < Settings.TOOLCARDS_N; i++) {
 
             dispatchEvent(
-                    new ToolCardChangedEvent(
-                            this.getClass().getName() + "::gameStart",
-                            "",
-                            "",
-                            new ToolCardImmutable(
-                                    this.toolCards[i].getName(),
-                                    this.toolCards[i].getToken())
-                            , i)
+                new ToolCardChangedEvent(
+                    this.getClass().getName() + "::gameStart",
+                    "",
+                    "",
+                    new ToolCardImmutable(
+                        this.toolCards[i].getName(),
+                        this.toolCards[i].getToken())
+                    , i)
             );
 
         }

@@ -79,7 +79,7 @@ public class ScoreHolder implements Comparable<ScoreHolder>, Serializable {
     /**
      * Compares 2 ScoreHolders, according to the game logic.
      * @param o The ScoreHolder to compare to.
-     * @return 1 if the actual ScoreHolder (this) has to come first in the leaderboard, -1 otherwise.
+     * @return 1 if the actual ScoreHolder (this) has to come first in the leaderboard, -1 otherwise. To comply with the specification, compareTo must return 0 if the two ScoreHolders are the same object.
      */
     @Override
     public int compareTo(ScoreHolder o) {

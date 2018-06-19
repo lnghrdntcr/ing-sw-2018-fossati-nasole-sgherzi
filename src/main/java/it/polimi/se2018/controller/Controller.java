@@ -61,6 +61,9 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     }
 
 
+    /**
+     * Starts the timeout, created the fist state, starts the event loop.
+     */
     public void start() {
 
         if (state != null) throw new IllegalStateException("Game already started!");
@@ -76,10 +79,18 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
     }
 
+    /**
+     * Gets the timeout.
+     * @return the remaining seconds for the player to take an action.
+     */
     public int getTimeout() {
         return (int) ((System.currentTimeMillis() - this.beginTime) / 1000L);
     }
 
+    /**
+     * Creates all names of the toolcards, shuffles them and then chooses 3 random toolcards.
+     * @return Settings.TOOLCARDS_N toolcard names.
+     */
     private String[] pickToolCards() {
 
         ArrayList<String> tools = new ArrayList<>();
@@ -100,6 +111,10 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         return tools.subList(0, Settings.TOOLCARDS_N).toArray(new String[Settings.TOOLCARDS_N]);
     }
 
+    /**
+     * Creates all of the PublicObjectives, shuffles it and then picks 3 random public objectives.
+     * @return An array of public objectives.
+     */
     private PublicObjective[] pickPublicObjectives() {
         ArrayList<PublicObjective> publicObjectives = new ArrayList<>();
         publicObjectives.add(new ColoredDiagonals());
@@ -127,6 +142,9 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
     }
 
+    /**
+     * Starts the timeout for the player action.
+     */
     private void startActionTimeout() {
 
         this.actionTimeoutThread = new Thread(() -> {
@@ -156,29 +174,9 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
     }
 
-
-    /*private void startTimeoutCommunicationThread() {
-        this.timeoutCommunicationThread = new Thread(() -> {
-            while (true) {
-
-                // Adds a TimeoutCommunicationEvent to the event loop.
-                this.outboundEventLoop.add(new TimeoutCommunicationEvent(this.getClass().getName(), this.model.getCurrentPlayerName(), this.getTimeout()));
-
-                // Then waits for 1000ms
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ignored) {
-                    Log.d("TimeoutCommunication Thread was interrupted");
-                    // Should I restart it?
-                    //this.timeoutCommunicationThread.start();
-                }
-
-            }
-        }, "TimeoutCommunicationThread");
-
-        this.timeoutCommunicationThread.start();
-    }
-*/
+    /**
+     * Starts the event loop thread.
+     */
     private void startEventLoopHandlerThread() {
 
         this.eventLoopHandlerThread = new Thread(() -> {
@@ -238,6 +236,11 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         this.outboundEventLoop.add(toDispatchEvent);
     }
 
+    /**
+     * Reconnects the player.
+     * @param localProxy The localProxy of the reconnected player.
+     * @param playerName The name of the player to reconnect.
+     */
     public void reconnectPlayer(LocalProxy localProxy, String playerName) {
 
         for (View v : this.views) {

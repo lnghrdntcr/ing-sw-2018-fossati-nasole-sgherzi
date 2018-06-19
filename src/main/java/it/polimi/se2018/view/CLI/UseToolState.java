@@ -35,7 +35,11 @@ public class UseToolState extends State {
     public State process(String input) {
 
         if(input.equalsIgnoreCase("cancel")) return new MainMenuState(getGameTable());
-        return null;
+        return provider.get(
+            this.getGameTable()
+                .getToolCardImmutable(
+                    Integer.parseInt(input)).getName()
+        ).get();
     }
 
     @Override
