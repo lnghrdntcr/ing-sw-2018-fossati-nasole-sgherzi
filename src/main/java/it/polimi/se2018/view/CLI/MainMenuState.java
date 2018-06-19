@@ -72,7 +72,7 @@ public class MainMenuState extends State {
             return this;
         });
 
-        provider.put(6, () -> new PlaceDiceState(this.getGameTable(), SchemaCardFace.Ignore.NOTHING));
+        provider.put(6, () -> new PlaceDiceState(this.getGameTable(), SchemaCardFace.Ignore.NOTHING, false, false));
 
         provider.put(7, () -> new UseToolState(this.getGameTable()));
 

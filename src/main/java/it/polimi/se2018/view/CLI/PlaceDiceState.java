@@ -2,6 +2,7 @@ package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
+import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
 import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 
 import java.awt.*;
@@ -11,10 +12,14 @@ public class PlaceDiceState extends State {
     private InternalState internalState;
 
     private int selectedDice;
+    private boolean isFromTool;
+    private boolean forceLoneliness;
 
-    public PlaceDiceState(CLIGameTable gameTable, SchemaCardFace.Ignore ignore) {
+    public PlaceDiceState(CLIGameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness) {
         super(gameTable);
         this.ignore = ignore;
+        this.isFromTool = isFromTool;
+        this.forceLoneliness = forceLoneliness;
         internalState = InternalState.DICE_SELECTION;
     }
 
@@ -45,7 +50,10 @@ public class PlaceDiceState extends State {
             DiceFace diceFace = getGameTable().getDraftBoardImmutable().getDices()[selectedDice];
 
             if (getGameTable().getSchemas(getGameTable().getView().getPlayer()).isDiceAllowed(point, diceFace, ignore)) {
-                getGameTable().getView().sendEventToController(new PlaceDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), selectedDice, point));
+                //todo gestisci indice tool dai bool
+                getGameTable().getView().sendEventToController((isFromTool?
+                        new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getCurrentPlayer(), getGameTable().getToolIndexByName("WheeledPincer"), point, selectedDice)
+                        : new PlaceDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), selectedDice, point)));
                 return new MainMenuState(getGameTable());
             } else {
                 CLIPrinter.printError("This dice cannot be placed here!");

@@ -1,5 +1,7 @@
 package it.polimi.se2018.view.CLI;
 
+import it.polimi.se2018.view.viewEvent.DiceActionEvent;
+
 import java.util.HashMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -12,15 +14,40 @@ public class CLIChooseDice extends State {
 
     public CLIChooseDice(CLIGameTable gameTable, String toolName) {
         super(gameTable);
-        this.toolName=toolName;
+        this.toolName = toolName;
         this.setupProvider();
     }
 
-    private void setupProvider(){
+    private void setupProvider() {
 
-        if(!provider.isEmpty()) return;
+        if (!provider.isEmpty()) return;
 
+        //1
         provider.put("RoughingNipper", (i) -> new CLIIncrementDice(getGameTable(), i));
+
+        //5
+        provider.put("CircularCutter", (i) -> new CLIExcangeWDiceHolder(getGameTable(), i));
+
+        //6
+        provider.put("FirmPastaBrush", (i) -> {
+            this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
+                    "", this.getGameTable().getCurrentPlayer(), this.getGameTable().getToolIndexByName("FirmPastaBrush"), i));
+            return new MainMenuState(getGameTable());
+        });
+
+       //10
+        provider.put("DiamondPad", (i) -> {
+            this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
+                    "", this.getGameTable().getCurrentPlayer(), this.getGameTable().getToolIndexByName("DiamondPad"), i));
+            return new MainMenuState(getGameTable());
+        });
+
+        //11
+        provider.put("FirmPastaDiluent", (i) -> {
+            this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
+                    "", this.getGameTable().getCurrentPlayer(), this.getGameTable().getToolIndexByName("FirmPastaDiluent"), i));
+            return new MainMenuState(getGameTable());
+        });
 
     }
 
