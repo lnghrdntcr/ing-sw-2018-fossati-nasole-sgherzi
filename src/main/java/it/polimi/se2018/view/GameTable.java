@@ -147,6 +147,10 @@ public abstract class GameTable {
         return players.get(player);
     }
 
+    public String[] getPlayers(){
+        return players.keySet().toArray(new String[0]);
+    }
+
     public Schema getSchemas(String player) {
         return schemas.get(player);
     }

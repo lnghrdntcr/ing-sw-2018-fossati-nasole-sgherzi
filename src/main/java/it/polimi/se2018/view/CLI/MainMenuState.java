@@ -48,27 +48,25 @@ public class MainMenuState extends State {
 
         provider.put(5, () -> {
 
-            // TODO: This fails because the schemas, the privateObjectives and the tokens are null in the game table
-            // The fix is easy, it is needed to dispatch an event from the model sending those elements
             CLIPrinter.printSchema(
-                this.getGameTable().getSchemas(
-                    this.getGameTable().getView().getPlayer()
-                )
+                    this.getGameTable().getSchemas(
+                            this.getGameTable().getView().getPlayer()
+                    )
             );
 
             CLIPrinter.printPrivateObjective(
-                this.getGameTable().getPlayer(
-                    this.getGameTable().getView().getPlayer()
-                ).getPrivateObjective()
+                    this.getGameTable().getPlayer(
+                            this.getGameTable().getView().getPlayer()
+                    ).getPrivateObjective()
             );
 
             CLIPrinter.printTokens(
-                this.getGameTable().getPlayer(
-                    this.getGameTable().getView().getPlayer()
-                ).getToken(),
-                this.getGameTable().getSchemas(
-                    this.getGameTable().getView().getPlayer()
-                ).getSchemaCardFace().getDifficulty()
+                    this.getGameTable().getPlayer(
+                            this.getGameTable().getView().getPlayer()
+                    ).getToken(),
+                    this.getGameTable().getSchemas(
+                            this.getGameTable().getView().getPlayer()
+                    ).getSchemaCardFace().getDifficulty()
             );
 
             return this;
@@ -81,11 +79,11 @@ public class MainMenuState extends State {
         provider.put(8, () -> {
             // TODO: Check why it does change turn but the name is not changed on the view.
             this.getGameTable().getView().sendEventToController(
-                new EndTurnEvent(
-                    this.getClass().getName(),
-                    "",
-                    this.getGameTable().getView().getPlayer()
-                )
+                    new EndTurnEvent(
+                            this.getClass().getName(),
+                            "",
+                            this.getGameTable().getView().getPlayer()
+                    )
             );
             return this;
         });

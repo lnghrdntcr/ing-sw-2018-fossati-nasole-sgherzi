@@ -1,6 +1,7 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
+import it.polimi.se2018.controller.controllerEvent.TimeoutCommunicationEvent;
 import it.polimi.se2018.model.modelEvent.DraftBoardChangedEvent;
 import it.polimi.se2018.model.modelEvent.PublicObjectiveEvent;
 import it.polimi.se2018.utils.Event;
@@ -71,19 +72,18 @@ public class RemoteView extends View {
     @Override
     public void update(Event message) {
 
-        if(message instanceof PublicObjectiveEvent || message instanceof DraftBoardChangedEvent){
-            Log.d(message.toString());
-        }
+        if(!(message instanceof TimeoutCommunicationEvent))
+        Log.d(message.toString());
+
 
         if (
-            message.getPlayerName().equals(getPlayer()) || // Message is for me
-            message.getPlayerName() == null ||             // Message is for everyone
-            message.getPlayerName().equals("")             // Message is for everyone v2
+            message.getReceiver().equals(getPlayer()) || // Message is for me
+            message.getReceiver().equals("")             // Message is for everyone v2
             ) {
             try {
                 this.eventLoop.add((VisitableFromView) message);
             } catch (ClassCastException e) {
-                Log.d("I couldn't recive this event! " + message);
+                Log.d("I couldn't receive this event! " + message);
             }
         }
 

@@ -21,6 +21,10 @@ public class ShowPlayerState extends State{
 
     @Override
     public void render() {
+        CLIPrinter.printQuestion("Available players:");
+        for(String name: getGameTable().getPlayers()){
+            CLIPrinter.printQuestion(name);
+        }
         CLIPrinter.printQuestion("Insert the name of a player or cancel: ");
     }
 }

@@ -28,16 +28,17 @@ public abstract class Event implements Serializable {
         return player;
     }
 
-    public void filter(String playername){
+    public void filter(String playername) {
     }
 
     @Override
     public String toString() {
         return "Event{" +
-            "player='" + player + '\'' +
-            ", emitter='" + emitter + '\'' +
-            ", receiver='" + receiver + '\'' +
-            '}';
+                "player='" + player + '\'' +
+                ", emitter='" + emitter + '\'' +
+                ", receiver='" + receiver + '\'' +
+                ", class='" + getClass().getSimpleName() + '\'' +
+                '}';
     }
 
     public String getReceiver() {
