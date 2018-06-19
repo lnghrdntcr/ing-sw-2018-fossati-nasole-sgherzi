@@ -82,7 +82,7 @@ public class UseToolState extends State {
             return new CLIChooseDice(getGameTable(), "FirmPastaDiluent");
         });
 
-        //todo tool 12 "ManualCutter"
+        provider.put("ManualCutter", () -> new CLIChooseColorFromDiceHolder(getGameTable(), "ManualCutter"));
     }
 
     @Override
