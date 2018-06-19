@@ -28,15 +28,15 @@ public class UseToolState extends State {
         });
 
         provider.put("EglomiseBrush", () -> {
-            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.COLOR, "EglomiseBrush");
+            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.COLOR, "EglomiseBrush", CLIMoveDice.Times.SECOND);
         });
 
         provider.put("CopperReamer", () -> {
-            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NUMBER, "CopperReamer");
+            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NUMBER, "CopperReamer", CLIMoveDice.Times.SECOND);
         });
 
         provider.put("Lathekin", () -> {
-            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NOTHING, "Lathekin");
+            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NOTHING, "Lathekin", CLIMoveDice.Times.FIRST);
         });
 
         provider.put("CircularCutter", () -> {

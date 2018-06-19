@@ -28,7 +28,26 @@ public class CLIChooseDice extends State {
 
     @Override
     public State process(String input) {
-        return null;
+        // Input dado
+
+        if(input.equalsIgnoreCase("cancel")) return new MainMenuState(this.getGameTable());
+
+        int dice = -1;
+
+        try {
+            dice = Integer.parseInt(input);
+        } catch (RuntimeException ignored){
+            CLIPrinter.printError("Invalid input.");
+            return this;
+        }
+
+        if(dice < 0 || dice >= this.getGameTable().getDraftBoardImmutable().getDices().length){
+            CLIPrinter.printError("Input out of range.");
+            return this;
+        }
+
+        return provider.get(this.toolName).apply(dice);
+
     }
 
     @Override
