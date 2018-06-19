@@ -24,6 +24,11 @@ public class PlaceRedrawnDiceState extends State {
         getController().dispatchEvent(new AskPlaceRedrawDiceEvent(getClass().getCanonicalName(), playerName,playerName, diceNumberOnDraftBoard));
     }
 
+    /**
+     * Handle the usage of a specific toolcard
+     * @param event the event that has triggered this method
+     * @return the new state of the game
+     */
     @Override
     public State handleToolcardEvent(UseToolcardEvent event) {
         Log.d(getClass().getCanonicalName()+" handling ToolcardEvent");
@@ -50,6 +55,10 @@ public class PlaceRedrawnDiceState extends State {
 
     }
 
+    /**
+     * Handle the timeout of the current player
+     * @return the new state of the game
+     */
     @Override
     public State handleUserTimeOutEvent() {
         Log.d(getClass().getCanonicalName()+" handling UserTimeoutEvent");

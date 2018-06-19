@@ -50,8 +50,8 @@ public class GameSetupState extends State {
                 schemaCardList.subList(i * 2, i * 2 + 2).toArray(new SchemaCard[2]));
             controller.dispatchEvent(toDispatchEvent);
         }
-        // TODO: I'm not sure that doing this here is legit...
-        model.onGameStart();
+
+
     }
 
 
@@ -87,6 +87,10 @@ public class GameSetupState extends State {
         return this;
     }
 
+    /**
+     * Handles the timeout for the current player, doing the default action
+     * @return the new state of the game
+     */
     @Override
     public State handleUserTimeOutEvent() {
 

@@ -23,6 +23,11 @@ public class PlaceRedrawnWithNumberDiceState extends State {
         getController().dispatchEvent(new AskPlaceRedrawDiceWithNumberSelectionEvent(getClass().getCanonicalName(), playerName, playerName, diceNumberOnDraftBoard));
     }
 
+    /**
+     * Handle the usage of a specific toolcard
+     * @param event the event that has triggered this method
+     * @return the new state of the game
+     */
     @Override
     public State handleToolcardEvent(UseToolcardEvent event) {
         Log.d(getClass().getCanonicalName() + " handling ToolcardEvent");
@@ -50,6 +55,10 @@ public class PlaceRedrawnWithNumberDiceState extends State {
 
     }
 
+    /**
+     * Handle the current user timeout
+     * @return the new state of the game
+     */
     @Override
     public State handleUserTimeOutEvent() {
         Log.d(getClass().getCanonicalName() + " handling UserTimeoutEvent");

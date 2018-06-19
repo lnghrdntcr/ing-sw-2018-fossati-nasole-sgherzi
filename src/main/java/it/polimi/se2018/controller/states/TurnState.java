@@ -75,26 +75,6 @@ public class TurnState extends State {
 
     }
 
-
-    /**
-     * Handles the incoming event and dispatches actions to handle it.
-     * @param event The event to be handled
-     * @return A new Turn state.
-     * @throws IllegalArgumentException If event is null.
-     */
-    /*@Override
-    public State handleEvent(Event event, GameTableMultiplayer model) {
-        if (event == null)
-            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
-        if (event instanceof UseToolcardEvent) return this.handleToolcardUse((UseToolcardEvent) event, model);
-        if (event instanceof PlaceDiceEvent) return this.handleDicePlacing((PlaceDiceEvent) event, model);
-        if (event instanceof EndTurnEvent) return this.handleTurnEnding((EndTurnEvent) event, model);
-        if (event instanceof PlayerTimeoutEvent) return this.handlePlayerTimeout((PlayerTimeoutEvent) event, model);
-
-        return new TurnState(this.getController(), getModel(), this.hasPlacedDice, this.hasUsedToolcard);
-
-    }*/
-
     /**
      * Handles the incoming UseToolcardEvent.
      *
@@ -216,15 +196,26 @@ public class TurnState extends State {
 
     }
 
+    /**
+     * Check if the current player has already placed a dice
+     * @return true if it has, false otherwise
+     */
     public boolean isDicePlaced() {
         return this.hasPlacedDice;
     }
 
+    /**
+     * Checks if the current player has already used a toolcard
+     * @return true if it has, false otherwise
+     */
     public boolean isToolcardUsed() {
         return this.hasUsedToolcard;
     }
 
 
+    /**
+     * Populates the isToolCardUsable map, useful to check if the specified toolcard is usable at a certain moment
+     */
     private void setupToolCardIsUsable() {
         isToolCardUsable.put("CircularCutter", () -> true);
         isToolCardUsable.put("CopperReamer", () -> true);
@@ -240,6 +231,9 @@ public class TurnState extends State {
         isToolCardUsable.put("WheeledPincer", (() -> getModel().isFirstTurnInRound()));
     }
 
+    /**
+     * Populates the useToolcard map, that contains the right helper method to use in order to activate the toolcard effect
+     */
     private void setupToolCardUse() {
         useToolcard.put("CircularCutter", this::useCircularCutter);
         useToolcard.put("CopperReamer", (event) -> useMoveDice(event, SchemaCardFace.Ignore.NUMBER));
@@ -255,6 +249,11 @@ public class TurnState extends State {
         useToolcard.put("WheeledPincer", this::useWheeledPincher);
     }
 
+    /**
+     * Helper method to use RoughingNipper toolcard
+     * @param event where to get event data
+     * @return the new state of the game
+     */
     private State useRoughingNipper(UseToolcardEvent event) {
         try {
             ChangeDiceNumberEvent ev = (ChangeDiceNumberEvent) event;
@@ -267,6 +266,11 @@ public class TurnState extends State {
         }
     }
 
+    /**
+     * Helper method to use MoveDice toolcard (paramterized)
+     * @param event where to get event data
+     * @return the new state of the game
+     */
     private State useMoveDice(UseToolcardEvent event, SchemaCardFace.Ignore ignore) {
         try {
             MoveDiceEvent e = (MoveDiceEvent) event;
@@ -288,6 +292,11 @@ public class TurnState extends State {
 
     }
 
+    /**
+     * Helper method to use MoveDiceTwice toolcard
+     * @param event where to get event data
+     * @return the new state of the game
+     */
     private State useMoveDiceTwice(UseToolcardEvent event) {
         try {
             DoubleMoveDiceEvent ev = (DoubleMoveDiceEvent) event;
@@ -318,6 +327,11 @@ public class TurnState extends State {
         }
     }
 
+    /**
+     * Helper method to use CircularCutter toolcard
+     * @param event where to get event data
+     * @return the new state of the game
+     */
     private State useCircularCutter(UseToolcardEvent event) {
         try {
             SwapDiceFaceWithTurnHolderEvent ev = (SwapDiceFaceWithTurnHolderEvent) event;
@@ -330,6 +344,11 @@ public class TurnState extends State {
         }
     }
 
+    /**
+     * Helper method to use FirmPastaBrush toolcard
+     * @param event where to get event data
+     * @return the new state of the game
+     */
     private State useFirmPastaBrush(UseToolcardEvent event) {
         try {
             DiceActionEvent ev = (DiceActionEvent) event;
@@ -350,6 +369,11 @@ public class TurnState extends State {
         }
     }
 
+    /**
+     * Helper method to use Gavel toolcard
+     * @param event where to get event data
+     * @return the new state of the game
+     */
     private State useGavel(UseToolcardEvent event) {
         try {
             getModel().redrawAllDice();
@@ -361,7 +385,11 @@ public class TurnState extends State {
         }
     }
 
-
+    /**
+     * Helper method to use WheeledPincher toolcard
+     * @param event where to get event data
+     * @return the new state of the game
+     */
     private State useWheeledPincher(UseToolcardEvent event) {
         try {
             PlaceAnotherDiceEvent ev = (PlaceAnotherDiceEvent) event;
@@ -382,6 +410,11 @@ public class TurnState extends State {
         }
     }
 
+    /**
+     * Helper method to use CorkRow toolcard
+     * @param event where to get event data
+     * @return the new state of the game
+     */
     private State useCorkRow(UseToolcardEvent event) {
         try {
             MoveDiceEvent e = (MoveDiceEvent) event;
@@ -401,6 +434,11 @@ public class TurnState extends State {
         }
     }
 
+    /**
+     * Helper method to use DiamondPad toolcard
+     * @param event where to get event data
+     * @return the new state of the game
+     */
     private State useDiamondPad(UseToolcardEvent event) {
         try {
             DiceActionEvent ev = (DiceActionEvent) event;
@@ -413,6 +451,11 @@ public class TurnState extends State {
         }
     }
 
+    /**
+     * Helper method to use FirmPastaDiluent toolcard
+     * @param event where to get event data
+     * @return the new state of the game
+     */
     private State useFirmPastaDiluent(UseToolcardEvent event) {
         try {
             DiceActionEvent ev = (DiceActionEvent) event;
@@ -427,6 +470,11 @@ public class TurnState extends State {
 
     }
 
+    /**
+     * Helper method to use ManualCutter toolcard
+     * @param event where to get event data
+     * @return the new state of the game
+     */
     private State useManualCutter(UseToolcardEvent event) {
         try {
             DoubleMoveOfColorDiceEvent ev = (DoubleMoveOfColorDiceEvent) event;

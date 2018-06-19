@@ -72,6 +72,8 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         this.startEventLoopHandlerThread();
         this.startActionTimeout();
 
+        model.onGameStart();
+
     }
 
     public int getTimeout() {

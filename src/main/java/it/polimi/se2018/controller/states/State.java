@@ -30,37 +30,66 @@ public class State {
     }
 
 
+    /**
+     * Handle the usage of a toolcard (the default implementation does nothing)
+     * @param event the event that has triggered this method
+     * @return the new state of the game
+     */
     public State handleToolcardEvent(UseToolcardEvent event) {
         Log.i(getClass().getCanonicalName()+": cannot handle ToolcardEvent here!");
         return this;
     }
 
-
+    /**
+     * Handle the end of a turn (the default implementation does nothing)
+     * @param event the event that has triggered this method
+     * @return the new state of the game
+     */
     public State handleEndTurnEvent(EndTurnEvent event) {
         Log.i(getClass().getCanonicalName()+": cannot handle EndTurnEvent here!");
         return this;
     }
 
+    /**
+     * Handle the placement of a dice (the default implementation does nothing)
+     * @param event the event that has triggered this method
+     * @return the new state of the game
+     */
     public State handlePlaceDiceEvent(PlaceDiceEvent event) {
         Log.i(getClass().getCanonicalName()+": cannot handle PlaceDiceEvent here!");
         return this;
     }
 
+    /**
+     * Handle the selection of a schemacard (the default implementation does nothing)
+     * @param event the event that has triggered this method
+     * @return the new state of the game
+     */
     public State handleSchemaCardSelectedEvent(SchemaCardSelectedEvent event) {
         Log.i(getClass().getCanonicalName()+": cannot handle SchemaCardSelectedEvent here!");
         return this;
     }
 
+    /**
+     * Handle the timeout of a player (the default implementation does nothing)
+     * @return the new state of the game
+     */
     public State handleUserTimeOutEvent(){
         Log.i(this.getClass().getCanonicalName() + ": cannot handle PlayerTimeoutEvent here");
         return this;
     }
 
 
+    /**
+     * @return the current controller
+     */
     public Controller getController() {
         return controller;
     }
 
+    /**
+     * @return the current moel
+     */
     public GameTableMultiplayer getModel() {
         return model;
     }

@@ -54,14 +54,6 @@ public class TurnHolder {
         }
     }
 
-    public static void main(String[] params){
-        TurnHolder turnHolder = new TurnHolder(4);
-        for(int i=0; i<2*4*10; i++){
-            System.out.println(turnHolder.toString());
-            turnHolder.nextTurn();
-        }
-    }
-
     /**
      * Check if the game is ended
      *
