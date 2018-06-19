@@ -9,6 +9,8 @@ public class CLIChooseDice extends State {
         this.toolName=toolName;
     }
 
+    //TODO
+
     @Override
     public State process(String input) {
         return null;
@@ -16,6 +18,7 @@ public class CLIChooseDice extends State {
 
     @Override
     public void render() {
-
+        CLIPrinter.printQuestion("Choose a dice: [0] to [" + getGameTable().getDraftBoardImmutable().getDices().length + "]");
+        CLIPrinter.printDraftBoard(getGameTable().getDraftBoardImmutable());
     }
 }

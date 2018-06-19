@@ -195,4 +195,12 @@ public abstract class GameTable {
     public boolean isDicePlaced() {
         return dicePlaced;
     }
+    public int getToolIndexByName(String toolName){
+        for(int i = 0; i < Settings.TOOLCARDS_N; i++){
+            if(getToolCardImmutable(i).getName().equals(toolName)) return i;
+        }
+        return -1;
+    }
+
+
 }

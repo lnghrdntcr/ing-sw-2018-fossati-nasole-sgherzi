@@ -14,6 +14,8 @@ public class CLIMoveDice extends State {
         this.toolName=toolName;
     }
 
+    //TODO
+
     @Override
     public State process(String input) {
         return null;
@@ -21,6 +23,8 @@ public class CLIMoveDice extends State {
 
     @Override
     public void render() {
+        CLIPrinter.printQuestion("Choose a dice to move:");
+        CLIPrinter.printSchema(getGameTable().getSchemas(getGameTable().getCurrentPlayer()));
 
     }
 }

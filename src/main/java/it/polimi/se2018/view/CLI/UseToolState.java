@@ -2,6 +2,8 @@ package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.viewEvent.CLIPlaceDice;
+import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 
 import java.util.HashMap;
 import java.util.function.Function;
@@ -28,7 +30,47 @@ public class UseToolState extends State {
             return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.COLOR, "EglomiseBrush");
         });
 
+        provider.put("CopperReamer", () -> {
+            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NUMBER, "CopperReamer");
+        });
 
+        provider.put("Lathekin", () -> {
+            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NOTHING, "Lathekin");
+        });
+
+        provider.put("CircularCutter", () -> {
+            return new CLIChooseDice(getGameTable(),"CircularCutter");
+        });
+
+        provider.put("FirmPastaBrush", () -> {
+            return new CLIChooseDice(getGameTable(),"FirmPastaBrush");
+        });
+
+        provider.put("Gavel", () -> {
+            if(this.getGameTable().getToolIndexByName("Gavel") == -1) return new MainMenuState(getGameTable());
+
+            this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
+                    "", this.getGameTable().getCurrentPlayer(), this.getGameTable().getToolIndexByName("Gavel"), -1));
+            return new MainMenuState(getGameTable());
+        });
+
+        provider.put("WheeledPincer", () -> {
+           return new CLIChooseDice(getGameTable(), "WheeledPincer");
+        });
+
+        provider.put("CorkRow", () -> {
+            return new CLIChooseDice(getGameTable(),"CorkRow");
+        });
+
+        provider.put("DiamondPad", () -> {
+            return new CLIChooseDice(getGameTable(),"DiamondPad");
+        });
+
+        provider.put("FirmPastaDiluent", () -> {
+            return new CLIChooseDice(getGameTable(),"FirmPastaDiluent");
+        });
+
+        //todo tool 12 "ManualCutter"
     }
 
     @Override
