@@ -12,8 +12,8 @@ public class ToolCardChangedEvent extends ModelEvent {
     private ToolCardImmutable toolCardImmutable;
     private int index;
 
-    public ToolCardChangedEvent(String emitter, String player, ToolCardImmutable toolCardImmutable, int index) {
-        super(emitter, player);
+    public ToolCardChangedEvent(String emitter, String receiver, String player, ToolCardImmutable toolCardImmutable, int index) {
+        super(emitter, player, receiver);
         this.toolCardImmutable = toolCardImmutable;
         this.index = index;
     }

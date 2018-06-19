@@ -53,13 +53,15 @@ public class TurnState extends State {
 
         if (
             model.getRound() == 0 &&
-            model.isFirstTurnInRound() &&
-            model.getPlayersName()[0].equals(model.getCurrentPlayerName())) {
+                model.isFirstTurnInRound() &&
+                model.getPlayersName()[0].equals(model.getCurrentPlayerName())) {
             Log.d("A NEW GAME HAS STARTED!!!");
             this.getController().dispatchEvent(
                 new GameStartEvent(
                     this.getClass().getName(),
-                    "")
+                    "",
+                    ""
+                )
             );
         }
 
@@ -164,7 +166,7 @@ public class TurnState extends State {
 
     @Override
     public State handleUserTimeOutEvent() {
-        return this.handleEndTurnEvent(new EndTurnEvent("UserTimeout", this.getModel().getCurrentPlayerName()));
+        return this.handleEndTurnEvent(new EndTurnEvent("UserTimeout", "", this.getModel().getCurrentPlayerName()));
     }
 
     /**
@@ -190,6 +192,7 @@ public class TurnState extends State {
                 this.getController().dispatchEvent(
                     new TurnChangedEvent(
                         this.getClass().getName(),
+                        "",
                         this.getModel().getCurrentPlayerName(),
                         this.getModel().getRound(),
                         this.getModel().isFirstTurnInRound()

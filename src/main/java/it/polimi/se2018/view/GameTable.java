@@ -35,7 +35,7 @@ public abstract class GameTable {
     }
 
     final protected void placeDice(int index, Point destination) {
-        view.sendEventToController(new PlaceDiceEvent(getClass().getName(), view.getPlayer(), index, destination));
+        view.sendEventToController(new PlaceDiceEvent(getClass().getName(), "", view.getPlayer(), index, destination));
     }
 
     final protected void useToolcard(int index) {
@@ -43,7 +43,7 @@ public abstract class GameTable {
     }
 
     final protected void endTurn() {
-        view.sendEventToController(new EndTurnEvent(getClass().getName(), view.getPlayer()));
+        view.sendEventToController(new EndTurnEvent(getClass().getName(), view.getPlayer(), ""));
     }
 
 
@@ -73,7 +73,7 @@ public abstract class GameTable {
         renderToolcard(event.getIndex());
     }
 
-    final public void handlePublicObjective(PublicObjectiveEvent event){
+    final public void handlePublicObjective(PublicObjectiveEvent event) {
         publicObjectives[event.getIndex()] = event.getPublicObjective();
         renderPublicObjective(event.getIndex());
     }
@@ -88,26 +88,25 @@ public abstract class GameTable {
 
     // Handle Controller events.
 
-    final public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event){
+    final public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event) {
         // TODO: MACHECCAZZO
     }
 
-    final public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event){
+    final public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event) {
         // TODO: MACHECCAZZ2
     }
 
-    final public void handleEndGame(EndGameEvent event){
+    final public void handleEndGame(EndGameEvent event) {
         // TODO: closes everything
     }
 
-    final public void handlePlayerTimeout(PlayerTimeoutEvent event){
+    final public void handlePlayerTimeout(PlayerTimeoutEvent event) {
         // TODO: Dismiss windows
     }
 
-    final public void handleTimeoutCommunication(TimeoutCommunicationEvent event){
+    final public void handleTimeoutCommunication(TimeoutCommunicationEvent event) {
         this.secondsRemaining = event.getTimeout();
     }
-    
 
 
     //updates

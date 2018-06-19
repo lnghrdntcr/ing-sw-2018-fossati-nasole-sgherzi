@@ -83,6 +83,7 @@ public class MainMenuState extends State {
             this.getGameTable().getView().sendEventToController(
                 new EndTurnEvent(
                     this.getClass().getName(),
+                    "",
                     this.getGameTable().getView().getPlayer()
                 )
             );

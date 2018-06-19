@@ -4,8 +4,8 @@ import it.polimi.se2018.controller.states.State;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 public class ViewPlayerTimeoutEvent extends ViewEvent {
-    public ViewPlayerTimeoutEvent(String emitter, String player) {
-        super(emitter, player);
+    public ViewPlayerTimeoutEvent(String emitter, String receiver, String player) {
+        super(emitter, receiver, player);
     }
 
     @Override

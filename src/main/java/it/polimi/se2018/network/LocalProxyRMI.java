@@ -25,10 +25,9 @@ public class LocalProxyRMI extends LocalProxy implements LocalProxyRMIInterface 
     public void sendEventToClient(Event event) {
 
         if (
-            event.getPlayerName().equals(getView().getPlayer()) || // Message is for me
-            event.getPlayerName().equals("") ||                   // Message is for everyone.
-            event.getPlayerName() == null                         // Message is for everyone v2.
-        ){
+            event.getReceiver().equals(getView().getPlayer()) || // Message is for me
+                event.getReceiver().equals("")                       // Message is for everyone.
+            ) {
 
             try {
                 client.sendEventToClient(event);

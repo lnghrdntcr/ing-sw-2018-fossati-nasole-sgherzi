@@ -41,7 +41,7 @@ public class GameEndState extends State {
         if(scoreHolders.isEmpty()) throw new IllegalStateException(this.getClass().getCanonicalName() + ": There are no players on which compute the score.");
         if(scoreHolders.size() != 1) Collections.sort(scoreHolders);
 
-        this.getController().dispatchEvent(new EndGameEvent(this.getClass().getName(), null, scoreHolders));
+        this.getController().dispatchEvent(new EndGameEvent(this.getClass().getName(), "", "", scoreHolders));
 
     }
 

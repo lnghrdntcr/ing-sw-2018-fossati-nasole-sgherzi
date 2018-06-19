@@ -11,8 +11,8 @@ import it.polimi.se2018.view.SelectSchemaCardFace;
 public class DiceHolderChangedEvent extends ModelEvent {
     DiceHolderImmutable diceHolderImmutable;
 
-    public DiceHolderChangedEvent(String emitter, String player, DiceHolderImmutable diceHolderImmutable) {
-        super(emitter, player);
+    public DiceHolderChangedEvent(String emitter, String receiver, String player, DiceHolderImmutable diceHolderImmutable) {
+        super(emitter, player, receiver);
         this.diceHolderImmutable = diceHolderImmutable;
     }
 

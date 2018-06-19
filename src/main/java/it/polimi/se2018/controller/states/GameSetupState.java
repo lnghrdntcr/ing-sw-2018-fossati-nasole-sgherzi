@@ -37,16 +37,17 @@ public class GameSetupState extends State {
         try {
             schemaCardList = SchemaCard.loadSchemaCardsFromJson(Settings.getSchemaCardDatabase());
         } catch (FileNotFoundException e) {
-            Log.e("SchemaCardFile "+Settings.getSchemaCardDatabase() + " not valid!");
+            Log.e("SchemaCardFile " + Settings.getSchemaCardDatabase() + " not valid!");
             return;
         }
 
         Collections.shuffle(schemaCardList);
 
-        for(int i=0; i<getController().getPlayersList().length; i++){
+        for (int i = 0; i < getController().getPlayersList().length; i++) {
             Event toDispatchEvent = new AskSchemaCardFaceEvent("GameSetupState",
-                    getController().getPlayersList()[i],
-                    schemaCardList.subList(i*2, i*2+2).toArray(new SchemaCard[2]));
+                getController().getPlayersList()[i],
+                getController().getPlayersList()[i],
+                schemaCardList.subList(i * 2, i * 2 + 2).toArray(new SchemaCard[2]));
             controller.dispatchEvent(toDispatchEvent);
         }
         // TODO: I'm not sure that doing this here is legit...
@@ -56,29 +57,30 @@ public class GameSetupState extends State {
 
     /**
      * Handle the selection of a SchemaCardFace by a player
+     *
      * @param event the event received
      * @return the new state of the game
      */
     @Override
     public State handleSchemaCardSelectedEvent(SchemaCardSelectedEvent event) {
-        Log.d(getClass().getCanonicalName()+" handling SchemaCardSelectEvent");
-        int playerIndex =-1;
-        for(int i=0; i<getController().getPlayersList().length; i++) {
-            if(getController().getPlayersList()[i].equals(event.getPlayerName())){
-                playerIndex=i;
+        Log.d(getClass().getCanonicalName() + " handling SchemaCardSelectEvent");
+        int playerIndex = -1;
+        for (int i = 0; i < getController().getPlayersList().length; i++) {
+            if (getController().getPlayersList()[i].equals(event.getPlayerName())) {
+                playerIndex = i;
                 break;
             }
         }
 
-        if(playerIndex==-1) throw new IllegalArgumentException("Player not found: "+event.getPlayerName());
+        if (playerIndex == -1) throw new IllegalArgumentException("Player not found: " + event.getPlayerName());
 
-        getModel().setPlayerSchema(event.getPlayerName(), schemaCardList.get(playerIndex*2+event.getSchemaCardId()).getFace(event.getSide()));
+        getModel().setPlayerSchema(event.getPlayerName(), schemaCardList.get(playerIndex * 2 + event.getSchemaCardId()).getFace(event.getSide()));
 
         // Sends the appropriate combination of <Player, Schema> to the view.
-        getController().dispatchEvent(new SchemaChangedEvent(this.getClass().getName(), event.getPlayerName(), new Schema(schemaCardList.get(playerIndex * 2 + event.getSchemaCardId()).getFace(event.getSide()))));
+        getController().dispatchEvent(new SchemaChangedEvent(this.getClass().getName(), "",  event.getPlayerName(), new Schema(schemaCardList.get(playerIndex * 2 + event.getSchemaCardId()).getFace(event.getSide()))));
 
-        if(getModel().allPlayersHaveSelectedSchemaCardFace()){
-            return new TurnState(getController(), getModel(),false, false);
+        if (getModel().allPlayersHaveSelectedSchemaCardFace()) {
+            return new TurnState(getController(), getModel(), false, false);
         }
 
 
@@ -88,25 +90,25 @@ public class GameSetupState extends State {
     @Override
     public State handleUserTimeOutEvent() {
 
-        Log.d(getClass().getCanonicalName()+" handling UserTimeoutEvent");
+        Log.d(getClass().getCanonicalName() + " handling UserTimeoutEvent");
 
-        for(int i=0; i<getController().getPlayersList().length; i++) {
+        for (int i = 0; i < getController().getPlayersList().length; i++) {
 
-            if(getModel().getPlayerSchemacardFace(getController().getPlayersList()[i]) == null){
+            if (getModel().getPlayerSchemacardFace(getController().getPlayersList()[i]) == null) {
 
                 //here the player does not have any schemacardface selected, selects the first card
 
                 String player = getController().getPlayersList()[i];
 
-                SchemaCardFace schema = schemaCardList.get(i*2).getFace(Math.random()>0.5?Side.FRONT:Side.BACK);
+                SchemaCardFace schema = schemaCardList.get(i * 2).getFace(Math.random() > 0.5 ? Side.FRONT : Side.BACK);
 
                 getModel().setPlayerSchema(player, schema);
 
                 // Send the event to the view.
-                getController().dispatchEvent(new SchemaChangedEvent(this.getClass().getName(), player, new Schema(schema)));
+                getController().dispatchEvent(new SchemaChangedEvent(this.getClass().getName(),"",  player, new Schema(schema)));
 
             }
         }
-        return new TurnState(getController(), getModel(),false, false);
+        return new TurnState(getController(), getModel(), false, false);
     }
 }

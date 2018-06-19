@@ -10,8 +10,8 @@ import it.polimi.se2018.view.SelectSchemaCardFace;
 public class AskPlaceRedrawDiceEvent extends ControllerEvent {
     private final int diceIndex;
 
-    public AskPlaceRedrawDiceEvent(String emitter, String player, int diceIndex) {
-        super(emitter, player);
+    public AskPlaceRedrawDiceEvent(String emitter, String receiver, String player, int diceIndex) {
+        super(emitter, player, receiver);
         this.diceIndex = diceIndex;
     }
 

@@ -131,7 +131,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
                 this.beginTime = System.currentTimeMillis();
                 while ((System.currentTimeMillis() - this.beginTime) < this.actionTimeout) {
 
-                    this.outboundEventLoop.add(new TimeoutCommunicationEvent(this.getClass().getName(), this.model.getCurrentPlayerName(), this.getTimeout()));
+                    this.outboundEventLoop.add(new TimeoutCommunicationEvent(this.getClass().getName(), "", this.model.getCurrentPlayerName(), this.getTimeout()));
 
                     try {
                         Thread.sleep(1000);
@@ -142,8 +142,8 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
                     }
                 }
 
-                this.outboundEventLoop.add(new PlayerTimeoutEvent(this.getClass().getName(), this.model.getCurrentPlayerName()));
-                this.inboundEventLoop.add(new ViewPlayerTimeoutEvent(this.getClass().getName(), this.getModel().getCurrentPlayerName()));
+                this.outboundEventLoop.add(new PlayerTimeoutEvent(this.getClass().getName(),"",  this.model.getCurrentPlayerName()));
+                this.inboundEventLoop.add(new ViewPlayerTimeoutEvent(this.getClass().getName(), "", this.getModel().getCurrentPlayerName()));
 
             }
         }, "ActionTimeoutThread");

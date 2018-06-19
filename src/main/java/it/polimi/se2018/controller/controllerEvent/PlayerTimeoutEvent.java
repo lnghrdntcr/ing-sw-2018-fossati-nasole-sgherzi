@@ -5,8 +5,8 @@ import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.SelectSchemaCardFace;
 
 public class PlayerTimeoutEvent extends ControllerEvent {
-    public PlayerTimeoutEvent(String emitter, String player) {
-        super(emitter, player);
+    public PlayerTimeoutEvent(String emitter, String player, String receiver) {
+        super(emitter, player, receiver);
     }
 
     @Override

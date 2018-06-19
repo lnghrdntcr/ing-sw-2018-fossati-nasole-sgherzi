@@ -56,9 +56,8 @@ public class LocalProxySocket extends LocalProxy {
     synchronized public void sendEventToClient(Event event) {
         //check if this event is for me
         if (
-                event.getPlayerName().equals(getView().getPlayer()) || // Message is for me.
-                event.getPlayerName().equals("") ||                    // Message is for everyone.
-                event.getPlayerName() == null                          // Message is for everyone v2.
+            event.getReceiver().equals(getView().getPlayer()) || // Message is for me.
+                event.getReceiver().equals("")                       // Message is for everyone.
             ) {
             try {
                 objectOutputStream.writeObject(event);

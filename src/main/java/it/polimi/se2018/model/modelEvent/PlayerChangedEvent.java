@@ -13,8 +13,8 @@ import java.io.Serializable;
 public class PlayerChangedEvent extends ModelEvent {
     PlayerImmutable playerImmutable;
 
-    public PlayerChangedEvent(String emitter, String player, PlayerImmutable playerImmutable) {
-        super(emitter, player);
+    public PlayerChangedEvent(String emitter, String receiver, String player, PlayerImmutable playerImmutable) {
+        super(emitter, player, receiver);
         this.playerImmutable = playerImmutable;
     }
 

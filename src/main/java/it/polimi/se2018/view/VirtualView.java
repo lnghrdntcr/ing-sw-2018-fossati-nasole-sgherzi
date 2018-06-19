@@ -25,7 +25,7 @@ public class VirtualView extends View {
     public void disconnect(){
         this.setConnected(false);
         this.localProxy = null;
-        this.dispatchProxyEvent(new PlayerDisconnectedEvent(this.getClass().getName(), this.getPlayer()));
+        this.dispatchProxyEvent(new PlayerDisconnectedEvent(this.getClass().getName(), this.getPlayer(), ""));
     }
 
     public void connect(LocalProxy localProxy){

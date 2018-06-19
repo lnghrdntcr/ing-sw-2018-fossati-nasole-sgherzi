@@ -12,10 +12,12 @@ import java.io.Serializable;
 public abstract class Event implements Serializable {
     private final String player;
     private String emitter;
+    private final String receiver;
 
-    protected Event(String emitter, String player) {
+    protected Event(String emitter, String player, String receiver) {
         this.emitter = emitter;
         this.player = player;
+        this.receiver = receiver;
     }
 
     public String getEmitterName() {
@@ -32,11 +34,13 @@ public abstract class Event implements Serializable {
     @Override
     public String toString() {
         return "Event{" +
-                "player='" + player + '\'' +
-                ", emitter='" + emitter + '\'' +
-                ", class='" + getClass().getSimpleName() + '\'' +
-                '}';
+            "player='" + player + '\'' +
+            ", emitter='" + emitter + '\'' +
+            ", receiver='" + receiver + '\'' +
+            '}';
     }
 
-
+    public String getReceiver() {
+        return receiver;
+    }
 }

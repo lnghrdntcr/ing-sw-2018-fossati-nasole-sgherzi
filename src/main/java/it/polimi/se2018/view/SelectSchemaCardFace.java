@@ -17,16 +17,16 @@ public abstract class SelectSchemaCardFace {
         this.view = view;
     }
 
-    protected final void selectFace(int index, Side side){
-       view.sendEventToController(new SchemaCardSelectedEvent(getClass().getCanonicalName(), view.getPlayer(), index, side));
+    protected final void selectFace(int index, Side side) {
+        view.sendEventToController(new SchemaCardSelectedEvent(getClass().getCanonicalName(), view.getPlayer(), view.getPlayer(), index, side));
     }
 
-    public void handlePlayerCanged(PlayerChangedEvent e){
-        this. privateObjective = e.getPlayerImmutable().getPrivateObjective();
+    public void handlePlayerCanged(PlayerChangedEvent e) {
+        this.privateObjective = e.getPlayerImmutable().getPrivateObjective();
         renderPrivateObjective(privateObjective);
     }
 
-    final public void handleTimeoutCommunication(TimeoutCommunicationEvent event){
+    final public void handleTimeoutCommunication(TimeoutCommunicationEvent event) {
         this.secondsRemaining = event.getTimeout();
     }
 

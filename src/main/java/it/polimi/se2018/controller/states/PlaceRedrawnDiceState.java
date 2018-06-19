@@ -21,7 +21,7 @@ public class PlaceRedrawnDiceState extends State {
         super(controller, model);
         this.oldState = oldState;
         this.redrawnDiceFace = redrawnDiceFace;
-        getController().dispatchEvent(new AskPlaceRedrawDiceEvent(getClass().getCanonicalName(), playerName, diceNumberOnDraftBoard));
+        getController().dispatchEvent(new AskPlaceRedrawDiceEvent(getClass().getCanonicalName(), playerName,playerName, diceNumberOnDraftBoard));
     }
 
     @Override

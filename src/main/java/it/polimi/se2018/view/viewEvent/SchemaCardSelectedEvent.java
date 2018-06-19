@@ -10,8 +10,8 @@ public class SchemaCardSelectedEvent extends ViewEvent {
     private final Side side;
     private int schemaCardId;
 
-    public SchemaCardSelectedEvent(String emitter, String player, int schemaCardId, Side side) {
-        super(emitter, player);
+    public SchemaCardSelectedEvent(String emitter, String receiver , String player, int schemaCardId, Side side) {
+        super(emitter, player, receiver);
         this.side = side;
         if (schemaCardId >= 0 && schemaCardId < 2) {
             this.schemaCardId = schemaCardId;

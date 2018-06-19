@@ -20,31 +20,31 @@ public class PlaceRedrawnWithNumberDiceState extends State {
     public PlaceRedrawnWithNumberDiceState(Controller controller, GameTableMultiplayer model, State oldState, String playerName, int diceNumberOnDraftBoard) {
         super(controller, model);
         this.oldState = oldState;
-        getController().dispatchEvent(new AskPlaceRedrawDiceWithNumberSelectionEvent(getClass().getCanonicalName(), playerName, diceNumberOnDraftBoard));
+        getController().dispatchEvent(new AskPlaceRedrawDiceWithNumberSelectionEvent(getClass().getCanonicalName(), playerName, playerName, diceNumberOnDraftBoard));
     }
 
     @Override
     public State handleToolcardEvent(UseToolcardEvent event) {
-        Log.d(getClass().getCanonicalName()+" handling ToolcardEvent");
-        try{
+        Log.d(getClass().getCanonicalName() + " handling ToolcardEvent");
+        try {
             PlaceAnotherDiceSelectingNumberEvent ev = (PlaceAnotherDiceSelectingNumberEvent) event;
             //checks if user is placing the redrawn face
-            if(ev.getDiceFaceIndex()==getModel().getDiceNumberOnDraftBoard()-1){
+            if (ev.getDiceFaceIndex() == getModel().getDiceNumberOnDraftBoard() - 1) {
                 getModel().changeDiceNumber(ev.getDiceFaceIndex(), ev.getNumber());
-                if(getModel().isDiceAllowed(ev.getPlayerName(), ev.getPoint(), getModel().getDiceFaceByIndex(getModel().getDiceNumberOnDraftBoard()-1), SchemaCardFace.Ignore.NOTHING )){
+                if (getModel().isDiceAllowed(ev.getPlayerName(), ev.getPoint(), getModel().getDiceFaceByIndex(getModel().getDiceNumberOnDraftBoard() - 1), SchemaCardFace.Ignore.NOTHING)) {
                     getModel().placeDice(ev.getPlayerName(), ev.getDiceFaceIndex(), ev.getPoint());
                     return oldState;
-                }else{
-                    Log.w(getClass().getCanonicalName()+": the dice face can't be placed here!");
+                } else {
+                    Log.w(getClass().getCanonicalName() + ": the dice face can't be placed here!");
                     return this;
                 }
-            }else{
-                Log.w(getClass().getCanonicalName()+": only the redrawn face can be placed");
+            } else {
+                Log.w(getClass().getCanonicalName() + ": only the redrawn face can be placed");
                 return this;
             }
 
-        }catch (Exception e){
-            Log.w(getClass().getCanonicalName()+": there was an exception: "+e.getMessage());
+        } catch (Exception e) {
+            Log.w(getClass().getCanonicalName() + ": there was an exception: " + e.getMessage());
             return this;
         }
 
@@ -52,7 +52,7 @@ public class PlaceRedrawnWithNumberDiceState extends State {
 
     @Override
     public State handleUserTimeOutEvent() {
-        Log.d(getClass().getCanonicalName()+" handling UserTimeoutEvent");
+        Log.d(getClass().getCanonicalName() + " handling UserTimeoutEvent");
         //If the user disconnected or timed out, simply return, leaving the dice as it is
         return oldState;
     }

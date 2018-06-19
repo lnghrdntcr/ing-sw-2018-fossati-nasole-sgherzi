@@ -7,8 +7,8 @@ public abstract class UseToolcardEvent extends ViewEvent {
 
     private int toolCardIndex;
 
-    protected UseToolcardEvent(String emitter, String player, int toolCardIndex) {
-        super(emitter, player);
+    protected UseToolcardEvent(String emitter, String receiver, String player, int toolCardIndex) {
+        super(emitter, player, receiver);
         this.toolCardIndex = toolCardIndex;
     }
 

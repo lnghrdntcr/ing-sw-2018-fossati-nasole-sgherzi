@@ -7,8 +7,8 @@ import it.polimi.se2018.view.SelectSchemaCardFace;
 import it.polimi.se2018.view.VisitableFromView;
 
 public class GameStartEvent extends ControllerEvent implements VisitableFromView {
-    public GameStartEvent(String emitter, String player) {
-        super(emitter, player);
+    public GameStartEvent(String emitter, String player, String receiver) {
+        super(emitter, player, receiver);
     }
 
     @Override

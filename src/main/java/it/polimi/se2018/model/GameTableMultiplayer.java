@@ -79,7 +79,8 @@ public class GameTableMultiplayer extends Observable<Event> {
      */
     public void sync(String playerName) {
         for (Player player : players) {
-            dispatchEvent(new PlayerChangedEvent(getClass().getName() + "::constructor", playerName, player.getImmutableInstance()));
+            // TODO: Finish this
+            dispatchEvent(new PlayerChangedEvent(getClass().getName() + "::sync", "", playerName, player.getImmutableInstance()));
         }
     }
 
@@ -198,8 +199,8 @@ public class GameTableMultiplayer extends Observable<Event> {
         Player p = getPlayerByName(playerName);
         DiceFace df = draftBoard.removeDice(diceIndex);
         p.getSchema().setDiceFace(point, df);
-        dispatchEvent(new SchemaChangedEvent("placeDice", playerName, p.getSchema().cloneSchema()));
-        dispatchEvent(new DraftBoardChangedEvent("placeDice", null, draftBoard.getImmutableInstance()));
+        dispatchEvent(new SchemaChangedEvent("placeDice", "", playerName, p.getSchema().cloneSchema()));
+        dispatchEvent(new DraftBoardChangedEvent("placeDice", "", playerName, draftBoard.getImmutableInstance()));
     }
 
 
@@ -221,12 +222,13 @@ public class GameTableMultiplayer extends Observable<Event> {
         dispatchEvent(
             new ToolCardChangedEvent(
                 "useTokenOnToolcard",
-                null,
+                "",
+                player,
                 toolCard.getImmutableInstance(),
                 index
             )
         );
-        dispatchEvent(new PlayerChangedEvent("useTokenOnToolcard", player, p.getImmutableInstance()));
+        dispatchEvent(new PlayerChangedEvent("useTokenOnToolcard", "", player, p.getImmutableInstance()));
     }
 
     /**
@@ -253,7 +255,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         draftBoard.removeDice(diceIndex);
         draftBoard.addDice(new DiceFace(df.getColor(), df.getNumber() + direction));
 
-        dispatchEvent(new DraftBoardChangedEvent("increaseDecreaseDice", null, draftBoard.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent("increaseDecreaseDice", "", "", draftBoard.getImmutableInstance()));
     }
 
 
@@ -270,8 +272,8 @@ public class GameTableMultiplayer extends Observable<Event> {
 
         draftBoard.addDice(oldDfHolder);
         diceHolder.addDice(turn, oldDfDraft);
-        dispatchEvent(new DraftBoardChangedEvent("swapDraftDiceWithHolder", null, draftBoard.getImmutableInstance()));
-        dispatchEvent(new DiceHolderChangedEvent("swapDraftDiceWithHolder", null, diceHolder.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent("swapDraftDiceWithHolder", "", "", draftBoard.getImmutableInstance()));
+        dispatchEvent(new DiceHolderChangedEvent("swapDraftDiceWithHolder", "", "", diceHolder.getImmutableInstance()));
     }
 
     /**
@@ -290,7 +292,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         DiceFace df = draftBoard.removeDice(index);
         df = new DiceFace(df.getColor(), new Random().nextInt(6) + 1);
         draftBoard.addDice(df);
-        if (singal) dispatchEvent(new DraftBoardChangedEvent("redrawDice", null, draftBoard.getImmutableInstance()));
+        if (singal) dispatchEvent(new DraftBoardChangedEvent("redrawDice", "", "", draftBoard.getImmutableInstance()));
         return df;
     }
 
@@ -302,7 +304,7 @@ public class GameTableMultiplayer extends Observable<Event> {
             redrawDice(0, false);
         }
 
-        dispatchEvent(new DraftBoardChangedEvent("redrawAllDice", null, draftBoard.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent("redrawAllDice", "", "", draftBoard.getImmutableInstance()));
     }
 
     /**
@@ -318,7 +320,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         DiceFace df = draftBoard.removeDice(index);
         df = new DiceFace(df.getColor(), 7 - df.getNumber());
         draftBoard.addDice(df);
-        dispatchEvent(new DraftBoardChangedEvent("flipDice", null, draftBoard.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent("flipDice", "", "", draftBoard.getImmutableInstance()));
     }
 
     /**
@@ -341,7 +343,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         draftBoard.putBackDice(index);
         draftBoard.drawSingleDice();
         DiceFace df = draftBoard.getDiceFace(draftBoard.getDiceNumber() - 1);
-        dispatchEvent(new DraftBoardChangedEvent("putBackAndRedrawDice", null, draftBoard.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent("putBackAndRedrawDice", "", "", draftBoard.getImmutableInstance()));
         return df;
     }
 
@@ -359,7 +361,7 @@ public class GameTableMultiplayer extends Observable<Event> {
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Illegal number: given " + number + " bounds: [1, 6]");
 
         draftBoard.addDice(new DiceFace(draftBoard.removeDice(index).getColor(), number));
-        dispatchEvent(new DraftBoardChangedEvent("changeDiceNumber", null, draftBoard.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent("changeDiceNumber", "", "", draftBoard.getImmutableInstance()));
     }
 
     /**
@@ -374,7 +376,7 @@ public class GameTableMultiplayer extends Observable<Event> {
         Player p = getPlayerByName(playerName);
         p.getSchema().setDiceFace(destination, p.getSchema().removeDiceFace(source));
 
-        if (lastMove) dispatchEvent(new SchemaChangedEvent("moveDice", playerName, p.getSchema().cloneSchema()));
+        if (lastMove) dispatchEvent(new SchemaChangedEvent("moveDice", "", playerName, p.getSchema().cloneSchema()));
     }
 
     //Turn stuff
@@ -406,8 +408,12 @@ public class GameTableMultiplayer extends Observable<Event> {
             }
         }
 
-        dispatchEvent(new TurnChangedEvent(this.getClass().getName() + ": nextTurn()", players[turnHolder.getCurrentPlayer()].getName()
-            , turnHolder.getRound(), this.isFirstTurnInRound()));
+        dispatchEvent(
+            new TurnChangedEvent(
+                this.getClass().getName() + ": nextTurn()",
+                "",
+                players[turnHolder.getCurrentPlayer()].getName()
+                , turnHolder.getRound(), this.isFirstTurnInRound()));
     }
 
 
@@ -557,12 +563,13 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     public void onGameStart() {
 
-        dispatchEvent(new DraftBoardChangedEvent(this.getClass().getName(), "", this.draftBoard.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent(this.getClass().getName(), "", "", this.draftBoard.getImmutableInstance()));
         for (int i = 0; i < Settings.POBJECTIVES_N; i++) {
 
             dispatchEvent(
                 new PublicObjectiveEvent(
                     this.getClass().getName(),
+                    "",
                     "",
                     this.publicObjectives[i],
                     i
@@ -576,6 +583,7 @@ public class GameTableMultiplayer extends Observable<Event> {
                 new ToolCardChangedEvent(
                     this.getClass().getName(),
                     "",
+                    "",
                     new ToolCardImmutable(
                         this.toolCards[i].getName(),
                         this.toolCards[i].getToken())
@@ -586,7 +594,7 @@ public class GameTableMultiplayer extends Observable<Event> {
 
         for (int i = 0; i < this.players.length; i++) {
 
-            dispatchEvent(new PlayerChangedEvent(this.getClass().getName(), this.players[i].getName(), this.players[i].getImmutableInstance()));
+            dispatchEvent(new PlayerChangedEvent(this.getClass().getName(), "", this.players[i].getName(), this.players[i].getImmutableInstance()));
         }
 
     }

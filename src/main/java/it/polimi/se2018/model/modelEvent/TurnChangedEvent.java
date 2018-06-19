@@ -11,8 +11,8 @@ public class TurnChangedEvent extends ModelEvent {
     private int round;
     private boolean direction;
 
-    public TurnChangedEvent(String emitter, String player, int round, boolean direction) {
-        super(emitter, player);
+    public TurnChangedEvent(String emitter, String receiver, String player, int round, boolean direction) {
+        super(emitter, player, receiver);
         this.round = round;
         this.direction = direction;
     }

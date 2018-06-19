@@ -11,10 +11,10 @@ public class PlaceDiceEvent extends ViewEvent {
     private int diceFaceIndex;
 
 
-    public PlaceDiceEvent(String emitter, String player, int diceFaceIndex, Point point) {
-        super(emitter, player);
-        this.point=point;
-        this.diceFaceIndex=diceFaceIndex;
+    public PlaceDiceEvent(String emitter, String receiver, String player, int diceFaceIndex, Point point) {
+        super(emitter, player, receiver);
+        this.point = point;
+        this.diceFaceIndex = diceFaceIndex;
     }
 
     public int getDiceFaceIndex() {

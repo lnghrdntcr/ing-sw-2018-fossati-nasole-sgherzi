@@ -11,8 +11,8 @@ import it.polimi.se2018.view.SelectSchemaCardFace;
 public class SchemaChangedEvent extends ModelEvent {
     Schema schema;
 
-    public SchemaChangedEvent(String emitter, String player, Schema schema) {
-        super(emitter, player);
+    public SchemaChangedEvent(String emitter, String receiver, String player, Schema schema) {
+        super(emitter, player, receiver);
         this.schema = schema;
     }
 

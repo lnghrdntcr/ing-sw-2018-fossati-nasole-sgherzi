@@ -8,8 +8,8 @@ public class TimeoutCommunicationEvent extends ControllerEvent {
 
     private int timeout;
 
-    public TimeoutCommunicationEvent(String emitter, String player, int timeout) {
-        super(emitter, player);
+    public TimeoutCommunicationEvent(String emitter, String receiver, String player, int timeout) {
+        super(emitter, player, receiver);
         this.timeout = timeout;
     }
 

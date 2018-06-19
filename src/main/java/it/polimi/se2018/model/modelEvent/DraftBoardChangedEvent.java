@@ -11,8 +11,8 @@ import it.polimi.se2018.view.SelectSchemaCardFace;
 public class DraftBoardChangedEvent extends ModelEvent {
     DraftBoardImmutable draftBoardImmutable;
 
-    public DraftBoardChangedEvent(String emitter, String player, DraftBoardImmutable draftBoardImmutable) {
-        super(emitter, player);
+    public DraftBoardChangedEvent(String emitter, String receiver, String player, DraftBoardImmutable draftBoardImmutable) {
+        super(emitter, player, receiver);
         this.draftBoardImmutable = draftBoardImmutable;
     }
 

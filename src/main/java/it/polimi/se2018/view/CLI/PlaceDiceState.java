@@ -15,39 +15,39 @@ public class PlaceDiceState extends State {
     public PlaceDiceState(CLIGameTable gameTable, SchemaCardFace.Ignore ignore) {
         super(gameTable);
         this.ignore = ignore;
-        internalState= InternalState.DICE_SELECTION;
+        internalState = InternalState.DICE_SELECTION;
     }
 
     @Override
     public State process(String input) {
-        if(input.equals("cancel")){
+        if (input.equals("cancel")) {
             return new MainMenuState(getGameTable());
-        }else if(internalState==InternalState.DICE_SELECTION){
-            try{
-                selectedDice=Integer.parseInt(input);
-                if(selectedDice<0||selectedDice>getGameTable().getDraftBoardImmutable().getDices().length){
-                    CLIPrinter.printError(input+" is not in range!");
-                }else{
-                    internalState=InternalState.POSITION_SELECTION;
+        } else if (internalState == InternalState.DICE_SELECTION) {
+            try {
+                selectedDice = Integer.parseInt(input);
+                if (selectedDice < 0 || selectedDice > getGameTable().getDraftBoardImmutable().getDices().length) {
+                    CLIPrinter.printError(input + " is not in range!");
+                } else {
+                    internalState = InternalState.POSITION_SELECTION;
                 }
                 return this;
-            }catch (NumberFormatException ex){
-                CLIPrinter.printError(input+" is not a valid dice!");
+            } catch (NumberFormatException ex) {
+                CLIPrinter.printError(input + " is not a valid dice!");
             }
             return this;
-        }else if(internalState==InternalState.POSITION_SELECTION){
+        } else if (internalState == InternalState.POSITION_SELECTION) {
             Point point = CLIPrinter.decodePosition(input);
-            if(point==null){
+            if (point == null) {
                 CLIPrinter.printError("Invalid position!");
                 return this;
             }
 
-            DiceFace diceFace=getGameTable().getDraftBoardImmutable().getDices()[selectedDice];
+            DiceFace diceFace = getGameTable().getDraftBoardImmutable().getDices()[selectedDice];
 
-            if(getGameTable().getSchemas(getGameTable().getView().getPlayer()).isDiceAllowed(point, diceFace, ignore)){
-                getGameTable().getView().sendEventToController(new PlaceDiceEvent(getClass().getName(), getGameTable().getView().getPlayer(), selectedDice, point));
+            if (getGameTable().getSchemas(getGameTable().getView().getPlayer()).isDiceAllowed(point, diceFace, ignore)) {
+                getGameTable().getView().sendEventToController(new PlaceDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), selectedDice, point));
                 return new MainMenuState(getGameTable());
-            }else{
+            } else {
                 CLIPrinter.printError("This dice cannot be placed here!");
                 return this;
             }
@@ -57,14 +57,14 @@ public class PlaceDiceState extends State {
 
     @Override
     public void render() {
-        if(internalState==InternalState.DICE_SELECTION){
+        if (internalState == InternalState.DICE_SELECTION) {
             CLIPrinter.printQuestion("Select a dice:");
             CLIPrinter.printDraftBoard(getGameTable().getDraftBoardImmutable());
-        }else if(internalState==InternalState.POSITION_SELECTION){
+        } else if (internalState == InternalState.POSITION_SELECTION) {
             CLIPrinter.printQuestion("Select a position:");
             CLIPrinter.printSchema(getGameTable().getSchemas(getGameTable().getView().getPlayer()));
         }
     }
 
-    private enum InternalState{DICE_SELECTION, POSITION_SELECTION}
+    private enum InternalState {DICE_SELECTION, POSITION_SELECTION}
 }

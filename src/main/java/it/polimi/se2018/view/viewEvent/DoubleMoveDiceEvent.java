@@ -7,8 +7,8 @@ public class DoubleMoveDiceEvent extends UseToolcardEvent{
     private Point source[] = new Point[2];
     private Point destination[] = new Point[2];
 
-    protected DoubleMoveDiceEvent(String emitter, String player, int position, Point source1, Point destination1, Point source2, Point destination2) {
-        super(emitter, player, position);
+    protected DoubleMoveDiceEvent(String emitter,String receiver, String player, int position, Point source1, Point destination1, Point source2, Point destination2) {
+        super(emitter, receiver,player, position);
         this.source[1] = source1;
         this.destination[1] = destination1;
         this.source[2] = source2;

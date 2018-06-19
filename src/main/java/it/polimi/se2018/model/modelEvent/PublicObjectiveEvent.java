@@ -9,8 +9,8 @@ public class PublicObjectiveEvent extends ModelEvent {
     private PublicObjective publicObjective;
     private int index;
 
-    public PublicObjectiveEvent(String emitter, String player, PublicObjective publicObjective, int index) {
-        super(emitter, player);
+    public PublicObjectiveEvent(String emitter, String receiver,String player, PublicObjective publicObjective, int index) {
+        super(emitter, player, receiver);
         this.publicObjective = publicObjective;
         this.index = index;
     }
