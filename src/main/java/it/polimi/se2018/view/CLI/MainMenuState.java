@@ -131,7 +131,8 @@ public class MainMenuState extends State {
     @Override
     public void render() {
         System.out.println();
-        System.out.println("Round:" + getGameTable().getRoundNumber() + "Turn:" + (getGameTable().getRoundDirection()? "1" : "2"));
+        System.out.println("Round:" + getGameTable().getRoundNumber() + "Turn:" + (getGameTable().getRoundDirection()? "1" : "2" +
+                " "));
         CLIPrinter.printMenuLine(1, "View Draft Board");
         CLIPrinter.printMenuLine(2, "View Players");
         CLIPrinter.printMenuLine(3, "View Round Track");
