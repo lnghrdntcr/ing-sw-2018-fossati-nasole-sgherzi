@@ -28,6 +28,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     private GameTableMultiplayer model;
     private State state;
     private List<View> views;
+    private boolean gameStarted = false;
     private ConcurrentLinkedQueue<Event> outboundEventLoop = new ConcurrentLinkedQueue<>();
     private ConcurrentLinkedQueue<ViewEvent> inboundEventLoop = new ConcurrentLinkedQueue<>();
 
@@ -243,5 +244,13 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
             }
         }
 
+    }
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(){
+        this.gameStarted = true;
     }
 }

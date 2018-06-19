@@ -1,6 +1,7 @@
 package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.controller.controllerEvent.EndGameEvent;
+import it.polimi.se2018.utils.ScoreHolder;
 import it.polimi.se2018.view.GameEnding;
 import it.polimi.se2018.view.RemoteView;
 
@@ -17,9 +18,14 @@ public class CLIGameEnding extends GameEnding implements InputListenerThread.Inp
         // TODO: Terminate the game. Or see stats.
     }
 
-    public void handleEndGameEvent(EndGameEvent event){
+    public void handleEndGameEvent(EndGameEvent event) {
         this.getView().activateGameEnding();
-        System.out.println("The winner that takes it all " + event.getLeaderBoard().get(0).getPlayerName());
+
+        for (ScoreHolder sc : event.getLeaderBoard()) {
+            System.out.println(sc.getPlayerName());
+        }
+
+        //System.out.println("The winner that takes it all " + event.getLeaderBoard().get(event.getLeaderBoard().size() - 1).getPlayerName());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package it.polimi.se2018.utils;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Holds the point of the given player and how it obtainded them.
@@ -47,15 +48,27 @@ public class ScoreHolder implements Comparable<ScoreHolder>, Serializable {
             this.missing;
     }
 
-    private int getTokenPoints() {
+    public int getTokenPoints() {
         return tokenPoints;
     }
 
-    private int getOrderInFinalRound() {
+    public int getOrderInFinalRound() {
         return orderInFinalRound;
     }
 
-    private int getPublicObjectivePoints() {
+    @Override
+    public String toString() {
+        return "ScoreHolder{" +
+            "player='" + player + '\'' +
+            ", privateObjectivePoints=" + privateObjectivePoints +
+            ", tokenPoints=" + tokenPoints +
+            ", orderInFinalRound=" + orderInFinalRound +
+            ", publicObjectivePoints=" + publicObjectivePoints +
+            ", missing=" + missing +
+            '}';
+    }
+
+    public int getPublicObjectivePoints() {
         return publicObjectivePoints;
     }
 
@@ -87,4 +100,6 @@ public class ScoreHolder implements Comparable<ScoreHolder>, Serializable {
         }
         return -1;
     }
+
+
 }

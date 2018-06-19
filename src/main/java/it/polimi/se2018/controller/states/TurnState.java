@@ -48,13 +48,8 @@ public class TurnState extends State {
 
         this.hasPlacedDice = hasPlacedDice;
         this.hasUsedToolcard = hasUsedToolcard;
-        //TODO qui dovrebbe essere tirato un evento per avvertire la view che il gioco è iniziato, e comunque per avvertire a che punto siamo (cosa è possibile fare ecc)
-        //l'evento deve essere per tutti
 
-        if (
-            model.getRound() == 0 &&
-                model.isFirstTurnInRound() &&
-                model.getPlayersName()[0].equals(model.getCurrentPlayerName())) {
+        if (!getController().isGameStarted()) {
             Log.d("A NEW GAME HAS STARTED!!!");
             this.getController().dispatchEvent(
                 new GameStartEvent(
@@ -63,6 +58,18 @@ public class TurnState extends State {
                     ""
                 )
             );
+            this.getController().dispatchEvent(
+                new TurnChangedEvent(
+                    this.getClass().getName(),
+                    "",
+                    this.getModel().getCurrentPlayerName(),
+                    this.getModel().getRound(),
+                    this.getModel().isFirstTurnInRound()
+                )
+            );
+
+            this.getController().setGameStarted();
+
         }
 
 
