@@ -79,6 +79,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     }
 
     private String[] pickToolCards() {
+
         ArrayList<String> tools = new ArrayList<>();
         tools.add("CircularCutter");
         tools.add("CopperReamer");

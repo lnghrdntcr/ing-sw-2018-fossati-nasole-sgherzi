@@ -42,9 +42,11 @@ public class GameEndState extends State {
 
         if (scoreHolders.isEmpty())
             throw new IllegalStateException(this.getClass().getCanonicalName() + ": There are no players on which compute the score.");
-        if (scoreHolders.size() != 1) scoreHolders.sort(new WinnerComparator());
+        if (scoreHolders.size() != 1){
+            Collections.sort(scoreHolders);
+            Collections.reverse(scoreHolders);
+        }
 
-        Collections.reverse(scoreHolders);
 
         scoreHolders.forEach(el -> {
             System.out.println(el);
@@ -52,29 +54,6 @@ public class GameEndState extends State {
 
         this.getController().dispatchEvent(new EndGameEvent(this.getClass().getName(), "", "", scoreHolders));
 
-    }
-
-    public class WinnerComparator implements Comparator<ScoreHolder> {
-
-        @Override
-        public int compare(ScoreHolder o1, ScoreHolder o2) {
-
-            if (o1 == null || o2 == null) throw new NullPointerException();
-
-            if (o1.equals(o2)) return 0;
-
-            if (o1.getTotalScore() > o2.getTotalScore()) return 1;
-            if (o1.getTotalScore() == o2.getTotalScore()) {
-                if (o1.getPublicObjectivePoints() > o2.getPublicObjectivePoints()) return 1;
-                if (o1.getPublicObjectivePoints() == o2.getPublicObjectivePoints()) {
-                    if (o1.getTokenPoints() > o2.getTokenPoints()) return 1;
-                    if (o1.getTokenPoints() == o2.getTokenPoints()) {
-                        if (o1.getOrderInFinalRound() > o2.getOrderInFinalRound()) return 1;
-                    }
-                }
-            }
-            return -1;
-        }
     }
 
 }
