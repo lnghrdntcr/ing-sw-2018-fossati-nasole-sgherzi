@@ -7,32 +7,47 @@ import java.io.Serializable;
 
 /**
  * Player to be used in View
+ *
  * @since 18/05/2018
  */
-public class PlayerImmutable implements Serializable {
+public class PlayerImmutable implements Serializable, Cloneable {
 
-  private String name;
-  private int token;
-  private PrivateObjective privateObjective;
+    private String name;
+    private int token;
+    private PrivateObjective privateObjective;
 
-  public PlayerImmutable(String name, int token, PrivateObjective privateObjective){
+    public PlayerImmutable(String name, int token, PrivateObjective privateObjective) {
 
-    this.name = name;
-    this.token =token;
-    this.privateObjective = privateObjective;
+        this.name = name;
+        this.token = token;
+        this.privateObjective = privateObjective;
 
-  }
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
 
-  public PrivateObjective getPrivateObjective() {
-    return privateObjective;
-  }
+    public PrivateObjective getPrivateObjective() {
+        return privateObjective;
+    }
 
-  public int getToken() {
-    return token;
-  }
+    public int getToken() {
+        return token;
+    }
+
+    public PlayerImmutable getFilteredInstance(){
+        PlayerImmutable toReturn=null;
+        try {
+            toReturn = (PlayerImmutable) clone();
+            toReturn.privateObjective=null;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        return toReturn;
+
+    }
+
 }

@@ -16,8 +16,9 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
 
     private boolean iAmActive = false;
     private SchemaCardFace[] faces = new SchemaCardFace[4];
-    private CLISelectSchemaSubState subState = CLISelectSchemaSubState.CHOICE;
+    private CLISelectSchemaSubState subState = CLISelectSchemaSubState.WAITINGDATA;
     private int choice;
+
 
     public CLISelectSchema(RemoteView view) {
         super(view);
@@ -42,6 +43,7 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
         }
 
         subState = CLISelectSchemaSubState.CHOICE;
+
 
     }
 
@@ -106,13 +108,15 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
             } else {
                 subState = CLISelectSchemaSubState.CHOICE;
             }
-        } else {
+        } else if (subState == CLISelectSchemaSubState.END){
             CLIPrinter.printError("Waiting for other players...");
+        }else if (subState == CLISelectSchemaSubState.WAITINGDATA) {
+            CLIPrinter.printError("Waiting for game to start...");
         }
 
     }
 
     public enum CLISelectSchemaSubState {
-        CHOICE, USURE, END
+        WAITINGDATA, CHOICE, USURE, END
     }
 }

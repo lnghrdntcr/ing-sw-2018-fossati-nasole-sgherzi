@@ -251,6 +251,7 @@ public class CLIPrinter {
 
     public static Point decodePosition(String input) {
         if (input == null) throw new NullPointerException("Input should not be null!");
+        if (input.length() < 2) return null;
         if (input.length() > 2) return null;
         int x = input.toUpperCase().charAt(0) - 'A';
         if (x < 0 || x >= Settings.CARD_WIDTH) return null;

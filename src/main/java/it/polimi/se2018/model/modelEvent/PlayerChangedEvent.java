@@ -36,4 +36,12 @@ public class PlayerChangedEvent extends ModelEvent {
     public void visit(SelectSchemaCardFace selectSchemaCardFace) {
         selectSchemaCardFace.handlePlayerCanged(this);
     }
+
+    @Override
+    public void filter(String playername) {
+        super.filter(playername);
+        if(!playername.equals(getPlayerName())){
+            playerImmutable= playerImmutable.getFilteredInstance();
+        }
+    }
 }
