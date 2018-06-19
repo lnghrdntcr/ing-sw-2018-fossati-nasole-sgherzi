@@ -12,6 +12,7 @@ public class TurnHolder {
     private int players;
     private int currentPlayer;
     private int direction;
+    private int firstInRound;
 
     /**
      * @param players the number of players that take part to the match
@@ -24,6 +25,7 @@ public class TurnHolder {
         currentPlayer = 0;
         direction = 1;
         round = 0;
+        firstInRound=0;
     }
 
     /**
@@ -33,17 +35,30 @@ public class TurnHolder {
      */
     public void nextTurn() {
         if (round < Settings.TURNS) {
-            currentPlayer += direction;
-            if (currentPlayer >= players) {
-                currentPlayer = players - 1;
-                direction = -1;
-            } else if (currentPlayer < 0) {
-                currentPlayer = 0;
-                direction = 1;
-                round++;
+            currentPlayer = (currentPlayer+direction+players)%players;
+
+            if(direction==0){
+                direction=-1;
             }
+
+            if(currentPlayer == (firstInRound-1+players)%players && direction==1){
+                direction=0;
+            }else if(currentPlayer == firstInRound && direction == -1){
+                direction=1;
+                round++;
+                firstInRound=(firstInRound+1)%players;
+            }
+
         } else {
             throw new IllegalStateException(getClass().getCanonicalName()+": the game is already ended!");
+        }
+    }
+
+    public static void main(String[] params){
+        TurnHolder turnHolder = new TurnHolder(4);
+        for(int i=0; i<2*4*10; i++){
+            System.out.println(turnHolder.toString());
+            turnHolder.nextTurn();
         }
     }
 
@@ -77,6 +92,17 @@ public class TurnHolder {
     public boolean isFirstTurnInRound() {
         //if the direction is 1 we are going in the first direction, meaning we have not changed direction in this turn
         // yet, so basically the player is playing the first turn in this round
-        return direction == 1;
+        return direction == 1 || direction==0;
+    }
+
+    @Override
+    public String toString() {
+        return "TurnHolder{" +
+                "round=" + round +
+                ", players=" + players +
+                ", currentPlayer=" + currentPlayer +
+                ", direction=" + direction +
+                ", firstInRound=" + firstInRound +
+                '}';
     }
 }
