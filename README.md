@@ -59,4 +59,7 @@ Il file JSON deve essere un array di oggetti. Ogni oggetto deve avere due elemen
   * Copper reamer
   * Gavel
   * Circular Cutter
+  * Lathekin
+  * RoughingNipper
+  * 
   
