@@ -301,10 +301,10 @@ public class CLIPrinter {
 
         System.out.print(ansi().fg(BLUE).a("Tokens "));
 
-        for (int i = 0; i < (total - used); i++) {
+        for (int i = 0; i <= (total - used); i++) {
             System.out.print(ansi().bg(WHITE).a("O").reset());
         }
-        for (int i = 0; i < used; i++) {
+        for (int i = 0; i <= used; i++) {
             System.out.print(ansi().bg(RED).a("X").reset());
         }
         System.out.println();
