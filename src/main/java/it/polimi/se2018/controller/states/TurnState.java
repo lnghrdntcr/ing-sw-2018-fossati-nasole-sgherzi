@@ -177,7 +177,11 @@ public class TurnState extends State {
             Log.w(event.getPlayerName() + "Only the current player can end its turn!");
         } else {
             if (getModel().hasNextTurn()) {
+                int oldTurn=getModel().getRound();
                 getModel().nextTurn();
+                if(oldTurn!=getModel().getRound()){
+                    getModel().endTurn();
+                }
                 return new TurnState(this.getController(), getModel(), false, false);
             } else {
                 return new GameEndState(this.getController(), getModel());

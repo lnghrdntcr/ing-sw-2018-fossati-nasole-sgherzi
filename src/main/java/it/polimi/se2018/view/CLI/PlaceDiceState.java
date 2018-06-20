@@ -52,12 +52,12 @@ public class PlaceDiceState extends State {
             if (getGameTable().getSchemas(getGameTable().getView().getPlayer()).isDiceAllowed(point, diceFace, ignore, forceLoneliness)) {
                 if(isFromTool && forceLoneliness){
                     getGameTable().getView().sendEventToController(
-                            new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getCurrentPlayer(),
+                            new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(),
                                     getGameTable().getToolIndexByName("CorkRow"), point, selectedDice));
                 }
                 else if(isFromTool && !forceLoneliness){
                     getGameTable().getView().sendEventToController(
-                            new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getCurrentPlayer(),
+                            new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(),
                                     getGameTable().getToolIndexByName("WheeledPincer"), point, selectedDice));
                 }
                 else {

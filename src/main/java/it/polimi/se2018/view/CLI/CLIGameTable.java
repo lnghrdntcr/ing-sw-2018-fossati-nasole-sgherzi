@@ -1,6 +1,7 @@
 package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
+import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.RemoteView;
@@ -13,6 +14,15 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
     public CLIGameTable(RemoteView view) {
         super(view);
         this.realeState = new MainMenuState(this);
+    }
+
+    @Override
+    public void handlePlayerTimeout(PlayerTimeoutEvent event) {
+        if(event.getPlayerName().equals(getView().getPlayer())) {
+            CLIPrinter.printError("Time is up!");
+            realeState = new MainMenuState(this);
+            realeState.render();
+        }
     }
 
     @Override
@@ -65,6 +75,17 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
         Log.d("CLIGAMETABLE INACTIVE");
         if(iAmActive){
             iAmActive = false;
+        }
+    }
+
+    @Override
+    public void renderTimeOut() {
+        if(getSecondsRemaining() % 10 == 0) {
+            if(getCurrentPlayer().equals(getView().getPlayer())) {
+                CLIPrinter.printError("Remaining seconds: " + getSecondsRemaining()+".");
+            }else{
+                CLIPrinter.printError("Player "+getCurrentPlayer()+" has "+getSecondsRemaining()+ " seconds left.");
+            }
         }
     }
 

@@ -104,7 +104,7 @@ public class MainMenuState extends State {
         }
 
         if (selection <= 0 || selection > 8) {
-            if (this.getGameTable().getCurrentPlayer().equals(this.getGameTable().getView().getPlayer())) {
+            if (getGameTable().getView().getPlayer().equals(this.getGameTable().getView().getPlayer())) {
                 CLIPrinter.printError("The selection must be between 1 and 8");
             } else {
                 CLIPrinter.printError("The selection must be between 1 and 5");
@@ -115,7 +115,7 @@ public class MainMenuState extends State {
 
 
 
-        if (!this.getGameTable().getCurrentPlayer().equals(this.getGameTable().getView().getPlayer()) && selection > 5) {
+        if (!getGameTable().getView().getPlayer().equals(this.getGameTable().getView().getPlayer()) && selection > 5) {
             CLIPrinter.printError("It's not your turn, you motherfather!");
             return this;
         }

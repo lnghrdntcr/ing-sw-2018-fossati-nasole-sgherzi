@@ -58,7 +58,7 @@ public class UseToolState extends State {
             if (this.getGameTable().getToolIndexByName("Gavel") == -1) return new MainMenuState(getGameTable());
 
             this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
-                    "", this.getGameTable().getCurrentPlayer(), this.getGameTable().getToolIndexByName("Gavel"), -1));
+                    "", getGameTable().getView().getPlayer(), this.getGameTable().getToolIndexByName("Gavel"), -1));
             return new MainMenuState(getGameTable());
         });
 

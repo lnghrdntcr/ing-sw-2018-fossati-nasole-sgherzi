@@ -103,12 +103,11 @@ public abstract class GameTable {
         // TODO: closes everything
     }
 
-    final public void handlePlayerTimeout(PlayerTimeoutEvent event) {
-        // TODO: Dismiss windows
-    }
+    abstract public void handlePlayerTimeout(PlayerTimeoutEvent event);
 
     final public void handleTimeoutCommunication(TimeoutCommunicationEvent event) {
         this.secondsRemaining = event.getTimeout();
+        renderTimeOut();
     }
 
 
@@ -130,6 +129,7 @@ public abstract class GameTable {
     public abstract void setActive();
 
     public abstract void setInactive();
+    public abstract void renderTimeOut();
 
 
     //getters
@@ -167,7 +167,7 @@ public abstract class GameTable {
     }
 
     public String getCurrentPlayer() {
-        return view.getPlayer();
+        return currentPlayer;
     }
 
     public int getRoundNumber() {

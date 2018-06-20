@@ -11,7 +11,7 @@ public class PlayerTimeoutEvent extends ControllerEvent {
 
     @Override
     public void visit(GameTable gameTable) {
-
+        gameTable.handlePlayerTimeout(this);
     }
 
     @Override

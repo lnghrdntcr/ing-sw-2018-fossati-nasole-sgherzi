@@ -31,21 +31,21 @@ public class CLIChooseDice extends State {
         //6
         provider.put("FirmPastaBrush", (i) -> {
             this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
-                    "", this.getGameTable().getCurrentPlayer(), this.getGameTable().getToolIndexByName("FirmPastaBrush"), i));
+                    "", getGameTable().getView().getPlayer(), this.getGameTable().getToolIndexByName("FirmPastaBrush"), i));
             return new MainMenuState(getGameTable());
         });
 
        //10
         provider.put("DiamondPad", (i) -> {
             this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
-                    "", this.getGameTable().getCurrentPlayer(), this.getGameTable().getToolIndexByName("DiamondPad"), i));
+                    "", getGameTable().getView().getPlayer(), this.getGameTable().getToolIndexByName("DiamondPad"), i));
             return new MainMenuState(getGameTable());
         });
 
         //11
         provider.put("FirmPastaDiluent", (i) -> {
             this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
-                    "", this.getGameTable().getCurrentPlayer(), this.getGameTable().getToolIndexByName("FirmPastaDiluent"), i));
+                    "", getGameTable().getView().getPlayer(), this.getGameTable().getToolIndexByName("FirmPastaDiluent"), i));
             return new MainMenuState(getGameTable());
         });
 

@@ -23,6 +23,6 @@ public class CLIPlaceDice extends State {
     @Override
     public void render() {
         CLIPrinter.printQuestion("Choose the dice destination:");
-        CLIPrinter.printSchema(getGameTable().getSchemas(getGameTable().getCurrentPlayer()));
+        CLIPrinter.printSchema(getGameTable().getSchemas(getGameTable().getView().getPlayer()));
     }
 }

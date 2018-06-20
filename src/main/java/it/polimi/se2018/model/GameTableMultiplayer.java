@@ -601,4 +601,14 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     }
 
+    public void endTurn(){
+        while(draftBoard.getDiceNumber()>0){
+            diceHolder.addDice(getRound()-1, draftBoard.removeDice(0));
+        }
+
+        draftBoard.drawDices(this.players.length);
+        dispatchEvent(new DraftBoardChangedEvent(getClass().getName()+"::endTurn", "", "", draftBoard.getImmutableInstance()));
+        dispatchEvent(new DiceHolderChangedEvent(getClass().getName()+"::endTurn", "", "", diceHolder.getImmutableInstance()));
+    }
+
 }
