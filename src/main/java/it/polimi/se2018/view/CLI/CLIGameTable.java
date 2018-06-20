@@ -27,7 +27,7 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
 
     @Override
     public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event) {
-        realeState=new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), false);
+        realeState=new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), true);
         realeState.render();
     }
 
