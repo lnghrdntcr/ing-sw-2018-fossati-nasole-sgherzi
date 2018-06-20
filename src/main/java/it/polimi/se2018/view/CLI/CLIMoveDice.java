@@ -7,6 +7,7 @@ import it.polimi.se2018.model.schema_card.CellRestriction;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.network.Client;
 import it.polimi.se2018.view.viewEvent.DoubleMoveDiceEvent;
+import it.polimi.se2018.view.viewEvent.DoubleMoveOfColorDiceEvent;
 import it.polimi.se2018.view.viewEvent.MoveDiceEvent;
 
 import java.awt.*;
@@ -147,6 +148,9 @@ public class CLIMoveDice extends State {
                 if (this.toolName.equals("Lathekin"))
                     this.getGameTable().getView().sendEventToController(new DoubleMoveDiceEvent(getClass().getName(), "", this.getGameTable().getView().getPlayer(), getGameTable().getToolIndexByName(toolName), firstSource, firstDestination, secondSource, secondDestination));
 
+                if(this.toolName.equals("ManualCutter")){
+                    this.getGameTable().getView().sendEventToController(new DoubleMoveOfColorDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), getGameTable().getToolIndexByName(toolName), firstSource, firstDestination, secondSource, secondDestination, color));
+                }
             }
 
         }

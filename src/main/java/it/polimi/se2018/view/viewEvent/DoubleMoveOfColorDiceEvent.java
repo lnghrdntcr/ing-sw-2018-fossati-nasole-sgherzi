@@ -8,7 +8,7 @@ public class DoubleMoveOfColorDiceEvent extends DoubleMoveDiceEvent {
 
     private GameColor color;
 
-    protected DoubleMoveOfColorDiceEvent(String emitter, String receiver, String player, int position, Point source1, Point destination1, Point source2, Point destination2, GameColor color) {
+    public DoubleMoveOfColorDiceEvent(String emitter, String receiver, String player, int position, Point source1, Point destination1, Point source2, Point destination2, GameColor color) {
         super(emitter, receiver, player, position, source1, destination1, source2, destination2);
         this.color = color;
     }
