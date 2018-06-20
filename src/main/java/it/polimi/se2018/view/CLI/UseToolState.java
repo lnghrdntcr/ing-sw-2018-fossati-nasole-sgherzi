@@ -94,10 +94,21 @@ public class UseToolState extends State {
     public State process(String input) {
 
         if (input.equalsIgnoreCase("cancel")) return new MainMenuState(getGameTable());
-        if(getGameTable().getPlayer(getGameTable().getCurrentPlayer()).getToken() < getGameTable().getToolCardImmutable(Integer.parseInt(input)).getNeededTokens()){
-            CLIPrinter.printError("You don't have enough tokens! :(");
-            return new MainMenuState(getGameTable());
+
+        int selection;
+        try{
+            selection=Integer.parseInt(input);
+        }catch (RuntimeException ex){
+            CLIPrinter.printError("Invalid input!");
+            return this;
         }
+
+        if(getGameTable().getPlayer(getGameTable().getView().getPlayer()).getToken() < getGameTable().getToolCardImmutable(selection).getNeededTokens()){
+            CLIPrinter.printError("You don't have enough tokens! :(");
+            return this;
+        }
+
+
         return provider.get(
                 this.getGameTable()
                         .getToolCardImmutable(
