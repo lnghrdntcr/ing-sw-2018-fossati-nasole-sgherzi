@@ -119,7 +119,6 @@ public class MainMenuState extends State {
             return this;
         }
 
-        // TODO: Remove this after the implementation of selection 7.
         if (selection == 7) {
             if(getGameTable().isToolcardUsed()){
                 CLIPrinter.printError("You have already used a toolcard in this turn");
@@ -143,7 +142,7 @@ public class MainMenuState extends State {
     @Override
     public void render() {
         System.out.println();
-        System.out.println("Round:" + getGameTable().getRoundNumber() + "Turn:" + (getGameTable().getRoundDirection()? "1" : "2" +
+        System.out.println("Round: " + getGameTable().getRoundNumber() + "\nTurn:" + (getGameTable().getRoundDirection()? "1" : "2" +
                 " "));
         CLIPrinter.printMenuLine(1, "View Draft Board");
         CLIPrinter.printMenuLine(2, "View Players");
