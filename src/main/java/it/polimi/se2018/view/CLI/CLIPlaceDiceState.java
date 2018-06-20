@@ -2,13 +2,14 @@ package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
+import it.polimi.se2018.view.viewEvent.CancelActionEvent;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceSelectingNumberEvent;
 import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 
 import java.awt.*;
 
-public class PlaceDiceState extends State {
+public class CLIPlaceDiceState extends State {
     private SchemaCardFace.Ignore ignore;
     private InternalState internalState;
 
@@ -19,11 +20,11 @@ public class PlaceDiceState extends State {
     private boolean shouldNotSelectDice;
     private int selectedNumber;
 
-    public PlaceDiceState(CLIGameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness) {
+    public CLIPlaceDiceState(CLIGameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness) {
         this(gameTable, ignore, isFromTool, forceLoneliness, -1, false);
     }
 
-    public PlaceDiceState(CLIGameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness, int forceDice, boolean shouldSelectNumber) {
+    public CLIPlaceDiceState(CLIGameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness, int forceDice, boolean shouldSelectNumber) {
         super(gameTable);
         this.ignore = ignore;
         this.isFromTool = isFromTool;
@@ -45,7 +46,11 @@ public class PlaceDiceState extends State {
 
     @Override
     public State process(String input) {
+
         if (input.equals("cancel")) {
+
+            if(shouldNotSelectDice || shouldSelectNumber) this.getGameTable().getView().sendEventToController(new CancelActionEvent(this.getClass().getName(), this.getGameTable().getView().getPlayer(), "" ));
+
             return new MainMenuState(getGameTable());
         } else if (internalState == InternalState.DICE_SELECTION) {
             try {

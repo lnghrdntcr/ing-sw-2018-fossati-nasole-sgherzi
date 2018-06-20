@@ -6,7 +6,6 @@ import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 
 import java.util.HashMap;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class UseToolState extends State {
@@ -64,12 +63,12 @@ public class UseToolState extends State {
 
         //8
         provider.put("WheeledPincer", () -> {
-            return new PlaceDiceState(getGameTable(), SchemaCardFace.Ignore.NOTHING, true, false);
+            return new CLIPlaceDiceState(getGameTable(), SchemaCardFace.Ignore.NOTHING, true, false);
         });
 
         //9
         provider.put("CorkRow", () -> {
-            return new PlaceDiceState(getGameTable(), SchemaCardFace.Ignore.NOTHING, true, true);
+            return new CLIPlaceDiceState(getGameTable(), SchemaCardFace.Ignore.NOTHING, true, true);
         });
 
         //10

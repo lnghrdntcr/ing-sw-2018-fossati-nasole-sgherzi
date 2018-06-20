@@ -4,7 +4,6 @@ import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.viewEvent.EndTurnEvent;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 import java.util.function.Supplier;
@@ -72,7 +71,7 @@ public class MainMenuState extends State {
             return this;
         });
 
-        provider.put(6, () -> new PlaceDiceState(this.getGameTable(), SchemaCardFace.Ignore.NOTHING, false, false));
+        provider.put(6, () -> new CLIPlaceDiceState(this.getGameTable(), SchemaCardFace.Ignore.NOTHING, false, false));
 
         provider.put(7, () -> new UseToolState(this.getGameTable()));
 

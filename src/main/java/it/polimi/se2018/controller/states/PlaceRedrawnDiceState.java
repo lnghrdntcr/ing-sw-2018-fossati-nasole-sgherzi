@@ -26,42 +26,55 @@ public class PlaceRedrawnDiceState extends State {
 
     /**
      * Handle the usage of a specific toolcard
+     *
      * @param event the event that has triggered this method
      * @return the new state of the game
      */
     @Override
     public State handleToolcardEvent(UseToolcardEvent event) {
-        Log.d(getClass().getCanonicalName()+" handling ToolcardEvent");
-        try{
+        Log.d(getClass().getCanonicalName() + " handling ToolcardEvent");
+        try {
             PlaceAnotherDiceEvent ev = (PlaceAnotherDiceEvent) event;
             //checks if user is placing the redrawn face
-            if(getModel().getDiceFaceByIndex(ev.getDiceFaceIndex()).equals(redrawnDiceFace)){
-                if(getModel().isDiceAllowed(ev.getPlayerName(), ev.getPoint(), redrawnDiceFace, SchemaCardFace.Ignore.NOTHING )){
+            if (getModel().getDiceFaceByIndex(ev.getDiceFaceIndex()).equals(redrawnDiceFace)) {
+                if (getModel().isDiceAllowed(ev.getPlayerName(), ev.getPoint(), redrawnDiceFace, SchemaCardFace.Ignore.NOTHING)) {
                     getModel().placeDice(ev.getPlayerName(), ev.getDiceFaceIndex(), ev.getPoint());
                     return oldState;
-                }else{
-                    Log.w(getClass().getCanonicalName()+": the dice face can't be placed here!");
+                } else {
+                    Log.w(getClass().getCanonicalName() + ": the dice face can't be placed here!");
                     return this;
                 }
-            }else{
-                Log.w(getClass().getCanonicalName()+": only the redrawn face can be placed");
+            } else {
+                Log.w(getClass().getCanonicalName() + ": only the redrawn face can be placed");
                 return this;
             }
 
-        }catch (Exception e){
-            Log.w(getClass().getCanonicalName()+": there was an exception: "+e.getMessage());
+        } catch (Exception e) {
+            Log.w(getClass().getCanonicalName() + ": there was an exception: " + e.getMessage());
             return this;
         }
 
     }
 
     /**
+     * Handle the cancellation of the action from a toolcard.
+     *
+     * @return the old state.
+     */
+    @Override
+    public State handleUserCancelEvent() {
+        Log.d("User Cancelled current action");
+        return oldState;
+    }
+
+    /**
      * Handle the timeout of the current player
+     *
      * @return the new state of the game
      */
     @Override
     public State handleUserTimeOutEvent() {
-        Log.d(getClass().getCanonicalName()+" handling UserTimeoutEvent");
+        Log.d(getClass().getCanonicalName() + " handling UserTimeoutEvent");
         //if the user timed out, simply do not let him place any dice
         return oldState;
     }

@@ -25,6 +25,7 @@ public class PlaceRedrawnWithNumberDiceState extends State {
 
     /**
      * Handle the usage of a specific toolcard
+     *
      * @param event the event that has triggered this method
      * @return the new state of the game
      */
@@ -56,7 +57,19 @@ public class PlaceRedrawnWithNumberDiceState extends State {
     }
 
     /**
+     * Handle the cancellation of the action from a toolcard.
+     *
+     * @return the old state.
+     */
+    @Override
+    public State handleUserCancelEvent() {
+        Log.d("User Cancelled current action");
+        return oldState;
+    }
+
+    /**
      * Handle the current user timeout
+     *
      * @return the new state of the game
      */
     @Override
