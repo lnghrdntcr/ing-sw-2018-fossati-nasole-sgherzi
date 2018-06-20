@@ -8,12 +8,10 @@ import it.polimi.se2018.model.modelEvent.TurnChangedEvent;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
-import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.*;
 
 import java.util.HashMap;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -333,7 +331,7 @@ public class TurnState extends State {
      */
     private State useCircularCutter(UseToolcardEvent event) {
         try {
-            SwapDiceFaceWithTurnHolderEvent ev = (SwapDiceFaceWithTurnHolderEvent) event;
+            SwapDiceFaceWithDiceHolderEvent ev = (SwapDiceFaceWithDiceHolderEvent) event;
             getModel().swapDraftDiceWithHolder(ev.getDraftBoardIndex(), ev.getTurn(), ev.getIndexInTurn());
             getModel().useTokenOnToolcard(event.getPlayerName(), ev.getToolCardIndex());
             return new TurnState(getController(), getModel(), this.isDicePlaced(), true);

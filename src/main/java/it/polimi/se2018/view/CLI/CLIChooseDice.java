@@ -4,7 +4,6 @@ import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 
 import java.util.HashMap;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class CLIChooseDice extends State {
 

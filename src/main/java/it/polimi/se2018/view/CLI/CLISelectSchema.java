@@ -38,8 +38,9 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
         CLIPrinter.printQuestion("Choose your Schema Card: \n\n");
 
         for (int i = 0; i < 4; i++) {
-            CLIPrinter.printQuestion(i + 1 + "for:\n");
+            CLIPrinter.printQuestion(i + 1 + "for:");
             CLIPrinter.printSchemaCardFace(faces[i]);
+            System.out.println();
         }
 
         subState = CLISelectSchemaSubState.CHOICE;

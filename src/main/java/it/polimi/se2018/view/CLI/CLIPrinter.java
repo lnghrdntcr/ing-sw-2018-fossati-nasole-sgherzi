@@ -69,9 +69,9 @@ public class CLIPrinter {
 
     public static void printPrivateObjective(PrivateObjective privateObjective) {
         Ansi.Color color = privateObjective.getColor().getAnsiColor();
-        System.out.println(ansi().bg(color).a(" ").reset());
-        System.out.print(ansi().fg(color).a(">").reset() + "Sum the values of all the " + ansi().fg(color).a(color.toString().toLowerCase()).reset() + "dice");
-        System.out.println(ansi().fg(color).a("<").reset());
+        System.out.print(ansi().bg(color).a(" ").reset());
+        System.out.print(ansi().fg(color).a(">").reset() + "Sum the values of all the " + ansi().fg(color).a(color.toString().toLowerCase()).reset() + " dice");
+        System.out.print(ansi().fg(color).a("<").reset());
         System.out.println(ansi().bg(color).a(" ").reset());
     }
 
@@ -118,6 +118,22 @@ public class CLIPrinter {
 
         int pastTurns = diceHolderImmutable.getDoneTurns();
 
+        int[] tLenght = new int[pastTurns];
+        for(int i=0; i<pastTurns; i++){
+            tLenght[i]=diceHolderImmutable.getDiceFaces(i).length;
+        }
+        int maxTLenght = tLenght[0];
+        for(int i=1; i<pastTurns; i++){
+            if(maxTLenght < tLenght[i]) maxTLenght = tLenght[i];
+        }
+
+
+        System.out.print("           "); //11 spaces
+        for (char a = 'A'; a < 'A' + maxTLenght; a++) {
+            System.out.print(" " + a + " ");
+        }
+        System.out.println();
+
         for (int i = 0; i < pastTurns; i++) {
 
             DiceFace[] dices = diceHolderImmutable.getDiceFaces(i);
@@ -137,6 +153,37 @@ public class CLIPrinter {
             System.out.print("|" + ansi().bg(Ansi.Color.WHITE).fg(Ansi.Color.BLACK).a("X").reset() + "|");
             System.out.println();
         }
+
+    }
+
+    public static Point decodePosition(String input, DiceHolderImmutable diceHolderImmutable) {
+        int pastTurns = diceHolderImmutable.getDoneTurns();
+
+        int[] tLenght = new int[pastTurns];
+        for(int i=0; i<pastTurns; i++){
+            tLenght[i]=diceHolderImmutable.getDiceFaces(i).length;
+        }
+        int maxTLenght = tLenght[0];
+        for(int i=1; i<pastTurns; i++){
+            if(maxTLenght < tLenght[i]) maxTLenght = tLenght[i];
+        }
+
+        if (input == null) throw new NullPointerException("Input should not be null!");
+        if (input.length() != 2) return null;
+        int x = input.toUpperCase().charAt(0) - 'A';
+
+        int y;
+
+        try {
+            y = Integer.parseInt(input.substring(1)) - 1;
+        }
+        catch (NumberFormatException ex) {
+            return null;
+        }
+
+        if (y < 0 || y >= pastTurns) return null;
+        if (x < 0 || x >= diceHolderImmutable.getDiceFaces(y).length) return null;
+        return new Point(x, y);
 
     }
 
@@ -279,4 +326,5 @@ public class CLIPrinter {
         }
 
     }
+
 }
