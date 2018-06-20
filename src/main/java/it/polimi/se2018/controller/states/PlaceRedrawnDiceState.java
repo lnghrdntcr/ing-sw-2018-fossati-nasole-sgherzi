@@ -8,6 +8,7 @@ import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
+import it.polimi.se2018.view.viewEvent.PlayerDisconnectedEvent;
 import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
 
 /**
@@ -77,5 +78,13 @@ public class PlaceRedrawnDiceState extends State {
         Log.d(getClass().getCanonicalName() + " handling UserTimeoutEvent");
         //if the user timed out, simply do not let him place any dice
         return oldState;
+    }
+
+    @Override
+    public State handlePlayerDisconnected(PlayerDisconnectedEvent playerDisconnectedEvent) {
+        if(playerDisconnectedEvent.getPlayerName().equals(getModel().getCurrentPlayerName())) {
+            return oldState.handlePlayerDisconnected(playerDisconnectedEvent);
+        }
+        return super.handlePlayerDisconnected(playerDisconnectedEvent);
     }
 }

@@ -31,6 +31,9 @@ public class TurnState extends State {
     public TurnState(Controller controller, GameTableMultiplayer model, boolean hasPlacedDice, boolean hasUsedToolcard) {
         super(controller, model);
 
+        while (getController().isPlayerDisconnected(getModel().getCurrentPlayerName())) {
+            getModel().nextTurn();
+        }
 
         setupToolCardIsUsable();
 
@@ -147,7 +150,20 @@ public class TurnState extends State {
 
     @Override
     public State handleUserTimeOutEvent() {
-        return this.handleEndTurnEvent(new EndTurnEvent("UserTimeout", "", this.getModel().getCurrentPlayerName()));
+        return this.handleEndTurnEvent(new EndTurnEvent("UserTimeout", getModel().getCurrentPlayerName(), this.getModel().getCurrentPlayerName()));
+    }
+
+    @Override
+    public State handlePlayerDisconnected(PlayerDisconnectedEvent playerDisconnectedEvent) {
+        if (playerDisconnectedEvent.getPlayerName().equals(getModel().getCurrentPlayerName())) {
+            if (getController().isMoreThanOnePlayerConnected()) {
+                return this.handleEndTurnEvent(new EndTurnEvent("PlayerDisconnected", playerDisconnectedEvent.getPlayerName(), this.getModel().getCurrentPlayerName()));
+            } else {
+                return new GameEndState(getController(), getModel());
+            }
+        }
+
+        return super.handlePlayerDisconnected(playerDisconnectedEvent);
     }
 
     /**

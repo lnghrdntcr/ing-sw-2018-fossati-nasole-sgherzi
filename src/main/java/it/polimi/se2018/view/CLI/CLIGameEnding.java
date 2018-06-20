@@ -20,6 +20,7 @@ public class CLIGameEnding extends GameEnding implements InputListenerThread.Inp
 
     public void handleEndGameEvent(EndGameEvent event) {
         this.getView().activateGameEnding();
+        CLIPrinter.printFinalAnimation();
 
         for (ScoreHolder sc : event.getLeaderBoard()) {
             System.out.println(sc.getPlayerName());

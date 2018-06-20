@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import java.awt.*;
 import java.io.*;
+import java.util.Random;
 import java.util.Scanner;
 
 import static org.fusesource.jansi.Ansi.Color.BLUE;
@@ -326,6 +327,15 @@ public class CLIPrinter {
             return null;
         }
 
+    }
+
+
+    public static void printFinalAnimation(){
+        Random random = new Random();
+        for(int i=0; i<100000; i++){
+            Ansi.Color color = Ansi.Color.values()[random.nextInt(Ansi.Color.values().length)];
+            System.out.print(ansi().bg(color).a(""+random.nextInt(10)));
+        }
     }
 
 }

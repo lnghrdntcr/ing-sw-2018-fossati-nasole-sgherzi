@@ -96,18 +96,18 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     private String[] pickToolCards() {
 
         ArrayList<String> tools = new ArrayList<>();
-        //tools.add("CircularCutter");
-        //tools.add("CopperReamer");
-        //tools.add("CorkRow");
-        //tools.add("DiamondPad");
-        //tools.add("EglomiseBrush");
-        //tools.add("FirmPastaDiluent");
-        //tools.add("FirmPastaBrush");
-        //tools.add("Gavel");
+        tools.add("CircularCutter");
+        tools.add("CopperReamer");
+        tools.add("CorkRow");
+        tools.add("DiamondPad");
+        tools.add("EglomiseBrush");
+        tools.add("FirmPastaDiluent");
+        tools.add("FirmPastaBrush");
+        tools.add("Gavel");
         tools.add("Lathekin");
         tools.add("ManualCutter");
         tools.add("RoughingNipper");
-        //tools.add("WheeledPincer");
+        tools.add("WheeledPincer");
 
         Collections.shuffle(tools);
         return tools.subList(0, Settings.TOOLCARDS_N).toArray(new String[Settings.TOOLCARDS_N]);
@@ -225,6 +225,15 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
             if (playerName.equals(v.getPlayer()) && !v.isConnected()) return true;
         }
         return false;
+    }
+
+    public boolean isMoreThanOnePlayerConnected(){
+        int i=0;
+        for (View v : this.views) {
+            if (v.isConnected()) i++;
+        }
+
+        return i>1;
     }
 
     public GameTableMultiplayer getModel() {

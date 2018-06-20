@@ -9,6 +9,7 @@ import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceSelectingNumberEvent;
+import it.polimi.se2018.view.viewEvent.PlayerDisconnectedEvent;
 import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
 
 /**
@@ -77,5 +78,13 @@ public class PlaceRedrawnWithNumberDiceState extends State {
         Log.d(getClass().getCanonicalName() + " handling UserTimeoutEvent");
         //If the user disconnected or timed out, simply return, leaving the dice as it is
         return oldState;
+    }
+
+    @Override
+    public State handlePlayerDisconnected(PlayerDisconnectedEvent playerDisconnectedEvent) {
+        if(playerDisconnectedEvent.getPlayerName().equals(getModel().getCurrentPlayerName())) {
+            return oldState.handlePlayerDisconnected(playerDisconnectedEvent);
+        }
+        return super.handlePlayerDisconnected(playerDisconnectedEvent);
     }
 }
