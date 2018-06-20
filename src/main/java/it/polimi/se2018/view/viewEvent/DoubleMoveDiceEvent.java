@@ -9,10 +9,10 @@ public class DoubleMoveDiceEvent extends UseToolcardEvent {
 
     public DoubleMoveDiceEvent(String emitter, String receiver, String player, int position, Point source1, Point destination1, Point source2, Point destination2) {
         super(emitter, receiver, player, position);
-        this.source[1] = source1;
-        this.destination[1] = destination1;
-        this.source[2] = source2;
-        this.destination[2] = destination2;
+        this.source[0] = source1;
+        this.destination[0] = destination1;
+        this.source[1] = source2;
+        this.destination[1] = destination2;
     }
 
     public Point getSource(int pos) {

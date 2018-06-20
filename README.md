@@ -48,3 +48,7 @@ Il file JSON deve essere un array di oggetti. Ogni oggetto deve avere due elemen
   * "" = nessuna restrizione
   * "1" = restrizione numerica, da 1 a 6
   * "BLUE" = restrizione per colore, come codificate in Enum GameColor
+  
+  #Tested toolcards:
+  * Tampone diamantato
+  * Eglomise brush
