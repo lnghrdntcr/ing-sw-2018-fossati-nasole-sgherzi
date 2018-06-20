@@ -10,8 +10,8 @@
 * finire i test
 * aggiungere caricamento schema card da cartella resources (usando getResources)
 * Spostare generazione PublicObjective in model
-* Eventi devono arrivare solo al player giusto! Il campo stringa dell'evento (quello generico) è il destinatario: se vuoto o null il messaggio è per tutti, altrimenti solo per il player giusto
 * Spostare setActive /setInactive delle CLI in un'interfaccia
+* Eliminare un evento mettendo parametro default (Placeanotherdicewithnumberselection) e guardare anche stati
 
 ## Caratteristiche file JSON per le carte schema
 Il file JSON deve essere un array di oggetti. Ogni oggetto deve avere due elementi di tipo SchemaCardFace: uno associato

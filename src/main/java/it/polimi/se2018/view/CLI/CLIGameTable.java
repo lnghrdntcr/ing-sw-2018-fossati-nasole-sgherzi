@@ -1,7 +1,10 @@
 package it.polimi.se2018.view.CLI;
 
+import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceEvent;
+import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceWithNumberSelectionEvent;
 import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
 import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
+import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.RemoteView;
@@ -14,6 +17,18 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
     public CLIGameTable(RemoteView view) {
         super(view);
         this.realeState = new MainMenuState(this);
+    }
+
+    @Override
+    public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event) {
+        realeState=new PlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), false);
+        realeState.render();
+    }
+
+    @Override
+    public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event) {
+        realeState=new PlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), false);
+        realeState.render();
     }
 
     @Override

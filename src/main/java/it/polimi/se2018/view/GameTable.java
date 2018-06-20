@@ -91,17 +91,13 @@ public abstract class GameTable {
 
     // Handle Controller events.
 
-    final public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event) {
-        // TODO: MACHECCAZZO
-    }
+    abstract public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event);
 
-    final public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event) {
-        // TODO: MACHECCAZZ2
-    }
+    abstract public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event);
 
-    final public void handleEndGame(EndGameEvent event) {
-        // TODO: closes everything
-    }
+    /*final public void handleEndGame(EndGameEvent event) {
+
+    }*/
 
     abstract public void handlePlayerTimeout(PlayerTimeoutEvent event);
 

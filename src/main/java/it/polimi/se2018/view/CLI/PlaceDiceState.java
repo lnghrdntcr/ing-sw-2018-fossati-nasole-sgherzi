@@ -3,6 +3,7 @@ package it.polimi.se2018.view.CLI;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
+import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceSelectingNumberEvent;
 import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 
 import java.awt.*;
@@ -14,13 +15,32 @@ public class PlaceDiceState extends State {
     private int selectedDice;
     private boolean isFromTool;
     private boolean forceLoneliness;
+    private boolean shouldSelectNumber;
+    private boolean shouldNotSelectDice;
+    private int selectedNumber;
 
     public PlaceDiceState(CLIGameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness) {
+        this(gameTable, ignore, isFromTool, forceLoneliness, -1, false);
+    }
+
+    public PlaceDiceState(CLIGameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness, int forceDice, boolean shouldSelectNumber) {
         super(gameTable);
         this.ignore = ignore;
         this.isFromTool = isFromTool;
         this.forceLoneliness = forceLoneliness;
-        internalState = InternalState.DICE_SELECTION;
+        this.shouldSelectNumber = shouldSelectNumber;
+        shouldNotSelectDice = false;
+
+        if (forceDice == -1) {
+            internalState = InternalState.DICE_SELECTION;
+        } else if(!shouldSelectNumber) {
+            internalState = InternalState.POSITION_SELECTION;
+            selectedDice = forceDice;
+            shouldNotSelectDice = true;
+        }else{
+            internalState = InternalState.NUMBER_SELECTION;
+            selectedDice = forceDice;
+        }
     }
 
     @Override
@@ -50,17 +70,19 @@ public class PlaceDiceState extends State {
             DiceFace diceFace = getGameTable().getDraftBoardImmutable().getDices()[selectedDice];
 
             if (getGameTable().getSchemas(getGameTable().getView().getPlayer()).isDiceAllowed(point, diceFace, ignore, forceLoneliness)) {
-                if(isFromTool && forceLoneliness){
+                if (shouldNotSelectDice) {
+                    getGameTable().getView().sendEventToController(new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), getGameTable().getToolIndexByName("CorkRow"), point, selectedDice));
+                }else if(shouldSelectNumber){
+                    getGameTable().getView().sendEventToController(new PlaceAnotherDiceSelectingNumberEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), getGameTable().getToolIndexByName("CorkRow"), point, selectedDice, selectedNumber));
+                } else if (isFromTool && forceLoneliness) {
                     getGameTable().getView().sendEventToController(
                             new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(),
                                     getGameTable().getToolIndexByName("CorkRow"), point, selectedDice));
-                }
-                else if(isFromTool && !forceLoneliness){
+                } else if (isFromTool && !forceLoneliness) {
                     getGameTable().getView().sendEventToController(
                             new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(),
                                     getGameTable().getToolIndexByName("WheeledPincer"), point, selectedDice));
-                }
-                else {
+                } else {
                     getGameTable().getView().sendEventToController(new PlaceDiceEvent(getClass().getName(), "",
                             getGameTable().getView().getPlayer(), selectedDice, point));
                 }
@@ -70,6 +92,22 @@ public class PlaceDiceState extends State {
                 CLIPrinter.printError("This dice cannot be placed here!");
                 return this;
             }
+        } else if (internalState == InternalState.NUMBER_SELECTION) {
+            try {
+                selectedNumber = Integer.parseInt(input);
+            } catch (NumberFormatException ex) {
+                CLIPrinter.printError(input + " is not a valid dice number!");
+                return this;
+            }
+            
+            if(selectedNumber<=0||selectedNumber>6){
+                CLIPrinter.printError(input + " not between 1 and 6!");
+                return this;
+            }
+            
+            internalState=InternalState.POSITION_SELECTION;
+
+            return this;
         }
         return this;
     }
@@ -80,10 +118,17 @@ public class PlaceDiceState extends State {
             CLIPrinter.printQuestion("Select a dice:");
             CLIPrinter.printDraftBoard(getGameTable().getDraftBoardImmutable());
         } else if (internalState == InternalState.POSITION_SELECTION) {
+            if (shouldNotSelectDice) {
+                CLIPrinter.printQuestion("Select where to place the new dice:");
+                CLIPrinter.printDice(getGameTable().getDraftBoardImmutable().getDices()[selectedDice]);
+                System.out.println("|");
+            }
             CLIPrinter.printQuestion("Select a position:");
             CLIPrinter.printSchema(getGameTable().getSchemas(getGameTable().getView().getPlayer()));
+        }else if (internalState == InternalState.NUMBER_SELECTION) {
+            CLIPrinter.printQuestion("Select the number of the new dice: ");
         }
     }
 
-    private enum InternalState {DICE_SELECTION, POSITION_SELECTION}
+    private enum InternalState {DICE_SELECTION, POSITION_SELECTION, NUMBER_SELECTION}
 }

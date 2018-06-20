@@ -246,7 +246,7 @@ public class CLIPrinter {
 
     }
 
-    private static void printDice(DiceFace diceFace) {
+    public static void printDice(DiceFace diceFace) {
         System.out.print("|" + ansi().bg(diceFace.getColor().getAnsiColor()).fg(Ansi.Color.BLACK).a("" + diceFace.getNumber()).reset());
     }
 

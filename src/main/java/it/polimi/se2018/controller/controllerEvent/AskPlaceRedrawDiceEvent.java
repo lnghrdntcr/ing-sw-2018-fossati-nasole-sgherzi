@@ -21,7 +21,7 @@ public class AskPlaceRedrawDiceEvent extends ControllerEvent {
 
     @Override
     public void visit(GameTable gameTable) {
-
+        gameTable.handleAskPlaceRedrawDice(this);
     }
 
     @Override
