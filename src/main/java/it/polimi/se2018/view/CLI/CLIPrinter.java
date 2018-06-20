@@ -297,14 +297,14 @@ public class CLIPrinter {
         System.out.print("|" + ansi().bg(diceFace.getColor().getAnsiColor()).fg(Ansi.Color.BLACK).a("" + diceFace.getNumber()).reset());
     }
 
-    public static void printTokens(int used, int total) {
+    public static void printTokens(int available, int total) {
 
         System.out.print(ansi().fg(BLUE).a("Tokens "));
 
-        for (int i = 0; i <= (total - used); i++) {
+        for (int i = 0; i <= available; i++) {
             System.out.print(ansi().bg(WHITE).a("O").reset());
         }
-        for (int i = 0; i <= used; i++) {
+        for (int i = 0; i <= (total - available); i++) {
             System.out.print(ansi().bg(RED).a("X").reset());
         }
         System.out.println();
