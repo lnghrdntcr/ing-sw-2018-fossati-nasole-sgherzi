@@ -52,3 +52,4 @@ Il file JSON deve essere un array di oggetti. Ogni oggetto deve avere due elemen
   #Tested toolcards:
   * Tampone diamantato
   * Eglomise brush
+  * Wheeled Pincer

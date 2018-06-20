@@ -96,7 +96,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     private String[] pickToolCards() {
 
         ArrayList<String> tools = new ArrayList<>();
-        tools.add("CircularCutter");
+        /*tools.add("CircularCutter");
         tools.add("CopperReamer");
         tools.add("CorkRow");
         tools.add("DiamondPad");
@@ -104,7 +104,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         tools.add("FirmPastaDiluent");
         tools.add("FirmPastaBrush");
         tools.add("Gavel");
-        tools.add("Lathekin");
+        tools.add("Lathekin");*/
         tools.add("ManualCutter");
         tools.add("RoughingNipper");
         tools.add("WheeledPincer");

@@ -27,23 +27,17 @@ public class TurnState extends State {
     private boolean hasPlacedDice;
     private boolean hasUsedToolcard;
 
-    private final static HashMap<String, Supplier<Boolean>> isToolCardUsable = new HashMap<>();
-    private final static HashMap<String, Function<UseToolcardEvent, State>> useToolcard = new HashMap<>();
+    private final HashMap<String, Supplier<Boolean>> isToolCardUsable = new HashMap<>();
+    private final HashMap<String, Function<UseToolcardEvent, State>> useToolcard = new HashMap<>();
 
     public TurnState(Controller controller, GameTableMultiplayer model, boolean hasPlacedDice, boolean hasUsedToolcard) {
         super(controller, model);
 
-        synchronized (isToolCardUsable) {
-            if (isToolCardUsable.isEmpty()) {
-                setupToolCardIsUsable();
-            }
-        }
 
-        synchronized (useToolcard) {
-            if (useToolcard.isEmpty()) {
-                setupToolCardUse();
-            }
-        }
+        setupToolCardIsUsable();
+
+
+        setupToolCardUse();
 
 
         this.hasPlacedDice = hasPlacedDice;
@@ -96,7 +90,7 @@ public class TurnState extends State {
         Tool tool = getModel().getToolCardByPosition(event.getToolCardIndex());
         int playerToken = getModel().getPlayerToken(event.getPlayerName());
 
-        if (!isToolCardUsable.get(tool.getName()).get()) Log.i(tool.getClass().getName() + "not usable in this turn.");
+        if (!isToolCardUsable.get(tool.getName()).get()) Log.i(tool.getClass().getName() + " not usable in this turn.");
 
         if (playerToken < tool.getNeededTokens()) {
             Log.i(
@@ -177,9 +171,9 @@ public class TurnState extends State {
             Log.w(event.getPlayerName() + "Only the current player can end its turn!");
         } else {
             if (getModel().hasNextTurn()) {
-                int oldTurn=getModel().getRound();
+                int oldTurn = getModel().getRound();
                 getModel().nextTurn();
-                if(oldTurn!=getModel().getRound()){
+                if (oldTurn != getModel().getRound()) {
                     getModel().endTurn();
                 }
                 return new TurnState(this.getController(), getModel(), false, false);
@@ -216,6 +210,7 @@ public class TurnState extends State {
      * Populates the isToolCardUsable map, useful to check if the specified toolcard is usable at a certain moment
      */
     private void setupToolCardIsUsable() {
+        isToolCardUsable.clear();
         isToolCardUsable.put("CircularCutter", () -> true);
         isToolCardUsable.put("CopperReamer", () -> true);
         isToolCardUsable.put("CorkRow", () -> true);
@@ -234,6 +229,7 @@ public class TurnState extends State {
      * Populates the useToolcard map, that contains the right helper method to use in order to activate the toolcard effect
      */
     private void setupToolCardUse() {
+        useToolcard.clear();
         useToolcard.put("CircularCutter", this::useCircularCutter);
         useToolcard.put("CopperReamer", (event) -> useMoveDice(event, SchemaCardFace.Ignore.NUMBER));
         useToolcard.put("CorkRow", this::useCorkRow);
