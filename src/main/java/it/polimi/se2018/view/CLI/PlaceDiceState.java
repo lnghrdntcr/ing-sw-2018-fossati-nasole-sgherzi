@@ -71,9 +71,9 @@ public class PlaceDiceState extends State {
 
             if (getGameTable().getSchemas(getGameTable().getView().getPlayer()).isDiceAllowed(point, diceFace, ignore, forceLoneliness)) {
                 if (shouldNotSelectDice) {
-                    getGameTable().getView().sendEventToController(new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), getGameTable().getToolIndexByName("CorkRow"), point, selectedDice));
+                    getGameTable().getView().sendEventToController(new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), getGameTable().getToolIndexByName("FirmPastaBrush"), point, selectedDice));
                 }else if(shouldSelectNumber){
-                    getGameTable().getView().sendEventToController(new PlaceAnotherDiceSelectingNumberEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), getGameTable().getToolIndexByName("CorkRow"), point, selectedDice, selectedNumber));
+                    getGameTable().getView().sendEventToController(new PlaceAnotherDiceSelectingNumberEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), getGameTable().getToolIndexByName("FirmPastaDiluent"), point, selectedDice, selectedNumber));
                 } else if (isFromTool && forceLoneliness) {
                     getGameTable().getView().sendEventToController(
                             new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(),
