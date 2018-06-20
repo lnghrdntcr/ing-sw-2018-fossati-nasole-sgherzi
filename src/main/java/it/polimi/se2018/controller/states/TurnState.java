@@ -172,6 +172,7 @@ public class TurnState extends State {
                 int oldTurn = getModel().getRound();
                 getModel().nextTurn();
                 if (oldTurn != getModel().getRound()) {
+                    Log.i("New round started! Putting back dices");
                     getModel().endTurn();
                 }
                 return new TurnState(this.getController(), getModel(), false, false);

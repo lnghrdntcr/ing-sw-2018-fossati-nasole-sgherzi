@@ -7,7 +7,7 @@ public class CLIIncrementDice extends State {
 
     public CLIIncrementDice(CLIGameTable gameTable, Integer diceIndex) {
         super(gameTable);
-        this.diceIndex=diceIndex;
+        this.diceIndex = diceIndex;
     }
 
     //todo
@@ -16,19 +16,31 @@ public class CLIIncrementDice extends State {
 
         if (input.equalsIgnoreCase("cancel")) return new MainMenuState(this.getGameTable());
 
-        if(!input.equalsIgnoreCase("d") && !input.equalsIgnoreCase("i")){
+        if (!input.equalsIgnoreCase("d") && !input.equalsIgnoreCase("i")) {
             CLIPrinter.printError("Invalid choice");
             return this;
         }
 
+        int increment = input.equalsIgnoreCase("d") ? -1 : 1;
+
+        if (increment == -1 && getGameTable().getDraftBoardImmutable().getDices()[diceIndex].getNumber()==1){
+            CLIPrinter.printError("Cannot decrement a 1 dice!");
+            return this;
+        }
+
+        if (increment == 1 && getGameTable().getDraftBoardImmutable().getDices()[diceIndex].getNumber()==6){
+            CLIPrinter.printError("Cannot increment a 6 dice!");
+            return this;
+        }
+
         this.getGameTable().getView().sendEventToController(
-            new ChangeDiceNumberEvent(
-                this.getClass().getName(),
-                "",
-                this.getGameTable().getView().getPlayer(),
-                this.getGameTable().getToolIndexByName("RoughingNipper"),
-                this.diceIndex,
-                input.equalsIgnoreCase("d") ? -1 : 1
+                new ChangeDiceNumberEvent(
+                        this.getClass().getName(),
+                        "",
+                        this.getGameTable().getView().getPlayer(),
+                        this.getGameTable().getToolIndexByName("RoughingNipper"),
+                        this.diceIndex,
+                        increment
                 ));
 
         return new MainMenuState(this.getGameTable());

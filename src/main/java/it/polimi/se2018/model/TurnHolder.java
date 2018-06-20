@@ -13,6 +13,7 @@ public class TurnHolder {
     private int currentPlayer;
     private int direction;
     private int firstInRound;
+    boolean toIncrement=false;
 
     /**
      * @param players the number of players that take part to the match
@@ -41,16 +42,29 @@ public class TurnHolder {
                 direction=-1;
             }
 
+            if(toIncrement) {
+                round++;
+                toIncrement=false;
+            }
+
             if(currentPlayer == (firstInRound-1+players)%players && direction==1){
                 direction=0;
             }else if(currentPlayer == firstInRound && direction == -1){
                 direction=1;
-                round++;
+                toIncrement=true;
                 firstInRound=(firstInRound+1)%players;
             }
 
         } else {
             throw new IllegalStateException(getClass().getCanonicalName()+": the game is already ended!");
+        }
+    }
+
+    public static void main(String[] a){
+        TurnHolder turnHolder = new TurnHolder(3);
+        while(true){
+            System.out.println(turnHolder.toString());
+            turnHolder.nextTurn();
         }
     }
 
