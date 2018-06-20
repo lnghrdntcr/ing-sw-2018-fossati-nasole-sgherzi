@@ -24,6 +24,10 @@ public class ToolCardImmutable implements Serializable {
     return token;
   }
 
+  public int getNeededTokens() {
+    return token > 0 ? 2 : 1;
+  }
+
   @Override
   public String toString() {
     return "ToolCardImmutable{" +

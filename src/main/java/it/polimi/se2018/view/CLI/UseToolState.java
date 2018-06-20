@@ -56,6 +56,8 @@ public class UseToolState extends State {
         provider.put("Gavel", () -> {
             if (this.getGameTable().getToolIndexByName("Gavel") == -1) return new MainMenuState(getGameTable());
 
+            if(getGameTable().getRoundDirection() || getGameTable().isDicePlaced())
+
             this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
                     "", getGameTable().getView().getPlayer(), this.getGameTable().getToolIndexByName("Gavel"), -1));
             return new MainMenuState(getGameTable());
@@ -63,6 +65,10 @@ public class UseToolState extends State {
 
         //8
         provider.put("WheeledPincer", () -> {
+            if(!getGameTable().getRoundDirection()){
+                CLIPrinter.printError("You can't activate this card now!");
+                return this;
+            }
             return new CLIPlaceDiceState(getGameTable(), SchemaCardFace.Ignore.NOTHING, true, false);
         });
 
@@ -88,6 +94,10 @@ public class UseToolState extends State {
     public State process(String input) {
 
         if (input.equalsIgnoreCase("cancel")) return new MainMenuState(getGameTable());
+        if(getGameTable().getPlayer(getGameTable().getCurrentPlayer()).getToken() < getGameTable().getToolCardImmutable(Integer.parseInt(input)).getNeededTokens()){
+            CLIPrinter.printError("You don't have enough tokens! :(");
+            return new MainMenuState(getGameTable());
+        }
         return provider.get(
                 this.getGameTable()
                         .getToolCardImmutable(

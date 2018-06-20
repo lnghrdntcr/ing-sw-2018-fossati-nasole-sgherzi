@@ -174,6 +174,7 @@ public abstract class GameTable {
         return secondsRemaining;
     }
 
+    //1 if is the first time I play in this round
     public boolean getRoundDirection() {
         return roundDirection;
     }
