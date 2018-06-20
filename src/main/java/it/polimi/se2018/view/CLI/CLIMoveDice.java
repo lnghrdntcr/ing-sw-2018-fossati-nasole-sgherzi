@@ -61,7 +61,12 @@ public class CLIMoveDice extends State {
                     return this;
                 }
 
-                if (color != null && !playerSchema.getDiceFace(firstSource).equals(color)) {
+                if (playerSchema.getDiceFace(firstSource) == null) {
+                    CLIPrinter.printError("The cell is empty!");
+                    return this;
+                }
+
+                if (color != null && !playerSchema.getDiceFace(firstSource).getColor().equals(color)) {
                     CLIPrinter.printError("You cannot move a dice of this color!");
                     return this;
                 }
@@ -75,7 +80,12 @@ public class CLIMoveDice extends State {
                     return this;
                 }
 
-                if (color != null && !playerSchema.getDiceFace(secondSource).equals(color)) {
+                if (playerSchema.getDiceFace(secondSource) == null) {
+                    CLIPrinter.printError("The cell is empty!");
+                    return this;
+                }
+
+                if (color != null && !playerSchema.getDiceFace(secondSource).getColor().equals(color)) {
                     CLIPrinter.printError("You cannot move a dice of this color!");
                     return this;
                 }
@@ -97,6 +107,11 @@ public class CLIMoveDice extends State {
                     return this;
                 }
 
+
+                if (playerSchema.getDiceFace(firstDestination) != null) {
+                    CLIPrinter.printError("The cell not empty!");
+                    return this;
+                }
 
                 DiceFace prevDice = playerSchema.removeDiceFace(firstSource);
 
@@ -126,6 +141,10 @@ public class CLIMoveDice extends State {
                     return this;
                 }
 
+                if (playerSchema.getDiceFace(secondDestination) != null) {
+                    CLIPrinter.printError("The cell not empty!");
+                    return this;
+                }
 
                 DiceFace prevDice = playerSchema.removeDiceFace(secondSource);
 
