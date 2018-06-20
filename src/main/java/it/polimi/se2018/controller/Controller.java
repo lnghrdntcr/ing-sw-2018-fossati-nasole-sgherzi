@@ -81,6 +81,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
     /**
      * Gets the timeout.
+     *
      * @return the remaining seconds for the player to take an action.
      */
     public int getTimeout() {
@@ -89,6 +90,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
     /**
      * Creates all names of the toolcards, shuffles them and then chooses 3 random toolcards.
+     *
      * @return Settings.TOOLCARDS_N toolcard names.
      */
     private String[] pickToolCards() {
@@ -113,6 +115,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
     /**
      * Creates all of the PublicObjectives, shuffles it and then picks 3 random public objectives.
+     *
      * @return An array of public objectives.
      */
     private PublicObjective[] pickPublicObjectives() {
@@ -153,7 +156,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
                 this.beginTime = System.currentTimeMillis();
                 while ((System.currentTimeMillis() - this.beginTime) < this.actionTimeout) {
 
-                    this.outboundEventLoop.add(new TimeoutCommunicationEvent(this.getClass().getName(), "", this.model.getCurrentPlayerName(), this.getTimeout()));
+                    this.outboundEventLoop.add(new TimeoutCommunicationEvent(this.getClass().getName(), "", this.model.getCurrentPlayerName(), (int) (this.actionTimeout / 1000L - this.getTimeout())));
 
                     try {
                         Thread.sleep(1000);
@@ -164,7 +167,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
                     }
                 }
 
-                this.outboundEventLoop.add(new PlayerTimeoutEvent(this.getClass().getName(),"",  this.model.getCurrentPlayerName()));
+                this.outboundEventLoop.add(new PlayerTimeoutEvent(this.getClass().getName(), "", this.model.getCurrentPlayerName()));
                 this.inboundEventLoop.add(new ViewPlayerTimeoutEvent(this.getClass().getName(), "", this.getModel().getCurrentPlayerName()));
 
             }
@@ -238,6 +241,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
     /**
      * Reconnects the player.
+     *
      * @param localProxy The localProxy of the reconnected player.
      * @param playerName The name of the player to reconnect.
      */
@@ -256,7 +260,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         return gameStarted;
     }
 
-    public void setGameStarted(){
+    public void setGameStarted() {
         this.gameStarted = true;
     }
 }
