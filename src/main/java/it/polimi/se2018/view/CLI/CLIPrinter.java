@@ -101,8 +101,8 @@ public class CLIPrinter {
         printLineSeparator(draftBoardImmutable.getDices().length);
         for (int i = 0; i < draftBoardImmutable.getDices().length; i++) {
             System.out.print("|" +
-                    ansi().bg(draftBoardImmutable.getDices()[i].getColor().getAnsiColor())
-                            .a(draftBoardImmutable.getDices()[i].getNumber()).reset());
+                ansi().bg(draftBoardImmutable.getDices()[i].getColor().getAnsiColor())
+                    .a(draftBoardImmutable.getDices()[i].getNumber()).reset());
         }
         System.out.println("|");
 
@@ -119,12 +119,12 @@ public class CLIPrinter {
         int pastTurns = diceHolderImmutable.getDoneTurns();
 
         int[] tLenght = new int[pastTurns];
-        for(int i=0; i<pastTurns; i++){
-            tLenght[i]=diceHolderImmutable.getDiceFaces(i).length;
+        for (int i = 0; i < pastTurns; i++) {
+            tLenght[i] = diceHolderImmutable.getDiceFaces(i).length;
         }
         int maxTLenght = tLenght[0];
-        for(int i=1; i<pastTurns; i++){
-            if(maxTLenght < tLenght[i]) maxTLenght = tLenght[i];
+        for (int i = 1; i < pastTurns; i++) {
+            if (maxTLenght < tLenght[i]) maxTLenght = tLenght[i];
         }
 
 
@@ -160,12 +160,12 @@ public class CLIPrinter {
         int pastTurns = diceHolderImmutable.getDoneTurns();
 
         int[] tLenght = new int[pastTurns];
-        for(int i=0; i<pastTurns; i++){
-            tLenght[i]=diceHolderImmutable.getDiceFaces(i).length;
+        for (int i = 0; i < pastTurns; i++) {
+            tLenght[i] = diceHolderImmutable.getDiceFaces(i).length;
         }
         int maxTLenght = tLenght[0];
-        for(int i=1; i<pastTurns; i++){
-            if(maxTLenght < tLenght[i]) maxTLenght = tLenght[i];
+        for (int i = 1; i < pastTurns; i++) {
+            if (maxTLenght < tLenght[i]) maxTLenght = tLenght[i];
         }
 
         if (input == null) throw new NullPointerException("Input should not be null!");
@@ -176,8 +176,7 @@ public class CLIPrinter {
 
         try {
             y = Integer.parseInt(input.substring(1)) - 1;
-        }
-        catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             return null;
         }
 
@@ -300,6 +299,8 @@ public class CLIPrinter {
     public static void printTokens(int available, int total) {
 
         System.out.print(ansi().fg(BLUE).a("Tokens "));
+
+        System.out.println(available + " / " + total);
 
         for (int i = 0; i < available; i++) {
             System.out.print(ansi().bg(WHITE).a("O").reset());

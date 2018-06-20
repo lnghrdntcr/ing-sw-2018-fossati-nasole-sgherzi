@@ -250,6 +250,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         for (View v : this.views) {
             if (v.getPlayer().equals(playerName) && !v.isConnected()) {
                 ((VirtualView) v).connect(localProxy);
+                getModel().sync(playerName);
                 Log.d("Player " + playerName + " reconnected successfully ");
             }
         }

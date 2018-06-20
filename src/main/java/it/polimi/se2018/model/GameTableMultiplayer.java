@@ -78,10 +78,43 @@ public class GameTableMultiplayer extends Observable<Event> {
      * @param playerName the client to resync
      */
     public void sync(String playerName) {
-        for (Player player : players) {
-            // TODO: Finish this
-            dispatchEvent(new PlayerChangedEvent(getClass().getName() + "::sync", "", playerName, player.getImmutableInstance()));
+
+        dispatchEvent(new DraftBoardChangedEvent(this.getClass().getName() + "::gameStart", playerName, "", this.draftBoard.getImmutableInstance()));
+
+        for (int i = 0; i < Settings.POBJECTIVES_N; i++) {
+
+            dispatchEvent(
+                new PublicObjectiveEvent(
+                    this.getClass().getName() + "::gameStart",
+                    playerName,
+                    "",
+                    this.publicObjectives[i],
+                    i
+                )
+            );
+
         }
+        for (int i = 0; i < Settings.TOOLCARDS_N; i++) {
+
+            dispatchEvent(
+                new ToolCardChangedEvent(
+                    this.getClass().getName() + "::gameStart",
+                    playerName,
+                    "",
+                    new ToolCardImmutable(
+                        this.toolCards[i].getName(),
+                        this.toolCards[i].getToken())
+                    , i)
+            );
+
+        }
+
+        for (int i = 0; i < this.players.length; i++) {
+
+            dispatchEvent(new PlayerChangedEvent(this.getClass().getName() + "::gameStart", playerName, this.players[i].getName(), this.players[i].getImmutableInstance()));
+        }
+
+        dispatchEvent(new DiceHolderChangedEvent(this.getClass().getName() + "::gameStart", playerName, "", diceHolder.getImmutableInstance()));
     }
 
 
@@ -563,44 +596,7 @@ public class GameTableMultiplayer extends Observable<Event> {
     }
 
     public void onGameStart() {
-
-        dispatchEvent(new DraftBoardChangedEvent(this.getClass().getName() + "::gameStart", "", "", this.draftBoard.getImmutableInstance()));
-
-        for (int i = 0; i < Settings.POBJECTIVES_N; i++) {
-
-            dispatchEvent(
-                new PublicObjectiveEvent(
-                    this.getClass().getName() + "::gameStart",
-                    "",
-                    "",
-                    this.publicObjectives[i],
-                    i
-                )
-            );
-
-        }
-        for (int i = 0; i < Settings.TOOLCARDS_N; i++) {
-
-            dispatchEvent(
-                new ToolCardChangedEvent(
-                    this.getClass().getName() + "::gameStart",
-                    "",
-                    "",
-                    new ToolCardImmutable(
-                        this.toolCards[i].getName(),
-                        this.toolCards[i].getToken())
-                    , i)
-            );
-
-        }
-
-        for (int i = 0; i < this.players.length; i++) {
-
-            dispatchEvent(new PlayerChangedEvent(this.getClass().getName() + "::gameStart", "", this.players[i].getName(), this.players[i].getImmutableInstance()));
-        }
-
-        dispatchEvent(new DiceHolderChangedEvent(this.getClass().getName() + "::gameStart", "", "", diceHolder.getImmutableInstance()));
-
+        this.sync("");
     }
 
     public void endTurn(){
