@@ -131,6 +131,9 @@ public class CLIPlaceDiceState extends State {
             CLIPrinter.printQuestion("Select a position:");
             CLIPrinter.printSchema(getGameTable().getSchemas(getGameTable().getView().getPlayer()));
         }else if (internalState == InternalState.NUMBER_SELECTION) {
+            CLIPrinter.printQuestion("This dice was drawn:");
+            CLIPrinter.printDice(getGameTable().getDraftBoardImmutable().getDices()[selectedDice]);
+            System.out.println("|");
             CLIPrinter.printQuestion("Select the number of the new dice: ");
         }
     }
