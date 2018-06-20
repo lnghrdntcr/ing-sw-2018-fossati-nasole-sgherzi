@@ -424,11 +424,11 @@ public class TurnState extends State {
      */
     private State useCorkRow(UseToolcardEvent event) {
         try {
-            MoveDiceEvent e = (MoveDiceEvent) event;
+            PlaceAnotherDiceEvent e = (PlaceAnotherDiceEvent) event;
             String name = getModel().getCurrentPlayerName();
-            if (getModel().isAloneDiceAllowed(name, e.getDestination(), getModel().getPlayerDiceFace(e.getPlayerName(), e.getSource()), SchemaCardFace.Ignore.NOTHING)) {
+            if (getModel().isAloneDiceAllowed(name, e.getPoint(), getModel().getDiceFaceByIndex(e.getDiceFaceIndex()), SchemaCardFace.Ignore.NOTHING)) {
 
-                getModel().moveDice(name, e.getSource(), e.getDestination(), true);
+                getModel().placeDice(e.getPlayerName(), e.getDiceFaceIndex(), e.getPoint());
                 getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
                 return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
             } else {
