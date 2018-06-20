@@ -81,10 +81,14 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
     @Override
     public void renderTimeOut() {
         if(getSecondsRemaining() % 10 == 0) {
-            if(getCurrentPlayer().equals(getView().getPlayer())) {
-                CLIPrinter.printError("Remaining seconds: " + getSecondsRemaining()+".");
-            }else{
-                CLIPrinter.printError("Player "+getCurrentPlayer()+" has "+getSecondsRemaining()+ " seconds left.");
+            if (getCurrentPlayer() != null)
+                if (getCurrentPlayer().equals(getView().getPlayer())) {
+                    CLIPrinter.printError("Remaining seconds: " + getSecondsRemaining() + ".");
+                } else {
+                    CLIPrinter.printError("Player " + getCurrentPlayer() + " has " + getSecondsRemaining() + " seconds left.");
+                }
+            else {
+                CLIPrinter.printError(getSecondsRemaining() + " seconds left.");
             }
         }
     }
