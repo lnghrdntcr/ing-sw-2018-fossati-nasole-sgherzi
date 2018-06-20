@@ -31,9 +31,15 @@ public class TurnState extends State {
     public TurnState(Controller controller, GameTableMultiplayer model, boolean hasPlacedDice, boolean hasUsedToolcard) {
         super(controller, model);
 
-        while (getController().isPlayerDisconnected(getModel().getCurrentPlayerName())) {
-            getModel().nextTurn();
+        while (getController().isPlayerDisconnected(getModel().getCurrentPlayerName()) && getModel().hasNextTurn()) {
+                int oldTurn = getModel().getRound();
+                getModel().nextTurn();
+                if (oldTurn != getModel().getRound()) {
+                    Log.i("New round started! Putting back dices");
+                    getModel().endTurn();
+                }
         }
+
 
         setupToolCardIsUsable();
 
