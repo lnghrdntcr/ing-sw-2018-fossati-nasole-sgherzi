@@ -98,15 +98,15 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         ArrayList<String> tools = new ArrayList<>();
         //tools.add("CircularCutter");
         //tools.add("CopperReamer");
-        tools.add("CorkRow");
+        //tools.add("CorkRow");
         //tools.add("DiamondPad");
         //tools.add("EglomiseBrush");
-        tools.add("FirmPastaDiluent");
-        tools.add("FirmPastaBrush");
+        //tools.add("FirmPastaDiluent");
+        //tools.add("FirmPastaBrush");
         //tools.add("Gavel");
-        //tools.add("Lathekin");
-        //tools.add("ManualCutter");
-        //tools.add("RoughingNipper");
+        tools.add("Lathekin");
+        tools.add("ManualCutter");
+        tools.add("RoughingNipper");
         //tools.add("WheeledPincer");
 
         Collections.shuffle(tools);
