@@ -22,6 +22,7 @@ public class GameEndState extends State {
 
     public GameEndState(Controller controller, GameTableMultiplayer model) {
         super(controller, model);
+        controller.setGameEnded(true);
         this.computeScore();
         // TODO: Add the logic to do other stuff eg. write things to file.
         // TODO: Figure out a slightly better idea to end the game.
@@ -42,7 +43,7 @@ public class GameEndState extends State {
 
         if (scoreHolders.isEmpty())
             throw new IllegalStateException(this.getClass().getCanonicalName() + ": There are no players on which compute the score.");
-        if (scoreHolders.size() != 1){
+        if (scoreHolders.size() != 1) {
             Collections.sort(scoreHolders);
             Collections.reverse(scoreHolders);
         }

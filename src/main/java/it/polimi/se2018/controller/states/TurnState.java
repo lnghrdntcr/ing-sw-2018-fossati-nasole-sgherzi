@@ -32,14 +32,13 @@ public class TurnState extends State {
         super(controller, model);
 
         while (getController().isPlayerDisconnected(getModel().getCurrentPlayerName()) && getModel().hasNextTurn()) {
-                int oldTurn = getModel().getRound();
-                getModel().nextTurn();
-                if (oldTurn != getModel().getRound()) {
-                    Log.i("New round started! Putting back dices");
-                    getModel().endTurn();
-                }
+            int oldTurn = getModel().getRound();
+            getModel().nextTurn();
+            if (oldTurn != getModel().getRound()) {
+                Log.i("New round started! Putting back dices");
+                getModel().endTurn();
+            }
         }
-
 
         setupToolCardIsUsable();
 
@@ -53,26 +52,26 @@ public class TurnState extends State {
         if (!getController().isGameStarted()) {
             Log.d("A NEW GAME HAS STARTED!!!");
             this.getController().dispatchEvent(
-                    new GameStartEvent(
-                            this.getClass().getName(),
-                            "",
-                            ""
-                    )
+                new GameStartEvent(
+                    this.getClass().getName(),
+                    "",
+                    ""
+                )
             );
             this.getController().setGameStarted();
 
         }
 
         this.getController().dispatchEvent(
-                new TurnChangedEvent(
-                        this.getClass().getName(),
-                        "",
-                        this.getModel().getCurrentPlayerName(),
-                        this.getModel().getRound(),
-                        this.getModel().isFirstTurnInRound(),
-                        isDicePlaced(),
-                        isToolcardUsed()
-                )
+            new TurnChangedEvent(
+                this.getClass().getName(),
+                "",
+                this.getModel().getCurrentPlayerName(),
+                this.getModel().getRound(),
+                this.getModel().isFirstTurnInRound(),
+                isDicePlaced(),
+                isToolcardUsed()
+            )
         );
 
 
@@ -101,10 +100,10 @@ public class TurnState extends State {
 
         if (playerToken < tool.getNeededTokens()) {
             Log.i(
-                    event.getPlayerName()
-                            + " cannot use the " + tool.getClass().getName() + " toolcard:\n "
-                            + "Tokens needed:\t" + tool.getNeededTokens()
-                            + "\n Actual tokens:\t" + playerToken
+                event.getPlayerName()
+                    + " cannot use the " + tool.getClass().getName() + " toolcard:\n "
+                    + "Tokens needed:\t" + tool.getNeededTokens()
+                    + "\n Actual tokens:\t" + playerToken
             );
             return this;
         } else {
@@ -139,12 +138,12 @@ public class TurnState extends State {
         }
 
         if (getModel().isDiceAllowed(
-                event.getPlayerName(),
-                event.getPoint(),
-                getModel().getDiceFaceByIndex(
-                        event.getDiceFaceIndex()
-                ),
-                SchemaCardFace.Ignore.NOTHING)) {
+            event.getPlayerName(),
+            event.getPoint(),
+            getModel().getDiceFaceByIndex(
+                event.getDiceFaceIndex()
+            ),
+            SchemaCardFace.Ignore.NOTHING)) {
             getModel().placeDice(event.getPlayerName(), event.getDiceFaceIndex(), event.getPoint());
         } else {
             return this;
@@ -488,7 +487,7 @@ public class TurnState extends State {
             getModel().putBackAndRedrawDice(ev.getDicePosition());
             getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
             return new PlaceRedrawnWithNumberDiceState(getController(), getModel(), new TurnState(getController(), getModel(), this.isDicePlaced(), true),
-                    ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard() - 1);
+                ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard() - 1);
         } catch (Exception e) {
             Log.w("Unable to use FirmPastaDiluent: " + e.getMessage());
             return this;
@@ -512,7 +511,7 @@ public class TurnState extends State {
             }
 
             if (!ev.getColor().equals(getModel().getPlayerDiceFace(ev.getPlayerName(), ev.getSource(0)).getColor()) ||
-                    !ev.getColor().equals(getModel().getPlayerDiceFace(ev.getPlayerName(), ev.getSource(1)).getColor())) {
+                !ev.getColor().equals(getModel().getPlayerDiceFace(ev.getPlayerName(), ev.getSource(1)).getColor())) {
                 Log.w(getClass().getCanonicalName() + ": trying to move a dice of a wrong color");
                 return this;
             }
@@ -546,11 +545,11 @@ public class TurnState extends State {
     @Override
     public String toString() {
         return "TurnState{" +
-                "hasPlacedDice=" + hasPlacedDice +
-                ", hasUsedToolcard=" + hasUsedToolcard +
-                ", player=" + getModel().getCurrentPlayerName() +
-                ", round=" + getModel().getRound() +
-                ", firstTurn=" + getModel().isFirstTurnInRound() +
-                '}';
+            "hasPlacedDice=" + hasPlacedDice +
+            ", hasUsedToolcard=" + hasUsedToolcard +
+            ", player=" + getModel().getCurrentPlayerName() +
+            ", round=" + getModel().getRound() +
+            ", firstTurn=" + getModel().isFirstTurnInRound() +
+            '}';
     }
 }

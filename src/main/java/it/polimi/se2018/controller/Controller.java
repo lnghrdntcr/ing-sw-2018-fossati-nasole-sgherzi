@@ -3,6 +3,7 @@ package it.polimi.se2018.controller;
 import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.controller.controllerEvent.TimeoutCommunicationEvent;
 import it.polimi.se2018.controller.controllerEvent.ViewPlayerTimeoutEvent;
+import it.polimi.se2018.controller.states.GameEndState;
 import it.polimi.se2018.controller.states.GameSetupState;
 import it.polimi.se2018.controller.states.State;
 import it.polimi.se2018.model.GameTableMultiplayer;
@@ -31,6 +32,8 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     private boolean gameStarted = false;
     private ConcurrentLinkedQueue<Event> outboundEventLoop = new ConcurrentLinkedQueue<>();
     private ConcurrentLinkedQueue<ViewEvent> inboundEventLoop = new ConcurrentLinkedQueue<>();
+
+    private boolean isGameEnded = false;
 
     private long actionTimeout;
     private long beginTime;
@@ -140,7 +143,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         // this.resetActionTimeout();
         // or
         // that?
-        this.beginTime = System.currentTimeMillis();
+        if (message.getPlayerName().equals(getModel().getCurrentPlayerName())) this.beginTime = System.currentTimeMillis();
         this.inboundEventLoop.add(message);
 
     }
@@ -197,6 +200,12 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
                     ViewEvent inboundEvent = this.inboundEventLoop.poll();
 
                     this.state = state.handleEvent(inboundEvent, this.model);
+
+                    if(!getModel().hasNextTurn() && !isGameEnded){
+                        isGameEnded = true;
+                        this.state = new GameEndState(this, getModel());
+                    }
+
                     Log.d(getClass().getName() + " Going in new state: " + state + " event: " + inboundEvent);
 
                 }
@@ -264,6 +273,10 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
             }
         }
 
+    }
+
+    public void setGameEnded(boolean gameEnded) {
+        isGameEnded = gameEnded;
     }
 
     public boolean isGameStarted() {
