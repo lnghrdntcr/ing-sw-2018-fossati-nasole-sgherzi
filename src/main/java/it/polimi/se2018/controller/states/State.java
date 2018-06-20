@@ -101,7 +101,6 @@ public class State {
     }
 
     public State handlePlayerDisconnected(PlayerDisconnectedEvent playerDisconnectedEvent) {
-        this.getController().dispatchEvent(playerDisconnectedEvent);
         return this;
     }
 
