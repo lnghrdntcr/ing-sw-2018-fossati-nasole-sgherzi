@@ -127,16 +127,16 @@ public class Client {
             return;
         }
 
-
+        RemoteView remoteView;
         if (graphics.equalsIgnoreCase("gui")) {
-            //TODO start gui
+            remoteView=new RemoteView(name, RemoteView.Graphics.GUI);
         } else {
-            RemoteView remoteView = new RemoteView(name, RemoteView.Graphics.CLI);
-            remoteProxy.register(remoteView);
-            remoteView.register(remoteProxy);
-            remoteView.start();
+            remoteView=new RemoteView(name, RemoteView.Graphics.CLI);
         }
 
+        remoteProxy.register(remoteView);
+        remoteView.register(remoteProxy);
+        remoteView.start();
 
     }
 

@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class MainView extends Application {
+public class GUIGameTable extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -83,4 +83,7 @@ public class MainView extends Application {
         PublicObj.setToolCard(new MediumShades());
         root.getChildren().add(PublicObj);
     }
+
+
+
 }

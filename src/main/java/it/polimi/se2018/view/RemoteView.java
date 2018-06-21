@@ -9,7 +9,10 @@ import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.CLI.CLIGameEnding;
 import it.polimi.se2018.view.CLI.CLIGameTable;
 import it.polimi.se2018.view.CLI.CLISelectSchema;
+import it.polimi.se2018.view.gui.GUILogger;
+import it.polimi.se2018.view.gui.GUISelectSchemaCardFace;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
+import javafx.application.Application;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -25,6 +28,11 @@ public class RemoteView extends View {
         super(player);
         if (graphics == Graphics.CLI) {
             selectSchemaCardFace = new CLISelectSchema(this);
+            gameEnding = new CLIGameEnding(this);
+            gameTable = new CLIGameTable(this);
+        }else{
+            GUILogger.go();
+            selectSchemaCardFace=new GUISelectSchemaCardFace(this);
             gameEnding = new CLIGameEnding(this);
             gameTable = new CLIGameTable(this);
         }
