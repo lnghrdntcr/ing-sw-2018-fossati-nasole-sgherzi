@@ -28,7 +28,10 @@ public abstract class SelectSchemaCardFace {
 
     final public void handleTimeoutCommunication(TimeoutCommunicationEvent event) {
         this.secondsRemaining = event.getTimeout();
+        renderSecondsRemaining();
     }
+
+    protected abstract void renderSecondsRemaining();
 
 
     //updates
@@ -41,4 +44,7 @@ public abstract class SelectSchemaCardFace {
     public abstract void renderPrivateObjective(PrivateObjective privateObjective);
 
 
+    public int getSecondsRemaining() {
+        return secondsRemaining;
+    }
 }

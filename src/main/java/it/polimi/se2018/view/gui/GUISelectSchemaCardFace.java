@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -58,6 +59,9 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
     @FXML
     private Button buttonSchema4;
 
+    @FXML
+    private Label remainingSeconds;
+
     private SchemaPanel schemaPanel1, schemaPanel2, schemaPanel3, schemaPanel4;
     private ObjectiveView objectiveView;
 
@@ -67,6 +71,8 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
 
 
     }
+
+
 
     @Override
     public void showSchemaCardFaceSelection(AskSchemaCardFaceEvent event) {
@@ -120,6 +126,8 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
 
             playerPrivateObjectiveBox = (VBox) scene.lookup("#playerPrivateObjective");
 
+            remainingSeconds = (Label) scene.lookup("#remainingSeconds");
+
 
             buttonSchema1.setText("Wait...");
             buttonSchema2.setText("Wait...");
@@ -154,6 +162,9 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
             buttonSchema2.setOnAction(GUISelectSchemaCardFace.this);
             buttonSchema3.setOnAction(GUISelectSchemaCardFace.this);
             buttonSchema4.setOnAction(GUISelectSchemaCardFace.this);
+
+
+            remainingSeconds.setText("Waiting for game to start...");
         });
 
 
@@ -189,5 +200,10 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
         buttonSchema2.setDisable(true);
         buttonSchema3.setDisable(true);
         buttonSchema4.setDisable(true);
+    }
+
+    @Override
+    protected void renderSecondsRemaining() {
+        Platform.runLater(() -> remainingSeconds.setText("Remaining seconds: "+getSecondsRemaining()));
     }
 }
