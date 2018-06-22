@@ -11,12 +11,8 @@ import it.polimi.se2018.model.schema_card.Side;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Log;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -75,12 +71,12 @@ public class GUIGameTable extends Application {
 
         //ToolCard
         ObjectiveView privateObj = new ObjectiveView();
-        privateObj.setToolCard(new PrivateObjective(GameColor.RED));
+        privateObj.setObjective(new PrivateObjective(GameColor.RED));
         root.getChildren().add(privateObj);
 
         //ToolCard
         ObjectiveView PublicObj = new ObjectiveView();
-        PublicObj.setToolCard(new MediumShades());
+        PublicObj.setObjective(new MediumShades());
         root.getChildren().add(PublicObj);
     }
 

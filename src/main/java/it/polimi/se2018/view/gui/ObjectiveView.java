@@ -30,7 +30,7 @@ public class ObjectiveView extends StackPane {
 
     }
 
-    public void setToolCard(Objective objective){
+    public void setObjective(Objective objective){
         if(objective instanceof PrivateObjective) {
             objectiveIm.setImage(
                     new Image("gui/objectives/private/" + ((PrivateObjective)objective).getColor().toString().toUpperCase() + ".png"));
