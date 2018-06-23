@@ -48,7 +48,7 @@ public class MainMenuState extends State {
         provider.put(5, () -> {
 
             CLIPrinter.printSchema(
-                    this.getGameTable().getSchemas(
+                    this.getGameTable().getSchema(
                             this.getGameTable().getView().getPlayer()
                     )
             );
@@ -63,7 +63,7 @@ public class MainMenuState extends State {
                     this.getGameTable().getPlayer(
                             this.getGameTable().getView().getPlayer()
                     ).getToken(),
-                    this.getGameTable().getSchemas(
+                    this.getGameTable().getSchema(
                             this.getGameTable().getView().getPlayer()
                     ).getSchemaCardFace().getDifficulty()
             );

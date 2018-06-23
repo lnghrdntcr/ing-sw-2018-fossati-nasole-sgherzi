@@ -1,85 +1,223 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.model.objectives.MediumShades;
-import it.polimi.se2018.model.objectives.PrivateObjective;
-import it.polimi.se2018.model.schema.DiceFace;
-import it.polimi.se2018.model.schema.GameColor;
+import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceEvent;
+import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceWithNumberSelectionEvent;
+import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
+import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.model.schema.Schema;
-import it.polimi.se2018.model.schema_card.SchemaCard;
-import it.polimi.se2018.model.schema_card.SchemaCardFace;
-import it.polimi.se2018.model.schema_card.Side;
+import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
-import it.polimi.se2018.utils.Log;
-import javafx.application.Application;
+import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.GameTable;
+import it.polimi.se2018.view.RemoteView;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
-public class GUIGameTable extends Application {
+public class GUIGameTable extends GameTable implements EventHandler<ActionEvent> {
 
-    public static void main(String[] args) {
-        launch(args);
+    @FXML
+    private GridPane root;
+
+    private ArrayList<PlayerBoard> players = new ArrayList<>();
+    private ArrayList<ToolCard> toolCardsList = new ArrayList<>();
+    private ArrayList<ObjectiveView> publicObjectivesList = new ArrayList<>();
+
+    @FXML
+    private VBox player1;
+
+    @FXML
+    private VBox roundTrack;
+
+    @FXML
+    private HBox publicObjectives;
+
+    @FXML
+    private VBox draftBoard;
+
+    @FXML
+    private VBox player3;
+
+    @FXML
+    private VBox player2;
+
+    @FXML
+    private HBox toolCards;
+
+    @FXML
+    private VBox player4;
+
+    public GUIGameTable(RemoteView view) {
+        super(view);
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/MainView.fxml"));
-        VBox root = loader.load();
+    public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event) {
 
-        SchemaPanel schemaPanel=new SchemaPanel();
-        VBox.setVgrow(schemaPanel, Priority.ALWAYS);
-        root.getChildren().add(schemaPanel);
-
-
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(true);
-
-        primaryStage.show();
-
-
-        SchemaCardFace cardFace= SchemaCard.loadSchemaCardsFromJson("./gameData/resources/schemaCards/schemaCardBase.scf").get(0).getFace(Side.FRONT);
-        Log.i(cardFace.getName());
-        Schema schema = new Schema(cardFace);
-        schemaPanel.updateSchema(schema);
-        schemaPanel.updateToken(3);
-        //schemaPanel.highlightAllowedPoints(new DiceFace(GameColor.GREEN, 2), SchemaCardFace.Ignore.NOTHING, false);
-
-
-        Dice dice1 = new Dice();
-        dice1.setDiceFace(new DiceFace(GameColor.GREEN, 2));
-        dice1.setOnMouseClicked(event -> schemaPanel.highlightAllowedPoints(new DiceFace(GameColor.GREEN, 2), SchemaCardFace.Ignore.NOTHING, false));
-        root.getChildren().add(dice1);
-
-        Dice dice2 = new Dice();
-        dice2.setDiceFace(new DiceFace(GameColor.RED, 3));
-        dice2.setOnMouseClicked(event -> schemaPanel.highlightAllowedPoints(new DiceFace(GameColor.RED, 3), SchemaCardFace.Ignore.NOTHING, false));
-        root.getChildren().add(dice2);
-
-
-
-        //ToolCard
-        ToolCard toolCard = new ToolCard();
-        toolCard.setToolCard(new ToolCardImmutable("CircularCutter", 3));
-        root.getChildren().add(toolCard);
-
-
-        //ToolCard
-        ObjectiveView privateObj = new ObjectiveView();
-        privateObj.setObjective(new PrivateObjective(GameColor.RED));
-        root.getChildren().add(privateObj);
-
-        //ToolCard
-        ObjectiveView PublicObj = new ObjectiveView();
-        PublicObj.setObjective(new MediumShades());
-        root.getChildren().add(PublicObj);
     }
 
+    @Override
+    public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event) {
 
+    }
+
+    @Override
+    public void handlePlayerTimeout(PlayerTimeoutEvent event) {
+
+    }
+
+    @Override
+    protected void renderDiceHolder() {
+
+    }
+
+    @Override
+    protected void renderDraftBoard() {
+
+    }
+
+    @Override
+    protected void renderPlayer(String player) {
+
+        if (this.players.isEmpty()) return;
+
+        PlayerImmutable playerImmutable = getPlayer(player);
+
+        Platform.runLater(() -> {
+            this.players.get(getPlayerIndex(player)).setPlayer(playerImmutable);
+        });
+
+    }
+
+    @Override
+    protected void renderSchema(String player) {
+
+        if (this.players.isEmpty()) return;
+        Schema schema = getSchema(player);
+
+        Platform.runLater(() -> {
+            this.players.get(getPlayerIndex(player)).setSchema(schema);
+        });
+
+    }
+
+    @Override
+    protected void renderToolcard(int index) {
+
+        if (this.toolCardsList.isEmpty()) return;
+
+        ToolCardImmutable toolcard = getToolCardImmutable(index);
+
+        Platform.runLater(() -> {
+            this.toolCardsList.get(index).setToolCard(toolcard);
+        });
+
+
+    }
+
+    @Override
+    protected void renderPublicObjective(int index) {
+
+    }
+
+    @Override
+    protected void renderTurn() {
+
+    }
+
+    @Override
+    public void setActive() {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/MainView.fxml"));
+
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        Platform.runLater(() -> {
+
+            Stage secondStage = new Stage();
+            secondStage.setResizable(false);
+            Scene scene = new Scene(root);
+            secondStage.setScene(scene);
+            secondStage.show();
+
+            player1 = (VBox) scene.lookup("#player1");
+            player2 = (VBox) scene.lookup("#player2");
+            player3 = (VBox) scene.lookup("#player3");
+            player4 = (VBox) scene.lookup("#player4");
+
+            players.add(new PlayerBoard());
+            players.add(new PlayerBoard());
+            players.add(new PlayerBoard());
+            players.add(new PlayerBoard());
+
+            player1.getChildren().add(players.get(0));
+            player2.getChildren().add(players.get(1));
+            player3.getChildren().add(players.get(2));
+            player4.getChildren().add(players.get(3));
+
+            Arrays.stream(getPlayers()).forEach(player -> {
+                this.players.get(getPlayerIndex(player)).setPlayer(getPlayer(player));
+                this.players.get(getPlayerIndex(player)).setSchema(getSchema(player));
+            });
+
+            publicObjectives = (HBox) scene.lookup("#publicObjectives");
+            toolCards = (HBox) scene.lookup("#toolCards");
+            draftBoard = (VBox) scene.lookup("#draftBoard");
+            roundTrack = (VBox) scene.lookup("#roundTrack");
+
+
+            for (int i = 0; i < Settings.POBJECTIVES_N; i++) {
+                this.publicObjectivesList.add(new ObjectiveView());
+                this.publicObjectivesList.get(i).setObjective(getPublicObjective(i));
+                this.publicObjectives.getChildren().add(this.publicObjectivesList.get(i));
+            }
+
+            for (int i = 0; i < Settings.TOOLCARDS_N; i++) {
+                this.toolCardsList.add(new ToolCard());
+                this.toolCardsList.get(i).setToolCard(getToolCardImmutable(i));
+                this.toolCards.getChildren().add(this.toolCardsList.get(i));
+            }
+
+        });
+
+    }
+
+    @Override
+    public void setInactive() {
+
+    }
+
+    @Override
+    public void renderTimeOut() {
+
+    }
+
+    @Override
+    public void handleGameStart(GameStartEvent gameStartEvent) {
+
+    }
+
+    @Override
+    public void handle(ActionEvent event) {
+
+    }
 
 }

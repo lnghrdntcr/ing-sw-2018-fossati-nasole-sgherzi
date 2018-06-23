@@ -31,6 +31,14 @@ public class ObjectiveView extends StackPane {
     }
 
     public void setObjective(Objective objective){
+
+        if(objective == null){
+
+            objectiveIm.setImage(
+                new Image("gui/objectives/private/back.png"));
+            return;
+        }
+
         if(objective instanceof PrivateObjective) {
             objectiveIm.setImage(
                     new Image("gui/objectives/private/" + ((PrivateObjective)objective).getColor().toString().toUpperCase() + ".png"));

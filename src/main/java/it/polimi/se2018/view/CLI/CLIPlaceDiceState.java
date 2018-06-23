@@ -74,7 +74,7 @@ public class CLIPlaceDiceState extends State {
 
             DiceFace diceFace = getGameTable().getDraftBoardImmutable().getDices()[selectedDice];
 
-            if (getGameTable().getSchemas(getGameTable().getView().getPlayer()).isDiceAllowed(point, diceFace, ignore, forceLoneliness)) {
+            if (getGameTable().getSchema(getGameTable().getView().getPlayer()).isDiceAllowed(point, diceFace, ignore, forceLoneliness)) {
                 if (shouldNotSelectDice) {
                     getGameTable().getView().sendEventToController(new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), getGameTable().getToolIndexByName("FirmPastaBrush"), point, selectedDice));
                 }else if(shouldSelectNumber){
@@ -129,7 +129,7 @@ public class CLIPlaceDiceState extends State {
                 System.out.println("|");
             }
             CLIPrinter.printQuestion("Select a position:");
-            CLIPrinter.printSchema(getGameTable().getSchemas(getGameTable().getView().getPlayer()));
+            CLIPrinter.printSchema(getGameTable().getSchema(getGameTable().getView().getPlayer()));
         }else if (internalState == InternalState.NUMBER_SELECTION) {
             CLIPrinter.printQuestion("This dice was drawn:");
             CLIPrinter.printDice(getGameTable().getDraftBoardImmutable().getDices()[selectedDice]);

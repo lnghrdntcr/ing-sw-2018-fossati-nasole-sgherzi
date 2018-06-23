@@ -3,9 +3,7 @@ package it.polimi.se2018.view.CLI;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
-import it.polimi.se2018.model.schema_card.CellRestriction;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
-import it.polimi.se2018.network.Client;
 import it.polimi.se2018.view.viewEvent.DoubleMoveDiceEvent;
 import it.polimi.se2018.view.viewEvent.DoubleMoveOfColorDiceEvent;
 import it.polimi.se2018.view.viewEvent.MoveDiceEvent;
@@ -39,7 +37,7 @@ public class CLIMoveDice extends State {
         this.color = color;
         actionState = ActionState.CHOOSE;
 
-        playerSchema = this.getGameTable().getSchemas(this.getGameTable().getView().getPlayer()).cloneSchema();
+        playerSchema = this.getGameTable().getSchema(this.getGameTable().getView().getPlayer()).cloneSchema();
 
     }
 
@@ -119,7 +117,7 @@ public class CLIMoveDice extends State {
 
                     CLIPrinter.printError("Movement not permitted");
 
-                    this.playerSchema = this.getGameTable().getSchemas(this.getGameTable().getView().getPlayer());
+                    this.playerSchema = this.getGameTable().getSchema(this.getGameTable().getView().getPlayer());
                     actionState = ActionState.CHOOSE;
 
                     return this;
@@ -152,7 +150,7 @@ public class CLIMoveDice extends State {
 
                     CLIPrinter.printError("Movement not permitted");
 
-                    this.playerSchema = this.getGameTable().getSchemas(this.getGameTable().getView().getPlayer());
+                    this.playerSchema = this.getGameTable().getSchema(this.getGameTable().getView().getPlayer());
                     actionState = ActionState.CHOOSE;
 
                     return this;

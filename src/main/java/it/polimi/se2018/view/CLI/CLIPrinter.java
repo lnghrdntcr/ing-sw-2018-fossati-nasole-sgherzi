@@ -1,7 +1,5 @@
 package it.polimi.se2018.view.CLI;
 
-import it.polimi.se2018.model.DiceHolder;
-import it.polimi.se2018.model.TurnHolder;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.schema.DiceFace;
@@ -9,12 +7,10 @@ import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model_view.DiceHolderImmutable;
 import it.polimi.se2018.model_view.DraftBoardImmutable;
-import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema_card.*;
 import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Log;
-import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.utils.Settings;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
@@ -78,7 +74,7 @@ public class CLIPrinter {
 
     public static void printPlayer(CLIGameTable cliGameTable, PlayerImmutable player) {
         System.out.println(player.getName());
-        printSchema(cliGameTable.getSchemas(player.getName()));
+        printSchema(cliGameTable.getSchema(player.getName()));
     }
 
     public static void printError(String error) {

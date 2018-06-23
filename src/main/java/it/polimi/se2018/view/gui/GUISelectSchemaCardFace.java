@@ -26,6 +26,7 @@ import java.util.ResourceBundle;
 public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements EventHandler<ActionEvent> {
 
     private GridPane root;
+
     @FXML
     private ResourceBundle resources;
 
@@ -68,8 +69,6 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
 
     public GUISelectSchemaCardFace(RemoteView view) {
         super(view);
-
-
     }
 
 

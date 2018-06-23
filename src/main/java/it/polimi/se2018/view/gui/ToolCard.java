@@ -39,8 +39,18 @@ public class ToolCard extends StackPane {
     }
 
     public void setToolCard(ToolCardImmutable toolCardImmutable){
+
+        if(toolCardImmutable == null){
+
+            toolcard.setImage(new Image("gui/toolcards/back.png"));
+            token.setText("" + 0);
+            return;
+
+        }
+
         toolcard.setImage(new Image("gui/toolcards/"+toolCardImmutable.getName()+".png"));
         token.setText(Integer.toString(toolCardImmutable.getToken()));
+
     }
 
 }

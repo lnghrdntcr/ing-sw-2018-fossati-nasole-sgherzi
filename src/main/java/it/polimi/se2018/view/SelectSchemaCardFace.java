@@ -22,8 +22,10 @@ public abstract class SelectSchemaCardFace {
     }
 
     public void handlePlayerCanged(PlayerChangedEvent e) {
-        this.privateObjective = e.getPlayerImmutable().getPrivateObjective();
-        renderPrivateObjective(privateObjective);
+        if (e.getPlayerName().equals(view.getPlayer())) {
+            this.privateObjective = e.getPlayerImmutable().getPrivateObjective();
+            renderPrivateObjective(privateObjective);
+        }
     }
 
     final public void handleTimeoutCommunication(TimeoutCommunicationEvent event) {

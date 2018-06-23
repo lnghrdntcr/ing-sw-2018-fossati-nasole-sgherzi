@@ -14,6 +14,7 @@ import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class GameTable {
@@ -22,6 +23,7 @@ public abstract class GameTable {
     private DraftBoardImmutable draftBoardImmutable;
     private PublicObjective[] publicObjectives = new PublicObjective[Settings.POBJECTIVES_N];
     private HashMap<String, PlayerImmutable> players = new HashMap<>();
+    private ArrayList<String> playersName = new ArrayList<>();
     private HashMap<String, Schema> schemas = new HashMap<>();
     private ToolCardImmutable[] toolCardImmutables = new ToolCardImmutable[Settings.TOOLCARDS_N];
     private boolean isMyTurn;
@@ -60,8 +62,15 @@ public abstract class GameTable {
     }
 
     final public void handlePlayerChanged(PlayerChangedEvent event) {
+        if (!playersName.contains(event.getPlayerName())) {
+            this.playersName.add(event.getPlayerName());
+        }
         players.put(event.getPlayerImmutable().getName(), event.getPlayerImmutable());
         renderPlayer(event.getPlayerImmutable().getName());
+    }
+
+    final public int getPlayerIndex(String player) {
+        return this.playersName.indexOf(player);
     }
 
     final public void handleSchemaChanged(SchemaChangedEvent event) {
@@ -84,8 +93,9 @@ public abstract class GameTable {
         currentPlayer = event.getPlayerName();
         roundNumber = event.getRound();
         roundDirection = event.getDirection();
-        toolcardUsed=event.isToolcardUsed();
-        dicePlaced=event.isDicePlaced();
+        toolcardUsed = event.isToolcardUsed();
+        dicePlaced = event.isDicePlaced();
+        getView().activateGameTable();
         renderTurn();
     }
 
@@ -125,6 +135,7 @@ public abstract class GameTable {
     public abstract void setActive();
 
     public abstract void setInactive();
+
     public abstract void renderTimeOut();
 
 
@@ -146,11 +157,11 @@ public abstract class GameTable {
         return players.get(player);
     }
 
-    public String[] getPlayers(){
+    public String[] getPlayers() {
         return players.keySet().toArray(new String[0]);
     }
 
-    public Schema getSchemas(String player) {
+    public Schema getSchema(String player) {
         return schemas.get(player);
     }
 
@@ -192,9 +203,10 @@ public abstract class GameTable {
     public boolean isDicePlaced() {
         return dicePlaced;
     }
-    public int getToolIndexByName(String toolName){
-        for(int i = 0; i < Settings.TOOLCARDS_N; i++){
-            if(getToolCardImmutable(i).getName().equals(toolName)) return i;
+
+    public int getToolIndexByName(String toolName) {
+        for (int i = 0; i < Settings.TOOLCARDS_N; i++) {
+            if (getToolCardImmutable(i).getName().equals(toolName)) return i;
         }
         return -1;
     }
