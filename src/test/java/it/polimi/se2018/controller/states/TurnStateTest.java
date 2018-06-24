@@ -78,7 +78,6 @@ public class TurnStateTest {
             TurnState actualTurnState = this.turnStates.get(i);
 
             SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
-            actualModel.drawDice();
 
             // Testing normal behaviour
             for (int j = 0; j < actualModel.getPlayersName().length; j++) {

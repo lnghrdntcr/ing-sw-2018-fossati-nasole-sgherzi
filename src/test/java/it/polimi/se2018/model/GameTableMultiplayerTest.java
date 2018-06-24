@@ -528,7 +528,7 @@ public class GameTableMultiplayerTest {
 
             for (int j = 0; j < i; j++) {
 
-                String nextPlayerName = j+1 < i ?  this.model.getPlayersName()[j+1] : this.model.getPlayersName()[i - 1];
+                String nextPlayerName = j + 1 < i ? this.model.getPlayersName()[j + 1] : this.model.getPlayersName()[i - 1];
 
                 this.model.nextTurn();
 
@@ -563,27 +563,30 @@ public class GameTableMultiplayerTest {
             SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
 
             for (int j = 0; j < i; j++) {
-                this.model.setPlayerSchema("Player"+j, schemaCardFace);
+                this.model.setPlayerSchema("Player" + j, schemaCardFace);
 
                 // I can only test if, in those circumstances, an exception is thrown.
 
                 // Trying to assign a schema twice
-                try{
+                try {
                     this.model.setPlayerSchema("Player" + j, schemaCardFace);
                     fail();
-                } catch(IllegalStateException ignored){}
+                } catch (IllegalStateException ignored) {
+                }
 
                 // Trying to assign a null schema.
-                try{
+                try {
                     this.model.setPlayerSchema("Player" + j, null);
                     fail();
-                } catch (IllegalArgumentException ignored){}
+                } catch (IllegalArgumentException ignored) {
+                }
 
                 // Try to assign a schema to a non existing player.
-                try{
+                try {
                     this.model.setPlayerSchema("giannino", schemaCardFace);
                     fail();
-                } catch (IllegalArgumentException ignored){}
+                } catch (IllegalArgumentException ignored) {
+                }
 
             }
 
@@ -666,12 +669,17 @@ public class GameTableMultiplayerTest {
 
             }
 
+            assertFalse(model.isFirstTurnInRound());
+
             //fault in next turn
-            //todo
 
             for (int j = 0; j < i; j++) {
                 System.out.println(this.model.isFirstTurnInRound());
-                assertFalse(this.model.isFirstTurnInRound());
+                if (j == (i - 1)) {
+                    assertTrue(this.model.isFirstTurnInRound());
+                } else {
+                    assertFalse(this.model.isFirstTurnInRound());
+                }
                 this.model.nextTurn();
             }
 
@@ -748,10 +756,11 @@ public class GameTableMultiplayerTest {
                 assertEquals(schemaCardFace, this.model.getPlayerSchemacardFace("Player" + j));
             }
 
-            try{
+            try {
                 this.model.getPlayerSchemacardFace("Player" + (int) Math.floor(Math.random() * 100) + 7);
                 fail();
-            }catch (IllegalArgumentException ignored){}
+            } catch (IllegalArgumentException ignored) {
+            }
 
         }
     }

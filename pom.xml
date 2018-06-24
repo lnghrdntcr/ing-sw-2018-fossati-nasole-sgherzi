@@ -27,9 +27,6 @@
         <sonar.host.url>http://localhost:9000/</sonar.host.url>
         <sonar.login>admin</sonar.login>
         <sonar.password>admin</sonar.password>
-        <sonar.exclusions>**/view/**</sonar.exclusions>
-        <sonar.exclusions>**/network/**</sonar.exclusions>
-        <sonar.exclusions>**/*Event*.java</sonar.exclusions>
 
     </properties>
 

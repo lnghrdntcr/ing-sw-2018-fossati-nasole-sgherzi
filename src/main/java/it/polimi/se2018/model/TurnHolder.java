@@ -60,13 +60,6 @@ public class TurnHolder {
         }
     }
 
-    public static void main(String[] a){
-        TurnHolder turnHolder = new TurnHolder(3);
-        while(true){
-            System.out.println(turnHolder.toString());
-            turnHolder.nextTurn();
-        }
-    }
 
     /**
      * Check if the game is ended
