@@ -23,8 +23,6 @@ public class ToolCard extends StackPane {
     @FXML
     private Label token;
 
-
-
     public ToolCard() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("gui/ToolCard.fxml"));
         fxmlLoader.setRoot(this);
