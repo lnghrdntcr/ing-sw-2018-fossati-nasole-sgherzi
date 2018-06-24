@@ -212,6 +212,8 @@ public class GameTableMultiplayerTest {
         }
     }
 
+    //looks like the problem is the drawDice. Put that as comment as idk if that's the solution wanted by the almighty Sghe.
+
     @Test
     public void increaseDecreaseDice() {
 
@@ -227,7 +229,7 @@ public class GameTableMultiplayerTest {
             this.model = controller.getModel();
 
             // Draw the dices
-            this.model.drawDice();
+            //this.model.drawDice();
 
             for (int j = 0; j < this.model.getDiceNumberOnDraftBoard(); j++) {
 
@@ -265,6 +267,8 @@ public class GameTableMultiplayerTest {
         }
     }
 
+    //looks like the problem is the drawDice. Put that as comment as idk if that's the solution wanted by the almighty Sghe.
+
     @Test
     public void redrawDice() {
 
@@ -280,7 +284,7 @@ public class GameTableMultiplayerTest {
             this.model = controller.getModel();
 
             // Draw the dices
-            this.model.drawDice();
+            //this.model.drawDice();
             int drawnDiceSize = this.model.getDiceNumberOnDraftBoard();
 
             // Testing normal behaviour.
@@ -309,6 +313,9 @@ public class GameTableMultiplayerTest {
         }
     }
 
+    //looks like the problem is the drawDice. Put that as comment as idk if that's the solution wanted by the almighty Sghe.
+
+
     @Test
     public void redrawAllDice() {
         for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
@@ -323,7 +330,7 @@ public class GameTableMultiplayerTest {
             this.model = controller.getModel();
 
             // Draw the dices
-            this.model.drawDice();
+            //this.model.drawDice();
             int drawnDiceSize = this.model.getDiceNumberOnDraftBoard();
 
             // Testing normal behaviour.
@@ -334,6 +341,8 @@ public class GameTableMultiplayerTest {
 
         }
     }
+
+    //looks like the problem is the drawDice. Put that as comment as idk if that's the solution wanted by the almighty Sghe.
 
     @Test
     public void flipDice() {
@@ -349,7 +358,7 @@ public class GameTableMultiplayerTest {
             this.model = controller.getModel();
 
             // Draw the dices
-            this.model.drawDice();
+            //this.model.drawDice();
 
             for (int j = 0; j < this.model.getDiceNumberOnDraftBoard(); j++) {
 
@@ -380,6 +389,8 @@ public class GameTableMultiplayerTest {
         }
     }
 
+    //looks like the problem is the drawDice. Put that as comment as idk if that's the solution wanted by the almighty Sghe.
+
     @Test
     public void drawDice() {
 
@@ -396,8 +407,9 @@ public class GameTableMultiplayerTest {
             this.controller = new Controller(this.views, 10);
             this.model = controller.getModel();
 
+            //angelo: maybe this is already the second time I invoke this, due to intern calls?
             // Draw the dices
-            this.model.drawDice();
+            //this.model.drawDice();
 
             try {
                 this.model.drawDice();
@@ -407,6 +419,8 @@ public class GameTableMultiplayerTest {
 
         }
     }
+
+    //looks like the problem is the drawDice. Put that as comment as idk if that's the solution wanted by the almighty Sghe.
 
     @Test
     public void putBackAndRedrawDice() {
@@ -424,7 +438,7 @@ public class GameTableMultiplayerTest {
             this.model = controller.getModel();
 
             // Draw the dices
-            this.model.drawDice();
+            //this.model.drawDice();
 
             int diceNumber = this.model.getDiceNumberOnDraftBoard();
 
@@ -443,6 +457,9 @@ public class GameTableMultiplayerTest {
 
     }
 
+    //looks like the problem is the drawDice. Put that as comment as idk if that's the solution wanted by the almighty Sghe.
+
+
     @Test
     public void changeDiceNumber() {
 
@@ -458,7 +475,7 @@ public class GameTableMultiplayerTest {
             this.model = controller.getModel();
 
             // Draw the dices
-            this.model.drawDice();
+            //this.model.drawDice();
 
             for (int j = 0; j < this.model.getDiceNumberOnDraftBoard(); j++) {
 
@@ -524,6 +541,7 @@ public class GameTableMultiplayerTest {
         }
     }
 
+    //looks like the problem is the drawDice. Put that as comment as idk if that's the solution wanted by the almighty Sghe.
 
     @Test
     public void setPlayerSchema() throws FileNotFoundException {
@@ -540,7 +558,7 @@ public class GameTableMultiplayerTest {
             this.model = controller.getModel();
 
             // Draw the dices
-            this.model.drawDice();
+            //this.model.drawDice();
 
             SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
 
@@ -642,12 +660,17 @@ public class GameTableMultiplayerTest {
 
             for (int j = 0; j < i; j++) {
 
+                System.out.println(this.model.isFirstTurnInRound());
                 assertTrue(this.model.isFirstTurnInRound());
                 this.model.nextTurn();
 
             }
 
+            //fault in next turn
+            //todo
+
             for (int j = 0; j < i; j++) {
+                System.out.println(this.model.isFirstTurnInRound());
                 assertFalse(this.model.isFirstTurnInRound());
                 this.model.nextTurn();
             }
@@ -656,6 +679,8 @@ public class GameTableMultiplayerTest {
         }
 
     }
+
+    //looks like the problem is the drawDice. Put that as comment as idk if that's the solution wanted by the almighty Sghe.
 
     @Test
     public void getDiceNumberOnDraftBoard() throws FileNotFoundException {
@@ -682,7 +707,7 @@ public class GameTableMultiplayerTest {
             int dices = this.model.getPlayersName().length * 2 + 1;
             int position = 0;
 
-            this.model.drawDice();
+            //this.model.drawDice();
 
             for (int j = 0; j < i; j++) {
 
