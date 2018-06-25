@@ -15,7 +15,7 @@ public class VirtualView extends View {
 
     @Override
     public void update(Event message) {
-        if(this.isConnected() && localProxy != null) localProxy.sendEventToClient(message);
+        if(this.isConnected() && localProxy != null) localProxy.sendEventToClient(message.filter(getPlayer()));
     }
 
     public void dispatchProxyEvent(ViewEvent event) {

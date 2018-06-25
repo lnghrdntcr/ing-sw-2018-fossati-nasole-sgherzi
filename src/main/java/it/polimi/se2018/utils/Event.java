@@ -28,7 +28,8 @@ public abstract class Event implements Serializable {
         return player;
     }
 
-    public void filter(String playername) {
+    public Event filter(String playername) {
+        return this;
     }
 
     @Override

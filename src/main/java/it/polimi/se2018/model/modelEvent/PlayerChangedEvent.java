@@ -1,6 +1,7 @@
 package it.polimi.se2018.model.modelEvent;
 
 import it.polimi.se2018.model_view.PlayerImmutable;
+import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.view.GameEnding;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.SelectSchemaCardFace;
@@ -38,10 +39,10 @@ public class PlayerChangedEvent extends ModelEvent {
     }
 
     @Override
-    public void filter(String playername) {
-        super.filter(playername);
-        if(!playername.equals(getPlayerName())){
-            playerImmutable= playerImmutable.getFilteredInstance();
+    public Event filter(String playername) {
+        if(!playername.equals(playerImmutable.getName())){
+            return new PlayerChangedEvent(getEmitterName(), getReceiver(), getPlayerName(), playerImmutable.getFilteredInstance());
         }
+        return this;
     }
 }
