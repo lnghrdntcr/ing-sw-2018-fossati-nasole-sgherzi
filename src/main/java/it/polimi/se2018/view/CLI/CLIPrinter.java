@@ -18,6 +18,8 @@ import org.json.JSONObject;
 
 import java.awt.*;
 import java.io.*;
+import java.net.URISyntaxException;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -187,15 +189,13 @@ public class CLIPrinter {
 
         System.out.println(ansi().bg(WHITE).fg(RED).a("Toolcard n: " + index).reset());
 
-        String path = "gameData/resources/cli/toolcards/" + toolCardImmutable.getName() + ".json";
-
-        File toolcardResources = new File(path);
+        String path = "cli/toolcards/" + toolCardImmutable.getName() + ".json";
 
         FileInputStream fileInputStream = null;
-
         try {
+            File toolcardResources = new File(Objects.requireNonNull(toolCardImmutable.getClass().getClassLoader().getResource(path)).toURI());
             fileInputStream = new FileInputStream(toolcardResources);
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | URISyntaxException | NullPointerException e) {
             Log.d("Resource file linked to " + toolCardImmutable.getName() + " not found.");
             return;
         }
@@ -229,19 +229,21 @@ public class CLIPrinter {
 
         System.out.println(ansi().bg(WHITE).fg(RED).a("Public Objective n: " + index).reset());
 
-        String path = "gameData/resources/cli/publicObjectives/" + publicObjective.getClass().getSimpleName() + ".json";
+        String path = "cli/publicObjectives/" + publicObjective.getClass().getSimpleName() + ".json";
 
         File publicObjectiveResource = null;
 
-        publicObjectiveResource = new File(path);
+
 
         FileInputStream fileInputStream = null;
         try {
+            publicObjectiveResource = new File(Objects.requireNonNull(publicObjective.getClass().getClassLoader().getResource(path)).toURI());
             fileInputStream = new FileInputStream(publicObjectiveResource);
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | URISyntaxException | NullPointerException e) {
             Log.d("Resource file linked to " + publicObjective.getClass().getSimpleName() + " not found.");
             return;
         }
+
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
         StringBuilder builder;
         try (Scanner scanner = new Scanner(bufferedInputStream)) {
