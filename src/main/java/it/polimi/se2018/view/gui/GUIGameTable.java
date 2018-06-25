@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class GUIGameTable extends GameTable implements EventHandler<ActionEvent> {
+public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>, PlayerBoard.OnPlayerBoardAction {
 
     @FXML
     private GridPane root;
@@ -180,10 +180,10 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
             player3 = (VBox) scene.lookup("#player3");
             player4 = (VBox) scene.lookup("#player4");
 
-            players.add(new PlayerBoard());
-            players.add(new PlayerBoard());
-            players.add(new PlayerBoard());
-            players.add(new PlayerBoard());
+            players.add(new PlayerBoard(this));
+            players.add(new PlayerBoard(this));
+            players.add(new PlayerBoard(this));
+            players.add(new PlayerBoard(this));
 
             player1.getChildren().add(players.get(0));
             player2.getChildren().add(players.get(1));
@@ -228,7 +228,7 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     @Override
     public void setInactive() {
 
-        if(root == null) return;
+        if (root == null) return;
 
         Platform.runLater(() -> {
             Stage stage = (Stage) root.getScene().getWindow();
@@ -252,4 +252,18 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
 
     }
 
+    @Override
+    public void onPlayerPlaceDice() {
+        // TODO: Handle placing dice
+    }
+
+    @Override
+    public void onPlayerEndTurn() {
+        endTurn();
+    }
+
+    @Override
+    public void onPlayerUseToolCard() {
+        // TODO: Handle use of the toolcard
+    }
 }

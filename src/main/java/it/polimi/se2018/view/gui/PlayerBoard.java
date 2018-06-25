@@ -3,8 +3,11 @@ package it.polimi.se2018.view.gui;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
@@ -12,7 +15,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class PlayerBoard extends VBox {
+public class PlayerBoard extends VBox implements EventHandler<ActionEvent> {
 
     @FXML
     private Label playerName;
@@ -23,11 +26,29 @@ public class PlayerBoard extends VBox {
     @FXML
     private Label token;
 
+    @FXML
+    private HBox actionArea;
+
+    @FXML
+    private Button placeDice;
+
+    @FXML
+    private Button useToolCard;
+
+    @FXML
+    private Button endTurn;
+
+
     private SchemaPanel schemaPanel;
     private ObjectiveView objectiveView;
+    private OnPlayerBoardAction eventHandler;
 
 
-    public PlayerBoard() {
+    public PlayerBoard(OnPlayerBoardAction eventHandler) {
+
+        if (eventHandler == null) throw new NullPointerException("eventHandler cannot be null!!!");
+
+        this.eventHandler = eventHandler;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("gui/PlayerBoard.fxml"));
         fxmlLoader.setRoot(this);
@@ -45,11 +66,19 @@ public class PlayerBoard extends VBox {
         playerBoard.getChildren().add(this.schemaPanel);
         playerBoard.getChildren().add(this.objectiveView);
 
+        placeDice.setOnAction(this);
+        useToolCard.setOnAction(this);
+        endTurn.setOnAction(this);
+
     }
 
     public void setPlayer(PlayerImmutable player) {
 
         if (player == null) return;
+
+        if (player.getPrivateObjective() == null) {
+            this.getChildren().removeAll(placeDice, useToolCard, endTurn);
+        }
 
         playerName.setText(player.getName());
         token.setText("Token: " + player.getToken());
@@ -64,6 +93,35 @@ public class PlayerBoard extends VBox {
         this.schemaPanel.updateSchema(schema);
     }
 
+
+    @Override
+    public void handle(ActionEvent event) {
+        if (event.getSource().equals(placeDice)) {
+            eventHandler.onPlayerPlaceDice();
+            return;
+        }
+
+        if (event.getSource().equals(useToolCard)) {
+            eventHandler.onPlayerUseToolCard();
+            return;
+        }
+
+        if (event.getSource().equals(endTurn)) {
+            eventHandler.onPlayerEndTurn();
+            return;
+        }
+
+    }
+
+    public interface OnPlayerBoardAction {
+
+        public void onPlayerPlaceDice();
+
+        public void onPlayerEndTurn();
+
+        public void onPlayerUseToolCard();
+
+    }
 
 }
 
