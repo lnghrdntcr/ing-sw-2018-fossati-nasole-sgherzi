@@ -4,7 +4,9 @@ import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceEvent;
 import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceWithNumberSelectionEvent;
 import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
 import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
+import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.Schema;
+import it.polimi.se2018.model_view.DraftBoardImmutable;
 import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Settings;
@@ -18,7 +20,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -36,6 +37,10 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     private ArrayList<ToolCard> toolCardsList = new ArrayList<>();
     private ArrayList<ObjectiveView> publicObjectivesList = new ArrayList<>();
 
+    private DiceHolderView diceHolderView;
+
+    private DraftBoard draftBoardView;
+
     @FXML
     private VBox player1;
 
@@ -46,7 +51,9 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     private HBox publicObjectives;
 
     @FXML
-    private VBox draftBoard;
+    private HBox draftBoard;
+
+    // TODO: DraftBoard needs to be an element
 
     @FXML
     private VBox player3;
@@ -82,10 +89,18 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     @Override
     protected void renderDiceHolder() {
 
+        if (diceHolderView == null) return;
+
+        this.diceHolderView.setDiceHolder(this.getDiceHolderImmutable());
+
     }
 
     @Override
     protected void renderDraftBoard() {
+
+        if (draftBoardView == null || getDraftBoardImmutable() == null) return;
+
+        draftBoardView.setDraftBoard(getDraftBoardImmutable());
 
     }
 
@@ -141,6 +156,8 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     @Override
     public void setActive() {
 
+        if (root != null) return;
+
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/MainView.fxml"));
 
         try {
@@ -173,6 +190,9 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
             player3.getChildren().add(players.get(2));
             player4.getChildren().add(players.get(3));
 
+            diceHolderView = new DiceHolderView();
+            draftBoardView = new DraftBoard();
+
             Arrays.stream(getPlayers()).forEach(player -> {
                 this.players.get(getPlayerIndex(player)).setPlayer(getPlayer(player));
                 this.players.get(getPlayerIndex(player)).setSchema(getSchema(player));
@@ -180,7 +200,7 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
 
             publicObjectives = (HBox) scene.lookup("#publicObjectives");
             toolCards = (HBox) scene.lookup("#toolCards");
-            draftBoard = (VBox) scene.lookup("#draftBoard");
+            draftBoard = (HBox) scene.lookup("#draftBoard");
             roundTrack = (VBox) scene.lookup("#roundTrack");
 
 
@@ -196,6 +216,11 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
                 this.toolCards.getChildren().add(this.toolCardsList.get(i));
             }
 
+            roundTrack.getChildren().add(diceHolderView);
+            draftBoard.getChildren().add(draftBoardView);
+
+            draftBoardView.setDraftBoard(getDraftBoardImmutable());
+
         });
 
     }
@@ -203,6 +228,13 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     @Override
     public void setInactive() {
 
+        if(root == null) return;
+
+        Platform.runLater(() -> {
+            Stage stage = (Stage) root.getScene().getWindow();
+            stage.close();
+            root = null;
+        });
     }
 
     @Override
