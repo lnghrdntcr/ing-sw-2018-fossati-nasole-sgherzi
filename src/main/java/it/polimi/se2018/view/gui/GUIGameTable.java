@@ -18,6 +18,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -255,11 +256,21 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     @Override
     public void onPlayerPlaceDice() {
         // TODO: Handle placing dice
+
+
     }
 
     @Override
     public void onPlayerEndTurn() {
-        endTurn();
+
+        if (!getView().getPlayer().equals(this.getCurrentPlayer())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Not your turn!");
+            alert.setContentText("You cannot end your turn, if it's not yours :)");
+            alert.showAndWait();
+        } else {
+            endTurn();
+        }
     }
 
     @Override

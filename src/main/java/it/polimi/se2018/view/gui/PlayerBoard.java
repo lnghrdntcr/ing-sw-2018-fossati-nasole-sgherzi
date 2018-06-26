@@ -2,14 +2,12 @@ package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model_view.PlayerImmutable;
-import it.polimi.se2018.model_view.ToolCardImmutable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -18,7 +16,7 @@ import java.io.IOException;
 public class PlayerBoard extends VBox implements EventHandler<ActionEvent> {
 
     @FXML
-    private Label playerName;
+    private Label playerNameToken;
 
     @FXML
     private HBox playerBoard;
@@ -77,11 +75,13 @@ public class PlayerBoard extends VBox implements EventHandler<ActionEvent> {
         if (player == null) return;
 
         if (player.getPrivateObjective() == null) {
-            this.getChildren().removeAll(placeDice, useToolCard, endTurn);
+            placeDice.setVisible(false);
+            useToolCard.setVisible(false);
+            endTurn.setVisible(false);
+            /*            this.getChildren().removeAll(placeDice, useToolCard, endTurn);*/
         }
 
-        playerName.setText(player.getName());
-        token.setText("Token: " + player.getToken());
+        playerNameToken.setText(player.getName() + "   " + "Token: " + player.getToken());
         this.objectiveView.setObjective(player.getPrivateObjective());
 
     }
@@ -96,6 +96,7 @@ public class PlayerBoard extends VBox implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent event) {
+
         if (event.getSource().equals(placeDice)) {
             eventHandler.onPlayerPlaceDice();
             return;
