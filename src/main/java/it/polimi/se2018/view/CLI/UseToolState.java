@@ -118,6 +118,11 @@ public class UseToolState extends State {
     }
 
     @Override
+    public void unrealize() {
+
+    }
+
+    @Override
     public void render() {
         CLIPrinter.printQuestion("Select the tool card you want to use:");
 
