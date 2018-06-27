@@ -36,4 +36,8 @@ public abstract class IncrementDice extends State {
 
         getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
     }
+
+    public void processCancel(){
+        getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
+    }
 }

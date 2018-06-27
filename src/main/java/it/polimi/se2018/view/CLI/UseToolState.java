@@ -3,7 +3,7 @@ package it.polimi.se2018.view.CLI;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
 
-import it.polimi.se2018.view.ChooseColorFromDiceHolder;
+import it.polimi.se2018.view.MoveDice;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 
@@ -31,17 +31,17 @@ public class UseToolState extends State {
 
         //2
         provider.put("EglomiseBrush", () -> {
-            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.COLOR, "EglomiseBrush", CLIMoveDice.Times.SECOND);
+            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.COLOR, "EglomiseBrush", MoveDice.Times.SECOND);
         });
 
         //3
         provider.put("CopperReamer", () -> {
-            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NUMBER, "CopperReamer", CLIMoveDice.Times.SECOND);
+            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NUMBER, "CopperReamer", MoveDice.Times.SECOND);
         });
 
         //4
         provider.put("Lathekin", () -> {
-            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NOTHING, "Lathekin", CLIMoveDice.Times.FIRST);
+            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NOTHING, "Lathekin", MoveDice.Times.FIRST);
         });
 
         //5

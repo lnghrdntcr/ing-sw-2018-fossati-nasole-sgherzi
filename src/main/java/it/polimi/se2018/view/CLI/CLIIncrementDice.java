@@ -14,7 +14,7 @@ public class CLIIncrementDice extends IncrementDice {
     public void process(String input) {
 
         if (input.equalsIgnoreCase("cancel")){
-            getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
+            processCancel();
             return;
         }
 

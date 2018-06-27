@@ -6,9 +6,7 @@ import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.CLI.CLIMainMenuState;
 import it.polimi.se2018.view.CLI.CLIMoveDice;
-import it.polimi.se2018.view.CLI.CLIPrinter;
 import it.polimi.se2018.view.CLI.State;
-import it.polimi.se2018.view.GameTable;
 
 import java.util.HashMap;
 import java.util.function.Function;
@@ -30,7 +28,7 @@ public abstract class ChooseColorFromDiceHolder extends State {
         if (!provider.isEmpty()) return;
 
         //1
-        provider.put("ManualCutter", (i) -> new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NOTHING, toolName, CLIMoveDice.Times.FIRST, i));
+        provider.put("ManualCutter", (i) -> new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NOTHING, toolName, MoveDice.Times.FIRST, i));
 
 
     }
