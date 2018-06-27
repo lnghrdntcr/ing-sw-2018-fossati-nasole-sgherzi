@@ -7,30 +7,36 @@ import java.awt.*;
 public class CLIExcangeWDiceHolder extends State {
 
     int diceIndex;
+
     public CLIExcangeWDiceHolder(CLIGameTable gameTable, Integer diceIndex) {
         super(gameTable);
-        this.diceIndex=diceIndex;
+        this.diceIndex = diceIndex;
     }
 
     @Override
-    public State process(String input) {
+    public void process(String input) {
 
-        if (input.equalsIgnoreCase("cancel")) return new CLIMainMenuState(this.getGameTable());
+        if (input.equalsIgnoreCase("cancel")) getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
 
 
         Point victim = CLIPrinter.decodePosition(input, getGameTable().getDiceHolderImmutable());
 
-        if(victim == null){
+        if (victim == null) {
             CLIPrinter.printError("input invalid");
-            return this;
+            getGameTable().setState(this);
         }
 
 
         getGameTable().getView().sendEventToController(new SwapDiceFaceWithDiceHolderEvent(getClass().getName(), "",
-                getGameTable().getCurrentPlayer(), getGameTable().getToolIndexByName("CircularCutter"), diceIndex, victim.y,
-                victim.x));
+            getGameTable().getCurrentPlayer(), getGameTable().getToolIndexByName("CircularCutter"), diceIndex, victim.y,
+            victim.x));
 
-        return new CLIMainMenuState(getGameTable());
+        getGameTable().setState(new CLIMainMenuState(getGameTable()));
+    }
+
+    @Override
+    public void unrealize() {
+
     }
 
     @Override

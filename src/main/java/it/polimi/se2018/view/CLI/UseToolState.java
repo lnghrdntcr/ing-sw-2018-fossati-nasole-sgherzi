@@ -57,16 +57,16 @@ public class UseToolState extends State {
         provider.put("Gavel", () -> {
             if (this.getGameTable().getToolIndexByName("Gavel") == -1) return new CLIMainMenuState(getGameTable());
 
-            if(getGameTable().getRoundDirection() || getGameTable().isDicePlaced())
+            if (getGameTable().getRoundDirection() || getGameTable().isDicePlaced())
 
-            this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
+                this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
                     "", getGameTable().getView().getPlayer(), this.getGameTable().getToolIndexByName("Gavel"), -1));
             return new CLIMainMenuState(getGameTable());
         });
 
         //8
         provider.put("WheeledPincer", () -> {
-            if(!getGameTable().getRoundDirection()){
+            if (!getGameTable().getRoundDirection()) {
                 CLIPrinter.printError("You can't activate this card now!");
                 return this;
             }
@@ -94,27 +94,33 @@ public class UseToolState extends State {
     @Override
     public void process(String input) {
 
-        if (input.equalsIgnoreCase("cancel")) getGameTable().setState( new CLIMainMenuState(getGameTable()));
+        if (input.equalsIgnoreCase("cancel")) getGameTable().setState(new CLIMainMenuState(getGameTable()));
 
-        int selection;
-        try{
-            selection=Integer.parseInt(input);
-        }catch (RuntimeException ex){
+        int selection = -1;
+
+        try {
+            selection = Integer.parseInt(input);
+        } catch (RuntimeException ex) {
             CLIPrinter.printError("Invalid input!");
             getGameTable().setState(this);
         }
 
-        if(getGameTable().getPlayer(getGameTable().getView().getPlayer()).getToken() < getGameTable().getToolCardImmutable(selection).getNeededTokens()){
-            CLIPrinter.printError("You don't have enough tokens! :(");
-            getGameTable().setState( this);
+        if (selection >= 0 && selection < Settings.TOOLCARDS_N) {
+
+            if (getGameTable().getPlayer(getGameTable().getView().getPlayer()).getToken() < getGameTable().getToolCardImmutable(selection).getNeededTokens()) {
+                CLIPrinter.printError("You don't have enough tokens! :(");
+                getGameTable().setState(this);
+            }
+            getGameTable().setState(provider.get(
+                this.getGameTable()
+                    .getToolCardImmutable(
+                        Integer.parseInt(input)).getName()
+            ).get());
         }
 
+        CLIPrinter.printError("Invalid number!");
+        getGameTable().setState(this);
 
-        getGameTable().setState( provider.get(
-                this.getGameTable()
-                        .getToolCardImmutable(
-                                Integer.parseInt(input)).getName()
-        ).get());
     }
 
     @Override

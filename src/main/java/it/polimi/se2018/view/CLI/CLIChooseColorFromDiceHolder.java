@@ -4,6 +4,7 @@ import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.GameTable;
 
 import java.util.HashMap;
 import java.util.function.Function;
@@ -14,7 +15,7 @@ public class CLIChooseColorFromDiceHolder extends State {
 
     String toolName;
 
-    public CLIChooseColorFromDiceHolder(CLIGameTable gameTable, String toolName) {
+    public CLIChooseColorFromDiceHolder(GameTable gameTable, String toolName) {
         super(gameTable);
         this.toolName = toolName;
         this.setupProvider();
