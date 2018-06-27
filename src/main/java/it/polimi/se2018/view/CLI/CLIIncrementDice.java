@@ -15,11 +15,15 @@ public class CLIIncrementDice extends State {
     @Override
     public void process(String input) {
 
-        if (input.equalsIgnoreCase("cancel")) getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
+        if (input.equalsIgnoreCase("cancel")){
+            getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
+            return;
+        }
 
         if (!input.equalsIgnoreCase("d") && !input.equalsIgnoreCase("i")) {
             CLIPrinter.printError("Invalid choice");
             getGameTable().setState(this);
+            return;
         }
 
         int increment = input.equalsIgnoreCase("d") ? -1 : 1;
@@ -27,11 +31,13 @@ public class CLIIncrementDice extends State {
         if (increment == -1 && getGameTable().getDraftBoardImmutable().getDices()[diceIndex].getNumber() == 1) {
             CLIPrinter.printError("Cannot decrement a 1 dice!");
             getGameTable().setState(this);
+            return;
         }
 
         if (increment == 1 && getGameTable().getDraftBoardImmutable().getDices()[diceIndex].getNumber() == 6) {
             CLIPrinter.printError("Cannot increment a 6 dice!");
             getGameTable().setState(this);
+            return;
         }
 
         this.getGameTable().getView().sendEventToController(

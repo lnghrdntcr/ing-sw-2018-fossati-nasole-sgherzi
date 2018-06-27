@@ -53,6 +53,7 @@ public class CLIPlaceDiceState extends State {
             if(shouldNotSelectDice || shouldSelectNumber) this.getGameTable().getView().sendEventToController(new CancelActionEvent(this.getClass().getName(), this.getGameTable().getView().getPlayer(), "" ));
 
             getGameTable().setState(new CLIMainMenuState(getGameTable()));
+            return;
         } else if (internalState == InternalState.DICE_SELECTION) {
             try {
                 selectedDice = Integer.parseInt(input);
@@ -62,15 +63,18 @@ public class CLIPlaceDiceState extends State {
                     internalState = InternalState.POSITION_SELECTION;
                 }
                 getGameTable().setState(this);
+                return;
             } catch (NumberFormatException ex) {
                 CLIPrinter.printError(input + " is not a valid dice!");
             }
             getGameTable().setState( this);
+            return;
         } else if (internalState == InternalState.POSITION_SELECTION) {
             Point point = CLIPrinter.decodePosition(input);
             if (point == null) {
                 CLIPrinter.printError("Invalid position!");
                 getGameTable().setState( this);
+                return;
             }
 
             DiceFace diceFace = getGameTable().getDraftBoardImmutable().getDices()[selectedDice];
@@ -93,10 +97,12 @@ public class CLIPlaceDiceState extends State {
                             getGameTable().getView().getPlayer(), selectedDice, point));
                 }
                 getGameTable().setState( new CLIMainMenuState(getGameTable()));
+                return;
 
             } else {
                 CLIPrinter.printError("This dice cannot be placed here!");
                 getGameTable().setState( this);
+                return;
             }
         } else if (internalState == InternalState.NUMBER_SELECTION) {
             try {
@@ -104,16 +110,19 @@ public class CLIPlaceDiceState extends State {
             } catch (NumberFormatException ex) {
                 CLIPrinter.printError(input + " is not a valid dice number!");
                 getGameTable().setState( this);
+                return;
             }
             
             if(selectedNumber<=0||selectedNumber>6){
                 CLIPrinter.printError(input + " not between 1 and 6!");
                 getGameTable().setState( this);
+                return;
             }
             
             internalState=InternalState.POSITION_SELECTION;
 
             getGameTable().setState( this);
+            return;
         }
         getGameTable().setState( this);
     }

@@ -101,6 +101,7 @@ public class CLIMainMenuState extends State {
         } catch (NumberFormatException exception) {
             CLIPrinter.printError("The selection must be a number!");
             getGameTable().setState(this);
+            return;
         }
 
         if (selection <= 0 || selection > 8) {
@@ -111,6 +112,7 @@ public class CLIMainMenuState extends State {
             }
 
             getGameTable().setState( this);
+            return;
         }
 
 
@@ -118,12 +120,14 @@ public class CLIMainMenuState extends State {
         if (!getGameTable().getView().getPlayer().equals(this.getGameTable().getView().getPlayer()) && selection > 5) {
             CLIPrinter.printError("It's not your turn, you motherfather!");
             getGameTable().setState( this);
+            return;
         }
 
         if (selection == 7) {
             if(getGameTable().isToolcardUsed()){
                 CLIPrinter.printError("You have already used a toolcard in this turn");
                 getGameTable().setState( this);
+                return;
             }else{
                 provider.get(7).get();
             }
@@ -133,6 +137,7 @@ public class CLIMainMenuState extends State {
             if(getGameTable().isDicePlaced()){
                 CLIPrinter.printError("You have already placed a dice in this turn");
                 getGameTable().setState( this);
+                return;
             }
         }
 
