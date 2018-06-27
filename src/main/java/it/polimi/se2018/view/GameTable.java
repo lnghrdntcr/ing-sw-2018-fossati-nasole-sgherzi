@@ -227,7 +227,12 @@ public abstract class GameTable {
     }
 
     public void setState(State state) {
-
+        if(state == null) throw new NullPointerException("State cannot be null!");
+        if(realeState!=null){
+            realeState.unrealize();
+        }
+        realeState=state;
+        state.render();
 
     }
 

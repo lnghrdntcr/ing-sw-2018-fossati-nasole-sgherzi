@@ -1,10 +1,11 @@
 package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.view.ChooseDice;
+import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.InputError;
 
 public class CLIChooseDice extends ChooseDice {
-    public CLIChooseDice(CLIGameTable gameTable, String toolName) {
+    public CLIChooseDice(GameTable gameTable, String toolName) {
         super(gameTable, toolName);
     }
 
@@ -16,8 +17,8 @@ public class CLIChooseDice extends ChooseDice {
     }
 
     @Override
-    public State process(String input) {
-        if(input.equalsIgnoreCase("cancel")) return processCancel();
+    public void process(String input) {
+        if(input.equalsIgnoreCase("cancel")) getGameTable().setState(  processCancel());
 
         int dice = -1;
 
@@ -25,14 +26,14 @@ public class CLIChooseDice extends ChooseDice {
             dice = Integer.parseInt(input);
         } catch (RuntimeException ignored){
             CLIPrinter.printError("Invalid input.");
-            return this;
+            getGameTable().setState( this);
         }
 
         try {
-            return processDice(dice);
+            getGameTable().setState(  processDice(dice));
         }catch (InputError ie){
             CLIPrinter.printError(ie.getMessage());
-            return this;
+            getGameTable().setState(  this);
         }
     }
 

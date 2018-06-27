@@ -90,9 +90,9 @@ public class CLIMainMenuState extends State {
     }
 
     @Override
-    public State process(String input) {
+    public void process(String input) {
 
-        int selection;
+        int selection=-1;
 
         Log.d("HANDLING PROCESSING OF INPUT" + input);
 
@@ -100,7 +100,7 @@ public class CLIMainMenuState extends State {
             selection = Integer.parseInt(input);
         } catch (NumberFormatException exception) {
             CLIPrinter.printError("The selection must be a number!");
-            return this;
+            getGameTable().setState(this);
         }
 
         if (selection <= 0 || selection > 8) {
@@ -110,20 +110,20 @@ public class CLIMainMenuState extends State {
                 CLIPrinter.printError("The selection must be between 1 and 5");
             }
 
-            return this;
+            getGameTable().setState( this);
         }
 
 
 
         if (!getGameTable().getView().getPlayer().equals(this.getGameTable().getView().getPlayer()) && selection > 5) {
             CLIPrinter.printError("It's not your turn, you motherfather!");
-            return this;
+            getGameTable().setState( this);
         }
 
         if (selection == 7) {
             if(getGameTable().isToolcardUsed()){
                 CLIPrinter.printError("You have already used a toolcard in this turn");
-                return this;
+                getGameTable().setState( this);
             }else{
                 provider.get(7).get();
             }
@@ -132,11 +132,11 @@ public class CLIMainMenuState extends State {
         if (selection == 6) {
             if(getGameTable().isDicePlaced()){
                 CLIPrinter.printError("You have already placed a dice in this turn");
-                return this;
+                getGameTable().setState( this);
             }
         }
 
-        return provider.get(selection).get();
+        getGameTable().setState( provider.get(selection).get());
 
     }
 

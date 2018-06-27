@@ -12,7 +12,7 @@ public abstract class ChooseDice extends State {
 
     private String toolName;
 
-    public ChooseDice(CLIGameTable gameTable, String toolName) {
+    public ChooseDice(GameTable gameTable, String toolName) {
         super(gameTable);
         this.toolName = toolName;
         this.setupProvider();

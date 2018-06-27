@@ -3,6 +3,7 @@ package it.polimi.se2018.view.CLI;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
 
+import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ public class UseToolState extends State {
     private static HashMap<String, Supplier<State>> provider = new HashMap<>();
 
 
-    public UseToolState(CLIGameTable gameTable) {
+    public UseToolState(GameTable gameTable) {
         super(gameTable);
         this.setupProvider();
     }
@@ -91,29 +92,29 @@ public class UseToolState extends State {
     }
 
     @Override
-    public State process(String input) {
+    public void process(String input) {
 
-        if (input.equalsIgnoreCase("cancel")) return new CLIMainMenuState(getGameTable());
+        if (input.equalsIgnoreCase("cancel")) getGameTable().setState( new CLIMainMenuState(getGameTable()));
 
         int selection;
         try{
             selection=Integer.parseInt(input);
         }catch (RuntimeException ex){
             CLIPrinter.printError("Invalid input!");
-            return this;
+            getGameTable().setState(this);
         }
 
         if(getGameTable().getPlayer(getGameTable().getView().getPlayer()).getToken() < getGameTable().getToolCardImmutable(selection).getNeededTokens()){
             CLIPrinter.printError("You don't have enough tokens! :(");
-            return this;
+            getGameTable().setState( this);
         }
 
 
-        return provider.get(
+        getGameTable().setState( provider.get(
                 this.getGameTable()
                         .getToolCardImmutable(
                                 Integer.parseInt(input)).getName()
-        ).get();
+        ).get());
     }
 
     @Override

@@ -1,22 +1,29 @@
 package it.polimi.se2018.view.CLI;
 
+import it.polimi.se2018.view.GameTable;
+
 public class ShowPlayerState extends State{
 
-    public ShowPlayerState(CLIGameTable gameTable) {
+    public ShowPlayerState(GameTable gameTable) {
         super(gameTable);
     }
 
     @Override
-    public State process(String input) {
+    public void process(String input) {
         if(input.equals("cancel")){
-            return new CLIMainMenuState(getGameTable());
+            getGameTable().setState( new CLIMainMenuState(getGameTable()));
         }else if(getGameTable().getPlayer(input)!=null){
             CLIPrinter.printPlayer(getGameTable(), getGameTable().getPlayer(input));
-            return new CLIMainMenuState(getGameTable());
+            getGameTable().setState( new CLIMainMenuState(getGameTable()));
         }else{
             CLIPrinter.printError("No such player!");
-            return this;
+            getGameTable().setState( this);
         }
+    }
+
+    @Override
+    public void unrealize() {
+
     }
 
     @Override
