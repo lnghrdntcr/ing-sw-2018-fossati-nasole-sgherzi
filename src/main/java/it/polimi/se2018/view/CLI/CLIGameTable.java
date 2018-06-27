@@ -103,6 +103,5 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
     @Override
     public void onCommandRecived(String input) {
         getRealeState().process(input);
-        getRealeState().render();
     }
 }

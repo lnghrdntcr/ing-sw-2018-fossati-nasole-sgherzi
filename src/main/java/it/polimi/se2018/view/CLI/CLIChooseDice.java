@@ -19,7 +19,7 @@ public class CLIChooseDice extends ChooseDice {
     @Override
     public void process(String input) {
         if (input.equalsIgnoreCase("cancel")){
-            getGameTable().setState(processCancel());
+            processCancel();
             return;
         }
 
@@ -34,7 +34,7 @@ public class CLIChooseDice extends ChooseDice {
         }
 
         try {
-            getGameTable().setState(processDice(dice));
+            processDice(dice);
         } catch (InputError ie) {
             CLIPrinter.printError(ie.getMessage());
             getGameTable().setState(this);

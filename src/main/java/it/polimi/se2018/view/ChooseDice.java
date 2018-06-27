@@ -52,15 +52,15 @@ public abstract class ChooseDice extends State {
     }
 
 
-    public State processDice(int diceFace) {
+    public void processDice(int diceFace) {
         if (diceFace < 0 || diceFace >= this.getGameTable().getDraftBoardImmutable().getDices().length) {
             throw new InputError("Input out of range.");
         }
-        return provider.get(this.toolName).apply(diceFace);
+        getGameTable().setState( provider.get(this.toolName).apply(diceFace));
     }
 
-    public State processCancel(){
-        return new CLIMainMenuState(this.getGameTable());
+    public void processCancel(){
+        getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
     }
 
 }
