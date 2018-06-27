@@ -10,8 +10,8 @@ public class GUIChooseDice extends ChooseDice {
     }
 
     @Override
-    public State process(String input) {
-        return null;
+    public void process(String input) {
+        return;
     }
 
     @Override
