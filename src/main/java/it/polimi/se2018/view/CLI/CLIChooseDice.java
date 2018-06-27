@@ -18,22 +18,27 @@ public class CLIChooseDice extends ChooseDice {
 
     @Override
     public void process(String input) {
-        if(input.equalsIgnoreCase("cancel")) getGameTable().setState(  processCancel());
+        if (input.equalsIgnoreCase("cancel")){
+            getGameTable().setState(processCancel());
+            return;
+        }
 
         int dice = -1;
 
         try {
             dice = Integer.parseInt(input);
-        } catch (RuntimeException ignored){
+        } catch (RuntimeException ignored) {
             CLIPrinter.printError("Invalid input.");
-            getGameTable().setState( this);
+            getGameTable().setState(this);
+            return;
         }
 
         try {
-            getGameTable().setState(  processDice(dice));
-        }catch (InputError ie){
+            getGameTable().setState(processDice(dice));
+        } catch (InputError ie) {
             CLIPrinter.printError(ie.getMessage());
-            getGameTable().setState(  this);
+            getGameTable().setState(this);
+            return;
         }
     }
 

@@ -63,6 +63,7 @@ public class CLIChooseColorFromDiceHolder extends State {
 
         getGameTable().setState(provider.get(toolName).apply(color));
 
+        return;
 
     }
 

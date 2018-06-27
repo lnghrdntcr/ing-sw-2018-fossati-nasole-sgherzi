@@ -17,7 +17,10 @@ public class CLIExcangeWDiceHolder extends State {
     @Override
     public void process(String input) {
 
-        if (input.equalsIgnoreCase("cancel")) getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
+        if (input.equalsIgnoreCase("cancel")) {
+            getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
+            return;
+        }
 
 
         Point victim = CLIPrinter.decodePosition(input, getGameTable().getDiceHolderImmutable());
@@ -25,6 +28,7 @@ public class CLIExcangeWDiceHolder extends State {
         if (victim == null) {
             CLIPrinter.printError("input invalid");
             getGameTable().setState(this);
+            return;
         }
 
 
@@ -33,6 +37,7 @@ public class CLIExcangeWDiceHolder extends State {
             victim.x));
 
         getGameTable().setState(new CLIMainMenuState(getGameTable()));
+
     }
 
     @Override

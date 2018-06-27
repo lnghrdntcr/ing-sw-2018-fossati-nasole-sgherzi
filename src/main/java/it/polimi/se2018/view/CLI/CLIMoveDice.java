@@ -48,7 +48,10 @@ public class CLIMoveDice extends State {
     @Override
     public void process(String input) {
 
-        if (input.equalsIgnoreCase("cancel")) getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
+        if (input.equalsIgnoreCase("cancel")){
+            getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
+            return;
+        }
 
         if (actionState == ActionState.CHOOSE) {
 
@@ -58,16 +61,19 @@ public class CLIMoveDice extends State {
                 if (firstSource == null) {
                     CLIPrinter.printError("Invalid input");
                     getGameTable().setState(this);
+                    return;
                 }
 
                 if (playerSchema.getDiceFace(firstSource) == null) {
                     CLIPrinter.printError("The cell is empty!");
                     getGameTable().setState(this);
+                    return;
                 }
 
                 if (color != null && !playerSchema.getDiceFace(firstSource).getColor().equals(color)) {
                     CLIPrinter.printError("You cannot move a dice of this color!");
                     getGameTable().setState(this);
+                    return;
                 }
 
             } else if (times == Times.SECOND) {
@@ -77,16 +83,19 @@ public class CLIMoveDice extends State {
                 if (secondSource == null) {
                     CLIPrinter.printError("Invalid input");
                     getGameTable().setState(this);
+                    return;
                 }
 
                 if (playerSchema.getDiceFace(secondSource) == null) {
                     CLIPrinter.printError("The cell is empty!");
                     getGameTable().setState(this);
+                    return;
                 }
 
                 if (color != null && !playerSchema.getDiceFace(secondSource).getColor().equals(color)) {
                     CLIPrinter.printError("You cannot move a dice of this color!");
                     getGameTable().setState(this);
+                    return;
                 }
 
             }
@@ -95,6 +104,7 @@ public class CLIMoveDice extends State {
 
             getGameTable().setState(this);
 
+            return;
         } else if (actionState == ActionState.PLACE) {
 
             if (times == Times.FIRST) {
@@ -104,12 +114,14 @@ public class CLIMoveDice extends State {
                 if (firstDestination == null) {
                     CLIPrinter.printError("Invalid input");
                     getGameTable().setState(this);
+                    return;
                 }
 
 
                 if (playerSchema.getDiceFace(firstDestination) != null) {
                     CLIPrinter.printError("The cell not empty!");
                     getGameTable().setState(this);
+                    return;
                 }
 
                 DiceFace prevDice = playerSchema.removeDiceFace(firstSource);
@@ -122,6 +134,7 @@ public class CLIMoveDice extends State {
                     actionState = ActionState.CHOOSE;
 
                     getGameTable().setState(this);
+                    return;
                 }
 
                 playerSchema.setDiceFace(firstDestination, prevDice);
@@ -130,6 +143,7 @@ public class CLIMoveDice extends State {
                 actionState = ActionState.CHOOSE;
 
                 getGameTable().setState(this);
+                return;
 
             } else if (times == Times.SECOND) {
 
@@ -138,11 +152,13 @@ public class CLIMoveDice extends State {
                 if (secondDestination == null) {
                     CLIPrinter.printError("Invalid input");
                     getGameTable().setState(this);
+                    return;
                 }
 
                 if (playerSchema.getDiceFace(secondDestination) != null) {
                     CLIPrinter.printError("The cell not empty!");
                     getGameTable().setState(this);
+                    return;
                 }
 
                 DiceFace prevDice = playerSchema.removeDiceFace(secondSource);
@@ -155,6 +171,7 @@ public class CLIMoveDice extends State {
                     actionState = ActionState.CHOOSE;
 
                     getGameTable().setState(this);
+                    return;
                 }
 
                 playerSchema.setDiceFace(secondDestination, prevDice);
@@ -174,6 +191,7 @@ public class CLIMoveDice extends State {
         }
 
         getGameTable().setState(new CLIMainMenuState(getGameTable()));
+        return;
 
     }
 
