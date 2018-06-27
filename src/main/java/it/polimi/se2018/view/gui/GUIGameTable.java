@@ -19,14 +19,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 
 public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>, PlayerBoard.OnPlayerBoardAction {
@@ -176,6 +179,23 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
             secondStage.setScene(scene);
             secondStage.show();
 
+            secondStage.setOnCloseRequest((windowEvent) -> {
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Closing game...");
+                alert.setContentText("Are you sure you want to exit?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (((Optional) result).get() == ButtonType.OK) {
+                    Platform.exit();
+                    System.exit(-1);
+                } else {
+                    // This is the only way I found to prevent the closing of a window, LèL
+                    windowEvent.consume();
+                }
+            });
+
             player1 = (VBox) scene.lookup("#player1");
             player2 = (VBox) scene.lookup("#player2");
             player3 = (VBox) scene.lookup("#player3");
@@ -256,7 +276,15 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     @Override
     public void onPlayerPlaceDice() {
         // TODO: Handle placing dice
-
+        if (!getView().getPlayer().equals(this.getCurrentPlayer())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Not your turn!");
+            alert.setContentText("You cannot place a dice, if it's not your turn :)");
+            alert.showAndWait();
+        } else {
+            GUIPlaceDice guiPlaceDice = new GUIPlaceDice(getSchema(this.getView().getPlayer()), getDraftBoardImmutable());
+            guiPlaceDice.render();
+        }
 
     }
 
@@ -277,4 +305,5 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     public void onPlayerUseToolCard() {
         // TODO: Handle use of the toolcard
     }
+
 }

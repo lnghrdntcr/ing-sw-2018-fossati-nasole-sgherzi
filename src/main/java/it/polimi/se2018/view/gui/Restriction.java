@@ -42,6 +42,5 @@ public class Restriction extends StackPane {
 
         diceColour.setImage(new Image("gui/restrictions/color/" + restriction.toString() + ".png"));
 
-
     }
 }
