@@ -12,7 +12,6 @@ import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.CLI.CLIMainMenuState;
 import it.polimi.se2018.view.CLI.CLIPlaceDiceState;
-import it.polimi.se2018.view.CLI.State;
 import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 

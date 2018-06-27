@@ -3,8 +3,9 @@ package it.polimi.se2018.view.CLI;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
-import it.polimi.se2018.view.PlaceDiceState;
 import it.polimi.se2018.view.GameTable;
+import it.polimi.se2018.view.State;
+import it.polimi.se2018.view.UseToolState;
 import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 
 import java.util.HashMap;

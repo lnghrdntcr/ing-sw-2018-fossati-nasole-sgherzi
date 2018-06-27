@@ -1,17 +1,15 @@
-package it.polimi.se2018.view.CLI;
+package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
 
-import it.polimi.se2018.view.PlaceDiceState;
-import it.polimi.se2018.view.MoveDice;
-import it.polimi.se2018.view.GameTable;
+import it.polimi.se2018.view.CLI.*;
 import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 
 import java.util.HashMap;
 import java.util.function.Supplier;
 
-public class UseToolState extends State {
+public abstract class UseToolState extends State {
 
     private static HashMap<String, Supplier<State>> provider = new HashMap<>();
 
@@ -93,52 +91,25 @@ public class UseToolState extends State {
         provider.put("ManualCutter", () -> new CLIChooseColorFromDiceHolder(getGameTable(), "ManualCutter"));
     }
 
-    @Override
-    public void process(String input) {
+    public void processCancel() {
+        getGameTable().setState(new CLIMainMenuState(getGameTable()));
+    }
 
-        if (input.equalsIgnoreCase("cancel")) getGameTable().setState(new CLIMainMenuState(getGameTable()));
-
-        int selection = -1;
-
-        try {
-            selection = Integer.parseInt(input);
-        } catch (RuntimeException ex) {
-            CLIPrinter.printError("Invalid input!");
-            getGameTable().setState(this);
-        }
+    public void processUseToolCard(int selection) {
 
         if (selection >= 0 && selection < Settings.TOOLCARDS_N) {
 
             if (getGameTable().getPlayer(getGameTable().getView().getPlayer()).getToken() < getGameTable().getToolCardImmutable(selection).getNeededTokens()) {
-                CLIPrinter.printError("You don't have enough tokens! :(");
-                getGameTable().setState(this);
+                throw new InputError("You don't have enough tokens! :(");
             }
             getGameTable().setState(provider.get(
                 this.getGameTable()
                     .getToolCardImmutable(
-                        Integer.parseInt(input)).getName()
+                        selection).getName()
             ).get());
+
         }
 
-        CLIPrinter.printError("Invalid number!");
-        getGameTable().setState(this);
-
     }
 
-    @Override
-    public void unrealize() {
-
-    }
-
-    @Override
-    public void render() {
-        CLIPrinter.printQuestion("Select the tool card you want to use:");
-
-        for (int i = 0; i < Settings.TOOLCARDS_N; i++) {
-            CLIPrinter.printToolcard(getGameTable().getToolCardImmutable(i), i);
-        }
-
-        CLIPrinter.printQuestion("[0] to [" + (Settings.TOOLCARDS_N - 1) + "] or [cancel]");
-
-    }
 }

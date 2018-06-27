@@ -1,7 +1,6 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.view.CLI.CLIGameTable;
-import it.polimi.se2018.view.CLI.State;
 import it.polimi.se2018.view.ChooseDice;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

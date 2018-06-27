@@ -1,4 +1,4 @@
-package it.polimi.se2018.view.CLI;
+package it.polimi.se2018.view;
 
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.Renderizable;

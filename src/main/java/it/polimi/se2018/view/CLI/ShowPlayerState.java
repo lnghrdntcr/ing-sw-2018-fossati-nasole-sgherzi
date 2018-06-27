@@ -1,8 +1,9 @@
 package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.view.GameTable;
+import it.polimi.se2018.view.State;
 
-public class ShowPlayerState extends State{
+public class ShowPlayerState extends State {
 
     public ShowPlayerState(GameTable gameTable) {
         super(gameTable);

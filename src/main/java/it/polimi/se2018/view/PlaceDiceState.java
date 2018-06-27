@@ -3,8 +3,6 @@ package it.polimi.se2018.view;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.view.CLI.CLIMainMenuState;
-import it.polimi.se2018.view.CLI.CLIPrinter;
-import it.polimi.se2018.view.CLI.State;
 import it.polimi.se2018.view.viewEvent.CancelActionEvent;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceSelectingNumberEvent;

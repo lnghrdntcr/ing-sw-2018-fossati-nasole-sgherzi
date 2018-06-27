@@ -1,9 +1,6 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.view.CLI.CLIMainMenuState;
-import it.polimi.se2018.view.CLI.CLIPrinter;
-import it.polimi.se2018.view.CLI.State;
-import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.viewEvent.SwapDiceFaceWithDiceHolderEvent;
 
 import java.awt.*;

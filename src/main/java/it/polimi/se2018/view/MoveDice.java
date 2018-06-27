@@ -6,7 +6,6 @@ import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.view.CLI.CLIMainMenuState;
 import it.polimi.se2018.view.CLI.CLIPrinter;
-import it.polimi.se2018.view.CLI.State;
 import it.polimi.se2018.view.viewEvent.DoubleMoveDiceEvent;
 import it.polimi.se2018.view.viewEvent.DoubleMoveOfColorDiceEvent;
 import it.polimi.se2018.view.viewEvent.MoveDiceEvent;

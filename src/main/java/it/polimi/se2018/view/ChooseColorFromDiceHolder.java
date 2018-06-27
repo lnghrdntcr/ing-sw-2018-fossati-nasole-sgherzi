@@ -6,7 +6,6 @@ import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.CLI.CLIMainMenuState;
 import it.polimi.se2018.view.CLI.CLIMoveDice;
-import it.polimi.se2018.view.CLI.State;
 
 import java.util.HashMap;
 import java.util.function.Function;
