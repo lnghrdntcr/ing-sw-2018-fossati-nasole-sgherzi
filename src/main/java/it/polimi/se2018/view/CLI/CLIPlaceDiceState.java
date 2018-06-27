@@ -2,6 +2,7 @@ package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
+import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.viewEvent.CancelActionEvent;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceSelectingNumberEvent;
@@ -20,11 +21,11 @@ public class CLIPlaceDiceState extends State {
     private boolean shouldNotSelectDice;
     private int selectedNumber;
 
-    public CLIPlaceDiceState(CLIGameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness) {
+    public CLIPlaceDiceState(GameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness) {
         this(gameTable, ignore, isFromTool, forceLoneliness, -1, false);
     }
 
-    public CLIPlaceDiceState(CLIGameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness, int forceDice, boolean shouldSelectNumber) {
+    public CLIPlaceDiceState(GameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness, int forceDice, boolean shouldSelectNumber) {
         super(gameTable);
         this.ignore = ignore;
         this.isFromTool = isFromTool;
@@ -45,13 +46,13 @@ public class CLIPlaceDiceState extends State {
     }
 
     @Override
-    public State process(String input) {
+    public void process(String input) {
 
         if (input.equals("cancel")) {
 
             if(shouldNotSelectDice || shouldSelectNumber) this.getGameTable().getView().sendEventToController(new CancelActionEvent(this.getClass().getName(), this.getGameTable().getView().getPlayer(), "" ));
 
-            return new MainMenuState(getGameTable());
+            getGameTable().setState(new CLIMainMenuState(getGameTable()));
         } else if (internalState == InternalState.DICE_SELECTION) {
             try {
                 selectedDice = Integer.parseInt(input);
@@ -60,16 +61,16 @@ public class CLIPlaceDiceState extends State {
                 } else {
                     internalState = InternalState.POSITION_SELECTION;
                 }
-                return this;
+                getGameTable().setState(this);
             } catch (NumberFormatException ex) {
                 CLIPrinter.printError(input + " is not a valid dice!");
             }
-            return this;
+            getGameTable().setState( this);
         } else if (internalState == InternalState.POSITION_SELECTION) {
             Point point = CLIPrinter.decodePosition(input);
             if (point == null) {
                 CLIPrinter.printError("Invalid position!");
-                return this;
+                getGameTable().setState( this);
             }
 
             DiceFace diceFace = getGameTable().getDraftBoardImmutable().getDices()[selectedDice];
@@ -91,34 +92,40 @@ public class CLIPlaceDiceState extends State {
                     getGameTable().getView().sendEventToController(new PlaceDiceEvent(getClass().getName(), "",
                             getGameTable().getView().getPlayer(), selectedDice, point));
                 }
-                return new MainMenuState(getGameTable());
+                getGameTable().setState( new CLIMainMenuState(getGameTable()));
 
             } else {
                 CLIPrinter.printError("This dice cannot be placed here!");
-                return this;
+                getGameTable().setState( this);
             }
         } else if (internalState == InternalState.NUMBER_SELECTION) {
             try {
                 selectedNumber = Integer.parseInt(input);
             } catch (NumberFormatException ex) {
                 CLIPrinter.printError(input + " is not a valid dice number!");
-                return this;
+                getGameTable().setState( this);
             }
             
             if(selectedNumber<=0||selectedNumber>6){
                 CLIPrinter.printError(input + " not between 1 and 6!");
-                return this;
+                getGameTable().setState( this);
             }
             
             internalState=InternalState.POSITION_SELECTION;
 
-            return this;
+            getGameTable().setState( this);
         }
-        return this;
+        getGameTable().setState( this);
+    }
+
+    @Override
+    public void unrealize() {
+
     }
 
     @Override
     public void render() {
+
         if (internalState == InternalState.DICE_SELECTION) {
             CLIPrinter.printQuestion("Select a dice:");
             CLIPrinter.printDraftBoard(getGameTable().getDraftBoardImmutable());

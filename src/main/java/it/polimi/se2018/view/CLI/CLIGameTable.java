@@ -12,32 +12,20 @@ import it.polimi.se2018.view.RemoteView;
 public class CLIGameTable extends GameTable implements InputListenerThread.InputListener {
 
     private boolean iAmActive = false;
-    private State realeState;
+
 
     public CLIGameTable(RemoteView view) {
         super(view);
-        this.realeState = new MainMenuState(this);
     }
 
-    @Override
-    public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event) {
-        realeState=new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), false);
-        realeState.render();
-    }
-
-    @Override
-    public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event) {
-        realeState=new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), true);
-        realeState.render();
-    }
 
     @Override
     public void handlePlayerTimeout(PlayerTimeoutEvent event) {
         if(event.getPlayerName().equals(getView().getPlayer())) {
             CLIPrinter.printError("Time is up!");
-            realeState = new MainMenuState(this);
-            realeState.render();
         }
+
+        super.handlePlayerTimeout(event);
     }
 
     @Override
@@ -81,7 +69,7 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
             iAmActive = true;
         }
 
-        this.realeState.render();
+        this.getRealeState().render();
 
     }
     @Override
@@ -114,7 +102,7 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
 
     @Override
     public void onCommandRecived(String input) {
-        this.realeState = this.realeState.process(input);
-        realeState.render();
+        getRealeState().process(input);
+        getRealeState().render();
     }
 }

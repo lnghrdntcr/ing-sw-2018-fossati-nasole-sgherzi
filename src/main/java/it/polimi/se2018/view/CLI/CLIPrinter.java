@@ -12,6 +12,7 @@ import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.GameTable;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
 import org.json.JSONObject;
@@ -74,7 +75,7 @@ public class CLIPrinter {
         System.out.println(ansi().bg(color).a(" ").reset());
     }
 
-    public static void printPlayer(CLIGameTable cliGameTable, PlayerImmutable player) {
+    public static void printPlayer(GameTable cliGameTable, PlayerImmutable player) {
         System.out.println(player.getName());
         printSchema(cliGameTable.getSchema(player.getName()));
     }

@@ -15,7 +15,7 @@ public class CLIExcangeWDiceHolder extends State {
     @Override
     public State process(String input) {
 
-        if (input.equalsIgnoreCase("cancel")) return new MainMenuState(this.getGameTable());
+        if (input.equalsIgnoreCase("cancel")) return new CLIMainMenuState(this.getGameTable());
 
 
         Point victim = CLIPrinter.decodePosition(input, getGameTable().getDiceHolderImmutable());
@@ -30,7 +30,7 @@ public class CLIExcangeWDiceHolder extends State {
                 getGameTable().getCurrentPlayer(), getGameTable().getToolIndexByName("CircularCutter"), diceIndex, victim.y,
                 victim.x));
 
-        return new MainMenuState(getGameTable());
+        return new CLIMainMenuState(getGameTable());
     }
 
     @Override

@@ -1,20 +1,23 @@
 package it.polimi.se2018.view.CLI;
 
+import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.Renderizable;
 
 public abstract class State implements Renderizable {
 
 
-    private final CLIGameTable gameTable;
+    private final GameTable gameTable;
 
-    public State(CLIGameTable gameTable){
+    public State(GameTable gameTable){
         this.gameTable = gameTable;
     }
 
-    public CLIGameTable getGameTable() {
+    public GameTable getGameTable() {
         return gameTable;
     }
 
-    public abstract State process(String input);
+    public abstract void process(String input);
+
+    public abstract void unrealize();
 
 }

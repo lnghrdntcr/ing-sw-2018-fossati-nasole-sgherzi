@@ -14,7 +14,7 @@ public class CLIIncrementDice extends State {
     @Override
     public State process(String input) {
 
-        if (input.equalsIgnoreCase("cancel")) return new MainMenuState(this.getGameTable());
+        if (input.equalsIgnoreCase("cancel")) return new CLIMainMenuState(this.getGameTable());
 
         if (!input.equalsIgnoreCase("d") && !input.equalsIgnoreCase("i")) {
             CLIPrinter.printError("Invalid choice");
@@ -43,7 +43,7 @@ public class CLIIncrementDice extends State {
                         increment
                 ));
 
-        return new MainMenuState(this.getGameTable());
+        return new CLIMainMenuState(this.getGameTable());
 
     }
 

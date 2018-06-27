@@ -4,7 +4,6 @@ import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
-import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 
 import java.util.HashMap;
 import java.util.function.Function;
@@ -33,7 +32,7 @@ public class CLIChooseColorFromDiceHolder extends State {
 
     @Override
     public State process(String input) {
-        if (input.equalsIgnoreCase("cancel")) return new MainMenuState(getGameTable());
+        if (input.equalsIgnoreCase("cancel")) return new CLIMainMenuState(getGameTable());
 
         GameColor color = null;
         for (GameColor c : GameColor.values()) {

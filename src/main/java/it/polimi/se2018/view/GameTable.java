@@ -2,14 +2,18 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.controller.controllerEvent.*;
 import it.polimi.se2018.model.modelEvent.*;
-import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.schema.Schema;
+import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.model_view.DiceHolderImmutable;
 import it.polimi.se2018.model_view.DraftBoardImmutable;
 import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.CLI.CLIPlaceDiceState;
+import it.polimi.se2018.view.CLI.CLIPrinter;
+import it.polimi.se2018.view.CLI.CLIMainMenuState;
+import it.polimi.se2018.view.CLI.State;
 import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 
@@ -33,17 +37,17 @@ public abstract class GameTable {
     private int secondsRemaining;
     private boolean toolcardUsed, dicePlaced;
 
+    private State realeState;
+
     public GameTable(RemoteView view) {
         this.view = view;
+        this.realeState = new CLIMainMenuState(this);
     }
 
     final protected void placeDice(int index, Point destination) {
         view.sendEventToController(new PlaceDiceEvent(getClass().getName(), "", view.getPlayer(), index, destination));
     }
 
-    final protected void useToolcard(int index) {
-        //TODO
-    }
 
     final protected void endTurn() {
         view.sendEventToController(new EndTurnEvent(getClass().getName(), view.getPlayer(), ""));
@@ -101,15 +105,26 @@ public abstract class GameTable {
 
     // Handle Controller events.
 
-    abstract public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event);
+    public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event){
+        realeState=new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), false);
+        realeState.render();
+    }
 
-    abstract public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event);
+    public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event) {
+        realeState = new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), true);
+        realeState.render();
+    }
 
     /*final public void handleEndGame(EndGameEvent event) {
 
     }*/
 
-    abstract public void handlePlayerTimeout(PlayerTimeoutEvent event);
+    public void handlePlayerTimeout(PlayerTimeoutEvent event) {
+
+        realeState = new CLIMainMenuState(this);
+        realeState.render();
+    }
+
 
     final public void handleTimeoutCommunication(TimeoutCommunicationEvent event) {
         this.secondsRemaining = event.getTimeout();
@@ -211,5 +226,13 @@ public abstract class GameTable {
         return -1;
     }
 
+    public void setState(State state) {
 
+
+    }
+
+
+    public State getRealeState() {
+        return realeState;
+    }
 }

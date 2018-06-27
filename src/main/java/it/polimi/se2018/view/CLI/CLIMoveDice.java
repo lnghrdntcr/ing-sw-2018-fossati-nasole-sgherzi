@@ -47,7 +47,7 @@ public class CLIMoveDice extends State {
     @Override
     public State process(String input) {
 
-        if (input.equalsIgnoreCase("cancel")) return new MainMenuState(this.getGameTable());
+        if (input.equalsIgnoreCase("cancel")) return new CLIMainMenuState(this.getGameTable());
 
         if (actionState == ActionState.CHOOSE) {
 
@@ -172,7 +172,7 @@ public class CLIMoveDice extends State {
 
         }
 
-        return new MainMenuState(this.getGameTable());
+        return new CLIMainMenuState(this.getGameTable());
 
     }
 

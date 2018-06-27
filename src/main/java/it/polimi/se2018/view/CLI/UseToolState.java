@@ -54,13 +54,13 @@ public class UseToolState extends State {
 
         //7
         provider.put("Gavel", () -> {
-            if (this.getGameTable().getToolIndexByName("Gavel") == -1) return new MainMenuState(getGameTable());
+            if (this.getGameTable().getToolIndexByName("Gavel") == -1) return new CLIMainMenuState(getGameTable());
 
             if(getGameTable().getRoundDirection() || getGameTable().isDicePlaced())
 
             this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
                     "", getGameTable().getView().getPlayer(), this.getGameTable().getToolIndexByName("Gavel"), -1));
-            return new MainMenuState(getGameTable());
+            return new CLIMainMenuState(getGameTable());
         });
 
         //8
@@ -93,7 +93,7 @@ public class UseToolState extends State {
     @Override
     public State process(String input) {
 
-        if (input.equalsIgnoreCase("cancel")) return new MainMenuState(getGameTable());
+        if (input.equalsIgnoreCase("cancel")) return new CLIMainMenuState(getGameTable());
 
         int selection;
         try{

@@ -9,10 +9,10 @@ public class ShowPlayerState extends State{
     @Override
     public State process(String input) {
         if(input.equals("cancel")){
-            return new MainMenuState(getGameTable());
+            return new CLIMainMenuState(getGameTable());
         }else if(getGameTable().getPlayer(input)!=null){
             CLIPrinter.printPlayer(getGameTable(), getGameTable().getPlayer(input));
-            return new MainMenuState(getGameTable());
+            return new CLIMainMenuState(getGameTable());
         }else{
             CLIPrinter.printError("No such player!");
             return this;

@@ -3,16 +3,17 @@ package it.polimi.se2018.view.CLI;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 
 import java.util.HashMap;
 import java.util.function.Supplier;
 
-public class MainMenuState extends State {
+public class CLIMainMenuState extends State {
 
     private static HashMap<Integer, Supplier<State>> provider = new HashMap<>();
 
-    public MainMenuState(CLIGameTable gameTable) {
+    public CLIMainMenuState(GameTable gameTable) {
         super(gameTable);
         this.setupProvider();
     }
@@ -136,6 +137,11 @@ public class MainMenuState extends State {
         }
 
         return provider.get(selection).get();
+
+    }
+
+    @Override
+    public void unrealize() {
 
     }
 
