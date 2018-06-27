@@ -4,36 +4,21 @@ import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.ChooseColorFromDiceHolder;
 import it.polimi.se2018.view.GameTable;
+import it.polimi.se2018.view.InputError;
 
 import java.util.HashMap;
 import java.util.function.Function;
 
-public class CLIChooseColorFromDiceHolder extends State {
-
-    private static HashMap<String, Function<GameColor, State>> provider = new HashMap<>();
-
-    String toolName;
+public class CLIChooseColorFromDiceHolder extends ChooseColorFromDiceHolder {
 
     public CLIChooseColorFromDiceHolder(GameTable gameTable, String toolName) {
-        super(gameTable);
-        this.toolName = toolName;
-        this.setupProvider();
+        super(gameTable, toolName);
     }
-
-    private void setupProvider() {
-
-        if (!provider.isEmpty()) return;
-
-        //1
-        provider.put("ManualCutter", (i) -> new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NOTHING, toolName, CLIMoveDice.Times.FIRST, i));
-
-
-    }
-
     @Override
     public void process(String input) {
-        if (input.equalsIgnoreCase("cancel")) getGameTable().setState(new CLIMainMenuState(getGameTable()));
+        if (input.equalsIgnoreCase("cancel")) processCancel();
 
         GameColor color = null;
         for (GameColor c : GameColor.values()) {
@@ -47,21 +32,12 @@ public class CLIChooseColorFromDiceHolder extends State {
             getGameTable().setState(this);
         }
 
-        boolean found = false;
-        for (int i = 0; i < Settings.TURNS; i++) {
-            for (DiceFace el : getGameTable().getDiceHolderImmutable().getDiceFaces(i)) {
-                if (el.getColor().equals(color)) {
-                    found = true;
-                }
-            }
-        }
-
-        if (!found) {
-            CLIPrinter.printError("The color is not in the Round Track");
+        try {
+            processColorSelected(color);
+        }catch (InputError ie){
+            CLIPrinter.printError(ie.getMessage());
             getGameTable().setState(this);
         }
-
-        getGameTable().setState(provider.get(toolName).apply(color));
 
         return;
 

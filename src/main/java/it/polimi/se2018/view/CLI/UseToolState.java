@@ -3,6 +3,7 @@ package it.polimi.se2018.view.CLI;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
 
+import it.polimi.se2018.view.ChooseColorFromDiceHolder;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 
