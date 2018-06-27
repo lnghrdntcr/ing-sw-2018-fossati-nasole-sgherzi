@@ -275,13 +275,14 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
 
     @Override
     public void onPlayerPlaceDice() {
-        // TODO: Handle placing dice
+
         if (!getView().getPlayer().equals(this.getCurrentPlayer())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Not your turn!");
             alert.setContentText("You cannot place a dice, if it's not your turn :)");
             alert.showAndWait();
         } else {
+            // TODO: Substitute those 2 lines with this method calling gameTable.
             GUIPlaceDice guiPlaceDice = new GUIPlaceDice(getSchema(this.getView().getPlayer()), getDraftBoardImmutable());
             guiPlaceDice.render();
         }

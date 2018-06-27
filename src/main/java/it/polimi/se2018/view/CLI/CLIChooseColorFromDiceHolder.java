@@ -16,6 +16,7 @@ public class CLIChooseColorFromDiceHolder extends ChooseColorFromDiceHolder {
     public CLIChooseColorFromDiceHolder(GameTable gameTable, String toolName) {
         super(gameTable, toolName);
     }
+
     @Override
     public void process(String input) {
         if (input.equalsIgnoreCase("cancel")) processCancel();

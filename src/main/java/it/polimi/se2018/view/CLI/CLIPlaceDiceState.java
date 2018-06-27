@@ -35,11 +35,11 @@ public class CLIPlaceDiceState extends State {
 
         if (forceDice == -1) {
             internalState = InternalState.DICE_SELECTION;
-        } else if(!shouldSelectNumber) {
+        } else if (!shouldSelectNumber) {
             internalState = InternalState.POSITION_SELECTION;
             selectedDice = forceDice;
             shouldNotSelectDice = true;
-        }else{
+        } else {
             internalState = InternalState.NUMBER_SELECTION;
             selectedDice = forceDice;
         }
@@ -50,7 +50,8 @@ public class CLIPlaceDiceState extends State {
 
         if (input.equals("cancel")) {
 
-            if(shouldNotSelectDice || shouldSelectNumber) this.getGameTable().getView().sendEventToController(new CancelActionEvent(this.getClass().getName(), this.getGameTable().getView().getPlayer(), "" ));
+            if (shouldNotSelectDice || shouldSelectNumber)
+                this.getGameTable().getView().sendEventToController(new CancelActionEvent(this.getClass().getName(), this.getGameTable().getView().getPlayer(), ""));
 
             getGameTable().setState(new CLIMainMenuState(getGameTable()));
             return;
@@ -67,13 +68,13 @@ public class CLIPlaceDiceState extends State {
             } catch (NumberFormatException ex) {
                 CLIPrinter.printError(input + " is not a valid dice!");
             }
-            getGameTable().setState( this);
+            getGameTable().setState(this);
             return;
         } else if (internalState == InternalState.POSITION_SELECTION) {
             Point point = CLIPrinter.decodePosition(input);
             if (point == null) {
                 CLIPrinter.printError("Invalid position!");
-                getGameTable().setState( this);
+                getGameTable().setState(this);
                 return;
             }
 
@@ -82,26 +83,26 @@ public class CLIPlaceDiceState extends State {
             if (getGameTable().getSchema(getGameTable().getView().getPlayer()).isDiceAllowed(point, diceFace, ignore, forceLoneliness)) {
                 if (shouldNotSelectDice) {
                     getGameTable().getView().sendEventToController(new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), getGameTable().getToolIndexByName("FirmPastaBrush"), point, selectedDice));
-                }else if(shouldSelectNumber){
+                } else if (shouldSelectNumber) {
                     getGameTable().getView().sendEventToController(new PlaceAnotherDiceSelectingNumberEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), getGameTable().getToolIndexByName("FirmPastaDiluent"), point, selectedDice, selectedNumber));
                 } else if (isFromTool && forceLoneliness) {
                     getGameTable().getView().sendEventToController(
-                            new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(),
-                                    getGameTable().getToolIndexByName("CorkRow"), point, selectedDice));
+                        new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(),
+                            getGameTable().getToolIndexByName("CorkRow"), point, selectedDice));
                 } else if (isFromTool && !forceLoneliness) {
                     getGameTable().getView().sendEventToController(
-                            new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(),
-                                    getGameTable().getToolIndexByName("WheeledPincer"), point, selectedDice));
+                        new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(),
+                            getGameTable().getToolIndexByName("WheeledPincer"), point, selectedDice));
                 } else {
                     getGameTable().getView().sendEventToController(new PlaceDiceEvent(getClass().getName(), "",
-                            getGameTable().getView().getPlayer(), selectedDice, point));
+                        getGameTable().getView().getPlayer(), selectedDice, point));
                 }
-                getGameTable().setState( new CLIMainMenuState(getGameTable()));
+                getGameTable().setState(new CLIMainMenuState(getGameTable()));
                 return;
 
             } else {
                 CLIPrinter.printError("This dice cannot be placed here!");
-                getGameTable().setState( this);
+                getGameTable().setState(this);
                 return;
             }
         } else if (internalState == InternalState.NUMBER_SELECTION) {
@@ -109,22 +110,22 @@ public class CLIPlaceDiceState extends State {
                 selectedNumber = Integer.parseInt(input);
             } catch (NumberFormatException ex) {
                 CLIPrinter.printError(input + " is not a valid dice number!");
-                getGameTable().setState( this);
+                getGameTable().setState(this);
                 return;
             }
-            
-            if(selectedNumber<=0||selectedNumber>6){
-                CLIPrinter.printError(input + " not between 1 and 6!");
-                getGameTable().setState( this);
-                return;
-            }
-            
-            internalState=InternalState.POSITION_SELECTION;
 
-            getGameTable().setState( this);
+            if (selectedNumber <= 0 || selectedNumber > 6) {
+                CLIPrinter.printError(input + " not between 1 and 6!");
+                getGameTable().setState(this);
+                return;
+            }
+
+            internalState = InternalState.POSITION_SELECTION;
+
+            getGameTable().setState(this);
             return;
         }
-        getGameTable().setState( this);
+        getGameTable().setState(this);
     }
 
     @Override
@@ -146,7 +147,7 @@ public class CLIPlaceDiceState extends State {
             }
             CLIPrinter.printQuestion("Select a position:");
             CLIPrinter.printSchema(getGameTable().getSchema(getGameTable().getView().getPlayer()));
-        }else if (internalState == InternalState.NUMBER_SELECTION) {
+        } else if (internalState == InternalState.NUMBER_SELECTION) {
             CLIPrinter.printQuestion("This dice was drawn:");
             CLIPrinter.printDice(getGameTable().getDraftBoardImmutable().getDices()[selectedDice]);
             System.out.println("|");

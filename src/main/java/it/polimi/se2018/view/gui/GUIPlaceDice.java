@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class GUIPlaceDice extends HBox implements DraftBoard.DicePlacer {
+public class GUIPlaceDice extends HBox implements DraftBoard.OnDiceSelectedListener {
 
     @FXML
     private HBox root;
@@ -72,7 +72,7 @@ public class GUIPlaceDice extends HBox implements DraftBoard.DicePlacer {
     }
 
     @Override
-    public void handleMouseClickOnDice(int index) {
+    public void onDiceSelected(int index) {
         schemaView.highlightAllowedPoints(draftBoard.getDices()[index], ignore, false);
     }
 }

@@ -26,7 +26,7 @@ public abstract class ChooseDice extends State {
         provider.put("RoughingNipper", (i) -> new CLIIncrementDice(getGameTable(), i));
 
         //5
-        provider.put("CircularCutter", (i) -> new CLIExcangeWDiceHolder(getGameTable(), i));
+        provider.put("CircularCutter", (i) -> new CLIExchangeWDiceHolder(getGameTable(), i));
 
         //6
         provider.put("FirmPastaBrush", (i) -> {
