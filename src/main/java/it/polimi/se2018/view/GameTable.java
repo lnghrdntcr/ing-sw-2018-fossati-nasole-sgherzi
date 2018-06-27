@@ -106,22 +106,20 @@ public abstract class GameTable {
     // Handle Controller events.
 
     public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event){
-        realeState=new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), false);
+        setState(new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), false));
         realeState.render();
     }
 
     public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event) {
-        realeState = new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), true);
+        setState(new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), true));
         realeState.render();
     }
 
-    /*final public void handleEndGame(EndGameEvent event) {
 
-    }*/
 
     public void handlePlayerTimeout(PlayerTimeoutEvent event) {
 
-        realeState = new CLIMainMenuState(this);
+        setState(new CLIMainMenuState(this));
         realeState.render();
     }
 
