@@ -105,20 +105,16 @@ public abstract class GameTable {
 
     public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event){
         setState(new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), false));
-        realeState.render();
     }
 
     public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event) {
         setState(new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), true));
-        realeState.render();
     }
 
 
 
     public void handlePlayerTimeout(PlayerTimeoutEvent event) {
-
         setState(new CLIMainMenuState(this));
-        realeState.render();
     }
 
 
@@ -228,7 +224,7 @@ public abstract class GameTable {
             realeState.unrealize();
         }
         realeState=state;
-        state.render();
+        realeState.render();
 
     }
 

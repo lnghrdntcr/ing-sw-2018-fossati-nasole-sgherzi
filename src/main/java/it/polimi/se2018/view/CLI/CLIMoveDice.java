@@ -9,10 +9,6 @@ import it.polimi.se2018.view.MoveDice;
 import java.awt.*;
 
 public class CLIMoveDice extends MoveDice {
-    private Point firstSource;
-    private Point secondSource;
-    private Point firstDestination;
-    private Point secondDestination;
 
     public CLIMoveDice(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times) {
         super(gameTable, ignore, toolName, times);
@@ -33,7 +29,7 @@ public class CLIMoveDice extends MoveDice {
         if (getActionState() == ActionState.CHOOSE) {
 
             if (getTimes() == Times.FIRST) {
-                firstSource = CLIPrinter.decodePosition(input);
+                Point firstSource = CLIPrinter.decodePosition(input);
 
                 if (firstSource == null) {
                     CLIPrinter.printError("Invalid input");
@@ -51,7 +47,7 @@ public class CLIMoveDice extends MoveDice {
 
             } else if (getTimes() == Times.SECOND) {
 
-                secondSource = CLIPrinter.decodePosition(input);
+                Point secondSource = CLIPrinter.decodePosition(input);
 
                 if (secondSource == null) {
                     CLIPrinter.printError("Invalid input");
@@ -60,7 +56,7 @@ public class CLIMoveDice extends MoveDice {
                 }
 
                 try {
-                    processSecondSource(firstSource);
+                    processSecondSource(secondSource);
                 } catch (InputError ie) {
                     CLIPrinter.printError(ie.getMessage());
                     return;
@@ -73,7 +69,7 @@ public class CLIMoveDice extends MoveDice {
 
             if (getTimes() == Times.FIRST) {
 
-                firstDestination = CLIPrinter.decodePosition(input);
+                Point firstDestination = CLIPrinter.decodePosition(input);
 
                 if (firstDestination == null) {
                     CLIPrinter.printError("Invalid input");
@@ -89,7 +85,7 @@ public class CLIMoveDice extends MoveDice {
                 }
             } else if (getTimes() == Times.SECOND) {
 
-                secondDestination = CLIPrinter.decodePosition(input);
+                Point secondDestination = CLIPrinter.decodePosition(input);
 
                 if (secondDestination == null) {
                     CLIPrinter.printError("Invalid input");

@@ -58,6 +58,7 @@ public abstract class MoveDice extends State {
         }
 
         actionState = ActionState.PLACE;
+        getGameTable().setState(this);
     }
 
     public void processSecondSource(Point secondSource){
@@ -75,6 +76,7 @@ public abstract class MoveDice extends State {
         }
 
         actionState = ActionState.PLACE;
+        getGameTable().setState(this);
     }
 
     public void processFirstDestination(Point firstDestination){
@@ -104,27 +106,19 @@ public abstract class MoveDice extends State {
         actionState = ActionState.CHOOSE;
 
         getGameTable().setState(this);
-        return;
     }
 
     public void processSecondDestination(Point secondDestination){
         if (playerSchema.getDiceFace(secondDestination) != null) {
-            CLIPrinter.printError("The cell not empty!");
-            getGameTable().setState(this);
-            return;
+            throw new InputError("The cell not empty!");
         }
 
         DiceFace prevDice = playerSchema.removeDiceFace(secondSource);
 
         if (!playerSchema.isDiceAllowed(secondDestination, prevDice, ignore)) {
-
-            CLIPrinter.printError("Movement not permitted");
-
             this.playerSchema = this.getGameTable().getSchema(this.getGameTable().getView().getPlayer());
             actionState = ActionState.CHOOSE;
-
-            getGameTable().setState(this);
-            return;
+            throw new InputError("Movement not permitted");
         }
 
         playerSchema.setDiceFace(secondDestination, prevDice);

@@ -74,7 +74,6 @@ public class CLIPlaceDiceState extends PlaceDiceState {
             }
 
         }
-        getGameTable().setState(this);
     }
 
     @Override

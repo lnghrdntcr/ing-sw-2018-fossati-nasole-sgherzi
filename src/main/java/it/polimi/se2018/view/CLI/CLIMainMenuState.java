@@ -76,7 +76,7 @@ public class CLIMainMenuState extends State {
 
         provider.put(6, () -> new CLIPlaceDiceState(this.getGameTable(), SchemaCardFace.Ignore.NOTHING, false, false));
 
-        provider.put(7, () -> new UseToolState(this.getGameTable()));
+        provider.put(7, () -> new CLIUseToolState(this.getGameTable()));
 
         provider.put(8, () -> {
             this.getGameTable().getView().sendEventToController(
