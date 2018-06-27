@@ -1,11 +1,12 @@
 package it.polimi.se2018.view.CLI;
 
+import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.viewEvent.ChangeDiceNumberEvent;
 
 public class CLIIncrementDice extends State {
     int diceIndex;
 
-    public CLIIncrementDice(CLIGameTable gameTable, Integer diceIndex) {
+    public CLIIncrementDice(GameTable gameTable, Integer diceIndex) {
         super(gameTable);
         this.diceIndex = diceIndex;
     }
