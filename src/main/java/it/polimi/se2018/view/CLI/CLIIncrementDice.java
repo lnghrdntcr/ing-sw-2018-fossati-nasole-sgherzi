@@ -1,17 +1,15 @@
 package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.view.GameTable;
+import it.polimi.se2018.view.IncrementDice;
+import it.polimi.se2018.view.InputError;
 import it.polimi.se2018.view.viewEvent.ChangeDiceNumberEvent;
 
-public class CLIIncrementDice extends State {
-    int diceIndex;
-
+public class CLIIncrementDice extends IncrementDice {
     public CLIIncrementDice(GameTable gameTable, Integer diceIndex) {
-        super(gameTable);
-        this.diceIndex = diceIndex;
+        super(gameTable, diceIndex);
     }
 
-    //todo
     @Override
     public void process(String input) {
 
@@ -28,29 +26,12 @@ public class CLIIncrementDice extends State {
 
         int increment = input.equalsIgnoreCase("d") ? -1 : 1;
 
-        if (increment == -1 && getGameTable().getDraftBoardImmutable().getDices()[diceIndex].getNumber() == 1) {
-            CLIPrinter.printError("Cannot decrement a 1 dice!");
+        try{
+            processIncrement(increment);
+        }catch (InputError ie){
+            CLIPrinter.printError(ie.getMessage());
             getGameTable().setState(this);
-            return;
         }
-
-        if (increment == 1 && getGameTable().getDraftBoardImmutable().getDices()[diceIndex].getNumber() == 6) {
-            CLIPrinter.printError("Cannot increment a 6 dice!");
-            getGameTable().setState(this);
-            return;
-        }
-
-        this.getGameTable().getView().sendEventToController(
-            new ChangeDiceNumberEvent(
-                this.getClass().getName(),
-                "",
-                this.getGameTable().getView().getPlayer(),
-                this.getGameTable().getToolIndexByName("RoughingNipper"),
-                this.diceIndex,
-                increment
-            ));
-
-        getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
 
     }
 
