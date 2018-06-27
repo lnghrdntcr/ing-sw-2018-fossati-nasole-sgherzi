@@ -4,6 +4,7 @@ import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
+import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.viewEvent.DoubleMoveDiceEvent;
 import it.polimi.se2018.view.viewEvent.DoubleMoveOfColorDiceEvent;
 import it.polimi.se2018.view.viewEvent.MoveDiceEvent;
@@ -24,11 +25,11 @@ public class CLIMoveDice extends State {
     private Point secondDestination;
     private Schema playerSchema;
 
-    public CLIMoveDice(CLIGameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times) {
+    public CLIMoveDice(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times) {
         this(gameTable, ignore, toolName, times, null);
     }
 
-    public CLIMoveDice(CLIGameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times, GameColor color) {
+    public CLIMoveDice(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times, GameColor color) {
 
         super(gameTable);
         this.ignore = ignore;
@@ -45,9 +46,9 @@ public class CLIMoveDice extends State {
     //TODO
 
     @Override
-    public State process(String input) {
+    public void process(String input) {
 
-        if (input.equalsIgnoreCase("cancel")) return new CLIMainMenuState(this.getGameTable());
+        if (input.equalsIgnoreCase("cancel")) getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
 
         if (actionState == ActionState.CHOOSE) {
 
@@ -56,17 +57,17 @@ public class CLIMoveDice extends State {
 
                 if (firstSource == null) {
                     CLIPrinter.printError("Invalid input");
-                    return this;
+                    getGameTable().setState(this);
                 }
 
                 if (playerSchema.getDiceFace(firstSource) == null) {
                     CLIPrinter.printError("The cell is empty!");
-                    return this;
+                    getGameTable().setState(this);
                 }
 
                 if (color != null && !playerSchema.getDiceFace(firstSource).getColor().equals(color)) {
                     CLIPrinter.printError("You cannot move a dice of this color!");
-                    return this;
+                    getGameTable().setState(this);
                 }
 
             } else if (times == Times.SECOND) {
@@ -75,24 +76,24 @@ public class CLIMoveDice extends State {
 
                 if (secondSource == null) {
                     CLIPrinter.printError("Invalid input");
-                    return this;
+                    getGameTable().setState(this);
                 }
 
                 if (playerSchema.getDiceFace(secondSource) == null) {
                     CLIPrinter.printError("The cell is empty!");
-                    return this;
+                    getGameTable().setState(this);
                 }
 
                 if (color != null && !playerSchema.getDiceFace(secondSource).getColor().equals(color)) {
                     CLIPrinter.printError("You cannot move a dice of this color!");
-                    return this;
+                    getGameTable().setState(this);
                 }
 
             }
 
             actionState = ActionState.PLACE;
 
-            return this;
+            getGameTable().setState(this);
 
         } else if (actionState == ActionState.PLACE) {
 
@@ -102,13 +103,13 @@ public class CLIMoveDice extends State {
 
                 if (firstDestination == null) {
                     CLIPrinter.printError("Invalid input");
-                    return this;
+                    getGameTable().setState(this);
                 }
 
 
                 if (playerSchema.getDiceFace(firstDestination) != null) {
                     CLIPrinter.printError("The cell not empty!");
-                    return this;
+                    getGameTable().setState(this);
                 }
 
                 DiceFace prevDice = playerSchema.removeDiceFace(firstSource);
@@ -120,7 +121,7 @@ public class CLIMoveDice extends State {
                     this.playerSchema = this.getGameTable().getSchema(this.getGameTable().getView().getPlayer());
                     actionState = ActionState.CHOOSE;
 
-                    return this;
+                    getGameTable().setState(this);
                 }
 
                 playerSchema.setDiceFace(firstDestination, prevDice);
@@ -128,7 +129,7 @@ public class CLIMoveDice extends State {
                 times = Times.SECOND;
                 actionState = ActionState.CHOOSE;
 
-                return this;
+                getGameTable().setState(this);
 
             } else if (times == Times.SECOND) {
 
@@ -136,12 +137,12 @@ public class CLIMoveDice extends State {
 
                 if (secondDestination == null) {
                     CLIPrinter.printError("Invalid input");
-                    return this;
+                    getGameTable().setState(this);
                 }
 
                 if (playerSchema.getDiceFace(secondDestination) != null) {
                     CLIPrinter.printError("The cell not empty!");
-                    return this;
+                    getGameTable().setState(this);
                 }
 
                 DiceFace prevDice = playerSchema.removeDiceFace(secondSource);
@@ -153,7 +154,7 @@ public class CLIMoveDice extends State {
                     this.playerSchema = this.getGameTable().getSchema(this.getGameTable().getView().getPlayer());
                     actionState = ActionState.CHOOSE;
 
-                    return this;
+                    getGameTable().setState(this);
                 }
 
                 playerSchema.setDiceFace(secondDestination, prevDice);
@@ -172,7 +173,12 @@ public class CLIMoveDice extends State {
 
         }
 
-        return new CLIMainMenuState(this.getGameTable());
+        getGameTable().setState(new CLIMainMenuState(getGameTable()));
+
+    }
+
+    @Override
+    public void unrealize() {
 
     }
 

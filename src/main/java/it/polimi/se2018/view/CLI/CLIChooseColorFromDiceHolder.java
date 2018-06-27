@@ -31,8 +31,8 @@ public class CLIChooseColorFromDiceHolder extends State {
     }
 
     @Override
-    public State process(String input) {
-        if (input.equalsIgnoreCase("cancel")) return new CLIMainMenuState(getGameTable());
+    public void process(String input) {
+        if (input.equalsIgnoreCase("cancel")) getGameTable().setState(new CLIMainMenuState(getGameTable()));
 
         GameColor color = null;
         for (GameColor c : GameColor.values()) {
@@ -43,7 +43,7 @@ public class CLIChooseColorFromDiceHolder extends State {
 
         if (color == null) {
             CLIPrinter.printError("Invalid choice");
-            return this;
+            getGameTable().setState(this);
         }
 
         boolean found = false;
@@ -57,11 +57,16 @@ public class CLIChooseColorFromDiceHolder extends State {
 
         if (!found) {
             CLIPrinter.printError("The color is not in the Round Track");
-            return this;
+            getGameTable().setState(this);
         }
 
-        return provider.get(toolName).apply(color);
+        getGameTable().setState(provider.get(toolName).apply(color));
 
+
+    }
+
+    @Override
+    public void unrealize() {
 
     }
 
