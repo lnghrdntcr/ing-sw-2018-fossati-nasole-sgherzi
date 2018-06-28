@@ -101,14 +101,13 @@ public abstract class GameTable {
 
     // Handle Controller events.
 
-    public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event){
+    public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event) {
         setState(AbstractPlaceDiceState.createFromContext(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), false));
     }
 
     public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event) {
         setState(AbstractPlaceDiceState.createFromContext(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), true));
     }
-
 
 
     public void handlePlayerTimeout(PlayerTimeoutEvent event) {
@@ -217,11 +216,11 @@ public abstract class GameTable {
     }
 
     public void setState(State state) {
-        if(state == null) throw new NullPointerException("State cannot be null!");
-        if(realeState!=null){
+        if (state == null) throw new NullPointerException("State cannot be null!");
+        if (realeState != null && realeState != state) {
             realeState.unrealize();
         }
-        realeState=state;
+        realeState = state;
         realeState.render();
 
     }

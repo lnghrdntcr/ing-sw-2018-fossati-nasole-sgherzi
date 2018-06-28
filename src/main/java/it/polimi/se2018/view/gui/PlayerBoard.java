@@ -58,7 +58,7 @@ public class PlayerBoard extends VBox implements EventHandler<ActionEvent> {
             throw new RuntimeException(exception);
         }
 
-        this.schemaPanel = new SchemaPanel();
+        this.schemaPanel = new SchemaPanel(null);
         this.objectiveView = new ObjectiveView();
 
         playerBoard.getChildren().add(this.schemaPanel);

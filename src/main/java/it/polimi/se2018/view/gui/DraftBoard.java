@@ -24,20 +24,19 @@ public class DraftBoard extends HBox {
 
         if (draftBoard == null) return;
 
-        Log.d("Calling setDraftBoard on " + draftBoard.toString());
-
         Platform.runLater(() -> {
 
             this.getChildren().clear();
 
 
-            for (int i = 0; i < draftBoard.getDices().length - 1; i++) {
+            for (int i = 0; i < draftBoard.getDices().length; i++) {
 
                 Dice dice = new Dice();
                 dice.setDiceFace(draftBoard.getDices()[i]);
                 if (dicePlacer != null) {
                     final int index = i;
                     dice.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent) -> {
+                        Log.d("Selected dice on index: " + index);
                         dicePlacer.onDiceSelected(index);
                     });
                 }

@@ -23,8 +23,10 @@ public class SchemaPanel extends GridPane {
     private int token, usedToken;
 
     private Schema schema;
+    private OnSchemaInteractionListener listener;
 
-    public SchemaPanel() {
+    public SchemaPanel(OnSchemaInteractionListener listener) {
+        this.listener = listener;
         for (int x = 0; x < Settings.CARD_WIDTH; x++) {
             ColumnConstraints columnConstraints = new ColumnConstraints(x);
             columnConstraints.setHgrow(Priority.ALWAYS);
@@ -73,9 +75,9 @@ public class SchemaPanel extends GridPane {
         GridPane.setHalignment(cardName, HPos.CENTER);
         getChildren().add(cardName);
         cardName.setStyle("-fx-font: 20px Tahoma;\n" +
-                "-fx-text-fill: #FFFFFFFF;\n" +
-                "-fx-font-weight: bold;\n" +
-                "-fx-text-alignment: center;");
+            "-fx-text-fill: #FFFFFFFF;\n" +
+            "-fx-font-weight: bold;\n" +
+            "-fx-text-alignment: center;");
 
         //difficulty
         difficultyContainer = new HBox();
@@ -89,7 +91,7 @@ public class SchemaPanel extends GridPane {
     }
 
     public void updateSchema(Schema schema) {
-        this.schema=schema;
+        this.schema = schema;
         for (int x = 0; x < Settings.CARD_WIDTH; x++) {
             for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
                 restrictions[x][y].setRestriction(schema.getSchemaCardFace().getRestriction(new Point(x, y)));
@@ -127,29 +129,34 @@ public class SchemaPanel extends GridPane {
         updateToken();
     }
 
-    public void clicked(Point point) {
+    private void clicked(Point point) {
         Log.i("Clicked: " + point.x + ":" + point.y);
+
+        if (listener != null) listener.onCellSelected(point);
+
     }
 
-    public void highlightAllowedPoints(DiceFace dice, SchemaCardFace.Ignore ignore, boolean forceLoneliness){
+    public void highlightAllowedPoints(DiceFace dice, SchemaCardFace.Ignore ignore, boolean forceLoneliness) {
         for (int x = 0; x < Settings.CARD_WIDTH; x++) {
             for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
-                if(schema.isDiceAllowed(new Point(x, y), dice, ignore, forceLoneliness)){
+                if (schema.isDiceAllowed(new Point(x, y), dice, ignore, forceLoneliness)) {
                     pane[x][y].setStyle("-fx-background-color:#FF000066;\n" +
-                            "-fx-border-color: orange;\n" +
-                            "    -fx-border-width: 5;\n" +
-                            "-fx-border-radius: 5");
-                }else{
+                        "-fx-border-color: orange;\n" +
+                        "    -fx-border-width: 5;\n" +
+                        "-fx-border-radius: 5");
+                } else {
                     pane[x][y].setStyle("-fx-background-color:#00000000;\n" +
-                            "-fx-border-color: none;\n" +
-                            "    -fx-border-width: 0;\n" +
-                            "-fx-border-radius: 0");
+                        "-fx-border-color: none;\n" +
+                        "    -fx-border-width: 0;\n" +
+                        "-fx-border-radius: 0");
                 }
             }
         }
     }
 
 
-
+    public interface OnSchemaInteractionListener {
+        void onCellSelected(Point point);
+    }
 
 }

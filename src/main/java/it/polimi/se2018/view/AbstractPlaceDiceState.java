@@ -3,6 +3,7 @@ package it.polimi.se2018.view;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.view.CLI.CLIPlaceDiceState;
+import it.polimi.se2018.view.gui.GUIPlaceDice;
 import it.polimi.se2018.view.viewEvent.CancelActionEvent;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceSelectingNumberEvent;
@@ -10,7 +11,7 @@ import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 
 import java.awt.*;
 
-public abstract  class AbstractPlaceDiceState extends State {
+public abstract class AbstractPlaceDiceState extends State {
     private SchemaCardFace.Ignore ignore;
     private InternalState internalState;
 
@@ -45,35 +46,33 @@ public abstract  class AbstractPlaceDiceState extends State {
         }
     }
 
-    public static AbstractPlaceDiceState createFromContext(GameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness){
-        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
-            //TODO: change this
-            return new CLIPlaceDiceState(gameTable, ignore,isFromTool, forceLoneliness);
-        }else{
-            return new CLIPlaceDiceState(gameTable, ignore,isFromTool, forceLoneliness);
+    public static AbstractPlaceDiceState createFromContext(GameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness) {
+        if (gameTable.getView().getGraphics() == RemoteView.Graphics.GUI) {
+            return new GUIPlaceDice(gameTable, ignore, isFromTool, forceLoneliness);
+        } else {
+            return new CLIPlaceDiceState(gameTable, ignore, isFromTool, forceLoneliness);
         }
     }
 
-    public static AbstractPlaceDiceState createFromContext(GameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness, int forceDice, boolean shouldSelectNumber){
-        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
-            //TODO: change this
-            return new CLIPlaceDiceState(gameTable, ignore, isFromTool, forceLoneliness, forceDice, shouldSelectNumber);
-        }else{
+    public static AbstractPlaceDiceState createFromContext(GameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness, int forceDice, boolean shouldSelectNumber) {
+        if (gameTable.getView().getGraphics() == RemoteView.Graphics.GUI) {
+            return new GUIPlaceDice(gameTable, ignore, isFromTool, forceLoneliness, forceDice, shouldSelectNumber);
+        } else {
             return new CLIPlaceDiceState(gameTable, ignore, isFromTool, forceLoneliness, forceDice, shouldSelectNumber);
         }
     }
 
-    public void processCancel(){
+    public void processCancel() {
         if (shouldNotSelectDice || shouldSelectNumber)
             this.getGameTable().getView().sendEventToController(new CancelActionEvent(this.getClass().getName(), this.getGameTable().getView().getPlayer(), ""));
 
         getGameTable().setState(AbstractMainMenuState.createFromContext(getGameTable()));
     }
 
-    public void processDiceSelection(int selectedDice){
-        this.selectedDice=selectedDice;
+    public void processDiceSelection(int selectedDice) {
+        this.selectedDice = selectedDice;
         if (selectedDice < 0 || selectedDice > getGameTable().getDraftBoardImmutable().getDices().length) {
-           throw new InputError(selectedDice + " is not in range!");
+            throw new InputError(selectedDice + " is not in range!");
         } else {
             internalState = InternalState.POSITION_SELECTION;
             getGameTable().setState(this);
@@ -81,7 +80,7 @@ public abstract  class AbstractPlaceDiceState extends State {
 
     }
 
-    public void processPositionSelected(Point point){
+    public void processPositionSelected(Point point) {
 
         DiceFace diceFace = getGameTable().getDraftBoardImmutable().getDices()[selectedDice];
 
@@ -92,15 +91,15 @@ public abstract  class AbstractPlaceDiceState extends State {
                 getGameTable().getView().sendEventToController(new PlaceAnotherDiceSelectingNumberEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), getGameTable().getToolIndexByName("FirmPastaDiluent"), point, selectedDice, selectedNumber));
             } else if (isFromTool && forceLoneliness) {
                 getGameTable().getView().sendEventToController(
-                        new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(),
-                                getGameTable().getToolIndexByName("CorkRow"), point, selectedDice));
+                    new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(),
+                        getGameTable().getToolIndexByName("CorkRow"), point, selectedDice));
             } else if (isFromTool && !forceLoneliness) {
                 getGameTable().getView().sendEventToController(
-                        new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(),
-                                getGameTable().getToolIndexByName("WheeledPincer"), point, selectedDice));
+                    new PlaceAnotherDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(),
+                        getGameTable().getToolIndexByName("WheeledPincer"), point, selectedDice));
             } else {
                 getGameTable().getView().sendEventToController(new PlaceDiceEvent(getClass().getName(), "",
-                        getGameTable().getView().getPlayer(), selectedDice, point));
+                    getGameTable().getView().getPlayer(), selectedDice, point));
             }
             getGameTable().setState(AbstractMainMenuState.createFromContext(getGameTable()));
 
@@ -109,8 +108,8 @@ public abstract  class AbstractPlaceDiceState extends State {
         }
     }
 
-    public void processNumberSelected(int selectedNumber){
-        this.selectedNumber= selectedNumber;
+    public void processNumberSelected(int selectedNumber) {
+        this.selectedNumber = selectedNumber;
         if (selectedNumber <= 0 || selectedNumber > 6) {
             throw new InputError(selectedNumber + " not between 1 and 6!");
         }
@@ -145,6 +144,10 @@ public abstract  class AbstractPlaceDiceState extends State {
 
     public int getSelectedDice() {
         return selectedDice;
+    }
+
+    public SchemaCardFace.Ignore getIgnore() {
+        return ignore;
     }
 
     public enum InternalState {DICE_SELECTION, POSITION_SELECTION, NUMBER_SELECTION}

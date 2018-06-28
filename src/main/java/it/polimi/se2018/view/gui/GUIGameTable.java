@@ -19,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -225,6 +226,10 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
 
     }
 
+    public Window getWindow() {
+        return root.getScene().getWindow();
+    }
+
     @Override
     public void setInactive() {
 
@@ -262,8 +267,7 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
             alert.showAndWait();
         } else {
             // TODO: Substitute those 2 lines with this method calling gameTable.
-            GUIPlaceDice guiPlaceDice = new GUIPlaceDice(getSchema(this.getView().getPlayer()), getDraftBoardImmutable());
-            guiPlaceDice.render();
+            getRealeState().process("6");
         }
 
     }
@@ -284,6 +288,14 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     @Override
     public void onPlayerUseToolCard() {
         // TODO: Handle use of the toolcard
+    }
+
+    public void enableWindow() {
+        // TODO:
+    }
+
+    public void disableWindow() {
+        // TODO:
     }
 
 }

@@ -103,7 +103,7 @@ public class PersonalPlayerArea extends HBox implements EventHandler<ActionEvent
             this.useToolCard = (Button) scene.lookup("#useToolCard");
             this.endTurn = (Button) scene.lookup("#endTurn");
 
-            this.schemaView = new SchemaPanel();
+            this.schemaView = new SchemaPanel(null);
             this.privateObjectiveView = new ObjectiveView();
 
             this.schema.getChildren().add(this.schemaView);

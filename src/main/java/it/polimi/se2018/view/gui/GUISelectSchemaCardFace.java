@@ -139,10 +139,10 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
             buttonSchema4.setDisable(true);
 
 
-            schemaPanel1 = new SchemaPanel();
-            schemaPanel2 = new SchemaPanel();
-            schemaPanel3 = new SchemaPanel();
-            schemaPanel4 = new SchemaPanel();
+            schemaPanel1 = new SchemaPanel(null);
+            schemaPanel2 = new SchemaPanel(null);
+            schemaPanel3 = new SchemaPanel(null);
+            schemaPanel4 = new SchemaPanel(null);
             objectiveView = new ObjectiveView();
 
             VBox.setVgrow(schemaPanel1, Priority.ALWAYS);
