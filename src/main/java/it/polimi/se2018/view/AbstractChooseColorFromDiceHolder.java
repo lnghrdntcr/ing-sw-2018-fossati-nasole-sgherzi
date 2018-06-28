@@ -5,10 +5,6 @@ import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.CLI.CLIChooseColorFromDiceHolder;
-import it.polimi.se2018.view.CLI.CLIChooseDice;
-import it.polimi.se2018.view.CLI.CLIMainMenuState;
-import it.polimi.se2018.view.CLI.CLIMoveDice;
-import it.polimi.se2018.view.gui.GUIChooseDice;
 
 import java.util.HashMap;
 import java.util.function.Function;
@@ -65,6 +61,6 @@ public abstract class AbstractChooseColorFromDiceHolder extends State {
 
 
     public void processCancel(){
-        getGameTable().setState(new CLIMainMenuState(getGameTable()));
+        getGameTable().setState(AbstractMainMenuState.createFromContext(getGameTable()));
     }
 }

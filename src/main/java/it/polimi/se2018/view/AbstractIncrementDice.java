@@ -1,9 +1,6 @@
 package it.polimi.se2018.view;
 
-import it.polimi.se2018.view.CLI.CLIChooseDice;
 import it.polimi.se2018.view.CLI.CLIIncrementDice;
-import it.polimi.se2018.view.CLI.CLIMainMenuState;
-import it.polimi.se2018.view.gui.GUIChooseDice;
 import it.polimi.se2018.view.viewEvent.ChangeDiceNumberEvent;
 
 public abstract class AbstractIncrementDice extends State {
@@ -43,10 +40,10 @@ public abstract class AbstractIncrementDice extends State {
                         increment
                 ));
 
-        getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
+        getGameTable().setState(AbstractMainMenuState.createFromContext(this.getGameTable()));
     }
 
     public void processCancel(){
-        getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
+        getGameTable().setState(AbstractMainMenuState.createFromContext(this.getGameTable()));
     }
 }

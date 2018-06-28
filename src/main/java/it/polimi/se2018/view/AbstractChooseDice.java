@@ -41,21 +41,21 @@ public abstract class AbstractChooseDice extends State {
         provider.put("FirmPastaBrush", (i) -> {
             this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
                     "", getGameTable().getView().getPlayer(), this.getGameTable().getToolIndexByName("FirmPastaBrush"), i));
-            return new CLIMainMenuState(getGameTable());
+            return AbstractMainMenuState.createFromContext(getGameTable());
         });
 
         //10
         provider.put("DiamondPad", (i) -> {
             this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
                     "", getGameTable().getView().getPlayer(), this.getGameTable().getToolIndexByName("DiamondPad"), i));
-            return new CLIMainMenuState(getGameTable());
+            return AbstractMainMenuState.createFromContext(getGameTable());
         });
 
         //11
         provider.put("FirmPastaDiluent", (i) -> {
             this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
                     "", getGameTable().getView().getPlayer(), this.getGameTable().getToolIndexByName("FirmPastaDiluent"), i));
-            return new CLIMainMenuState(getGameTable());
+            return AbstractMainMenuState.createFromContext(getGameTable());
         });
 
     }
@@ -69,7 +69,7 @@ public abstract class AbstractChooseDice extends State {
     }
 
     public void processCancel(){
-        getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
+        getGameTable().setState(AbstractMainMenuState.createFromContext(this.getGameTable()));
     }
 
 }

@@ -2,6 +2,7 @@ package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
+import it.polimi.se2018.view.AbstractMainMenuState;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.InputError;
 import it.polimi.se2018.view.AbstractMoveDice;
@@ -22,7 +23,7 @@ public class CLIMoveDice extends AbstractMoveDice {
     public void process(String input) {
 
         if (input.equalsIgnoreCase("cancel")) {
-            getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
+            getGameTable().setState(AbstractMainMenuState.createFromContext(this.getGameTable()));
             return;
         }
 

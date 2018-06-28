@@ -1,9 +1,6 @@
 package it.polimi.se2018.view;
 
-import it.polimi.se2018.view.CLI.CLIChooseDice;
 import it.polimi.se2018.view.CLI.CLIExchangeWDiceHolder;
-import it.polimi.se2018.view.CLI.CLIMainMenuState;
-import it.polimi.se2018.view.gui.GUIChooseDice;
 import it.polimi.se2018.view.viewEvent.SwapDiceFaceWithDiceHolderEvent;
 
 import java.awt.*;
@@ -43,11 +40,11 @@ public abstract class AbstractExchangeWDiceHolder extends State {
             )
         );
 
-        getGameTable().setState(new CLIMainMenuState(getGameTable()));
+        getGameTable().setState(AbstractMainMenuState.createFromContext(getGameTable()));
     }
 
     protected void processCancel(){
-        getGameTable().setState(new CLIMainMenuState(this.getGameTable()));
+        getGameTable().setState(AbstractMainMenuState.createFromContext(this.getGameTable()));
     }
 
 

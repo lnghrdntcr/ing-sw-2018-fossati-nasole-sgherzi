@@ -4,8 +4,6 @@ import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
-import it.polimi.se2018.view.CLI.CLIIncrementDice;
-import it.polimi.se2018.view.CLI.CLIMainMenuState;
 import it.polimi.se2018.view.CLI.CLIMoveDice;
 import it.polimi.se2018.view.CLI.CLIPrinter;
 import it.polimi.se2018.view.viewEvent.DoubleMoveDiceEvent;
@@ -154,7 +152,7 @@ public abstract class AbstractMoveDice extends State {
             this.getGameTable().getView().sendEventToController(new DoubleMoveOfColorDiceEvent(getClass().getName(), "", getGameTable().getView().getPlayer(), getGameTable().getToolIndexByName(toolName), firstSource, firstDestination, secondSource, secondDestination, color));
         }
 
-        getGameTable().setState(new CLIMainMenuState(getGameTable()));
+        getGameTable().setState(AbstractMainMenuState.createFromContext(getGameTable()));
 
     }
 

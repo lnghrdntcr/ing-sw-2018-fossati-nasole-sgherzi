@@ -2,8 +2,6 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
-import it.polimi.se2018.view.CLI.CLIMainMenuState;
-import it.polimi.se2018.view.CLI.CLIMoveDice;
 import it.polimi.se2018.view.CLI.CLIPlaceDiceState;
 import it.polimi.se2018.view.viewEvent.CancelActionEvent;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
@@ -69,7 +67,7 @@ public abstract  class AbstractPlaceDiceState extends State {
         if (shouldNotSelectDice || shouldSelectNumber)
             this.getGameTable().getView().sendEventToController(new CancelActionEvent(this.getClass().getName(), this.getGameTable().getView().getPlayer(), ""));
 
-        getGameTable().setState(new CLIMainMenuState(getGameTable()));
+        getGameTable().setState(AbstractMainMenuState.createFromContext(getGameTable()));
     }
 
     public void processDiceSelection(int selectedDice){
@@ -104,7 +102,7 @@ public abstract  class AbstractPlaceDiceState extends State {
                 getGameTable().getView().sendEventToController(new PlaceDiceEvent(getClass().getName(), "",
                         getGameTable().getView().getPlayer(), selectedDice, point));
             }
-            getGameTable().setState(new CLIMainMenuState(getGameTable()));
+            getGameTable().setState(AbstractMainMenuState.createFromContext(getGameTable()));
 
         } else {
             throw new InputError("This dice cannot be placed here!");

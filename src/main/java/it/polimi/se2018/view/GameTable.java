@@ -10,8 +10,6 @@ import it.polimi.se2018.model_view.DraftBoardImmutable;
 import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Settings;
-import it.polimi.se2018.view.CLI.CLIMainMenuState;
-import it.polimi.se2018.view.CLI.CLIPlaceDiceState;
 import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 
@@ -39,7 +37,7 @@ public abstract class GameTable {
 
     public GameTable(RemoteView view) {
         this.view = view;
-        this.realeState = new CLIMainMenuState(this);
+        this.realeState = AbstractMainMenuState.createFromContext(this);
     }
 
     final protected void placeDice(int index, Point destination) {
@@ -114,7 +112,7 @@ public abstract class GameTable {
 
 
     public void handlePlayerTimeout(PlayerTimeoutEvent event) {
-        setState(new CLIMainMenuState(this));
+        setState(AbstractMainMenuState.createFromContext(this));
     }
 
 

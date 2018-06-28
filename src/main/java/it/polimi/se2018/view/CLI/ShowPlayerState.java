@@ -1,5 +1,6 @@
 package it.polimi.se2018.view.CLI;
 
+import it.polimi.se2018.view.AbstractMainMenuState;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.State;
 
@@ -12,10 +13,10 @@ public class ShowPlayerState extends State {
     @Override
     public void process(String input) {
         if(input.equals("cancel")){
-            getGameTable().setState( new CLIMainMenuState(getGameTable()));
+            getGameTable().setState( AbstractMainMenuState.createFromContext(getGameTable()));
         }else if(getGameTable().getPlayer(input)!=null){
             CLIPrinter.printPlayer(getGameTable(), getGameTable().getPlayer(input));
-            getGameTable().setState( new CLIMainMenuState(getGameTable()));
+            getGameTable().setState( AbstractMainMenuState.createFromContext(getGameTable()));
         }else{
             CLIPrinter.printError("No such player!");
             getGameTable().setState( this);

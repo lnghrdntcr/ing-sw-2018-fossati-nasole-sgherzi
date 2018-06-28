@@ -64,13 +64,13 @@ public abstract class AbstractUseToolState extends State {
 
         //7
         provider.put("Gavel", () -> {
-            if (this.getGameTable().getToolIndexByName("Gavel") == -1) return new CLIMainMenuState(getGameTable());
+            if (this.getGameTable().getToolIndexByName("Gavel") == -1) return AbstractMainMenuState.createFromContext(getGameTable());
 
             if (getGameTable().getRoundDirection() || getGameTable().isDicePlaced())
 
                 this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
                     "", getGameTable().getView().getPlayer(), this.getGameTable().getToolIndexByName("Gavel"), -1));
-            return new CLIMainMenuState(getGameTable());
+            return AbstractMainMenuState.createFromContext(getGameTable());
         });
 
         //8
@@ -101,7 +101,7 @@ public abstract class AbstractUseToolState extends State {
     }
 
     public void processCancel() {
-        getGameTable().setState(new CLIMainMenuState(getGameTable()));
+        getGameTable().setState(AbstractMainMenuState.createFromContext(getGameTable()));
     }
 
     public void processUseToolCard(int selection) {
