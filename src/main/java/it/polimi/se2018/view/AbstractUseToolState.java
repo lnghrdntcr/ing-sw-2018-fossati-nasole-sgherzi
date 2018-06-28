@@ -119,6 +119,8 @@ public abstract class AbstractUseToolState extends State {
 
         }
 
+        throw new InputError("The number is not between 0 and "+(Settings.TOOLCARDS_N-1));
+
     }
 
 }

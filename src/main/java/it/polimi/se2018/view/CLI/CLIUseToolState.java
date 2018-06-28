@@ -14,7 +14,10 @@ public class CLIUseToolState extends AbstractUseToolState {
     @Override
     public void process(String input) {
 
-        if (input.equalsIgnoreCase("cancel")) processCancel();
+        if (input.equalsIgnoreCase("cancel")){
+            processCancel();
+            return;
+        }
 
         int selection = -1;
 
@@ -23,6 +26,7 @@ public class CLIUseToolState extends AbstractUseToolState {
         } catch (RuntimeException ex) {
             CLIPrinter.printError("Invalid input!");
             getGameTable().setState(this);
+            return;
         }
 
         try {
