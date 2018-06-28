@@ -283,7 +283,7 @@ public class TurnState extends State {
     }
 
     /**
-     * Helper method to use MoveDice toolcard (paramterized)
+     * Helper method to use AbstractMoveDice toolcard (paramterized)
      *
      * @param event where to get event data
      * @return the new state of the game

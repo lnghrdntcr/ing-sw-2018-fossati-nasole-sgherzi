@@ -104,11 +104,11 @@ public abstract class GameTable {
     // Handle Controller events.
 
     public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event){
-        setState(new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), false));
+        setState(AbstractPlaceDiceState.createFromContext(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), false));
     }
 
     public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event) {
-        setState(new CLIPlaceDiceState(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), true));
+        setState(AbstractPlaceDiceState.createFromContext(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), true));
     }
 
 

@@ -4,22 +4,34 @@ import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.CLI.CLIChooseColorFromDiceHolder;
+import it.polimi.se2018.view.CLI.CLIChooseDice;
 import it.polimi.se2018.view.CLI.CLIMainMenuState;
 import it.polimi.se2018.view.CLI.CLIMoveDice;
+import it.polimi.se2018.view.gui.GUIChooseDice;
 
 import java.util.HashMap;
 import java.util.function.Function;
 
-public abstract class ChooseColorFromDiceHolder extends State {
+public abstract class AbstractChooseColorFromDiceHolder extends State {
 
     private static HashMap<String, Function<GameColor, State>> provider = new HashMap<>();
 
     String toolName;
 
-    public ChooseColorFromDiceHolder(GameTable gameTable, String toolName) {
+    protected AbstractChooseColorFromDiceHolder(GameTable gameTable, String toolName) {
         super(gameTable);
         this.toolName = toolName;
         this.setupProvider();
+    }
+
+    public static AbstractChooseColorFromDiceHolder createFromContext(GameTable gameTable, String toolName){
+        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
+            //TODO: change this!
+            return new CLIChooseColorFromDiceHolder(gameTable, toolName);
+        }else{
+            return new CLIChooseColorFromDiceHolder(gameTable, toolName);
+        }
     }
 
     private void setupProvider() {
@@ -27,7 +39,7 @@ public abstract class ChooseColorFromDiceHolder extends State {
         if (!provider.isEmpty()) return;
 
         //1
-        provider.put("ManualCutter", (i) -> new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NOTHING, toolName, MoveDice.Times.FIRST, i));
+        provider.put("ManualCutter", (i) -> AbstractMoveDice.createFromContext(getGameTable(), SchemaCardFace.Ignore.NOTHING, toolName, AbstractMoveDice.Times.FIRST, i));
 
 
     }

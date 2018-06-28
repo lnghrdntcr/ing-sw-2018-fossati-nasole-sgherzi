@@ -1,14 +1,26 @@
 package it.polimi.se2018.view;
 
+import it.polimi.se2018.view.CLI.CLIChooseDice;
+import it.polimi.se2018.view.CLI.CLIIncrementDice;
 import it.polimi.se2018.view.CLI.CLIMainMenuState;
+import it.polimi.se2018.view.gui.GUIChooseDice;
 import it.polimi.se2018.view.viewEvent.ChangeDiceNumberEvent;
 
-public abstract class IncrementDice extends State {
+public abstract class AbstractIncrementDice extends State {
     int diceIndex;
 
-    public IncrementDice(GameTable gameTable, Integer diceIndex) {
+    protected AbstractIncrementDice(GameTable gameTable, Integer diceIndex) {
         super(gameTable);
         this.diceIndex = diceIndex;
+    }
+
+    public static AbstractIncrementDice createFromContext(GameTable gameTable, Integer diceIndex){
+        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
+            //TODO: change this
+            return new CLIIncrementDice(gameTable, diceIndex);
+        }else{
+            return new CLIIncrementDice(gameTable, diceIndex);
+        }
     }
 
 

@@ -1,10 +1,10 @@
 package it.polimi.se2018.view.CLI;
 
-import it.polimi.se2018.view.ChooseDice;
+import it.polimi.se2018.view.AbstractChooseDice;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.InputError;
 
-public class CLIChooseDice extends ChooseDice {
+public class CLIChooseDice extends AbstractChooseDice {
     public CLIChooseDice(GameTable gameTable, String toolName) {
         super(gameTable, toolName);
     }

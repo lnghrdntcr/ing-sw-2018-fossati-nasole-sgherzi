@@ -1,21 +1,30 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.view.CLI.*;
+import it.polimi.se2018.view.gui.GUIChooseDice;
 import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 
 import java.util.HashMap;
 import java.util.function.Function;
 
-public abstract class ChooseDice extends State {
+public abstract class AbstractChooseDice extends State {
 
     private static HashMap<String, Function<Integer, State>> provider = new HashMap<>();
 
     private String toolName;
 
-    public ChooseDice(GameTable gameTable, String toolName) {
+    protected AbstractChooseDice(GameTable gameTable, String toolName) {
         super(gameTable);
         this.toolName = toolName;
         this.setupProvider();
+    }
+
+    public static AbstractChooseDice createFromContext(GameTable gameTable, String toolName){
+        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
+            return new GUIChooseDice(gameTable, toolName);
+        }else{
+            return new CLIChooseDice(gameTable, toolName);
+        }
     }
 
     private void setupProvider() {
@@ -23,10 +32,10 @@ public abstract class ChooseDice extends State {
         if (!provider.isEmpty()) return;
 
         //1
-        provider.put("RoughingNipper", (i) -> new CLIIncrementDice(getGameTable(), i));
+        provider.put("RoughingNipper", (i) -> AbstractIncrementDice.createFromContext(getGameTable(), i));
 
         //5
-        provider.put("CircularCutter", (i) -> new CLIExchangeWDiceHolder(getGameTable(), i));
+        provider.put("CircularCutter", (i) -> AbstractExchangeWDiceHolder.createFromContext(getGameTable(), i));
 
         //6
         provider.put("FirmPastaBrush", (i) -> {

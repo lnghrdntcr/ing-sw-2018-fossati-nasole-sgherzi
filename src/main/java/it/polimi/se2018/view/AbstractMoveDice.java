@@ -4,7 +4,9 @@ import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
+import it.polimi.se2018.view.CLI.CLIIncrementDice;
 import it.polimi.se2018.view.CLI.CLIMainMenuState;
+import it.polimi.se2018.view.CLI.CLIMoveDice;
 import it.polimi.se2018.view.CLI.CLIPrinter;
 import it.polimi.se2018.view.viewEvent.DoubleMoveDiceEvent;
 import it.polimi.se2018.view.viewEvent.DoubleMoveOfColorDiceEvent;
@@ -12,7 +14,7 @@ import it.polimi.se2018.view.viewEvent.MoveDiceEvent;
 
 import java.awt.*;
 
-public abstract class MoveDice extends State {
+public abstract class AbstractMoveDice extends State {
     private Point firstSource;
     private Point secondSource;
     private Point firstDestination;
@@ -26,11 +28,11 @@ public abstract class MoveDice extends State {
 
     private Schema playerSchema;
 
-    public MoveDice(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times) {
+    public AbstractMoveDice(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times) {
         this(gameTable, ignore, toolName, times, null);
     }
 
-    public MoveDice(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times, GameColor color) {
+    public AbstractMoveDice(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times, GameColor color) {
 
         super(gameTable);
         this.ignore = ignore;
@@ -41,6 +43,24 @@ public abstract class MoveDice extends State {
 
         playerSchema = this.getGameTable().getSchema(this.getGameTable().getView().getPlayer()).cloneSchema();
 
+    }
+
+    public static AbstractMoveDice createFromContext(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times){
+        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
+            //TODO: change this
+            return new CLIMoveDice(gameTable, ignore, toolName, times);
+        }else{
+            return new CLIMoveDice(gameTable, ignore, toolName, times);
+        }
+    }
+
+    public static AbstractMoveDice createFromContext(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times, GameColor color){
+        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
+            //TODO: change this
+            return new CLIMoveDice(gameTable, ignore, toolName, times, color);
+        }else{
+            return new CLIMoveDice(gameTable, ignore, toolName, times, color);
+        }
     }
 
     public void processFirstSource(Point firstSource){

@@ -3,9 +3,10 @@ package it.polimi.se2018.view.CLI;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.AbstractPlaceDiceState;
+import it.polimi.se2018.view.AbstractUseToolState;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.State;
-import it.polimi.se2018.view.UseToolState;
 import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 
 import java.util.HashMap;
@@ -74,9 +75,9 @@ public class CLIMainMenuState extends State {
             return this;
         });
 
-        provider.put(6, () -> new CLIPlaceDiceState(this.getGameTable(), SchemaCardFace.Ignore.NOTHING, false, false));
+        provider.put(6, () -> AbstractPlaceDiceState.createFromContext(this.getGameTable(), SchemaCardFace.Ignore.NOTHING, false, false));
 
-        provider.put(7, () -> new CLIUseToolState(this.getGameTable()));
+        provider.put(7, () -> AbstractUseToolState.createFromContext(this.getGameTable()));
 
         provider.put(8, () -> {
             this.getGameTable().getView().sendEventToController(

@@ -3,11 +3,11 @@ package it.polimi.se2018.view.CLI;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.InputError;
-import it.polimi.se2018.view.PlaceDiceState;
+import it.polimi.se2018.view.AbstractPlaceDiceState;
 
 import java.awt.*;
 
-public class CLIPlaceDiceState extends PlaceDiceState {
+public class CLIPlaceDiceState extends AbstractPlaceDiceState {
 
     public CLIPlaceDiceState(GameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness) {
         super(gameTable, ignore, isFromTool, forceLoneliness);

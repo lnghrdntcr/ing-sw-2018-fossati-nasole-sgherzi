@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class RemoteView extends View {
 
+    private final Graphics graphics;
     private ConcurrentLinkedQueue<VisitableFromView> eventLoop = new ConcurrentLinkedQueue<>();
     private Thread eventLoopHandler;
     private SelectSchemaCardFace selectSchemaCardFace;
@@ -27,6 +28,7 @@ public class RemoteView extends View {
 
     public RemoteView(String player, Graphics graphics) {
         super(player);
+        this.graphics = graphics;
         if (graphics == Graphics.CLI) {
             selectSchemaCardFace = new CLISelectSchema(this);
             gameEnding = new CLIGameEnding(this);
@@ -120,6 +122,10 @@ public class RemoteView extends View {
         this.selectSchemaCardFace.setInactive();
         this.gameTable.setInactive();
         this.gameEnding.setActive();
+    }
+
+    public Graphics getGraphics() {
+        return graphics;
     }
 
     public enum Graphics {GUI, CLI}

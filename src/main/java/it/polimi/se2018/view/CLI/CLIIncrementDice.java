@@ -1,11 +1,10 @@
 package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.view.GameTable;
-import it.polimi.se2018.view.IncrementDice;
+import it.polimi.se2018.view.AbstractIncrementDice;
 import it.polimi.se2018.view.InputError;
-import it.polimi.se2018.view.viewEvent.ChangeDiceNumberEvent;
 
-public class CLIIncrementDice extends IncrementDice {
+public class CLIIncrementDice extends AbstractIncrementDice {
     public CLIIncrementDice(GameTable gameTable, Integer diceIndex) {
         super(gameTable, diceIndex);
     }

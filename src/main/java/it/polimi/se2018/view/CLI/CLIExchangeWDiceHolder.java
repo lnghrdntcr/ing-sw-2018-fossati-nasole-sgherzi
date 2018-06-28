@@ -1,12 +1,12 @@
 package it.polimi.se2018.view.CLI;
 
-import it.polimi.se2018.view.ExchangeWDiceHolder;
+import it.polimi.se2018.view.AbstractExchangeWDiceHolder;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.InputError;
 
 import java.awt.*;
 
-public class CLIExchangeWDiceHolder extends ExchangeWDiceHolder {
+public class CLIExchangeWDiceHolder extends AbstractExchangeWDiceHolder {
 
 
     public CLIExchangeWDiceHolder(GameTable gameTable, Integer diceIndex) {

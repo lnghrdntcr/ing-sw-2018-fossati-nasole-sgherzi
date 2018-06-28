@@ -1,7 +1,8 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.view.CLI.CLIGameTable;
-import it.polimi.se2018.view.ChooseDice;
+import it.polimi.se2018.view.AbstractChooseDice;
+import it.polimi.se2018.view.GameTable;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,14 +12,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class GUIChooseDice extends ChooseDice implements DraftBoard.OnDiceSelectedListener {
+public class GUIChooseDice extends AbstractChooseDice implements DraftBoard.OnDiceSelectedListener {
 
     @FXML
     private VBox root;
 
     private DraftBoard draftBoardView;
 
-    public GUIChooseDice(CLIGameTable gameTable, String toolName) {
+    public GUIChooseDice(GameTable gameTable, String toolName) {
         super(gameTable, toolName);
     }
 

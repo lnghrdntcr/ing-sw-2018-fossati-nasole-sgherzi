@@ -9,14 +9,23 @@ import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
-public abstract class UseToolState extends State {
+public abstract class AbstractUseToolState extends State {
 
     private static HashMap<String, Supplier<State>> provider = new HashMap<>();
 
 
-    public UseToolState(GameTable gameTable) {
+    public AbstractUseToolState(GameTable gameTable) {
         super(gameTable);
         this.setupProvider();
+    }
+
+    public static AbstractUseToolState createFromContext(GameTable gameTable){
+        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
+            //TODO: change this
+            return new CLIUseToolState(gameTable);
+        }else{
+            return new CLIUseToolState(gameTable);
+        }
     }
 
     private void setupProvider() {
@@ -25,32 +34,32 @@ public abstract class UseToolState extends State {
 
         //1
         provider.put("RoughingNipper", () -> {
-            return new CLIChooseDice(getGameTable(), "RoughingNipper");
+            return AbstractChooseDice.createFromContext(getGameTable(), "RoughingNipper");
         });
 
         //2
         provider.put("EglomiseBrush", () -> {
-            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.COLOR, "EglomiseBrush", MoveDice.Times.SECOND);
+            return  AbstractMoveDice.createFromContext(getGameTable(), SchemaCardFace.Ignore.COLOR, "EglomiseBrush", AbstractMoveDice.Times.SECOND);
         });
 
         //3
         provider.put("CopperReamer", () -> {
-            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NUMBER, "CopperReamer", MoveDice.Times.SECOND);
+            return  AbstractMoveDice.createFromContext(getGameTable(), SchemaCardFace.Ignore.NUMBER, "CopperReamer", AbstractMoveDice.Times.SECOND);
         });
 
         //4
         provider.put("Lathekin", () -> {
-            return new CLIMoveDice(getGameTable(), SchemaCardFace.Ignore.NOTHING, "Lathekin", MoveDice.Times.FIRST);
+            return AbstractMoveDice.createFromContext(getGameTable(), SchemaCardFace.Ignore.NOTHING, "Lathekin", AbstractMoveDice.Times.FIRST);
         });
 
         //5
         provider.put("CircularCutter", () -> {
-            return new CLIChooseDice(getGameTable(), "CircularCutter");
+            return AbstractChooseDice.createFromContext(getGameTable(), "CircularCutter");
         });
 
         //6
         provider.put("FirmPastaBrush", () -> {
-            return new CLIChooseDice(getGameTable(), "FirmPastaBrush");
+            return AbstractChooseDice.createFromContext(getGameTable(), "FirmPastaBrush");
         });
 
         //7
@@ -70,25 +79,25 @@ public abstract class UseToolState extends State {
                 CLIPrinter.printError("You can't activate this card now!");
                 return this;
             }
-            return new CLIPlaceDiceState(getGameTable(), SchemaCardFace.Ignore.NOTHING, true, false);
+            return AbstractPlaceDiceState.createFromContext(getGameTable(), SchemaCardFace.Ignore.NOTHING, true, false);
         });
 
         //9
         provider.put("CorkRow", () -> {
-            return new CLIPlaceDiceState(getGameTable(), SchemaCardFace.Ignore.NOTHING, true, true);
+            return AbstractPlaceDiceState.createFromContext(getGameTable(), SchemaCardFace.Ignore.NOTHING, true, true);
         });
 
         //10
         provider.put("DiamondPad", () -> {
-            return new CLIChooseDice(getGameTable(), "DiamondPad");
+            return AbstractChooseDice.createFromContext(getGameTable(), "DiamondPad");
         });
 
         //11
         provider.put("FirmPastaDiluent", () -> {
-            return new CLIChooseDice(getGameTable(), "FirmPastaDiluent");
+            return AbstractChooseDice.createFromContext(getGameTable(), "FirmPastaDiluent");
         });
 
-        provider.put("ManualCutter", () -> new CLIChooseColorFromDiceHolder(getGameTable(), "ManualCutter"));
+        provider.put("ManualCutter", () -> AbstractChooseColorFromDiceHolder.createFromContext(getGameTable(), "ManualCutter"));
     }
 
     public void processCancel() {

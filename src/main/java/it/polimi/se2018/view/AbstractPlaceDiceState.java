@@ -3,6 +3,8 @@ package it.polimi.se2018.view;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.view.CLI.CLIMainMenuState;
+import it.polimi.se2018.view.CLI.CLIMoveDice;
+import it.polimi.se2018.view.CLI.CLIPlaceDiceState;
 import it.polimi.se2018.view.viewEvent.CancelActionEvent;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceSelectingNumberEvent;
@@ -10,7 +12,7 @@ import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 
 import java.awt.*;
 
-public abstract  class PlaceDiceState extends State {
+public abstract  class AbstractPlaceDiceState extends State {
     private SchemaCardFace.Ignore ignore;
     private InternalState internalState;
 
@@ -21,11 +23,11 @@ public abstract  class PlaceDiceState extends State {
     private boolean shouldNotSelectDice;
     private int selectedNumber;
 
-    public PlaceDiceState(GameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness) {
+    protected AbstractPlaceDiceState(GameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness) {
         this(gameTable, ignore, isFromTool, forceLoneliness, -1, false);
     }
 
-    public PlaceDiceState(GameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness, int forceDice, boolean shouldSelectNumber) {
+    protected AbstractPlaceDiceState(GameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness, int forceDice, boolean shouldSelectNumber) {
         super(gameTable);
         this.ignore = ignore;
         this.isFromTool = isFromTool;
@@ -42,6 +44,24 @@ public abstract  class PlaceDiceState extends State {
         } else {
             internalState = InternalState.NUMBER_SELECTION;
             selectedDice = forceDice;
+        }
+    }
+
+    public static AbstractPlaceDiceState createFromContext(GameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness){
+        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
+            //TODO: change this
+            return new CLIPlaceDiceState(gameTable, ignore,isFromTool, forceLoneliness);
+        }else{
+            return new CLIPlaceDiceState(gameTable, ignore,isFromTool, forceLoneliness);
+        }
+    }
+
+    public static AbstractPlaceDiceState createFromContext(GameTable gameTable, SchemaCardFace.Ignore ignore, boolean isFromTool, boolean forceLoneliness, int forceDice, boolean shouldSelectNumber){
+        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
+            //TODO: change this
+            return new CLIPlaceDiceState(gameTable, ignore, isFromTool, forceLoneliness, forceDice, shouldSelectNumber);
+        }else{
+            return new CLIPlaceDiceState(gameTable, ignore, isFromTool, forceLoneliness, forceDice, shouldSelectNumber);
         }
     }
 

@@ -4,11 +4,11 @@ import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.InputError;
-import it.polimi.se2018.view.MoveDice;
+import it.polimi.se2018.view.AbstractMoveDice;
 
 import java.awt.*;
 
-public class CLIMoveDice extends MoveDice {
+public class CLIMoveDice extends AbstractMoveDice {
 
     public CLIMoveDice(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times) {
         super(gameTable, ignore, toolName, times);

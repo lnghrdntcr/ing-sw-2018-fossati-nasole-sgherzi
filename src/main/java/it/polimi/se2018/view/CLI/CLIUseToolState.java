@@ -3,9 +3,9 @@ package it.polimi.se2018.view.CLI;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.InputError;
-import it.polimi.se2018.view.UseToolState;
+import it.polimi.se2018.view.AbstractUseToolState;
 
-public class CLIUseToolState extends UseToolState {
+public class CLIUseToolState extends AbstractUseToolState {
 
     public CLIUseToolState(GameTable gameTable) {
         super(gameTable);
