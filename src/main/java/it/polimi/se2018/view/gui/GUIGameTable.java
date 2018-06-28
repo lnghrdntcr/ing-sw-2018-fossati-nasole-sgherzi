@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -53,7 +54,8 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     @FXML
     private HBox draftBoard;
 
-    // TODO: DraftBoard needs to be an element
+    @FXML
+    private Label turnMessage;
 
     @FXML
     private VBox player3;
@@ -135,7 +137,8 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
 
     @Override
     protected void renderTurn() {
-
+        if(turnMessage==null) return;
+        Platform.runLater(()->turnMessage.setText("Now it's "+getCurrentPlayer()+" turn. Round "+getRoundNumber()+", turn "+getRoundDirection()+". Remaining "+getSecondsRemaining()+" seconds."));
     }
 
     @Override
@@ -181,6 +184,9 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
             player2 = (VBox) scene.lookup("#player2");
             player3 = (VBox) scene.lookup("#player3");
             player4 = (VBox) scene.lookup("#player4");
+
+            turnMessage = (Label) scene.lookup("#turnMessage");
+            renderTurn();
 
             players.add(new PlayerBoard(this));
             players.add(new PlayerBoard(this));
@@ -245,7 +251,7 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
 
     @Override
     public void renderTimeOut() {
-
+        renderTurn();
     }
 
     @Override
