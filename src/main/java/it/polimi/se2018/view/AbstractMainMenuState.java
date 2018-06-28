@@ -12,6 +12,7 @@ import it.polimi.se2018.view.CLI.ShowPlayerState;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.State;
 import it.polimi.se2018.view.gui.GUIChooseDice;
+import it.polimi.se2018.view.gui.GUIMainMenuState;
 import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 
 import java.util.HashMap;
@@ -28,8 +29,7 @@ public abstract class AbstractMainMenuState extends State {
 
     public static AbstractMainMenuState createFromContext(GameTable gameTable){
         if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
-            //TODO: CHANGE THIS
-            return new CLIMainMenuState(gameTable);
+            return new GUIMainMenuState(gameTable);
         }else{
             return new CLIMainMenuState(gameTable);
         }

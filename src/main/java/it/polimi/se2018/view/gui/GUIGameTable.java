@@ -1,12 +1,7 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceEvent;
-import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceWithNumberSelectionEvent;
 import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
-import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
-import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.Schema;
-import it.polimi.se2018.model_view.DraftBoardImmutable;
 import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Settings;
@@ -24,7 +19,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,21 +67,6 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
 
     public GUIGameTable(RemoteView view) {
         super(view);
-    }
-
-    @Override
-    public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event) {
-
-    }
-
-    @Override
-    public void handleAskPlaceRedrawDiceWithNumberSelection(AskPlaceRedrawDiceWithNumberSelectionEvent event) {
-
-    }
-
-    @Override
-    public void handlePlayerTimeout(PlayerTimeoutEvent event) {
-
     }
 
     @Override
