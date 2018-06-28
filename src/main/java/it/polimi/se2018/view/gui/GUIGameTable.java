@@ -137,8 +137,8 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
 
     @Override
     protected void renderTurn() {
-        if(turnMessage==null) return;
-        Platform.runLater(()->turnMessage.setText("Now it's "+getCurrentPlayer()+" turn. Round "+getRoundNumber()+", turn "+getRoundDirection()+". Remaining "+getSecondsRemaining()+" seconds."));
+        if (turnMessage == null) return;
+        Platform.runLater(() -> turnMessage.setText("Now it's " + getCurrentPlayer() + " turn. Round " + getRoundNumber() + ", turn " + (getRoundDirection() ? 1 : 2) + ". Remaining " + getSecondsRemaining() + " seconds."));
     }
 
     @Override
