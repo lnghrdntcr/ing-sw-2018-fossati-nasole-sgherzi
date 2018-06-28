@@ -13,7 +13,10 @@ public class CLIChooseColorFromDiceHolder extends AbstractChooseColorFromDiceHol
 
     @Override
     public void process(String input) {
-        if (input.equalsIgnoreCase("cancel")) processCancel();
+        if (input.equalsIgnoreCase("cancel")) {
+            processCancel();
+            return;
+        }
 
         GameColor color = null;
         for (GameColor c : GameColor.values()) {
@@ -25,6 +28,7 @@ public class CLIChooseColorFromDiceHolder extends AbstractChooseColorFromDiceHol
         if (color == null) {
             CLIPrinter.printError("Invalid choice");
             getGameTable().setState(this);
+            return;
         }
 
         try {
@@ -34,7 +38,7 @@ public class CLIChooseColorFromDiceHolder extends AbstractChooseColorFromDiceHol
             getGameTable().setState(this);
         }
 
-        return;
+
 
     }
 
