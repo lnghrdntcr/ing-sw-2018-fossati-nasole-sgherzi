@@ -6,6 +6,7 @@ import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.GameTable;
+import it.polimi.se2018.view.InputError;
 import it.polimi.se2018.view.RemoteView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -266,8 +267,9 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
             alert.setContentText("You cannot place a dice, if it's not your turn :)");
             alert.showAndWait();
         } else {
-            // TODO: Substitute those 2 lines with this method calling gameTable.
+
             getRealeState().process("6");
+
         }
 
     }
@@ -281,21 +283,25 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
             alert.setContentText("You cannot end your turn, if it's not yours :)");
             alert.showAndWait();
         } else {
-            endTurn();
+
+            getRealeState().process("8");
+
         }
     }
 
     @Override
     public void onPlayerUseToolCard() {
-        // TODO: Handle use of the toolcard
+        if (!getView().getPlayer().equals(this.getCurrentPlayer())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Not your turn!");
+            alert.setContentText("You cannot use a toolcard, if it's not yours :)");
+            alert.showAndWait();
+        } else {
+
+            getRealeState().process("7");
+
+        }
     }
 
-    public void enableWindow() {
-        // TODO:
-    }
-
-    public void disableWindow() {
-        // TODO:
-    }
 
 }

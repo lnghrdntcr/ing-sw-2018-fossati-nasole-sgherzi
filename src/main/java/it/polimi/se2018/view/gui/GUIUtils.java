@@ -8,7 +8,7 @@ public class GUIUtils {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setContentText(message);
-        alert.showAndWait();
+        alert.show();
 
     }
 }

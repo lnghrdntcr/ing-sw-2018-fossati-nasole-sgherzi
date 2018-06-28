@@ -29,11 +29,11 @@ public class GUIMainMenuState extends AbstractMainMenuState {
 
     @Override
     public void unrealize() {
-        ((GUIGameTable) getGameTable()).disableWindow();
+
     }
 
     @Override
     public void render() {
-        ((GUIGameTable) getGameTable()).enableWindow();
+
     }
 }

@@ -4,6 +4,7 @@ import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
 
 import it.polimi.se2018.view.CLI.*;
+import it.polimi.se2018.view.gui.GUIUseToolState;
 import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 
 import java.util.HashMap;
@@ -21,8 +22,7 @@ public abstract class AbstractUseToolState extends State {
 
     public static AbstractUseToolState createFromContext(GameTable gameTable){
         if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
-            //TODO: change this
-            return new CLIUseToolState(gameTable);
+            return new GUIUseToolState(gameTable);
         }else{
             return new CLIUseToolState(gameTable);
         }
