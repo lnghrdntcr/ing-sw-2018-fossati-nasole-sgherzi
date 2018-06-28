@@ -65,7 +65,7 @@ public class GUIUseToolState extends AbstractUseToolState implements EventHandle
 
     private void buildInterface() {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/ChooseToolCard.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/ChooseToolcard.fxml"));
 
         try {
             root = loader.load();
