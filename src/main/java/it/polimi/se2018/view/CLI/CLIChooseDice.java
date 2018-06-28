@@ -38,7 +38,6 @@ public class CLIChooseDice extends AbstractChooseDice {
         } catch (InputError ie) {
             CLIPrinter.printError(ie.getMessage());
             getGameTable().setState(this);
-            return;
         }
     }
 
