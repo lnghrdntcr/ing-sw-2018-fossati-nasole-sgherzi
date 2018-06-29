@@ -102,6 +102,7 @@ public abstract class GameTable {
     // Handle Controller events.
 
     public void handleAskPlaceRedrawDice(AskPlaceRedrawDiceEvent event) {
+        //FIXME: This is wrong it should not pass the event.getDiceIndex, as that dice is still the old dice!
         setState(AbstractPlaceDiceState.createFromContext(this, SchemaCardFace.Ignore.NOTHING, true, false, event.getDiceIndex(), false));
     }
 

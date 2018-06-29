@@ -1,9 +1,7 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.model.schema.GameColor;
-import it.polimi.se2018.view.AbstractExchangeWDiceHolder;
+import it.polimi.se2018.view.AbstractIncrementDice;
 import it.polimi.se2018.view.GameTable;
-import it.polimi.se2018.view.InputError;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,23 +10,24 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.awt.*;
+import javafx.scene.input.*;
 import java.io.IOException;
 
-public class GUIExchangeWDiceHolder extends AbstractExchangeWDiceHolder implements DiceHolderView.OnTurnHolderInteractionListener {
+public class GUIIncrementDice extends AbstractIncrementDice {
 
 
     @FXML
     private VBox root;
 
-    private DiceHolderView roundTrack;
+    private DraftBoard draftBoardView;
 
     @FXML
     private HBox exchangeDice;
-    private Button[] buttons;
 
-    public GUIExchangeWDiceHolder(GameTable gameTable, Integer diceIndex) {
+    private Button increment;
+    private Button decrement;
+
+    public GUIIncrementDice(GameTable gameTable, Integer diceIndex) {
         super(gameTable, diceIndex);
     }
 
@@ -57,7 +56,7 @@ public class GUIExchangeWDiceHolder extends AbstractExchangeWDiceHolder implemen
 
     private void buildInterface() {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/ExchangeWDiceHolder.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/ChooseColorFromDiceHolder.fxml"));
 
         try {
             root = loader.load();
@@ -76,24 +75,23 @@ public class GUIExchangeWDiceHolder extends AbstractExchangeWDiceHolder implemen
             secondStage.setOnCloseRequest((windowEvent) -> processCancel());
             secondStage.show();
 
+            Dice diceToUpdate = new Dice();
+            diceToUpdate.setDiceFace(getGameTable().getDraftBoardImmutable().getDices()[getDiceIndex()]);
 
-            exchangeDice = (HBox) scene.lookup("#chooseDice");
 
-            roundTrack = new DiceHolderView(this);
+            increment = new Button();
+            decrement = new Button();
 
-            roundTrack.setDiceHolder(getGameTable().getDiceHolderImmutable());
+            increment.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent) -> {
+                processIncrement(1);
+            });
 
-            exchangeDice.getChildren().add(roundTrack);
+            decrement.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent) -> {
+                processIncrement(-1);
+            });
 
         });
     }
 
-    @Override
-    public void onDiceSelected(Point point) {
-        try {
-            processVictim(point);
-        } catch (InputError ie) {
-            GUIUtils.showError(ie.getMessage());
-        }
-    }
+
 }

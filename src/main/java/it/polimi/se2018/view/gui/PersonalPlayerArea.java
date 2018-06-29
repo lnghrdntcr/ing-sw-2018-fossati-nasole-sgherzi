@@ -67,6 +67,7 @@ public class PersonalPlayerArea extends HBox implements EventHandler<ActionEvent
         Platform.runLater(() -> {
             //The schema sould not be here
             this.schemaView.updateSchema(this.gameTable.getSchema(player.getName()));
+            this.schemaView.updateToken(player.getToken());
             this.token.setText("Token: " + player.getToken());
             this.privateObjectiveView.setObjective(player.getPrivateObjective());
 
@@ -112,11 +113,6 @@ public class PersonalPlayerArea extends HBox implements EventHandler<ActionEvent
             this.endTurn.setText("End Turn");
             this.useToolCard.setText("Use ToolCard");
             this.placeDice.setText("Place a dice");
-
-            // Are those useless?
-            /*this.interactionPanel.getChildren().add(this.token);
-
-            this.interactionPanel.getChildren().add(this.actionPanel);*/
 
         });
 

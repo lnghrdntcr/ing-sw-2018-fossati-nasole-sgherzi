@@ -1,21 +1,21 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.view.CLI.CLIIncrementDice;
+import it.polimi.se2018.view.gui.GUIIncrementDice;
 import it.polimi.se2018.view.viewEvent.ChangeDiceNumberEvent;
 
 public abstract class AbstractIncrementDice extends State {
-    int diceIndex;
+    private int diceIndex;
 
     protected AbstractIncrementDice(GameTable gameTable, Integer diceIndex) {
         super(gameTable);
         this.diceIndex = diceIndex;
     }
 
-    public static AbstractIncrementDice createFromContext(GameTable gameTable, Integer diceIndex){
-        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
-            //TODO: change this
-            return new CLIIncrementDice(gameTable, diceIndex);
-        }else{
+    public static AbstractIncrementDice createFromContext(GameTable gameTable, Integer diceIndex) {
+        if (gameTable.getView().getGraphics() == RemoteView.Graphics.GUI) {
+            return new GUIIncrementDice(gameTable, diceIndex);
+        } else {
             return new CLIIncrementDice(gameTable, diceIndex);
         }
     }
@@ -31,19 +31,23 @@ public abstract class AbstractIncrementDice extends State {
         }
 
         this.getGameTable().getView().sendEventToController(
-                new ChangeDiceNumberEvent(
-                        this.getClass().getName(),
-                        "",
-                        this.getGameTable().getView().getPlayer(),
-                        this.getGameTable().getToolIndexByName("RoughingNipper"),
-                        this.diceIndex,
-                        increment
-                ));
+            new ChangeDiceNumberEvent(
+                this.getClass().getName(),
+                "",
+                this.getGameTable().getView().getPlayer(),
+                this.getGameTable().getToolIndexByName("RoughingNipper"),
+                this.diceIndex,
+                increment
+            ));
 
         getGameTable().setState(AbstractMainMenuState.createFromContext(this.getGameTable()));
     }
 
-    public void processCancel(){
+    public void processCancel() {
         getGameTable().setState(AbstractMainMenuState.createFromContext(this.getGameTable()));
+    }
+
+    public int getDiceIndex() {
+        return diceIndex;
     }
 }

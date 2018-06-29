@@ -2,8 +2,8 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
-
-import it.polimi.se2018.view.CLI.*;
+import it.polimi.se2018.view.CLI.CLIPrinter;
+import it.polimi.se2018.view.CLI.CLIUseToolState;
 import it.polimi.se2018.view.gui.GUIUseToolState;
 import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 
@@ -20,10 +20,10 @@ public abstract class AbstractUseToolState extends State {
         this.setupProvider();
     }
 
-    public static AbstractUseToolState createFromContext(GameTable gameTable){
-        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
+    public static AbstractUseToolState createFromContext(GameTable gameTable) {
+        if (gameTable.getView().getGraphics() == RemoteView.Graphics.GUI) {
             return new GUIUseToolState(gameTable);
-        }else{
+        } else {
             return new CLIUseToolState(gameTable);
         }
     }
@@ -39,12 +39,12 @@ public abstract class AbstractUseToolState extends State {
 
         //2
         provider.put("EglomiseBrush", () -> {
-            return  AbstractMoveDice.createFromContext(getGameTable(), SchemaCardFace.Ignore.COLOR, "EglomiseBrush", AbstractMoveDice.Times.SECOND);
+            return AbstractMoveDice.createFromContext(getGameTable(), SchemaCardFace.Ignore.COLOR, "EglomiseBrush", AbstractMoveDice.Times.SECOND);
         });
 
         //3
         provider.put("CopperReamer", () -> {
-            return  AbstractMoveDice.createFromContext(getGameTable(), SchemaCardFace.Ignore.NUMBER, "CopperReamer", AbstractMoveDice.Times.SECOND);
+            return AbstractMoveDice.createFromContext(getGameTable(), SchemaCardFace.Ignore.NUMBER, "CopperReamer", AbstractMoveDice.Times.SECOND);
         });
 
         //4
@@ -64,7 +64,8 @@ public abstract class AbstractUseToolState extends State {
 
         //7
         provider.put("Gavel", () -> {
-            if (this.getGameTable().getToolIndexByName("Gavel") == -1) return AbstractMainMenuState.createFromContext(getGameTable());
+            if (this.getGameTable().getToolIndexByName("Gavel") == -1)
+                return AbstractMainMenuState.createFromContext(getGameTable());
 
             if (getGameTable().getRoundDirection() || getGameTable().isDicePlaced())
 
@@ -117,10 +118,9 @@ public abstract class AbstractUseToolState extends State {
                         selection).getName()
             ).get());
 
+        } else {
+            throw new InputError("The number is not between 0 and " + (Settings.TOOLCARDS_N - 1));
         }
-
-        throw new InputError("The number is not between 0 and "+(Settings.TOOLCARDS_N-1));
-
     }
 
 }

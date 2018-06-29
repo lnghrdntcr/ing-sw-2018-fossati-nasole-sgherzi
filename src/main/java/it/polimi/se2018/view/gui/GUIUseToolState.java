@@ -2,7 +2,6 @@ package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.AbstractUseToolState;
-import it.polimi.se2018.view.CLI.CLIPrinter;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.InputError;
 import javafx.application.Platform;
@@ -19,18 +18,16 @@ import java.io.IOException;
 
 public class GUIUseToolState extends AbstractUseToolState implements EventHandler<MouseEvent> {
 
+    @FXML
+    private VBox root;
+    @FXML
+    private HBox toolBox;
+    @FXML
+    private ToolCard[] toolCards = new ToolCard[Settings.TOOLCARDS_N];
+
     public GUIUseToolState(GameTable gameTable) {
         super(gameTable);
     }
-
-    @FXML
-    private VBox root;
-
-    @FXML
-    private HBox toolBox;
-
-    @FXML
-    private ToolCard[] toolCards = new ToolCard[Settings.TOOLCARDS_N];
 
     @Override
     public void process(String input) {
@@ -56,8 +53,8 @@ public class GUIUseToolState extends AbstractUseToolState implements EventHandle
             buildInterface();
         }
 
-        Platform.runLater(() ->{
-            for(int i=0; i<Settings.TOOLCARDS_N; i++){
+        Platform.runLater(() -> {
+            for (int i = 0; i < Settings.TOOLCARDS_N; i++) {
                 toolCards[i].setToolCard(getGameTable().getToolCardImmutable(i));
             }
         });
@@ -85,9 +82,9 @@ public class GUIUseToolState extends AbstractUseToolState implements EventHandle
             secondStage.show();
 
 
-            toolBox = (HBox) scene.lookup("#toolBox") ;
+            toolBox = (HBox) scene.lookup("#toolBox");
 
-            for(int i=0; i<Settings.TOOLCARDS_N; i++){
+            for (int i = 0; i < Settings.TOOLCARDS_N; i++) {
                 toolCards[i] = new ToolCard();
                 toolBox.getChildren().add(toolCards[i]);
                 toolCards[i].addEventHandler(MouseEvent.MOUSE_CLICKED, this);
@@ -98,17 +95,20 @@ public class GUIUseToolState extends AbstractUseToolState implements EventHandle
 
     @Override
     public void handle(MouseEvent event) {
-        int index=-1;
-        for(int i=0; i<Settings.TOOLCARDS_N; i++){
-            if(event.getSource()==toolCards[i]){
+
+        int index = -1;
+
+        for (int i = 0; i < Settings.TOOLCARDS_N; i++) {
+            if (event.getSource() == toolCards[i]) {
                 index = i;
             }
         }
 
         try {
             processUseToolCard(index);
-        }catch (InputError ie){
+        } catch (InputError ie) {
             GUIUtils.showError(ie.getMessage());
         }
     }
+
 }

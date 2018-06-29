@@ -98,6 +98,8 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
      */
     private String[] pickToolCards() {
 
+        // TODO: All the cards that need a dice to be moved are still not implemented in GUI
+
         ArrayList<String> tools = new ArrayList<>();
         tools.add("CircularCutter");
         tools.add("CopperReamer");
@@ -143,7 +145,8 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         // this.resetActionTimeout();
         // or
         // that?
-        if (message.getPlayerName().equals(getModel().getCurrentPlayerName())) this.beginTime = System.currentTimeMillis();
+        if (message.getPlayerName().equals(getModel().getCurrentPlayerName()))
+            this.beginTime = System.currentTimeMillis();
         this.inboundEventLoop.add(message);
 
     }
@@ -201,7 +204,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
                     this.state = state.handleEvent(inboundEvent, this.model);
 
-                    if(!getModel().hasNextTurn() && !isGameEnded){
+                    if (!getModel().hasNextTurn() && !isGameEnded) {
                         isGameEnded = true;
                         this.state = new GameEndState(this, getModel());
                     }
@@ -236,13 +239,13 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         return false;
     }
 
-    public boolean isMoreThanOnePlayerConnected(){
-        int i=0;
+    public boolean isMoreThanOnePlayerConnected() {
+        int i = 0;
         for (View v : this.views) {
             if (v.isConnected()) i++;
         }
 
-        return i>1;
+        return i > 1;
     }
 
     public GameTableMultiplayer getModel() {

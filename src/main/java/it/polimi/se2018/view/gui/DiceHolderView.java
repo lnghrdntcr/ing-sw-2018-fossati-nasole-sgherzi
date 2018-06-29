@@ -57,7 +57,7 @@ public class DiceHolderView extends HBox implements EventHandler<javafx.scene.in
 
                     final int x1 = x, y1 = y;
 
-                    dice.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, this);
+                    dice.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, event -> interactionListener.onDiceSelected(new Point(x1, y1)));
 
                     turns[x].getChildren().add(dice);
 
