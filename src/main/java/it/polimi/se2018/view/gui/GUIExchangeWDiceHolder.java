@@ -1,36 +1,36 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.utils.Settings;
-import it.polimi.se2018.view.AbstractUseToolState;
-import it.polimi.se2018.view.CLI.CLIPrinter;
+import it.polimi.se2018.model.schema.GameColor;
+import it.polimi.se2018.view.AbstractExchangeWDiceHolder;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.InputError;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 
-public class GUIUseToolState extends AbstractUseToolState implements EventHandler<MouseEvent> {
+public class GUIExchangeWDiceHolder extends AbstractExchangeWDiceHolder implements DiceHolderView.OnTurnHolderInteractionListener {
 
-    public GUIUseToolState(GameTable gameTable) {
-        super(gameTable);
-    }
 
     @FXML
     private VBox root;
 
-    @FXML
-    private HBox toolBox;
+    private DiceHolderView roundTrack;
 
     @FXML
-    private ToolCard[] toolCards = new ToolCard[Settings.TOOLCARDS_N];
+    private HBox exchangeDice;
+    private Button[] buttons;
+
+    public GUIExchangeWDiceHolder(GameTable gameTable, Integer diceIndex) {
+        super(gameTable, diceIndex);
+    }
 
     @Override
     public void process(String input) {
@@ -39,7 +39,6 @@ public class GUIUseToolState extends AbstractUseToolState implements EventHandle
 
     @Override
     public void unrealize() {
-
         if (root != null) {
             Platform.runLater(() -> {
                 Stage stage = (Stage) root.getScene().getWindow();
@@ -47,7 +46,6 @@ public class GUIUseToolState extends AbstractUseToolState implements EventHandle
                 root = null;
             });
         }
-
     }
 
     @Override
@@ -55,17 +53,11 @@ public class GUIUseToolState extends AbstractUseToolState implements EventHandle
         if (root == null) {
             buildInterface();
         }
-
-        Platform.runLater(() ->{
-            for(int i=0; i<Settings.TOOLCARDS_N; i++){
-                toolCards[i].setToolCard(getGameTable().getToolCardImmutable(i));
-            }
-        });
     }
 
     private void buildInterface() {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/ChooseToolcard.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/ChooseColorFromDiceHolder.fxml"));
 
         try {
             root = loader.load();
@@ -85,29 +77,20 @@ public class GUIUseToolState extends AbstractUseToolState implements EventHandle
             secondStage.show();
 
 
-            toolBox = (HBox) scene.lookup("#toolBox") ;
+            exchangeDice = (HBox) scene.lookup("#chooseColor");
 
-            for(int i=0; i<Settings.TOOLCARDS_N; i++){
-                toolCards[i] = new ToolCard();
-                toolBox.getChildren().add(toolCards[i]);
-                toolCards[i].addEventHandler(MouseEvent.MOUSE_CLICKED, this);
+            roundTrack = new DiceHolderView(this);
 
-            }
+            roundTrack.setDiceHolder(getGameTable().getDiceHolderImmutable());
+
         });
     }
 
     @Override
-    public void handle(MouseEvent event) {
-        int index=-1;
-        for(int i=0; i<Settings.TOOLCARDS_N; i++){
-            if(event.getSource()==toolCards[i]){
-                index = i;
-            }
-        }
-
+    public void onDiceSelected(Point point) {
         try {
-            processUseToolCard(index);
-        }catch (InputError ie){
+            processVictim(point);
+        } catch (InputError ie) {
             GUIUtils.showError(ie.getMessage());
         }
     }

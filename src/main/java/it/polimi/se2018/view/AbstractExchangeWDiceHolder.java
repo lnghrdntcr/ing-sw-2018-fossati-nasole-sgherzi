@@ -1,6 +1,7 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.view.CLI.CLIExchangeWDiceHolder;
+import it.polimi.se2018.view.gui.GUIExchangeWDiceHolder;
 import it.polimi.se2018.view.viewEvent.SwapDiceFaceWithDiceHolderEvent;
 
 import java.awt.*;
@@ -16,8 +17,7 @@ public abstract class AbstractExchangeWDiceHolder extends State {
 
     public static AbstractExchangeWDiceHolder createFromContext(GameTable gameTable, Integer diceIndex){
         if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
-            //TODO: change this
-            return new CLIExchangeWDiceHolder(gameTable, diceIndex);
+            return new GUIExchangeWDiceHolder(gameTable, diceIndex);
         }else{
             return new CLIExchangeWDiceHolder(gameTable, diceIndex);
         }
@@ -25,9 +25,13 @@ public abstract class AbstractExchangeWDiceHolder extends State {
 
     protected void processVictim(Point victim) {
 
+        //FIXME: this is wrong it does not check input
+
         if (victim == null){
             throw new InputError("Invalid Input");
         }
+
+
 
         getGameTable().getView().sendEventToController(
             new SwapDiceFaceWithDiceHolderEvent(
