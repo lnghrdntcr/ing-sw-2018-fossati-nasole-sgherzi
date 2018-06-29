@@ -5,6 +5,7 @@ import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.CLI.CLIChooseColorFromDiceHolder;
+import it.polimi.se2018.view.gui.GUIChooseColorFromDiceHolder;
 
 import java.util.HashMap;
 import java.util.function.Function;
@@ -23,8 +24,7 @@ public abstract class AbstractChooseColorFromDiceHolder extends State {
 
     public static AbstractChooseColorFromDiceHolder createFromContext(GameTable gameTable, String toolName){
         if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
-            //TODO: change this!
-            return new CLIChooseColorFromDiceHolder(gameTable, toolName);
+            return new GUIChooseColorFromDiceHolder(gameTable, toolName);
         }else{
             return new CLIChooseColorFromDiceHolder(gameTable, toolName);
         }
