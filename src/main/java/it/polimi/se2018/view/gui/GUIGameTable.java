@@ -99,6 +99,7 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
         PlayerImmutable playerImmutable = getPlayer(player);
 
         Platform.runLater(() -> {
+            this.players.get(getPlayerIndex(player)).setVisible(true);
             this.players.get(getPlayerIndex(player)).setPlayer(playerImmutable);
         });
 
@@ -111,6 +112,7 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
         Schema schema = getSchema(player);
 
         Platform.runLater(() -> {
+            this.players.get(getPlayerIndex(player)).setVisible(true);
             this.players.get(getPlayerIndex(player)).setSchema(schema);
         });
 
@@ -198,10 +200,15 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
             player3.getChildren().add(players.get(2));
             player4.getChildren().add(players.get(3));
 
+            players.forEach((a) ->{
+                a.setVisible(false);
+            });
+
             diceHolderView = new DiceHolderView();
             draftBoardView = new DraftBoard();
 
             Arrays.stream(getPlayers()).forEach(player -> {
+                this.players.get(getPlayerIndex(player)).setVisible(true);
                 this.players.get(getPlayerIndex(player)).setPlayer(getPlayer(player));
                 this.players.get(getPlayerIndex(player)).setSchema(getSchema(player));
             });
