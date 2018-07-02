@@ -9,8 +9,6 @@
 * Aggiugnere un altro layer di comunicazione per eliminare serializable
 * finire i test
 * aggiungere caricamento schema card da cartella resources (usando getResources)
-* Spostare generazione PublicObjective in model
-* Spostare setActive /setInactive delle CLI in un'interfaccia
 * Eliminare un evento mettendo parametro default (Placeanotherdicewithnumberselection) e guardare anche stati
 
 ## Caratteristiche file JSON per le carte schema

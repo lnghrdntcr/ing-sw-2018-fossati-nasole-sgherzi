@@ -98,8 +98,6 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
      */
     private String[] pickToolCards() {
 
-        // TODO: All the cards that need a dice to be moved are still not implemented in GUI
-
         ArrayList<String> tools = new ArrayList<>();
         tools.add("CircularCutter");
         tools.add("CopperReamer");
