@@ -25,6 +25,11 @@ public class PlaceRedrawnDiceState extends State {
         getController().dispatchEvent(new AskPlaceRedrawDiceEvent(getClass().getCanonicalName(), playerName, playerName, diceNumberOnDraftBoard));
     }
 
+    @Override
+    public void syncPlayer(String playerName) {
+        this.oldState.syncPlayer(playerName);
+    }
+
     /**
      * Handle the usage of a specific toolcard
      *

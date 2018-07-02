@@ -28,6 +28,11 @@ public class GameEndState extends State {
         // TODO: Figure out a slightly better idea to end the game.
     }
 
+    @Override
+    public void syncPlayer(String playerName) {
+
+    }
+
     /**
      * The event handler for the EndGameEvent triggered.
      *

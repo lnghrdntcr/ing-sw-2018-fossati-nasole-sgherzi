@@ -1,16 +1,14 @@
 package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
-import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
-import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.*;
 
 /**
  * A generic State used by the controller to handle a player event
  */
-public class State {
+public abstract class State {
     private Controller controller;
     private GameTableMultiplayer model;
 
@@ -30,6 +28,7 @@ public class State {
         return event.visit(this);
     }
 
+    public abstract void syncPlayer(String playerName);
 
     /**
      * Handle the usage of a toolcard (the default implementation does nothing)

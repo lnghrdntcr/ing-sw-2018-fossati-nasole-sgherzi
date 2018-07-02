@@ -2,14 +2,13 @@ package it.polimi.se2018.model;
 
 import it.polimi.se2018.model.modelEvent.*;
 import it.polimi.se2018.model.objectives.PrivateObjective;
+import it.polimi.se2018.model.objectives.PublicObjective;
+import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
-import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Event;
-import it.polimi.se2018.model.objectives.PublicObjective;
-import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.utils.Observable;
 import it.polimi.se2018.utils.ScoreHolder;
 import it.polimi.se2018.utils.Settings;
@@ -110,8 +109,10 @@ public class GameTableMultiplayer extends Observable<Event> {
         }
 
         for (int i = 0; i < this.players.length; i++) {
-
             dispatchEvent(new PlayerChangedEvent(this.getClass().getName() + "::gameStart", playerName, this.players[i].getName(), this.players[i].getImmutableInstance()));
+        }
+        for (int i = 0; i < this.players.length; i++) {
+            dispatchEvent(new SchemaChangedEvent(this.getClass().getName() + "::gameStart", playerName, this.players[i].getName(), this.players[i].getSchema()));
         }
 
         dispatchEvent(new DiceHolderChangedEvent(this.getClass().getName() + "::gameStart", playerName, "", diceHolder.getImmutableInstance()));
@@ -163,6 +164,7 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     /**
      * Returns the PublicObjectiveCard by position
+     *
      * @param position zero based position of the card. Position is grater than or equal to zero and lesser than 3
      * @return the PublicObjectiveCard
      * @throws IllegalArgumentException if position outside of range
@@ -490,7 +492,7 @@ public class GameTableMultiplayer extends Observable<Event> {
                 ": schema already set. Cannot set a new schema.");
         }
 
-        dispatchEvent(new PlayerChangedEvent(getClass().getName()+"setPlayerSchema", "", playerName, getPlayerByName(playerName).getImmutableInstance()));
+        dispatchEvent(new PlayerChangedEvent(getClass().getName() + "setPlayerSchema", "", playerName, getPlayerByName(playerName).getImmutableInstance()));
     }
 
     /**
@@ -599,14 +601,14 @@ public class GameTableMultiplayer extends Observable<Event> {
         this.sync("");
     }
 
-    public void endTurn(){
-        while(draftBoard.getDiceNumber()>0){
-            diceHolder.addDice(getRound()-1, draftBoard.removeDice(0));
+    public void endTurn() {
+        while (draftBoard.getDiceNumber() > 0) {
+            diceHolder.addDice(getRound() - 1, draftBoard.removeDice(0));
         }
 
         draftBoard.drawDices(this.players.length);
-        dispatchEvent(new DraftBoardChangedEvent(getClass().getName()+"::endTurn", "", "", draftBoard.getImmutableInstance()));
-        dispatchEvent(new DiceHolderChangedEvent(getClass().getName()+"::endTurn", "", "", diceHolder.getImmutableInstance()));
+        dispatchEvent(new DraftBoardChangedEvent(getClass().getName() + "::endTurn", "", "", draftBoard.getImmutableInstance()));
+        dispatchEvent(new DiceHolderChangedEvent(getClass().getName() + "::endTurn", "", "", diceHolder.getImmutableInstance()));
     }
 
 }

@@ -97,17 +97,17 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     private String[] pickToolCards() {
 
         ArrayList<String> tools = new ArrayList<>();
-        /*tools.add("CircularCutter"); // TESTED on GUI
+        tools.add("CircularCutter"); // TESTED on GUI
         tools.add("CopperReamer"); // TESTED on gui
-        tools.add("CorkRow"); // TESTED On GUI*/
-/*        tools.add("DiamondPad"); // tested on gui
+        tools.add("CorkRow"); // TESTED On GUI
+        tools.add("DiamondPad"); // tested on gui
         tools.add("EglomiseBrush"); // Tested on gui
-        tools.add("FirmPastaDiluent"); // Tested on gui*/
-/*        tools.add("FirmPastaBrush"); // Tested on gui
+        tools.add("FirmPastaDiluent"); // Tested on gui
+        tools.add("FirmPastaBrush"); // Tested on gui
         tools.add("Gavel"); // Strange behaviour
-        tools.add("Lathekin"); // Tested on gui*/
-        tools.add("ManualCutter");
-        tools.add("RoughingNipper");
+        tools.add("Lathekin"); // Tested on gui
+        tools.add("ManualCutter"); // Tested on GUI
+        tools.add("RoughingNipper"); // Tested on GUI
         tools.add("WheeledPincer"); // Tested on gui
 
         Collections.shuffle(tools);
@@ -264,10 +264,17 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
      */
     public void reconnectPlayer(LocalProxy localProxy, String playerName) {
 
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         for (View v : this.views) {
             if (v.getPlayer().equals(playerName) && !v.isConnected()) {
                 ((VirtualView) v).connect(localProxy);
                 getModel().sync(playerName);
+                state.syncPlayer(playerName);
                 Log.d("Player " + playerName + " reconnected successfully ");
             }
         }
