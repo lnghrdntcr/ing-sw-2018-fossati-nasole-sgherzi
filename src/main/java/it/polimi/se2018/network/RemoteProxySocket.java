@@ -1,6 +1,5 @@
 package it.polimi.se2018.network;
 
-import it.polimi.se2018.model.modelEvent.TurnChangedEvent;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
@@ -21,6 +20,7 @@ public class RemoteProxySocket extends RemoteProxy {
 
     /**
      * Create a new proxy, associating the specified remoteConnection
+     *
      * @param remoteConnection the socket to associate with this instance of the proxy
      * @throws IOException if an error occours
      */
@@ -33,18 +33,11 @@ public class RemoteProxySocket extends RemoteProxy {
         listenerThread = new RemoteProxySocket.ListenerThread();
         listenerThread.start();
 
-        /*while (true){
-            sendEventToServer(new TurnChangedEvent("REMOTE", "REMOTEPLAYER", 0));
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }*/
     }
 
     /**
      * Sends the event to the connected server, using socket connection
+     *
      * @param event the event that should me dispatched
      */
     @Override
@@ -53,7 +46,22 @@ public class RemoteProxySocket extends RemoteProxy {
             objectOutputStream.writeObject(event);
         } catch (IOException e) {
             Log.e("Unable to send an event to the server!");
+            System.exit(-1);
         }
+    }
+
+    /**
+     * Kill the {@link ListenerThread} and close any active connection with the client
+     */
+    public void closeConnection() {
+        listenerThread.kill();
+        try {
+            objectOutputStream.close();
+            remoteConnection.close();
+        } catch (IOException e) {
+            Log.e("Error during stram closing: " + e.getMessage());
+        }
+
     }
 
     /**
@@ -77,11 +85,14 @@ public class RemoteProxySocket extends RemoteProxy {
                         e.printStackTrace();
                     }
                 }
-            }catch (IOException e){
-                Log.d("ListenerThread: IOException: "+e.getMessage());
+            } catch (IOException e) {
+                Log.d("ListenerThread: IOException: " + e.getMessage());
+
             }
 
             Log.d("Disconnected!");
+            System.exit(-1);
+
         }
 
         /**
@@ -95,19 +106,5 @@ public class RemoteProxySocket extends RemoteProxy {
                 Log.e("Error during stram closing: " + e.getMessage());
             }
         }
-    }
-
-    /**
-     * Kill the {@link ListenerThread} and close any active connection with the client
-     */
-    public void closeConnection() {
-        listenerThread.kill();
-        try {
-            objectOutputStream.close();
-            remoteConnection.close();
-        } catch (IOException e) {
-            Log.e("Error during stram closing: " + e.getMessage());
-        }
-
     }
 }

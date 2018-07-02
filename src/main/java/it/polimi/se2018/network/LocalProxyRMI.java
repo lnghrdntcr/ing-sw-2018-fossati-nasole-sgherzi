@@ -2,7 +2,6 @@ package it.polimi.se2018.network;
 
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
-import it.polimi.se2018.view.viewEvent.PlayerDisconnectedEvent;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 import java.rmi.RemoteException;
@@ -30,6 +29,9 @@ public class LocalProxyRMI extends LocalProxy implements LocalProxyRMIInterface 
             ) {
 
             try {
+
+                Log.d("[RMI::sendEventToClient]" + event.toString());
+
                 client.sendEventToClient(event);
             } catch (RemoteException e) {
                 Log.d(e.getMessage());

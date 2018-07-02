@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 
 /**
  * The LocalProxy, retained by the client.
+ *
  * @since 23/05/2018
  */
 public class RemoteProxyRMI extends RemoteProxy implements RemoteProxyRMIInterface {
@@ -16,6 +17,7 @@ public class RemoteProxyRMI extends RemoteProxy implements RemoteProxyRMIInterfa
 
     /**
      * Sends the modelEvent to the LocalProxy, using RMI.
+     *
      * @param event The modelEvent to be sent.
      */
     @Override
@@ -24,18 +26,19 @@ public class RemoteProxyRMI extends RemoteProxy implements RemoteProxyRMIInterfa
             localProxyRMI.sendEventToServer(event);
         } catch (RemoteException e) {
             Log.e("Failed to send Event to server: " + e.getMessage());
+            System.exit(-1);
         }
     }
 
     /**
      * Sends modelEvent to the RemoteView, in order to be dispatched by it.
+     *
      * @param event The modelEvent to be sent.
      * @throws RemoteException If an error occurred.
      */
     @Override
     public void sendEventToClient(Event event) throws RemoteException {
         // This method is called from server side when an modelEvent occurs on the server.
-        /*Log.d("Received " + event);*/
         this.dispatchEventToRemoteView(event);
     }
 

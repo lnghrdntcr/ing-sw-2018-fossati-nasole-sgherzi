@@ -41,17 +41,18 @@ public class Client {
                 Log.i("Hello " + name + "! Nice to meet you!");
             } else {
                 Log.e("Error during connection... Duplicate name or the maximum number of players is already reached.");
+                System.exit(-1);
             }
             return remoteRMI;
         } catch (NotBoundException | RemoteException e) {
             Log.e("Cannot connect to server: " + e.getMessage());
-            e.printStackTrace();
+            System.exit(-1);
         }
         return null;
     }
 
     /**
-     * Begins the connection with the RMI server.
+     * Begins the connection with the Socket server.
      */
     private static RemoteProxy connectSocket() {
         try {
@@ -71,6 +72,7 @@ public class Client {
             return remoteProxySocket;
         } catch (IllegalArgumentException | IOException e) {
             Log.e("Cannot connect to server: " + e.getMessage());
+            System.exit(-1);
         }
         return null;
     }

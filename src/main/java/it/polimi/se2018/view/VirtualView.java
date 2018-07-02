@@ -33,6 +33,7 @@ public class VirtualView extends View {
         if(this.localProxy != null) throw new IllegalStateException(this.getClass().getCanonicalName() + " Attempting to connect with an already connected View ");
 
         this.localProxy = localProxy;
+
         localProxy.setView(this);
 
         this.setConnected(true);

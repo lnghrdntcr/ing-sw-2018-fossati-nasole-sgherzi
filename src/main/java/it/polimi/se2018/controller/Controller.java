@@ -264,17 +264,21 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
      */
     public void reconnectPlayer(LocalProxy localProxy, String playerName) {
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         for (View v : this.views) {
             if (v.getPlayer().equals(playerName) && !v.isConnected()) {
                 ((VirtualView) v).connect(localProxy);
-                getModel().sync(playerName);
-                state.syncPlayer(playerName);
+
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    getModel().sync(playerName);
+                    state.syncPlayer(playerName);
+                }).start();
+
                 Log.d("Player " + playerName + " reconnected successfully ");
             }
         }
