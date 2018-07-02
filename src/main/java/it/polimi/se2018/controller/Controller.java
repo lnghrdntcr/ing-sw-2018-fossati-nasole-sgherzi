@@ -9,9 +9,7 @@ import it.polimi.se2018.controller.states.State;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.objectives.*;
 import it.polimi.se2018.network.LocalProxy;
-import it.polimi.se2018.network.LocalProxySocket;
 import it.polimi.se2018.utils.*;
-import it.polimi.se2018.view.RemoteView;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.VirtualView;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
@@ -99,18 +97,18 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     private String[] pickToolCards() {
 
         ArrayList<String> tools = new ArrayList<>();
-        tools.add("CircularCutter");
-        tools.add("CopperReamer");
-        tools.add("CorkRow");
-        tools.add("DiamondPad");
-        tools.add("EglomiseBrush");
-        tools.add("FirmPastaDiluent");
-        tools.add("FirmPastaBrush");
-        tools.add("Gavel");
-        tools.add("Lathekin");
+        /*tools.add("CircularCutter"); // TESTED on GUI
+        tools.add("CopperReamer"); // TESTED on gui
+        tools.add("CorkRow"); // TESTED On GUI*/
+/*        tools.add("DiamondPad"); // tested on gui
+        tools.add("EglomiseBrush"); // Tested on gui
+        tools.add("FirmPastaDiluent"); // Tested on gui*/
+/*        tools.add("FirmPastaBrush"); // Tested on gui
+        tools.add("Gavel"); // Strange behaviour
+        tools.add("Lathekin"); // Tested on gui*/
         tools.add("ManualCutter");
         tools.add("RoughingNipper");
-        tools.add("WheeledPincer");
+        tools.add("WheeledPincer"); // Tested on gui
 
         Collections.shuffle(tools);
         return tools.subList(0, Settings.TOOLCARDS_N).toArray(new String[Settings.TOOLCARDS_N]);

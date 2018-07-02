@@ -2,7 +2,6 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
-import it.polimi.se2018.view.CLI.CLIPrinter;
 import it.polimi.se2018.view.CLI.CLIUseToolState;
 import it.polimi.se2018.view.gui.GUIUseToolState;
 import it.polimi.se2018.view.viewEvent.DiceActionEvent;
@@ -64,21 +63,21 @@ public abstract class AbstractUseToolState extends State {
 
         //7
         provider.put("Gavel", () -> {
-            if (this.getGameTable().getToolIndexByName("Gavel") == -1)
-                return AbstractMainMenuState.createFromContext(getGameTable());
 
-            if (getGameTable().getRoundDirection() || getGameTable().isDicePlaced())
+            if (!getGameTable().getRoundDirection() && !getGameTable().isDicePlaced()) {
 
                 this.getGameTable().getView().sendEventToController(new DiceActionEvent(this.getClass().getName(),
                     "", getGameTable().getView().getPlayer(), this.getGameTable().getToolIndexByName("Gavel"), -1));
+            } else {
+                throw new InputError("You can't activate this card now!");
+            }
             return AbstractMainMenuState.createFromContext(getGameTable());
         });
 
         //8
         provider.put("WheeledPincer", () -> {
             if (!getGameTable().getRoundDirection()) {
-                CLIPrinter.printError("You can't activate this card now!");
-                return this;
+                throw new InputError("You can't activate this card now!");
             }
             return AbstractPlaceDiceState.createFromContext(getGameTable(), SchemaCardFace.Ignore.NOTHING, true, false);
         });

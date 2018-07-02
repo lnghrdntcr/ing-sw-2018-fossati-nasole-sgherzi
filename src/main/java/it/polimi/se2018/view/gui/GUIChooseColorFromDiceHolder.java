@@ -21,7 +21,7 @@ public class GUIChooseColorFromDiceHolder extends AbstractChooseColorFromDiceHol
 
     @FXML
     private HBox chooseColor;
-    private Button[] buttons;
+    private Button[] buttons = new Button[GameColor.values().length];
 
     public GUIChooseColorFromDiceHolder(GameTable gameTable, String toolName) {
         super(gameTable, toolName);

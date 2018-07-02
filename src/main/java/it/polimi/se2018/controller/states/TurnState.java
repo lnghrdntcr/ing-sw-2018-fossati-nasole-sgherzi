@@ -2,8 +2,8 @@ package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
-import it.polimi.se2018.model.Tool;
 import it.polimi.se2018.model.GameTableMultiplayer;
+import it.polimi.se2018.model.Tool;
 import it.polimi.se2018.model.modelEvent.TurnChangedEvent;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.Schema;
@@ -22,11 +22,10 @@ import java.util.function.Supplier;
  */
 public class TurnState extends State {
 
-    private boolean hasPlacedDice;
-    private boolean hasUsedToolcard;
-
     private final HashMap<String, Supplier<Boolean>> isToolCardUsable = new HashMap<>();
     private final HashMap<String, Function<UseToolcardEvent, State>> useToolcard = new HashMap<>();
+    private boolean hasPlacedDice;
+    private boolean hasUsedToolcard;
 
     public TurnState(Controller controller, GameTableMultiplayer model, boolean hasPlacedDice, boolean hasUsedToolcard) {
         super(controller, model);
