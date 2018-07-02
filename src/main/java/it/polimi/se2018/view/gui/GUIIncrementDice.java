@@ -82,6 +82,9 @@ public class GUIIncrementDice extends AbstractIncrementDice {
             increment = new Button();
             decrement = new Button();
 
+            root.getChildren().add(increment);
+            root.getChildren().add(decrement);
+
             increment.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent) -> {
                 processIncrement(1);
             });
