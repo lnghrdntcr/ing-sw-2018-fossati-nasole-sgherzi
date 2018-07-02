@@ -55,6 +55,8 @@ public class GUILeaderBoard extends GameEnding {
             Scene scene = new Scene(root);
             secondStage.setScene(scene);
 
+            secondStage.show();
+
             leaderboard = (HBox) scene.lookup("#leaderboard");
             players = (VBox) scene.lookup("#players");
             scores = (VBox) scene.lookup("#scores");
@@ -75,7 +77,8 @@ public class GUILeaderBoard extends GameEnding {
 
             }
 
-
+            root.setStyle("-fx-background-image: url('/gui/fireworks.gif');\n" +
+                "    -fx-background-repeat: no-repeat;");
         });
     }
 

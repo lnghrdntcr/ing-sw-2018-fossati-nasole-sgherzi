@@ -54,10 +54,6 @@ public class RemoteView extends View {
 
                     VisitableFromView actualEvent = this.eventLoop.poll();
 
-                    if (actualEvent instanceof GameStartEvent) {
-                        Log.d("Expecting to call visit on gameTable");
-                    }
-
                     actualEvent.visit(selectSchemaCardFace);
                     actualEvent.visit(gameTable);
                     actualEvent.visit(gameEnding);
