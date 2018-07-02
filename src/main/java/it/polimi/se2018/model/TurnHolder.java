@@ -13,7 +13,7 @@ public class TurnHolder {
     private int currentPlayer;
     private int direction;
     private int firstInRound;
-    boolean toIncrement=false;
+    private boolean toIncrement=false;
 
     /**
      * @param players the number of players that take part to the match
@@ -91,7 +91,8 @@ public class TurnHolder {
     public boolean isFirstTurnInRound() {
         //if the direction is 1 we are going in the first direction, meaning we have not changed direction in this turn
         // yet, so basically the player is playing the first turn in this round
-        return direction == 1 || direction==0;
+
+        return !toIncrement && (direction == 1 || direction==0);
     }
 
     @Override
@@ -102,6 +103,8 @@ public class TurnHolder {
                 ", currentPlayer=" + currentPlayer +
                 ", direction=" + direction +
                 ", firstInRound=" + firstInRound +
+                ", toIncrement=" + toIncrement +
                 '}';
     }
+
 }

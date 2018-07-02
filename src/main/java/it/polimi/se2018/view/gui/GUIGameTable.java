@@ -163,6 +163,7 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
             secondStage.setResizable(false);
             Scene scene = new Scene(root);
             secondStage.setScene(scene);
+            secondStage.setFullScreen(true);
             secondStage.show();
 
             secondStage.setOnCloseRequest((windowEvent) -> {
