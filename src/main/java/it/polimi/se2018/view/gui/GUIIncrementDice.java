@@ -2,6 +2,7 @@ package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.view.AbstractIncrementDice;
 import it.polimi.se2018.view.GameTable;
+import it.polimi.se2018.view.InputError;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -82,15 +83,27 @@ public class GUIIncrementDice extends AbstractIncrementDice {
             increment = new Button();
             decrement = new Button();
 
+            increment.setText("Increment");
+            decrement.setText("Decrement");
+
             root.getChildren().add(increment);
             root.getChildren().add(decrement);
 
             increment.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent) -> {
-                processIncrement(1);
+                try{
+                    processIncrement(1);
+                }catch (InputError ie){
+                    GUIUtils.showError(ie.getMessage());
+                }
+
             });
 
             decrement.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent) -> {
-                processIncrement(-1);
+                try{
+                    processIncrement(-1);
+                }catch (InputError ie){
+                    GUIUtils.showError(ie.getMessage());
+                }
             });
             root.setStyle("-fx-background-image: url('/gui/background.jpg');\n" +
                     "    -fx-background-repeat: repeat;");
