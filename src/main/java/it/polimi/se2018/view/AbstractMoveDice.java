@@ -63,9 +63,7 @@ public abstract class AbstractMoveDice extends State {
     public void processFirstSource(Point firstSource) {
         this.firstSource = firstSource;
         if (playerSchema.getDiceFace(firstSource) == null) {
-            CLIPrinter.printError("The cell is empty!");
-            getGameTable().setState(this);
-            return;
+            throw new InputError("The cell is empty!");
         }
 
         if (color != null && !playerSchema.getDiceFace(firstSource).getColor().equals(color)) {
@@ -81,15 +79,11 @@ public abstract class AbstractMoveDice extends State {
     public void processSecondSource(Point secondSource) {
         this.secondSource = secondSource;
         if (playerSchema.getDiceFace(secondSource) == null) {
-            CLIPrinter.printError("The cell is empty!");
-            getGameTable().setState(this);
-            return;
+            throw new InputError("The cell is empty!");
         }
 
         if (color != null && !playerSchema.getDiceFace(secondSource).getColor().equals(color)) {
-            CLIPrinter.printError("You cannot move a dice of this color!");
-            getGameTable().setState(this);
-            return;
+            throw new InputError("You cannot move a dice of this color!");
         }
 
         actionState = ActionState.PLACE;
@@ -99,22 +93,15 @@ public abstract class AbstractMoveDice extends State {
     public void processFirstDestination(Point firstDestination) {
         this.firstDestination = firstDestination;
         if (playerSchema.getDiceFace(firstDestination) != null) {
-            CLIPrinter.printError("The cell not empty!");
-            getGameTable().setState(this);
-            return;
+            throw new InputError("The cell not empty!");
         }
 
         DiceFace prevDice = playerSchema.removeDiceFace(firstSource);
 
         if (!playerSchema.isDiceAllowed(firstDestination, prevDice, ignore)) {
-
-            CLIPrinter.printError("Movement not permitted");
-
             this.playerSchema = this.getGameTable().getSchema(this.getGameTable().getView().getPlayer());
             actionState = ActionState.CHOOSE;
-
-            getGameTable().setState(this);
-            return;
+            throw new InputError("Movement not permitted");
         }
 
         playerSchema.setDiceFace(firstDestination, prevDice);

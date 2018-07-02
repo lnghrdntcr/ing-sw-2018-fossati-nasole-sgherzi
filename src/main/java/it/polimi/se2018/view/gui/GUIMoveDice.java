@@ -126,7 +126,7 @@ public class GUIMoveDice extends AbstractMoveDice implements SchemaPanel.OnSchem
             }
         } catch (InputError ie) {
             GUIUtils.showError(ie.getMessage());
-            return;
+            getGameTable().setState(this);
         }
     }
 }

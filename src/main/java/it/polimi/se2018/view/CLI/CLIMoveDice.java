@@ -42,6 +42,7 @@ public class CLIMoveDice extends AbstractMoveDice {
                     processFirstSource(firstSource);
                 } catch (InputError ie) {
                     CLIPrinter.printError(ie.getMessage());
+                    getGameTable().setState(this);
                     return;
                 }
 
@@ -60,6 +61,7 @@ public class CLIMoveDice extends AbstractMoveDice {
                     processSecondSource(secondSource);
                 } catch (InputError ie) {
                     CLIPrinter.printError(ie.getMessage());
+                    getGameTable().setState(this);
                     return;
                 }
 
@@ -82,6 +84,7 @@ public class CLIMoveDice extends AbstractMoveDice {
                     processFirstDestination(firstDestination);
                 } catch (InputError ie) {
                     CLIPrinter.printError(ie.getMessage());
+                    getGameTable().setState(this);
                     return;
                 }
             } else if (getTimes() == Times.SECOND) {
@@ -98,6 +101,7 @@ public class CLIMoveDice extends AbstractMoveDice {
                     processSecondDestination(secondDestination);
                 } catch (InputError ie) {
                     CLIPrinter.printError(ie.getMessage());
+                    getGameTable().setState(this);
                     return;
                 }
             }
