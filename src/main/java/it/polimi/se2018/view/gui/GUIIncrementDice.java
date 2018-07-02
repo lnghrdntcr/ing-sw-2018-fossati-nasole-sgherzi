@@ -56,7 +56,7 @@ public class GUIIncrementDice extends AbstractIncrementDice {
 
     private void buildInterface() {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/ChooseColorFromDiceHolder.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/IncrementDice.fxml"));
 
         try {
             root = loader.load();
