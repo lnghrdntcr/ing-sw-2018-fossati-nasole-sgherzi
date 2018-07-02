@@ -6,6 +6,7 @@ import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.view.CLI.CLIMoveDice;
 import it.polimi.se2018.view.CLI.CLIPrinter;
+import it.polimi.se2018.view.gui.GUIMoveDice;
 import it.polimi.se2018.view.viewEvent.DoubleMoveDiceEvent;
 import it.polimi.se2018.view.viewEvent.DoubleMoveOfColorDiceEvent;
 import it.polimi.se2018.view.viewEvent.MoveDiceEvent;
@@ -43,26 +44,24 @@ public abstract class AbstractMoveDice extends State {
 
     }
 
-    public static AbstractMoveDice createFromContext(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times){
-        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
-            //TODO: change this
-            return new CLIMoveDice(gameTable, ignore, toolName, times);
-        }else{
+    public static AbstractMoveDice createFromContext(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times) {
+        if (gameTable.getView().getGraphics() == RemoteView.Graphics.GUI) {
+            return new GUIMoveDice(gameTable, ignore, toolName, times);
+        } else {
             return new CLIMoveDice(gameTable, ignore, toolName, times);
         }
     }
 
-    public static AbstractMoveDice createFromContext(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times, GameColor color){
-        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
-            //TODO: change this
-            return new CLIMoveDice(gameTable, ignore, toolName, times, color);
-        }else{
+    public static AbstractMoveDice createFromContext(GameTable gameTable, SchemaCardFace.Ignore ignore, String toolName, Times times, GameColor color) {
+        if (gameTable.getView().getGraphics() == RemoteView.Graphics.GUI) {
+            return new GUIMoveDice(gameTable, ignore, toolName, times, color);
+        } else {
             return new CLIMoveDice(gameTable, ignore, toolName, times, color);
         }
     }
 
-    public void processFirstSource(Point firstSource){
-        this.firstSource=firstSource;
+    public void processFirstSource(Point firstSource) {
+        this.firstSource = firstSource;
         if (playerSchema.getDiceFace(firstSource) == null) {
             CLIPrinter.printError("The cell is empty!");
             getGameTable().setState(this);
@@ -79,8 +78,8 @@ public abstract class AbstractMoveDice extends State {
         getGameTable().setState(this);
     }
 
-    public void processSecondSource(Point secondSource){
-        this.secondSource=secondSource;
+    public void processSecondSource(Point secondSource) {
+        this.secondSource = secondSource;
         if (playerSchema.getDiceFace(secondSource) == null) {
             CLIPrinter.printError("The cell is empty!");
             getGameTable().setState(this);
@@ -97,8 +96,8 @@ public abstract class AbstractMoveDice extends State {
         getGameTable().setState(this);
     }
 
-    public void processFirstDestination(Point firstDestination){
-        this.firstDestination=firstDestination;
+    public void processFirstDestination(Point firstDestination) {
+        this.firstDestination = firstDestination;
         if (playerSchema.getDiceFace(firstDestination) != null) {
             CLIPrinter.printError("The cell not empty!");
             getGameTable().setState(this);
@@ -126,7 +125,7 @@ public abstract class AbstractMoveDice extends State {
         getGameTable().setState(this);
     }
 
-    public void processSecondDestination(Point secondDestination){
+    public void processSecondDestination(Point secondDestination) {
         if (playerSchema.getDiceFace(secondDestination) != null) {
             throw new InputError("The cell not empty!");
         }
@@ -154,6 +153,10 @@ public abstract class AbstractMoveDice extends State {
 
         getGameTable().setState(AbstractMainMenuState.createFromContext(getGameTable()));
 
+    }
+
+    public void processCancel(){
+        getGameTable().setState(AbstractMainMenuState.createFromContext(this.getGameTable()));
     }
 
 

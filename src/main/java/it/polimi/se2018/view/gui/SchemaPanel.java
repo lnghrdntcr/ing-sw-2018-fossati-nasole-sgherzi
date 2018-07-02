@@ -91,6 +91,7 @@ public class SchemaPanel extends GridPane {
     }
 
     public void updateSchema(Schema schema) {
+        if(schema==null) return;
         this.schema = schema;
         for (int x = 0; x < Settings.CARD_WIDTH; x++) {
             for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
