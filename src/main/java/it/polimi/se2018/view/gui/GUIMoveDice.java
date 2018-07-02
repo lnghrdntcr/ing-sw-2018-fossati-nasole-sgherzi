@@ -79,6 +79,8 @@ public class GUIMoveDice extends AbstractMoveDice implements SchemaPanel.OnSchem
 
             questionLabel = (Label) scene.lookup("#question");
 
+            root.setStyle("-fx-background-image: url('/gui/background.jpg');\n" +
+                    "    -fx-background-repeat: repeat;");
         });
     }
 

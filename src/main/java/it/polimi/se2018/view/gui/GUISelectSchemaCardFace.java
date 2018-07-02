@@ -164,6 +164,9 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
 
 
             remainingSeconds.setText("Waiting for game to start...");
+
+            root.setStyle("-fx-background-image: url('/gui/background.jpg');\n" +
+                    "    -fx-background-repeat: repeat;");
         });
 
 

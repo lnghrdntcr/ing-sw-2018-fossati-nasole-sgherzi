@@ -85,6 +85,9 @@ public class GUIExchangeWDiceHolder extends AbstractExchangeWDiceHolder implemen
 
             exchangeDice.getChildren().add(roundTrack);
 
+            root.setStyle("-fx-background-image: url('/gui/background.jpg');\n" +
+                    "    -fx-background-repeat: repeat;");
+
         });
     }
 

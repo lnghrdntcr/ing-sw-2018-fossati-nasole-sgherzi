@@ -229,6 +229,9 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
 
             draftBoardView.setDraftBoard(getDraftBoardImmutable());
 
+            root.setStyle("-fx-background-image: url('/gui/background.jpg');\n" +
+                    "    -fx-background-repeat: repeat;");
+
         });
 
     }

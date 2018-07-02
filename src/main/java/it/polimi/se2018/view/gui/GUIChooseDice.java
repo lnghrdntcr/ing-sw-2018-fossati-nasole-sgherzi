@@ -82,6 +82,9 @@ public class GUIChooseDice extends AbstractChooseDice implements DraftBoard.OnDi
 
             secondStage.show();
 
+            root.setStyle("-fx-background-image: url('/gui/background.jpg');\n" +
+                    "    -fx-background-repeat: repeat;");
+
         });
     }
 

@@ -86,6 +86,9 @@ public class GUIChooseColorFromDiceHolder extends AbstractChooseColorFromDiceHol
                     }
                 });
             }
+
+            root.setStyle("-fx-background-image: url('/gui/background.jpg');\n" +
+                    "    -fx-background-repeat: repeat;");
         });
     }
 }

@@ -89,6 +89,9 @@ public class GUIIncrementDice extends AbstractIncrementDice {
             decrement.addEventHandler(MouseEvent.MOUSE_CLICKED, (mouseEvent) -> {
                 processIncrement(-1);
             });
+            root.setStyle("-fx-background-image: url('/gui/background.jpg');\n" +
+                    "    -fx-background-repeat: repeat;");
+
 
         });
     }

@@ -90,6 +90,9 @@ public class GUIUseToolState extends AbstractUseToolState implements EventHandle
                 toolCards[i].addEventHandler(MouseEvent.MOUSE_CLICKED, this);
 
             }
+
+            root.setStyle("-fx-background-image: url('/gui/background.jpg');\n" +
+                    "    -fx-background-repeat: repeat;");
         });
     }
 
