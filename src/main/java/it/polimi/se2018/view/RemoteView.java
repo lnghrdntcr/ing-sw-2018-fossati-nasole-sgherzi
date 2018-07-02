@@ -2,18 +2,16 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
 import it.polimi.se2018.controller.controllerEvent.TimeoutCommunicationEvent;
-import it.polimi.se2018.model.modelEvent.DraftBoardChangedEvent;
-import it.polimi.se2018.model.modelEvent.PublicObjectiveEvent;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.CLI.CLIGameEnding;
 import it.polimi.se2018.view.CLI.CLIGameTable;
 import it.polimi.se2018.view.CLI.CLISelectSchema;
 import it.polimi.se2018.view.gui.GUIGameTable;
+import it.polimi.se2018.view.gui.GUILeaderBoard;
 import it.polimi.se2018.view.gui.GUILogger;
 import it.polimi.se2018.view.gui.GUISelectSchemaCardFace;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
-import javafx.application.Application;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -33,10 +31,10 @@ public class RemoteView extends View {
             selectSchemaCardFace = new CLISelectSchema(this);
             gameEnding = new CLIGameEnding(this);
             gameTable = new CLIGameTable(this);
-        }else{
+        } else {
             GUILogger.go();
-            selectSchemaCardFace=new GUISelectSchemaCardFace(this);
-            gameEnding = new CLIGameEnding(this);
+            selectSchemaCardFace = new GUISelectSchemaCardFace(this);
+            gameEnding = new GUILeaderBoard(this);
             gameTable = new GUIGameTable(this);
         }
 
@@ -56,7 +54,7 @@ public class RemoteView extends View {
 
                     VisitableFromView actualEvent = this.eventLoop.poll();
 
-                    if(actualEvent instanceof GameStartEvent){
+                    if (actualEvent instanceof GameStartEvent) {
                         Log.d("Expecting to call visit on gameTable");
                     }
 
@@ -83,13 +81,13 @@ public class RemoteView extends View {
     @Override
     public void update(Event message) {
 
-        if(!(message instanceof TimeoutCommunicationEvent))
-        Log.d(message.toString());
+        if (!(message instanceof TimeoutCommunicationEvent))
+            Log.d(message.toString());
 
 
         if (
             message.getReceiver().equals(getPlayer()) || // Message is for me
-            message.getReceiver().equals("")             // Message is for everyone v2
+                message.getReceiver().equals("")             // Message is for everyone v2
             ) {
             try {
                 this.eventLoop.add((VisitableFromView) message);
