@@ -183,6 +183,7 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
 
     @Override
     public void renderPrivateObjective(PrivateObjective privateObjective) {
+        if(root==null) return;
         Platform.runLater(() -> objectiveView.setObjective(privateObjective));
     }
 
@@ -207,6 +208,7 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
 
     @Override
     protected void renderSecondsRemaining() {
+        if(root==null) return;
         Platform.runLater(() -> remainingSeconds.setText("Remaining seconds: "+getSecondsRemaining()));
     }
 }
