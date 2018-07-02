@@ -174,6 +174,7 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
 
     @Override
     public void setInactive() {
+        if(root==null) return;
         Platform.runLater(() -> {
             Stage stage = (Stage) root.getScene().getWindow();
             stage.close();
