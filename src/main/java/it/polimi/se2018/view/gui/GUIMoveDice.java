@@ -51,7 +51,7 @@ public class GUIMoveDice extends AbstractMoveDice implements SchemaPanel.OnSchem
 
     private void buildInterface() {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/ChooseDice.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/MoveDice.fxml"));
 
         try {
             root = loader.load();
