@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class Controller extends Observable<Event> implements Observer<ViewEvent> {
 
+    private final long matchBeginTime;
     private GameTableMultiplayer model;
     private State state;
     private List<View> views;
@@ -58,6 +59,8 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         viewArrayList.forEach(view -> model.register(view));
 
         Log.i("Game created with " + pln.size() + " players");
+
+        matchBeginTime = System.currentTimeMillis() / 1000;
 
     }
 
@@ -295,5 +298,9 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
     public void setGameStarted() {
         this.gameStarted = true;
+    }
+
+    public long getMatchBeginTime() {
+        return matchBeginTime;
     }
 }

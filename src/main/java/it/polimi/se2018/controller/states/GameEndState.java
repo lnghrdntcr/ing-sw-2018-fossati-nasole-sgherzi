@@ -8,10 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -64,11 +61,17 @@ public class GameEndState extends State {
 
         try {
 
-            file.createNewFile();
+            if (file.createNewFile()) {
+                try (OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(file))) {
+                    os.write("{}");
+                    os.flush();
+                }
+            }
 
 
-            URI uri = new URI("leaderboard.json");
-            JSONTokener tokener = new JSONTokener(uri.toURL().openStream());
+            InputStream is = new FileInputStream(file);
+
+            JSONTokener tokener = new JSONTokener(is);
             JSONObject root = new JSONObject(tokener);
 
             for (ScoreHolder sh : scoreHolders) {
@@ -82,16 +85,23 @@ public class GameEndState extends State {
                 }
 
                 if (sh.equals(scoreHolders.get(0))) {
-                    player.put("victories", player.getInt("victories") + 1);
+                    player.put("victories", player.optInt("victories", 0) + 1);
                 } else {
-                    player.put("losses", player.getInt("losses") + 1);
+                    player.put("losses", player.optInt("losses", 0) + 1);
                 }
 
+                player.put("totalTimePlayed", player.optInt("totalTimePlayed", 0) + (System.currentTimeMillis() / 1000) - getController().getMatchBeginTime());
+
+                root.put(sh.getPlayerName(), player);
 
             }
+
+            try (OutputStreamWriter os = new OutputStreamWriter(new FileOutputStream(file))) {
+                os.write(root.toString());
+                os.flush();
+            }
+
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
