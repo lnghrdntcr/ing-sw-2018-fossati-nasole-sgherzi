@@ -2,10 +2,10 @@ package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceEvent;
+import it.polimi.se2018.controller.controllerEvent.LogEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
-import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
 import it.polimi.se2018.view.viewEvent.PlayerDisconnectedEvent;
@@ -45,6 +45,9 @@ public class PlaceRedrawnDiceState extends State {
             if (getModel().getDiceFaceByIndex(ev.getDiceFaceIndex()).equals(redrawnDiceFace)) {
                 if (getModel().isDiceAllowed(ev.getPlayerName(), ev.getPoint(), redrawnDiceFace, SchemaCardFace.Ignore.NOTHING)) {
                     getModel().placeDice(ev.getPlayerName(), ev.getDiceFaceIndex(), ev.getPoint());
+
+                    getController().dispatchEvent(new LogEvent(this.getClass().getName(), event.getPlayerName(), "", event.getPlayerName() + " has used " + getModel().getToolCardByPosition(event.getToolCardIndex()).getName()));
+
                     return oldState;
                 } else {
                     Log.w(getClass().getCanonicalName() + ": the dice face can't be placed here!");
@@ -87,7 +90,7 @@ public class PlaceRedrawnDiceState extends State {
 
     @Override
     public State handlePlayerDisconnected(PlayerDisconnectedEvent playerDisconnectedEvent) {
-        if(playerDisconnectedEvent.getPlayerName().equals(getModel().getCurrentPlayerName())) {
+        if (playerDisconnectedEvent.getPlayerName().equals(getModel().getCurrentPlayerName())) {
             return oldState.handlePlayerDisconnected(playerDisconnectedEvent);
         }
         return super.handlePlayerDisconnected(playerDisconnectedEvent);

@@ -29,6 +29,11 @@ public class CLISelectSchema extends SelectSchemaCardFace implements InputListen
         //Do nothing
     }
 
+    @Override
+    public void renderEventLog() {
+        // Do nothing
+    }
+
     /**
      * Shows the schema cards the player can choose via CLI.
      *

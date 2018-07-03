@@ -1,12 +1,12 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
+import it.polimi.se2018.controller.controllerEvent.LogEvent;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.GameTable;
-import it.polimi.se2018.view.InputError;
 import it.polimi.se2018.view.RemoteView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -44,6 +45,9 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
 
     @FXML
     private VBox player1;
+
+    @FXML
+    private ScrollPane logsPanel;
 
     @FXML
     private VBox roundTrack;
@@ -77,9 +81,36 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     protected void renderDiceHolder() {
 
         if (diceHolderView == null) return;
-
         this.diceHolderView.setDiceHolder(this.getDiceHolderImmutable());
 
+    }
+
+    @Override
+    protected void renderLogEvent() {
+
+        ArrayList<LogEvent> pastEvents = getPastEvents();
+
+        Platform.runLater(() -> {
+            VBox events = new VBox();
+
+            if (pastEvents.isEmpty()) {
+
+                events.getChildren().add(new Label("No recent events."));
+                logsPanel.setContent(events);
+                return;
+
+            } else {
+
+                for (int i = 0; i < pastEvents.size(); i++) {
+
+                    events.getChildren().add(new Label(pastEvents.get(i).getMessage()));
+
+                }
+
+                logsPanel.setContent(events);
+            }
+
+        });
     }
 
     @Override
@@ -188,6 +219,8 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
             player3 = (VBox) scene.lookup("#player3");
             player4 = (VBox) scene.lookup("#player4");
 
+            logsPanel = (ScrollPane) scene.lookup("#pastEvents");
+
             turnMessage = (Label) scene.lookup("#turnMessage");
             renderTurn();
 
@@ -201,7 +234,7 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
             player3.getChildren().add(players.get(2));
             player4.getChildren().add(players.get(3));
 
-            players.forEach((a) ->{
+            players.forEach((a) -> {
                 a.setVisible(false);
             });
 
@@ -237,8 +270,10 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
 
             draftBoardView.setDraftBoard(getDraftBoardImmutable());
 
+            renderLogEvent();
+
             root.setStyle("-fx-background-image: url('/gui/background.jpg');\n" +
-                    "    -fx-background-repeat: repeat;");
+                "    -fx-background-repeat: repeat;");
 
         });
 

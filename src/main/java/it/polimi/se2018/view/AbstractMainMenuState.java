@@ -1,17 +1,10 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
-import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
-import it.polimi.se2018.view.AbstractPlaceDiceState;
-import it.polimi.se2018.view.AbstractUseToolState;
-import it.polimi.se2018.view.CLI.CLIChooseDice;
 import it.polimi.se2018.view.CLI.CLIMainMenuState;
 import it.polimi.se2018.view.CLI.CLIPrinter;
 import it.polimi.se2018.view.CLI.ShowPlayerState;
-import it.polimi.se2018.view.GameTable;
-import it.polimi.se2018.view.State;
-import it.polimi.se2018.view.gui.GUIChooseDice;
 import it.polimi.se2018.view.gui.GUIMainMenuState;
 import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 
@@ -27,10 +20,10 @@ public abstract class AbstractMainMenuState extends State {
         this.setupProvider();
     }
 
-    public static AbstractMainMenuState createFromContext(GameTable gameTable){
-        if(gameTable.getView().getGraphics()==RemoteView.Graphics.GUI){
+    public static AbstractMainMenuState createFromContext(GameTable gameTable) {
+        if (gameTable.getView().getGraphics() == RemoteView.Graphics.GUI) {
             return new GUIMainMenuState(gameTable);
-        }else{
+        } else {
             return new CLIMainMenuState(gameTable);
         }
     }
@@ -38,6 +31,11 @@ public abstract class AbstractMainMenuState extends State {
     private void setupProvider() {
 
         if (!provider.isEmpty()) return;
+
+        provider.put(0, () -> {
+            CLIPrinter.printRecentEvents(getGameTable().getPastEvents());
+            return this;
+        });
 
         provider.put(1, () -> {
             CLIPrinter.printDraftBoard(this.getGameTable().getDraftBoardImmutable());
@@ -66,24 +64,24 @@ public abstract class AbstractMainMenuState extends State {
         provider.put(5, () -> {
 
             CLIPrinter.printSchema(
-                    this.getGameTable().getSchema(
-                            this.getGameTable().getView().getPlayer()
-                    )
+                this.getGameTable().getSchema(
+                    this.getGameTable().getView().getPlayer()
+                )
             );
 
             CLIPrinter.printPrivateObjective(
-                    this.getGameTable().getPlayer(
-                            this.getGameTable().getView().getPlayer()
-                    ).getPrivateObjective()
+                this.getGameTable().getPlayer(
+                    this.getGameTable().getView().getPlayer()
+                ).getPrivateObjective()
             );
 
             CLIPrinter.printTokens(
-                    this.getGameTable().getPlayer(
-                            this.getGameTable().getView().getPlayer()
-                    ).getToken(),
-                    this.getGameTable().getSchema(
-                            this.getGameTable().getView().getPlayer()
-                    ).getSchemaCardFace().getDifficulty()
+                this.getGameTable().getPlayer(
+                    this.getGameTable().getView().getPlayer()
+                ).getToken(),
+                this.getGameTable().getSchema(
+                    this.getGameTable().getView().getPlayer()
+                ).getSchemaCardFace().getDifficulty()
             );
 
             return this;
@@ -95,11 +93,11 @@ public abstract class AbstractMainMenuState extends State {
 
         provider.put(8, () -> {
             this.getGameTable().getView().sendEventToController(
-                    new EndTurnEvent(
-                            this.getClass().getName(),
-                            this.getGameTable().getView().getPlayer(),
-                            this.getGameTable().getView().getPlayer()
-                    )
+                new EndTurnEvent(
+                    this.getClass().getName(),
+                    this.getGameTable().getView().getPlayer(),
+                    this.getGameTable().getView().getPlayer()
+                )
             );
             return this;
         });
@@ -107,7 +105,7 @@ public abstract class AbstractMainMenuState extends State {
     }
 
     public void processSelection(int selection) {
-        if (selection <= 0 || selection > 8) {
+        if (selection < 0 || selection > 8) {
             if (getGameTable().getView().getPlayer().equals(this.getGameTable().getCurrentPlayer())) {
                 throw new InputError("The selection must be between 1 and 8");
             } else {

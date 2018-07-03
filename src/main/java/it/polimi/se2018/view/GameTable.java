@@ -32,6 +32,7 @@ public abstract class GameTable {
     private boolean roundDirection;
     private int secondsRemaining;
     private boolean toolcardUsed, dicePlaced;
+    private ArrayList<LogEvent> logs = new ArrayList<>();
 
     private State realeState;
 
@@ -47,6 +48,12 @@ public abstract class GameTable {
 
     final protected void endTurn() {
         view.sendEventToController(new EndTurnEvent(getClass().getName(), view.getPlayer(), ""));
+    }
+
+    final public void handleLogEvent(LogEvent event){
+        // TODO: here
+        logs.add(event);
+        renderLogEvent();
     }
 
 
@@ -125,6 +132,8 @@ public abstract class GameTable {
     //updates
     protected abstract void renderDiceHolder();
 
+    protected abstract void renderLogEvent();
+
     protected abstract void renderDraftBoard();
 
     protected abstract void renderPlayer(String player);
@@ -188,6 +197,10 @@ public abstract class GameTable {
 
     public int getSecondsRemaining() {
         return secondsRemaining;
+    }
+
+    public ArrayList<LogEvent> getPastEvents() {
+        return logs;
     }
 
     //1 if is the first time I play in this round

@@ -2,6 +2,7 @@ package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.AskSchemaCardFaceEvent;
+import it.polimi.se2018.controller.controllerEvent.LogEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.modelEvent.SchemaChangedEvent;
 import it.polimi.se2018.model.schema.Schema;
@@ -89,6 +90,8 @@ public class GameSetupState extends State {
 
         // Sends the appropriate combination of <Player, Schema> to the view.
         getController().dispatchEvent(new SchemaChangedEvent(this.getClass().getName(), "", event.getPlayerName(), new Schema(schemaCardList.get(playerIndex * 2 + event.getSchemaCardId()).getFace(event.getSide()))));
+
+        getController().dispatchEvent(new LogEvent(this.getClass().getName(), event.getPlayerName(), "", event.getPlayerName() + " has selected " + schemaCardList.get(playerIndex * 2 + event.getSchemaCardId()).getFace(event.getSide()).getName() + "!"));
 
         if (getModel().allPlayersHaveSelectedSchemaCardFace()) {
             return new TurnState(getController(), getModel(), false, false);

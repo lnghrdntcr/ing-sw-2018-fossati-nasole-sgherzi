@@ -3,15 +3,17 @@ package it.polimi.se2018.controller.states;
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.EndGameEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
-import it.polimi.se2018.utils.Event;
-import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.ScoreHolder;
-import it.polimi.se2018.view.viewEvent.EndTurnEvent;
-import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
-import it.polimi.se2018.view.viewEvent.SchemaCardSelectedEvent;
-import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * The state that handles the end of the game, computing the score and declaring the winner
@@ -57,6 +59,41 @@ public class GameEndState extends State {
         scoreHolders.forEach(el -> {
             System.out.println(el);
         });
+
+        File file = new File("leaderboad.json");
+
+        try {
+
+            file.createNewFile();
+
+
+            URI uri = new URI("leaderboard.json");
+            JSONTokener tokener = new JSONTokener(uri.toURL().openStream());
+            JSONObject root = new JSONObject(tokener);
+
+            for (ScoreHolder sh : scoreHolders) {
+
+                JSONObject player = null;
+
+                try {
+                    player = (JSONObject) root.getJSONObject(sh.getPlayerName());
+                } catch (JSONException ignored) {
+                    player = new JSONObject();
+                }
+
+                if (sh.equals(scoreHolders.get(0))) {
+                    player.put("victories", player.getInt("victories") + 1);
+                } else {
+                    player.put("losses", player.getInt("losses") + 1);
+                }
+
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         this.getController().dispatchEvent(new EndGameEvent(this.getClass().getName(), "", "", scoreHolders));
 

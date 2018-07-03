@@ -14,8 +14,6 @@ import it.polimi.se2018.utils.Event;
  */
 public class Tool implements ImmutableCloneable<ToolCardImmutable> {
 
-
-
     private int token=0;
     private String name;
 

@@ -45,6 +45,7 @@ public class CLIMainMenuState extends AbstractMainMenuState {
         System.out.println();
         System.out.println("Round: " + getGameTable().getRoundNumber() + "\nTurn:" + (getGameTable().getRoundDirection() ? "1" : "2" +
                 " "));
+        CLIPrinter.printMenuLine(0, "Show recent activities");
         CLIPrinter.printMenuLine(1, "View Draft Board");
         CLIPrinter.printMenuLine(2, "View Players");
         CLIPrinter.printMenuLine(3, "View Round Track");

@@ -1,10 +1,7 @@
 package it.polimi.se2018.view.CLI;
 
-import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceEvent;
-import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceWithNumberSelectionEvent;
 import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
 import it.polimi.se2018.controller.controllerEvent.PlayerTimeoutEvent;
-import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.RemoteView;
@@ -21,7 +18,7 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
 
     @Override
     public void handlePlayerTimeout(PlayerTimeoutEvent event) {
-        if(event.getPlayerName().equals(getView().getPlayer())) {
+        if (event.getPlayerName().equals(getView().getPlayer())) {
             CLIPrinter.printError("Time is up!");
         }
 
@@ -31,6 +28,11 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
     @Override
     protected void renderDiceHolder() {
         System.out.println("DiceHolder Changed.");
+    }
+
+    @Override
+    protected void renderLogEvent() {
+
     }
 
     @Override
@@ -62,9 +64,9 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
     }
 
     @Override
-    public void setActive(){
+    public void setActive() {
         Log.d("CLIGAMETABLE ACTIVE");
-        if(!iAmActive){
+        if (!iAmActive) {
             InputListenerThread.getInstance().setInputListener(this);
             iAmActive = true;
         }
@@ -72,17 +74,18 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
         this.getRealeState().render();
 
     }
+
     @Override
-    public void setInactive(){
+    public void setInactive() {
         Log.d("CLIGAMETABLE INACTIVE");
-        if(iAmActive){
+        if (iAmActive) {
             iAmActive = false;
         }
     }
 
     @Override
     public void renderTimeOut() {
-        if(getSecondsRemaining() % 10 == 0) {
+        if (getSecondsRemaining() % 10 == 0) {
             if (getCurrentPlayer() != null)
                 if (getCurrentPlayer().equals(getView().getPlayer())) {
                     CLIPrinter.printError("Remaining seconds: " + getSecondsRemaining() + ".");

@@ -2,6 +2,7 @@ package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
+import it.polimi.se2018.controller.controllerEvent.LogEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.Tool;
 import it.polimi.se2018.model.modelEvent.TurnChangedEvent;
@@ -78,6 +79,16 @@ public class TurnState extends State {
 
     @Override
     public void syncPlayer(String playerName) {
+
+        getController().dispatchEvent(
+            new LogEvent(
+                this.getClass().getName(),
+                playerName,
+                "",
+                playerName + " reconnected!"
+            )
+        );
+
         this.getController().dispatchEvent(
             new TurnChangedEvent(
                 this.getClass().getName(),
@@ -159,6 +170,24 @@ public class TurnState extends State {
             ),
             SchemaCardFace.Ignore.NOTHING)) {
             getModel().placeDice(event.getPlayerName(), event.getDiceFaceIndex(), event.getPoint());
+
+            getController().dispatchEvent(
+                new LogEvent(
+                    this.getClass().getName(),
+                    "",
+                    "",
+                    event.getPlayerName() +
+                        " has placed a "
+                        + getModel().getDiceFaceByIndex(event.getDiceFaceIndex()).getColor().toString().toLowerCase()
+                        + " "
+                        + getModel().getDiceFaceByIndex(event.getDiceFaceIndex()).getNumber()
+                        + " in position "
+                        + event.getPoint().x
+                        + " "
+                        + event.getPoint().y
+                )
+            );
+
         } else {
             return this;
         }
@@ -169,6 +198,16 @@ public class TurnState extends State {
 
     @Override
     public State handleUserTimeOutEvent() {
+
+        getController().dispatchEvent(
+            new LogEvent(
+                this.getClass().getName(),
+                "",
+                "",
+                getModel().getCurrentPlayerName() + " timed out!"
+            )
+        );
+
         return this.handleEndTurnEvent(new EndTurnEvent("UserTimeout", getModel().getCurrentPlayerName(), this.getModel().getCurrentPlayerName()));
     }
 
@@ -179,8 +218,27 @@ public class TurnState extends State {
         }
 
         if (playerDisconnectedEvent.getPlayerName().equals(getModel().getCurrentPlayerName())) {
+
+            getController().dispatchEvent(
+                new LogEvent(
+                    this.getClass().getName(),
+                    "",
+                    "",
+                    playerDisconnectedEvent.getPlayerName() + " disconnected!"
+                )
+            );
+
             return this.handleEndTurnEvent(new EndTurnEvent("PlayerDisconnected", playerDisconnectedEvent.getPlayerName(), this.getModel().getCurrentPlayerName()));
         }
+
+        getController().dispatchEvent(
+            new LogEvent(
+                this.getClass().getName(),
+                "",
+                "",
+                playerDisconnectedEvent.getPlayerName() + " disconnected!"
+            )
+        );
 
         return super.handlePlayerDisconnected(playerDisconnectedEvent);
     }
@@ -209,6 +267,16 @@ public class TurnState extends State {
                 if (oldTurn != getModel().getRound()) {
                     Log.i("New round started! Putting back dices");
                     getModel().endTurn();
+
+                    getController().dispatchEvent(
+                        new LogEvent(
+                            this.getClass().getName(),
+                            "",
+                            "",
+                            "A new round has begun!"
+                        )
+                    );
+
                 }
                 return new TurnState(this.getController(), getModel(), false, false);
             } else {
@@ -289,11 +357,28 @@ public class TurnState extends State {
             ChangeDiceNumberEvent ev = (ChangeDiceNumberEvent) event;
             getModel().increaseDecreaseDice(ev.getDicePosition(), ev.getNumber());
             getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
+
+            signalToolCardUsed(event);
+
             return new TurnState(getController(), getModel(), isDicePlaced(), true);
         } catch (Exception e) {
             Log.w("Unable to flip the dice: " + e.getMessage());
             return this;
         }
+    }
+
+    protected void signalToolCardUsed(UseToolcardEvent event) {
+        getController()
+            .dispatchEvent(
+                new LogEvent(
+                    this.getClass().getName(),
+                    event.getPlayerName(),
+                    "",
+                    event.getPlayerName()
+                        + " has used "
+                        + getModel().getToolCardByPosition(event.getToolCardIndex()).getName()
+                        + "!")
+            );
     }
 
     /**
@@ -311,6 +396,9 @@ public class TurnState extends State {
             if (tempSchema.isDiceAllowed(e.getDestination(), tempDiceFace, ignore)) {
                 getModel().moveDice(name, e.getSource(), e.getDestination(), true);
                 getModel().useTokenOnToolcard(event.getPlayerName(), e.getToolCardIndex());
+
+                signalToolCardUsed(event);
+
                 return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
             } else {
                 Log.w("Destination not allowed");
@@ -342,6 +430,9 @@ public class TurnState extends State {
                     getModel().moveDice(ev.getPlayerName(), ev.getSource(0), ev.getDestination(0), false);
                     getModel().moveDice(ev.getPlayerName(), ev.getSource(1), ev.getDestination(1), true);
                     getModel().useTokenOnToolcard(event.getPlayerName(), ev.getToolCardIndex());
+
+                    signalToolCardUsed(event);
+
                     return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
                 } else {
                     Log.w(getClass().getCanonicalName() + ": second move not allowed!");
@@ -370,6 +461,9 @@ public class TurnState extends State {
             SwapDiceFaceWithDiceHolderEvent ev = (SwapDiceFaceWithDiceHolderEvent) event;
             getModel().swapDraftDiceWithHolder(ev.getDraftBoardIndex(), ev.getTurn(), ev.getIndexInTurn());
             getModel().useTokenOnToolcard(event.getPlayerName(), ev.getToolCardIndex());
+
+            signalToolCardUsed(event);
+
             return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
         } catch (Exception e) {
             Log.w("Unable to use CircularCutter: " + e.getMessage());
@@ -412,7 +506,11 @@ public class TurnState extends State {
     private State useGavel(UseToolcardEvent event) {
         try {
             getModel().redrawAllDice();
+
             getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
+
+            signalToolCardUsed(event);
+
             return new TurnState(getController(), getModel(), isDicePlaced(), true);
         } catch (Exception e) {
             Log.w("Use not allowed: " + e.getMessage());
@@ -439,6 +537,9 @@ public class TurnState extends State {
             }
 
             getModel().playerWillDropTurn(event.getPlayerName());
+
+            signalToolCardUsed(event);
+
             return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
         } catch (Exception e) {
             Log.w("Cannot use WheeledPincer: " + e.getMessage());
@@ -460,6 +561,9 @@ public class TurnState extends State {
 
                 getModel().placeDice(e.getPlayerName(), e.getDiceFaceIndex(), e.getPoint());
                 getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
+
+                signalToolCardUsed(event);
+
                 return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
             } else {
                 Log.w("Destination not allowed!");
@@ -482,6 +586,9 @@ public class TurnState extends State {
             DiceActionEvent ev = (DiceActionEvent) event;
             getModel().flipDice(ev.getDicePosition());
             getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
+
+            signalToolCardUsed(event);
+
             return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
         } catch (Exception e) {
             Log.w("Unable to flip the dice: " + e.getMessage());
@@ -540,6 +647,9 @@ public class TurnState extends State {
                     getModel().moveDice(ev.getPlayerName(), ev.getSource(0), ev.getDestination(0), false);
                     getModel().moveDice(ev.getPlayerName(), ev.getSource(1), ev.getDestination(1), true);
                     getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
+
+                    signalToolCardUsed(event);
+
                     return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
                 } else {
                     Log.w(getClass().getCanonicalName() + ": second move not allowed!");

@@ -1,6 +1,7 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.controller.controllerEvent.AskSchemaCardFaceEvent;
+import it.polimi.se2018.controller.controllerEvent.LogEvent;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.Side;
@@ -14,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -21,11 +23,15 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements EventHandler<ActionEvent> {
 
     private GridPane root;
+
+    @FXML
+    private ScrollPane logsPanel;
 
     @FXML
     private ResourceBundle resources;
@@ -70,7 +76,6 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
     public GUISelectSchemaCardFace(RemoteView view) {
         super(view);
     }
-
 
 
     @Override
@@ -162,11 +167,14 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
             buttonSchema3.setOnAction(GUISelectSchemaCardFace.this);
             buttonSchema4.setOnAction(GUISelectSchemaCardFace.this);
 
+            logsPanel = (ScrollPane) scene.lookup("#logs");
 
             remainingSeconds.setText("Waiting for game to start...");
 
+            renderEventLog();
+
             root.setStyle("-fx-background-image: url('/gui/background.jpg');\n" +
-                    "    -fx-background-repeat: repeat;");
+                "    -fx-background-repeat: repeat;");
         });
 
 
@@ -174,7 +182,7 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
 
     @Override
     public void setInactive() {
-        if(root==null) return;
+        if (root == null) return;
         Platform.runLater(() -> {
             Stage stage = (Stage) root.getScene().getWindow();
             stage.close();
@@ -183,7 +191,7 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
 
     @Override
     public void renderPrivateObjective(PrivateObjective privateObjective) {
-        if(root==null) return;
+        if (root == null) return;
         Platform.runLater(() -> objectiveView.setObjective(privateObjective));
     }
 
@@ -208,7 +216,36 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
 
     @Override
     protected void renderSecondsRemaining() {
-        if(root==null) return;
-        Platform.runLater(() -> remainingSeconds.setText("Remaining seconds: "+getSecondsRemaining()));
+        if (root == null) return;
+        Platform.runLater(() -> remainingSeconds.setText("Remaining seconds: " + getSecondsRemaining()));
+    }
+
+    @Override
+    public void renderEventLog() {
+
+        ArrayList<LogEvent> pastEvents = getPastEvents();
+
+        Platform.runLater(() -> {
+            VBox events = new VBox();
+
+            if (pastEvents.isEmpty()) {
+
+                events.getChildren().add(new Label("No recent events."));
+                logsPanel.setContent(events);
+                return;
+
+            } else {
+
+                for (int i = 0; i < pastEvents.size(); i++) {
+
+                    events.getChildren().add(new Label(pastEvents.get(i).getMessage()));
+
+                }
+
+                logsPanel.setContent(events);
+            }
+
+        });
+
     }
 }

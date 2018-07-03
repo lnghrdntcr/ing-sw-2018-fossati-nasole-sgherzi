@@ -1,13 +1,13 @@
 package it.polimi.se2018.view.CLI;
 
+import it.polimi.se2018.controller.controllerEvent.LogEvent;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.Schema;
-import it.polimi.se2018.model.schema_card.SchemaCardFace;
+import it.polimi.se2018.model.schema_card.*;
 import it.polimi.se2018.model_view.DiceHolderImmutable;
 import it.polimi.se2018.model_view.DraftBoardImmutable;
-import it.polimi.se2018.model.schema_card.*;
 import it.polimi.se2018.model_view.PlayerImmutable;
 import it.polimi.se2018.model_view.ToolCardImmutable;
 import it.polimi.se2018.utils.Log;
@@ -18,14 +18,16 @@ import org.fusesource.jansi.AnsiConsole;
 import org.json.JSONObject;
 
 import java.awt.*;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
-import static org.fusesource.jansi.Ansi.Color.BLUE;
-import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.fusesource.jansi.Ansi.Color.*;
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -96,6 +98,9 @@ public class CLIPrinter {
         System.out.println(ansi().fg(RED).a(option + " => ").fg(enabled ? BLUE : MAGENTA).a(line).reset());
     }
 
+    public static void printInfo(String info) {
+        System.out.println(ansi().fg(GREEN).a(info).reset());
+    }
 
     public static void printDraftBoard(DraftBoardImmutable draftBoardImmutable) {
         printLineSeparator(draftBoardImmutable.getDices().length);
@@ -235,7 +240,6 @@ public class CLIPrinter {
         File publicObjectiveResource = null;
 
 
-
         FileInputStream fileInputStream = null;
         try {
             publicObjectiveResource = new File(Objects.requireNonNull(publicObjective.getClass().getClassLoader().getResource(path)).toURI());
@@ -329,12 +333,24 @@ public class CLIPrinter {
     }
 
 
-    public static void printFinalAnimation(){
+    public static void printFinalAnimation() {
         Random random = new Random();
-        for(int i=0; i<100000; i++){
+        for (int i = 0; i < 100000; i++) {
             Ansi.Color color = Ansi.Color.values()[random.nextInt(Ansi.Color.values().length)];
-            System.out.print(ansi().bg(color).a(""+random.nextInt(10)));
+            System.out.print(ansi().bg(color).a("" + random.nextInt(10)));
         }
     }
 
+    public static void printRecentEvents(ArrayList<LogEvent> pastEvents) {
+
+        if (pastEvents.isEmpty()) {
+            CLIPrinter.printError("No recent events");
+            return;
+        }
+
+        for (LogEvent ev : pastEvents) {
+            CLIPrinter.printInfo(ev.getMessage());
+        }
+
+    }
 }
