@@ -16,7 +16,7 @@ public class AskSchemaCardFaceEventTest {
 
     @Test
     public void serializationTest() throws FileNotFoundException, ClassNotFoundException {
-        List<SchemaCard> cardList = SchemaCard.loadSchemaCardsFromJson(Settings.getSchemaCardDatabase());
+        List<SchemaCard> cardList = SchemaCard.loadSchemaCardsFromJson(Settings.getDefaultSchemaCardDatabase());
         Collections.shuffle(cardList);
 
         SchemaCard array[]= new SchemaCard[2];
