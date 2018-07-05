@@ -26,8 +26,6 @@ public class CLIGameEnding extends GameEnding implements InputListenerThread.Inp
             System.out.println(sc.getPlayerName());
         }
 
-        //System.out.println("The winner that takes it all " + event.getLeaderBoard().get(event.getLeaderBoard().size() - 1).getPlayerName());
-
         System.exit(0);
     }
 

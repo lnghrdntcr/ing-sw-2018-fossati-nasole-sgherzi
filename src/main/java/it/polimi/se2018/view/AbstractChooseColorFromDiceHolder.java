@@ -10,6 +10,9 @@ import it.polimi.se2018.view.gui.GUIChooseColorFromDiceHolder;
 import java.util.HashMap;
 import java.util.function.Function;
 
+/**
+ * A state that asks to the user the selection of a color from the dice holder
+ */
 public abstract class AbstractChooseColorFromDiceHolder extends State {
 
     private static HashMap<String, Function<GameColor, State>> provider = new HashMap<>();
@@ -40,7 +43,11 @@ public abstract class AbstractChooseColorFromDiceHolder extends State {
 
     }
 
-    public void processColorSelected(GameColor color){
+    /**
+     * Process and checks the choice of the user and goes in a new state if necessary
+     * @param color the color selected by the user
+     */
+    protected void processColorSelected(GameColor color){
         boolean found = false;
         for (int i = 0; i < Settings.TURNS; i++) {
             for (DiceFace el : getGameTable().getDiceHolderImmutable().getDiceFaces(i)) {

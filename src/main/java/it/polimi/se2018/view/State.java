@@ -1,8 +1,9 @@
 package it.polimi.se2018.view;
 
-import it.polimi.se2018.view.GameTable;
-import it.polimi.se2018.view.Renderizable;
-
+/**
+ * A generic state in which the {@link GameTable} can be put.
+ * Each state react in a different way to the events received by the Model and Controller
+ */
 public abstract class State implements Renderizable {
 
 
@@ -16,8 +17,15 @@ public abstract class State implements Renderizable {
         return gameTable;
     }
 
+    /**
+     * Process an input of a string from the command line
+     * @param input the string to process
+     */
     public abstract void process(String input);
 
+    /**
+     * Free the resources used by the class and remove any object on the screen
+     */
     public abstract void unrealize();
 
 }

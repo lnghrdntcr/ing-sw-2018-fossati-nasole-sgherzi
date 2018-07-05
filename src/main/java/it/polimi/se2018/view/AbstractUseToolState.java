@@ -9,6 +9,9 @@ import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
+/**
+ * A state that asks the user to select as toolcard to use
+ */
 public abstract class AbstractUseToolState extends State {
 
     private static HashMap<String, Supplier<State>> provider = new HashMap<>();
@@ -100,10 +103,17 @@ public abstract class AbstractUseToolState extends State {
         provider.put("ManualCutter", () -> AbstractChooseColorFromDiceHolder.createFromContext(getGameTable(), "ManualCutter"));
     }
 
+    /**
+     * Process the will of the user to cancel the current action
+     */
     public void processCancel() {
         getGameTable().setState(AbstractMainMenuState.createFromContext(getGameTable()));
     }
 
+    /**
+     * Process and checks the choice of the user and goes in a new state if necessary
+     * @param selection the toolcar selected by the user
+     */
     public void processUseToolCard(int selection) {
 
         if (selection >= 0 && selection < Settings.TOOLCARDS_N) {

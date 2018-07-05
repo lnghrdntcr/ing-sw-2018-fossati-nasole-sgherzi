@@ -11,6 +11,9 @@ import it.polimi.se2018.view.viewEvent.EndTurnEvent;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
+/**
+ * A state that represent the idle state of the game. Wait for user actions until is the current player turn.
+ */
 public abstract class AbstractMainMenuState extends State {
 
     private static HashMap<Integer, Supplier<State>> provider = new HashMap<>();
@@ -104,7 +107,11 @@ public abstract class AbstractMainMenuState extends State {
 
     }
 
-    public void processSelection(int selection) {
+    /**
+     * Process and checks the choice of the user and goes in a new state if necessary
+     * @param selection the option that the user wants to do
+     */
+    protected void processSelection(int selection) {
         if (selection < 0 || selection > 8) {
             if (getGameTable().getView().getPlayer().equals(this.getGameTable().getCurrentPlayer())) {
                 throw new InputError("The selection must be between 1 and 8");

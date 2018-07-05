@@ -11,6 +11,9 @@ import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 
 import java.awt.*;
 
+/**
+ * A state that ask the user to place a dice
+ */
 public abstract class AbstractPlaceDiceState extends State {
     private SchemaCardFace.Ignore ignore;
     private InternalState internalState;
@@ -62,6 +65,9 @@ public abstract class AbstractPlaceDiceState extends State {
         }
     }
 
+    /**
+     * Process the user will to cancel the action
+     */
     public void processCancel() {
         if (shouldNotSelectDice || shouldSelectNumber)
             this.getGameTable().getView().sendEventToController(new CancelActionEvent(this.getClass().getName(), this.getGameTable().getView().getPlayer(), ""));
@@ -69,6 +75,10 @@ public abstract class AbstractPlaceDiceState extends State {
         getGameTable().setState(AbstractMainMenuState.createFromContext(getGameTable()));
     }
 
+    /**
+     * Process and checks the choice of the user and goes in a new state if necessary
+     * @param selectedDice the index of the dice selected by the user
+     */
     public void processDiceSelection(int selectedDice) {
         this.selectedDice = selectedDice;
         if (selectedDice < 0 || selectedDice > getGameTable().getDraftBoardImmutable().getDices().length) {
@@ -80,6 +90,10 @@ public abstract class AbstractPlaceDiceState extends State {
 
     }
 
+    /**
+     * Process and checks the choice of the user and goes in a new state if necessary
+     * @param  point the point where to put the dice
+     */
     public void processPositionSelected(Point point) {
 
         DiceFace diceFace = getGameTable().getDraftBoardImmutable().getDices()[selectedDice];
@@ -108,6 +122,10 @@ public abstract class AbstractPlaceDiceState extends State {
         }
     }
 
+    /**
+     * Process and checks the choice of the user and goes in a new state if necessary
+     * @param selectedNumber the new number of the dice
+     */
     public void processNumberSelected(int selectedNumber) {
         this.selectedNumber = selectedNumber;
         if (selectedNumber <= 0 || selectedNumber > 6) {
