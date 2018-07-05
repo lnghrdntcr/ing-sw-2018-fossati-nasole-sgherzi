@@ -9,6 +9,7 @@
 * finire i test
 * aggiungere caricamento schema card da cartella resources (usando getResources)
 * Eliminare un evento mettendo parametro default (Placeanotherdicewithnumberselection) e guardare anche stati
+* 
 
 ## Caratteristiche file JSON per le carte schema
 Il file JSON deve essere un array di oggetti. Ogni oggetto deve avere due elementi di tipo SchemaCardFace: uno associato

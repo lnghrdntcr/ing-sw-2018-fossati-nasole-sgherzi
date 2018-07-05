@@ -88,7 +88,10 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     @Override
     protected void renderLogEvent() {
 
+        if (logsPanel == null) return;
+
         ArrayList<LogEvent> pastEvents = getPastEvents();
+
 
         Platform.runLater(() -> {
             VBox events = new VBox();
