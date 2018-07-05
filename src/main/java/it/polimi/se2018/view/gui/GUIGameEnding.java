@@ -102,7 +102,7 @@ public class GUIGameEnding extends GameEnding {
 
     @Override
     public void handleEndGameEvent(EndGameEvent event) {
-
+        super.handleEndGameEvent(event);
         this.scoreHolders = event.getLeaderBoard();
 
         this.getView().activateGameEnding();
