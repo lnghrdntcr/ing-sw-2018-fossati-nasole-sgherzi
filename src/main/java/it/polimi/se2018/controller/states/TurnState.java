@@ -253,8 +253,7 @@ public class TurnState extends State {
     @Override
     public State handleEndTurnEvent(EndTurnEvent event) {
         Log.d(getClass().getCanonicalName() + " handling EndTurnEvent...");
-        if (event == null)
-            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
+
         if (getModel() == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Model cannot be null");
 
@@ -367,7 +366,7 @@ public class TurnState extends State {
         }
     }
 
-    protected void signalToolCardUsed(UseToolcardEvent event) {
+    private void signalToolCardUsed(UseToolcardEvent event) {
         getController()
             .dispatchEvent(
                 new LogEvent(
