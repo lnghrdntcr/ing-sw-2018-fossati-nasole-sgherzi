@@ -3,11 +3,18 @@ package it.polimi.se2018.model;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class TurnHolderTest {
 
     void nPlayers(int n){
+        ArrayList<Integer> playerList = new ArrayList<>();
+        for(int i=0; i<n; i++){
+            playerList.add(i);
+        }
+
         TurnHolder turnHolder = new TurnHolder(n);
 
         for(int i=0; i<10; i++){
@@ -15,13 +22,10 @@ public class TurnHolderTest {
 
             for(int j=0; j<2*n; j++){
 
-                if (j < n) {
-                    assertEquals(j, turnHolder.getCurrentPlayer());
-                    assertTrue(turnHolder.isFirstTurnInRound());
-                } else {
-                    assertEquals(2*n-j-1, turnHolder.getCurrentPlayer());
-                    assertFalse(turnHolder.isFirstTurnInRound());
-                }
+
+
+                assertEquals((int) playerList.get(j<n?j:2*n-j-1), turnHolder.getCurrentPlayer());
+                System.out.println("Expected: "+ playerList.get(j<n?j:2*n-j-1) + " got: "+ turnHolder.getCurrentPlayer());
 
                 turnHolder.nextTurn();
 
@@ -32,7 +36,7 @@ public class TurnHolderTest {
                 }
             }
             assertEquals(i+1, turnHolder.getRound());
-
+            playerList.add(playerList.remove(0));
         }
 
 

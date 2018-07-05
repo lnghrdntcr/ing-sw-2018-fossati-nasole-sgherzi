@@ -6,7 +6,6 @@
 * Nicola Fossati
 
 ## TODO
-* Aggiugnere un altro layer di comunicazione per eliminare serializable
 * finire i test
 * aggiungere caricamento schema card da cartella resources (usando getResources)
 * Eliminare un evento mettendo parametro default (Placeanotherdicewithnumberselection) e guardare anche stati

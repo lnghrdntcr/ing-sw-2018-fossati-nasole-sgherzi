@@ -675,11 +675,7 @@ public class GameTableMultiplayerTest {
 
             for (int j = 0; j < i; j++) {
                 System.out.println(this.model.isFirstTurnInRound());
-                if (j == (i - 1)) {
-                    assertTrue(this.model.isFirstTurnInRound());
-                } else {
-                    assertFalse(this.model.isFirstTurnInRound());
-                }
+                assertFalse(model.isFirstTurnInRound());
                 this.model.nextTurn();
             }
 
