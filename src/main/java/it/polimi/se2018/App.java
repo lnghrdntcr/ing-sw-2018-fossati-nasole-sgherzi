@@ -1,24 +1,22 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.model.objectives.PrivateObjective;
+import it.polimi.se2018.model.objectives.PublicObjective;
+import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.network.Client;
 import it.polimi.se2018.network.Server;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.CLI.CLIPrinter;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.rmi.RemoteException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -79,9 +77,25 @@ public class App {
             }
         }
 
-        path = (path == null ? "gameData/resources/defaultConfig.json" : path);
+        File configFile = null;
 
-        File configFile = new File(path);
+        if (path == null) {
+            try {
+
+
+                configFile = new File(
+                    (new App())
+                    .getClass()
+                    .getClassLoader()
+                    .getResource("defaultConfig.json")
+                    .toURI()
+                );
+            } catch (URISyntaxException e) {
+                CLIPrinter.printError("Could not load the default configuration file!");
+            }
+        } else {
+            configFile = new File(path);
+        }
 
         FileInputStream fileInputStream = new FileInputStream(configFile);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);

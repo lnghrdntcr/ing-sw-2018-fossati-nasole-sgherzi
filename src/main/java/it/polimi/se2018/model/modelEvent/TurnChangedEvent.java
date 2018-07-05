@@ -63,8 +63,5 @@ public class TurnChangedEvent extends ModelEvent {
         return toolcardUsed;
     }
 
-    public static void main(String a[]){
-        System.out.println(new TurnChangedEvent("emitter", "receiver", "player", 7, true, true, true).toJSON().toString());
-        System.out.println(new TurnChangedEvent(new TurnChangedEvent("emitter", "receiver", "player", 7, true, true, true).toJSON().toString()).toJSON().toString());
-    }
+
 }

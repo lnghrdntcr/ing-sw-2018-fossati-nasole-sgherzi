@@ -21,7 +21,7 @@ public class DiceFace implements Serializable {
      */
     public DiceFace(GameColor color, int number) {
         if (number < 1 || number > 6){
-            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Number must be greater than one or less than 6.");
+            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Number must be greater than zero and less than 7, not "+number);
         }
         if (color == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Color cannot be null.");

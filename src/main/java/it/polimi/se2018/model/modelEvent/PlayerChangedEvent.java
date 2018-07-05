@@ -59,12 +59,4 @@ public class PlayerChangedEvent extends ModelEvent {
         return super.toJSON();
     }
 
-    public static void main(String a[]){
-        Player player=new Player("player12345");
-        player.setPrivateObjective(new PrivateObjective(GameColor.RED));
-        player.setToken(7);
-        System.out.println(new PlayerChangedEvent("emitter", "receiver", "player",player.getImmutableInstance()).toJSON().toString());
-
-        System.out.println(new PlayerChangedEvent(new PlayerChangedEvent("emitter", "receiver", "player",player.getImmutableInstance()).toJSON().toString()).toJSON().toString());
-    }
 }

@@ -44,11 +44,4 @@ public class DraftBoardChangedEvent extends ModelEvent {
     }
 
 
-    public static void main(String a[]){
-        DraftBoard draftBoard = new DraftBoard();
-        draftBoard.drawDices(3);
-        System.out.println(new DraftBoardChangedEvent("emitter", "receiver", "player", draftBoard.getImmutableInstance()).toJSON().toString());
-    }
-
-
 }

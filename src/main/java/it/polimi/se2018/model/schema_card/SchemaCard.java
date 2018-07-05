@@ -1,11 +1,17 @@
 package it.polimi.se2018.model.schema_card;
 
+import it.polimi.se2018.model.objectives.PrivateObjective;
+import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
+import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.CLI.CLIPrinter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -39,14 +45,32 @@ public class SchemaCard implements Serializable {
 
         ArrayList<SchemaCard> list = new ArrayList<>();
 
-        File jsonFile = new File(fileName);
+        URI defaultFilePath = null;
+
+        // I'm loading the default schema cards
+        if (fileName.equals(Settings.getDefaultSchemaCardDatabase())) {
+            try {
+                defaultFilePath = (new PrivateObjective(GameColor.RED)).getClass().getClassLoader().getResource(Settings.getDefaultSchemaCardDatabase()).toURI();
+            } catch (URISyntaxException e) {
+                CLIPrinter.printError("Could not load default Schema Card Database");
+            }
+        }
+
+        File jsonFile = null;
+
+        if (defaultFilePath == null) {
+            jsonFile = new File(fileName);
+        } else {
+            jsonFile = new File(defaultFilePath);
+        }
+
         if (!jsonFile.exists())
             throw new FileNotFoundException(SchemaCard.class.getCanonicalName() + ": file does not exist -> " + fileName);
 
         //let's load the whole string in memory
 
         //open file and set up reader
-        FileInputStream fileInputStream = new FileInputStream(fileName);
+        FileInputStream fileInputStream = new FileInputStream(jsonFile);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
         StringBuilder builder;
         try (Scanner scanner = new Scanner(bufferedInputStream)) {
@@ -68,6 +92,15 @@ public class SchemaCard implements Serializable {
             } catch (JSONException | IllegalArgumentException e) {
                 //we can continue, probably the problem is only in this set of faces
                 System.err.println(Schema.class.getCanonicalName() + ": cannot load invalid item at position " + i + " " + e);
+            }
+        }
+
+        // Now I
+        if (fileName.equals(Settings.getDefaultSchemaCardDatabase()) && !Settings.getSchemaCardDatabase().equals("")) {
+            try {
+                list.addAll(SchemaCard.loadSchemaCardsFromJson(Settings.getSchemaCardDatabase()));
+            } catch (FileNotFoundException | JSONException e) {
+                CLIPrinter.printError("Could not load custom schema card file.");
             }
         }
 

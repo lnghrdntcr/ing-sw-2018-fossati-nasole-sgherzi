@@ -23,7 +23,6 @@ public class GameEndState extends State {
         super(controller, model);
         controller.setGameEnded(true);
         this.computeScore();
-        // TODO: Add the logic to do other stuff eg. write things to file.
         // TODO: Figure out a slightly better idea to end the game.
     }
 

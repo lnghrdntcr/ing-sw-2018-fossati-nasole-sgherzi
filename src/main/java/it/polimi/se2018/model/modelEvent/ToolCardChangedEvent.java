@@ -50,9 +50,5 @@ public class ToolCardChangedEvent extends ModelEvent {
 
     }
 
-    public static void main(String a[]){
-        Tool toolCard = new Tool("LOLLLOLLLOLLLOL");
-        System.out.println(new ToolCardChangedEvent("emitter", "receiver", "player", toolCard.getImmutableInstance(), 7).toJSON().toString());
-        System.out.println(new ToolCardChangedEvent(new ToolCardChangedEvent("emitter", "receiver", "player", toolCard.getImmutableInstance(), 7).toJSON().toString()).toJSON().toString());
-    }
+
 }
