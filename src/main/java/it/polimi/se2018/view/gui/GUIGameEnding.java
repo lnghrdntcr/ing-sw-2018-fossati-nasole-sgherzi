@@ -86,9 +86,9 @@ public class GUIGameEnding extends GameEnding {
                 Label label = new Label();
 
                 label.setText("Player: " + key
-                    + " Victories" + getGlobalLeaderBoard().getJSONObject(key).get("victories")
-                    + " Losses" + getGlobalLeaderBoard().getJSONObject(key).get("losses")
-                    + "Total time played" + getGlobalLeaderBoard().getJSONObject(key).get("totalTimePlayed"));
+                    + " Victories" + getGlobalLeaderBoard().getJSONObject(key).optInt("victories", 0)
+                    + " Losses" + getGlobalLeaderBoard().getJSONObject(key).optInt("losses", 0)
+                    + "Total time played" + getGlobalLeaderBoard().getJSONObject(key).optInt("totalTimePlayed", 0));
 
                 globalStats.getChildren().add(label);
 
