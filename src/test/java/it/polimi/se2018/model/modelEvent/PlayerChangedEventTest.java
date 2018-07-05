@@ -22,4 +22,17 @@ public class PlayerChangedEventTest {
 
     }
 
+
+    @Test
+    public void filter(){
+        Player player=new Player("player12345");
+        player.setPrivateObjective(new PrivateObjective(GameColor.RED));
+        player.setToken(7);
+
+        PlayerChangedEvent event = new PlayerChangedEvent("emitter", "receiver", "player", player.getImmutableInstance());
+
+        assertNull(event.filter("otherPlayerName").getPlayerImmutable().getPrivateObjective());
+        assertNotNull(event.filter("player12345").getPlayerImmutable().getPrivateObjective());
+    }
+
 }

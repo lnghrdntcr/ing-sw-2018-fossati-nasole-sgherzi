@@ -43,8 +43,4 @@ public class MoveDiceEvent extends UseToolcardEvent {
         return jsonObject;
     }
 
-    public static void main(String a[]){
-        System.out.println(new MoveDiceEvent("emitter", "receiver", "player", 4, new Point(4, 5), new Point(2, 8)).toJSON().toString());
-        System.out.println(new MoveDiceEvent(new MoveDiceEvent("emitter", "receiver", "player", 4, new Point(4, 5), new Point(2, 8)).toJSON().toString()).toJSON().toString());
-    }
 }

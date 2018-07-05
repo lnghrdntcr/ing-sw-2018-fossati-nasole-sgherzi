@@ -1,6 +1,5 @@
 package it.polimi.se2018.utils;
 
-import it.polimi.se2018.controller.states.State;
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -23,10 +22,10 @@ public abstract class Event implements Serializable {
         this.receiver = receiver;
     }
 
-    public Event(String json){
-        player=new JSONObject(json).getString("playerName");
-        emitter=new JSONObject(json).getString("emitterName");
-        receiver=new JSONObject(json).getString("receiver");
+    public Event(String json) {
+        player = new JSONObject(json).getString("playerName");
+        emitter = new JSONObject(json).getString("emitterName");
+        receiver = new JSONObject(json).getString("receiver");
     }
 
     public String getEmitterName() {
@@ -51,7 +50,7 @@ public abstract class Event implements Serializable {
                 '}';
     }
 
-    public JSONObject toJSON(){
+    public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject(this);
         jsonObject.put("class", this.getClass().getCanonicalName());
         return jsonObject;

@@ -44,7 +44,7 @@ public class PlaceDiceEvent extends ViewEvent {
     public JSONObject toJSON() {
         JSONObject jsonObject = super.toJSON();
 
-        jsonObject.put("object", new JSONObject(point));
+        jsonObject.put("point", new JSONObject(point));
 
         return jsonObject;
     }

@@ -47,7 +47,7 @@ public class PlayerChangedEvent extends ModelEvent {
     }
 
     @Override
-    public Event filter(String playername) {
+    public PlayerChangedEvent filter(String playername) {
         if(!playername.equals(playerImmutable.getName())){
             return new PlayerChangedEvent(getEmitterName(), getReceiver(), getPlayerName(), playerImmutable.obtainFilteredInstance());
         }

@@ -58,9 +58,4 @@ public class DoubleMoveDiceEvent extends UseToolcardEvent {
         jsonObject.put("destination", destination);
         return jsonObject;
     }
-
-    public static void main(String a[]){
-        System.out.println(new DoubleMoveDiceEvent("emitter", "receiver", "player", 2, new Point(1, 1), new Point(2, 2), new Point(3, 3), new Point(4, 4)).toJSON().toString());
-        System.out.println(new DoubleMoveDiceEvent(new DoubleMoveDiceEvent("emitter", "receiver", "player", 2, new Point(1, 1), new Point(2, 2), new Point(3, 3), new Point(4, 4)).toJSON().toString()).toJSON().toString());
-    }
 }
