@@ -16,6 +16,9 @@ public class DiceBag {
     private EnumMap<GameColor, Integer> counter = new EnumMap<>(GameColor.class);
     private int dicesDrawn;
 
+    /**
+     * Creates a {@link DiceBag} with all the dices available
+     */
     public DiceBag(){
         for(GameColor gc: GameColor.values()){
             counter.put(gc, 0);

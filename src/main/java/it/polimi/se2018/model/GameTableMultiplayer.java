@@ -175,6 +175,10 @@ public class GameTableMultiplayer extends Observable<Event> {
         return publicObjectives[position];
     }
 
+    /**
+     * Compute the total score of each player
+     * @return a List of {@link ScoreHolder} containing the players scores, one for each player
+     */
     public ArrayList<ScoreHolder> computeAllScores() {
 
         ArrayList<ScoreHolder> scoreHolders = new ArrayList<>();
@@ -193,13 +197,24 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     }
 
+    /**
+     * Return the index of the player in the players array
+     * @param playerName the name of the player
+     * @return the index of the name
+     */
     private int getPlayerPosition(String playerName) {
         for (int i = 0; i < this.players.length; i++) {
             if (this.players[i].getName().equals(playerName)) return i;
         }
-        throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": No player with that name!");
+        throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": no player with that name!");
     }
 
+    /**
+     * Calculate the score of a schema based on the {@link PublicObjective} on the table in this match
+     *
+     * @param schema the schema to process
+     * @return the partial score of this schema
+     */
     private int computePublicObjectivesScore(Schema schema) {
         int publicObjectivesScore = 0;
         for (PublicObjective puo : this.publicObjectives) {
@@ -322,6 +337,14 @@ public class GameTableMultiplayer extends Observable<Event> {
         return redrawDice(index, true);
     }
 
+    /**
+     * Redraw a dice (change its number but not its color)
+     *
+     * @param index the index of the dice to redraw
+     *
+     * @param singal if this call should inform the clients of this action (useful in multiple actions of the same type)
+     * @return the DiceFace just redrawn
+     */
     private DiceFace redrawDice(int index, boolean singal) {
         DiceFace df = draftBoard.removeDice(index);
         df = new DiceFace(df.getColor(), new Random().nextInt(6) + 1);
@@ -415,6 +438,10 @@ public class GameTableMultiplayer extends Observable<Event> {
 
     //Turn stuff
 
+    /**
+     * Check if the match has an other turn after this (the game is not ended)
+     * @return true if the game is not ended, false otherwise
+     */
     public boolean hasNextTurn() {
 
         if (
@@ -441,20 +468,25 @@ public class GameTableMultiplayer extends Observable<Event> {
                 diceHolder.addDice(oldRound, draftBoard.removeDice(0));
             }
         }
-
-        /*dispatchEvent(
-            new TurnChangedEvent(
-                this.getClass().getName() + ": nextTurn()",
-                "",
-                players[turnHolder.getCurrentPlayer()].getName()
-                , turnHolder.getRound(), this.isFirstTurnInRound()));*/
     }
 
 
+    /**
+     * Dispatch an event to the connected clients
+     * @param event the event to dispatch
+     */
     private void dispatchEvent(Event event) {
         notify(event);
     }
 
+    /**
+     * Checks if a player is allowed to put a dice to a specific position in his schema
+     * @param playerName the name of the player that owns the Schema
+     * @param point the position where to put the diceface
+     * @param diceFace the diceface to check
+     * @param ignore if any restriction should be relaxed
+     * @return true if the dice can be place, false otherwise
+     */
     public boolean isDiceAllowed(String playerName, Point point, DiceFace diceFace, SchemaCardFace.Ignore ignore) {
         return getPlayerByName(playerName).getSchema().isDiceAllowed(point, diceFace, ignore);
     }
@@ -470,10 +502,20 @@ public class GameTableMultiplayer extends Observable<Event> {
         return getPlayerByName(playerName).getSchema().isDiceAllowed(point, diceFace, ignore, true);
     }
 
+    /**
+     * Get the dice on the draftboard, based on its index
+     * @param i the index of the dice on the draftboard
+     * @return the diceface
+     */
     public DiceFace getDiceFaceByIndex(int i) {
         return draftBoard.getDiceFace(i);
     }
 
+    /**
+     * Assign the selected SchemaCardFace to the player, based on his choice
+     * @param playerName the name of the player
+     * @param schemaCardFace the schema card face to assign
+     */
     public void setPlayerSchema(String playerName, SchemaCardFace schemaCardFace) {
 
         if (schemaCardFace == null)
@@ -547,6 +589,11 @@ public class GameTableMultiplayer extends Observable<Event> {
         return getPlayerByName(playerName).getSchema().cloneSchema();
     }
 
+    /**
+     * Checks if a specific color is present in the diceholder
+     * @param gameColor the color to check
+     * @return true if the color is present, false otherwise
+     */
     public boolean isColorInDiceHolder(GameColor gameColor) {
         return diceHolder.isColorPresent(gameColor);
     }
@@ -597,10 +644,16 @@ public class GameTableMultiplayer extends Observable<Event> {
         return turnHolder.getRound();
     }
 
+    /**
+     * Signals to the model that a new game has started and resync all the clients
+     */
     public void onGameStart() {
         this.sync("");
     }
 
+    /**
+     * And the whole turn, placing all the available dice on the turnHolder and redrawing an appropriate number of dices
+     */
     public void endTurn() {
         while (draftBoard.getDiceNumber() > 0) {
             diceHolder.addDice(getRound() - 1, draftBoard.removeDice(0));

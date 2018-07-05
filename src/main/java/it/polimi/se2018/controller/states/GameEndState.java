@@ -52,10 +52,6 @@ public class GameEndState extends State {
         }
 
 
-        scoreHolders.forEach(el -> {
-            System.out.println(el);
-        });
-
         File file = new File("leaderboad.json");
 
         try {
@@ -78,7 +74,7 @@ public class GameEndState extends State {
                 JSONObject player = null;
 
                 try {
-                    player = (JSONObject) root.getJSONObject(sh.getPlayerName());
+                    player = root.getJSONObject(sh.getPlayerName());
                 } catch (JSONException ignored) {
                     player = new JSONObject();
                 }

@@ -133,6 +133,10 @@ public class DraftBoard implements ImmutableCloneable<DraftBoardImmutable>{
     }
 
 
+    /**
+     * Gets an immutable instance of the {@link DraftBoard}
+     * @return the immutable instance
+     */
     @Override
     public DraftBoardImmutable getImmutableInstance() {
         return new DraftBoardImmutable(this.getDices());

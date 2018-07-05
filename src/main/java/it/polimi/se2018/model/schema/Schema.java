@@ -32,6 +32,11 @@ public class Schema implements Serializable {
         this.schemaCardFace = schemaCardFace;
     }
 
+    /**
+     * Recreate a Schema based on it's JSON representation
+     * @param jsonObject the {@link JSONObject} containing the Schema
+     * @return a valid Schema
+     */
     public static Schema fromJSON(JSONObject jsonObject) {
         Schema schema = new Schema(SchemaCardFace.loadFromJson(jsonObject.getJSONObject("schemaCardFace")));
 
@@ -286,7 +291,13 @@ public class Schema implements Serializable {
         return newSchema;
     }
 
-    // TODO: Add docs
+
+    /**
+     * Checks if the given DiceFace can be put anywhere on the schema
+     * @param diceFace the diceface to check
+     * @param ignore if there is some restriction to ignore
+     * @return true if the diceface can be put somewhere, false otherwise
+     */
     public boolean isDiceAllowedSomewhere(DiceFace diceFace, SchemaCardFace.Ignore ignore) {
         for (int x = 0; x < Settings.CARD_HEIGHT; x++) {
             for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
@@ -301,6 +312,10 @@ public class Schema implements Serializable {
 
     }
 
+    /**
+     * Returns the JSON representation of this object
+     * @return a {@link JSONObject} containing the current schema
+     */
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject(this);
         JSONArray diceFacesJson = new JSONArray();

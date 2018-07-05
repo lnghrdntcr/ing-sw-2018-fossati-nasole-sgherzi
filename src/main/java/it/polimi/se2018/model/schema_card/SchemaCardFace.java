@@ -145,6 +145,10 @@ public class SchemaCardFace implements Serializable {
         return name;
     }
 
+    /**
+     * Returns a JSON representation of this object
+     * @return a {@link JSONObject} that represents the current {@link SchemaCardFace}
+     */
     public JSONObject toJsonObject() {
         JSONObject jsonObject = new JSONObject(this);
         JSONArray rows = new JSONArray();
@@ -162,6 +166,9 @@ public class SchemaCardFace implements Serializable {
         return jsonObject;
     }
 
+    /**
+     * An enum to represent all the possible restrictions ignoration
+     */
     public enum Ignore {
         BOTH, COLOR, NUMBER, NOTHING
     }

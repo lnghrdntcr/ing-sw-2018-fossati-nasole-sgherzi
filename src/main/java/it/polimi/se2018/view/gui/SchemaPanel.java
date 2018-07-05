@@ -13,6 +13,9 @@ import javafx.scene.shape.Circle;
 
 import java.awt.*;
 
+/**
+ * A class to render a player schema on the screen
+ */
 public class SchemaPanel extends GridPane {
     private Restriction[][] restrictions = new Restriction[Settings.CARD_WIDTH][Settings.CARD_HEIGHT];
     private Dice[][] dice = new Dice[Settings.CARD_WIDTH][Settings.CARD_HEIGHT];
@@ -90,6 +93,10 @@ public class SchemaPanel extends GridPane {
 
     }
 
+    /**
+     * Update the schema on the screen
+     * @param schema the schema to represent
+     */
     public void updateSchema(Schema schema) {
         if(schema==null) return;
         this.schema = schema;
@@ -125,6 +132,10 @@ public class SchemaPanel extends GridPane {
         }
     }
 
+    /**
+     * Update the number of the token used by the player
+     * @param usedToken the token used by the player
+     */
     public void updateToken(int usedToken) {
         this.usedToken = usedToken;
         updateToken();
@@ -137,6 +148,12 @@ public class SchemaPanel extends GridPane {
 
     }
 
+    /**
+     * Hignlights the position where the user can place the given dice
+     * @param dice the dice to place
+     * @param ignore the restriction to relax
+     * @param forceLoneliness if the dice must be placed alone
+     */
     public void highlightAllowedPoints(DiceFace dice, SchemaCardFace.Ignore ignore, boolean forceLoneliness) {
         for (int x = 0; x < Settings.CARD_WIDTH; x++) {
             for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
@@ -156,7 +173,14 @@ public class SchemaPanel extends GridPane {
     }
 
 
+    /**
+     * An interface to represent the interaction with the schema
+     */
     public interface OnSchemaInteractionListener {
+        /**
+         * Handles the click of the user on a cell
+         * @param point the coordinates of the clicked cell
+         */
         void onCellSelected(Point point);
     }
 

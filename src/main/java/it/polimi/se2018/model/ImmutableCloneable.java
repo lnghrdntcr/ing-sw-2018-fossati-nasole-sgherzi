@@ -5,5 +5,9 @@ package it.polimi.se2018.model;
  * @param <T> the type of the immutable instance
  */
 public interface ImmutableCloneable<T> {
+    /**
+     * Gets an immutable instance of the object
+     * @return an immutable instance of the object
+     */
     public T getImmutableInstance();
 }

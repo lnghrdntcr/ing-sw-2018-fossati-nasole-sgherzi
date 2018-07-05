@@ -36,10 +36,20 @@ public class Settings {
      * Number of public objectives in a match
      */
     public static final int POBJECTIVES_N = 3;
+    /**
+     * Specifies the messages separator in the SocketString (Json) communication
+     */
     public final static String SOCKET_EOM = "#$$EOM$$#";
 
-    private static String defaultSchemaCardDatabase = "schemaCards/schemaCardBase.scf";
+    /**
+     * The relative path in resources folder of the file that contains schema cards definitions
+     */
+    private final static String defaultSchemaCardDatabase = "schemaCards/schemaCardBase.scf";
 
+
+    /**
+     * Full path or relative path to a file that contains custom schema cards definitions
+     */
     private static String customSchemaCardDatabase = "";
 
     private Settings() {

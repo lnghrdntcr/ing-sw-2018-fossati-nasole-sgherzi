@@ -238,6 +238,11 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         return false;
     }
 
+    /**
+     * Checks if there is more than one player remotely connected to this match
+     *
+     * @return true if there is more than one player connected
+     */
     public boolean isMoreThanOnePlayerConnected() {
         int i = 0;
         for (View v : this.views) {
@@ -247,14 +252,27 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         return i > 1;
     }
 
+    /**
+     * @return the model associated to this match
+     */
     public GameTableMultiplayer getModel() {
         return model;
     }
 
+    /**
+     * Get a list of the players' name. The order will remain the same across the whole match
+     *
+     * @return a list of players' name
+     */
     public String[] getPlayersList() {
         return model.getPlayersName();
     }
 
+    /**
+     * Dispatch an events to the connected clients
+     *
+     * @param toDispatchEvent the event to dispatch
+     */
     public void dispatchEvent(Event toDispatchEvent) {
         this.outboundEventLoop.add(toDispatchEvent);
     }
@@ -300,6 +318,11 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         this.gameStarted = true;
     }
 
+    /**
+     * Get the start time of this match
+     *
+     * @return start time of this match in milliseconds (unix time)
+     */
     public long getMatchBeginTime() {
         return matchBeginTime;
     }

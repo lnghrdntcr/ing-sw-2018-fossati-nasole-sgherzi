@@ -93,6 +93,10 @@ public class DiceHolder implements ImmutableCloneable<DiceHolderImmutable> {
         return turnHolder.get(turn).toArray(new DiceFace[0]);
     }
 
+    /**
+     * Get an immutable instance of this DiceHolder
+     * @return the immutable instance
+     */
     @Override
     public DiceHolderImmutable getImmutableInstance() {
 

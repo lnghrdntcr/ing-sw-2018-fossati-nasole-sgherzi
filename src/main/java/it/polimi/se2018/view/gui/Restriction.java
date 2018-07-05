@@ -10,6 +10,9 @@ import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
+/**
+ * A class to render a restriction of a {@link it.polimi.se2018.model.schema_card.SchemaCard} on the screen
+ */
 public class Restriction extends StackPane {
     @FXML
     private ImageView diceColour;
@@ -28,6 +31,10 @@ public class Restriction extends StackPane {
         }
     }
 
+    /**
+     * Updates the restriction on the screen
+     * @param restriction the restriction to render
+     */
     void setRestriction(CellRestriction restriction) {
         if (restriction.toString().equals("")) {
             diceColour.setImage(new Image("gui/restrictions/no.png"));

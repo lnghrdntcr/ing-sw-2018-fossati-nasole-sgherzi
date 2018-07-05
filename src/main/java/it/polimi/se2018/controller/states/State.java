@@ -28,6 +28,10 @@ public abstract class State {
         return event.visit(this);
     }
 
+    /**
+     * Performs all the necessary action to sync the current game state and a reconnected user
+     * @param playerName the player to resync
+     */
     public abstract void syncPlayer(String playerName);
 
     /**

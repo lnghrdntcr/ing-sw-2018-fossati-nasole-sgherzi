@@ -79,10 +79,6 @@ public class Client {
         return null;
     }
 
-    public Client() {
-        super();
-    }
-
     /**
      * Starts the client getting basic informations about the connection.
      */
@@ -150,6 +146,9 @@ public class Client {
 
     }
 
+    /**
+     * Begins a connection based on SocketString protocol (JSON based)
+     */
     private static RemoteProxy connectJSON() {
         try {
             Log.d("Connecting via json..."+port);

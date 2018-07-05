@@ -13,6 +13,9 @@ import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
+/**
+ * A class to render an Objective card on the screen
+ */
 public class ObjectiveView extends StackPane {
     @FXML
     private ImageView objectiveIm;
@@ -30,6 +33,10 @@ public class ObjectiveView extends StackPane {
 
     }
 
+    /**
+     * Updates the current displayed card on the screen. If null is passed as param, the back of the card is shown
+     * @param objective the objective card to render
+     */
     public void setObjective(Object objective){
 
         if(objective == null){
