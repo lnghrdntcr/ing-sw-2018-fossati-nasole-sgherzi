@@ -10,6 +10,8 @@ import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.utils.Utils;
 import it.polimi.se2018.view.viewEvent.*;
 
 import java.util.HashMap;
@@ -40,11 +42,8 @@ public class TurnState extends State {
             }
         }
 
-        setupToolCardIsUsable();
-
-
         setupToolCardUse();
-
+        setupToolCardIsUsable();
 
         this.hasPlacedDice = hasPlacedDice;
         this.hasUsedToolcard = hasUsedToolcard;
@@ -58,7 +57,16 @@ public class TurnState extends State {
                     ""
                 )
             );
+
             this.getController().setGameStarted();
+
+            StringBuilder publicObjectives = new StringBuilder();
+
+            for (int i = 0; i < Settings.POBJECTIVES_N; i++) {
+                publicObjectives.append(getModel().getPublicObjectiveCardByPosition(i).getClass().getSimpleName() + " ");
+            }
+
+            sendLogEvent("Public Objectives drawn: " + publicObjectives);
 
         }
 
@@ -73,7 +81,6 @@ public class TurnState extends State {
                 isToolcardUsed()
             )
         );
-
 
     }
 
@@ -126,7 +133,13 @@ public class TurnState extends State {
         Tool tool = getModel().getToolCardByPosition(event.getToolCardIndex());
         int playerToken = getModel().getPlayerToken(event.getPlayerName());
 
-        if (!isToolCardUsable.get(tool.getName()).get()) Log.i(tool.getClass().getName() + " not usable in this turn.");
+        if (!isToolCardUsable
+            .get(
+                tool.getName()
+            )
+            .get()) {
+            Log.i(tool.getClass().getName() + " not usable in this turn.");
+        }
 
         if (playerToken < tool.getNeededTokens()) {
             Log.i(
@@ -270,19 +283,22 @@ public class TurnState extends State {
         } else {
             if (getModel().hasNextTurn()) {
                 int oldTurn = getModel().getRound();
+
+                sendLogEvent(getModel().getCurrentPlayerName() + " ended its turn.");
+
                 getModel().nextTurn();
                 if (oldTurn != getModel().getRound()) {
                     Log.i("New round started! Putting back dices");
                     getModel().endTurn();
 
-                    getController().dispatchEvent(
-                        new LogEvent(
-                            this.getClass().getName(),
-                            "",
-                            "",
-                            "A new round has begun!"
-                        )
-                    );
+                    StringBuilder message = new StringBuilder();
+
+                    for (int i = 0; i < getModel().getDiceNumberOnDraftBoard(); i++) {
+                        message.append(Utils.decodeCardinalNumber(i + 1) + " " + Utils.decodeDice(getModel().getDiceFaceByIndex(i)));
+                        message.append(" | ");
+                    }
+
+                    sendLogEvent("A new round has begun, new dices drawn! Dices: " + message.toString());
 
                 }
                 return new TurnState(this.getController(), getModel(), false, false);
@@ -365,7 +381,12 @@ public class TurnState extends State {
             getModel().increaseDecreaseDice(ev.getDicePosition(), ev.getNumber());
             getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
 
-            signalToolCardUsed(event);
+            StringBuilder message = new StringBuilder();
+            message.append(getToolCardLogMessage(event));
+            message.append("The " + getModel().getDiceFaceByIndex(ev.getDicePosition()).getColor().toString().toLowerCase() + " " + getModel().getDiceFaceByIndex(ev.getDicePosition()).getNumber());
+            message.append(" was " + (ev.getNumber() == -1 ? "decremented." : "incremented."));
+
+            sendLogEvent(message.toString());
 
             return new TurnState(getController(), getModel(), isDicePlaced(), true);
         } catch (Exception e) {
@@ -374,18 +395,8 @@ public class TurnState extends State {
         }
     }
 
-    private void signalToolCardUsed(UseToolcardEvent event) {
-        getController()
-            .dispatchEvent(
-                new LogEvent(
-                    this.getClass().getName(),
-                    event.getPlayerName(),
-                    "",
-                    event.getPlayerName()
-                        + " has used "
-                        + getModel().getToolCardByPosition(event.getToolCardIndex()).getName()
-                        + "!")
-            );
+    private String getToolCardLogMessage(UseToolcardEvent event) {
+        return event.getPlayerName() + " has used " + getModel().getToolCardByPosition(event.getToolCardIndex()).getName() + ": ";
     }
 
     /**
@@ -404,7 +415,10 @@ public class TurnState extends State {
                 getModel().moveDice(name, e.getSource(), e.getDestination(), true);
                 getModel().useTokenOnToolcard(event.getPlayerName(), e.getToolCardIndex());
 
-                signalToolCardUsed(event);
+                StringBuilder message = new StringBuilder(getToolCardLogMessage(event));
+                message.append("Moved dice from " + Utils.decodePosition(e.getSource()) + " to " + Utils.decodePosition(e.getDestination()) + ".");
+
+                sendLogEvent(message.toString());
 
                 return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
             } else {
@@ -418,6 +432,7 @@ public class TurnState extends State {
 
     }
 
+
     /**
      * Helper method to use MoveDiceTwice toolcard
      *
@@ -430,6 +445,8 @@ public class TurnState extends State {
             Schema tempSchema = getModel().getPlayerSchemaCopy(ev.getPlayerName());
             DiceFace tempDice = tempSchema.removeDiceFace(ev.getSource(0));
 
+            // HERE
+
             if (tempSchema.isDiceAllowed(ev.getDestination(0), tempDice, SchemaCardFace.Ignore.NOTHING)) {
                 tempSchema.setDiceFace(ev.getDestination(0), tempDice);
                 tempDice = tempSchema.removeDiceFace(ev.getSource(1));
@@ -438,7 +455,16 @@ public class TurnState extends State {
                     getModel().moveDice(ev.getPlayerName(), ev.getSource(1), ev.getDestination(1), true);
                     getModel().useTokenOnToolcard(event.getPlayerName(), ev.getToolCardIndex());
 
-                    signalToolCardUsed(event);
+                    StringBuilder message = new StringBuilder(getToolCardLogMessage(event));
+                    message.append("Moved dice from ");
+                    message.append(Utils.decodePosition(ev.getSource(0)));
+                    message.append(" to " + Utils.decodePosition(ev.getDestination(0)));
+                    message.append(" and ");
+                    message.append(Utils.decodePosition(ev.getSource(1)));
+                    message.append(" to " + Utils.decodePosition(ev.getDestination(1)));
+
+                    sendLogEvent(message.toString());
+
 
                     return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
                 } else {
@@ -469,7 +495,13 @@ public class TurnState extends State {
             getModel().swapDraftDiceWithHolder(ev.getDraftBoardIndex(), ev.getTurn(), ev.getIndexInTurn());
             getModel().useTokenOnToolcard(event.getPlayerName(), ev.getToolCardIndex());
 
-            signalToolCardUsed(event);
+            StringBuilder message = new StringBuilder(getToolCardLogMessage(event));
+            message.append("The " + Utils.decodeDice(getModel().getDiceFaceByIndex(ev.getDraftBoardIndex())));
+            message.append(" was swapped with dice ");
+            message.append("turn " + ev.getTurn() + 1 + " position " + ev.getIndexInTurn());
+            message.append(" on the round track");
+
+            sendLogEvent(message.toString());
 
             return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
         } catch (Exception e) {
@@ -487,9 +519,20 @@ public class TurnState extends State {
     private State useFirmPastaBrush(UseToolcardEvent event) {
         try {
             DiceActionEvent ev = (DiceActionEvent) event;
+
+            DiceFace dfBefore = getModel().getDiceFaceByIndex(ev.getDicePosition());
             DiceFace redrawed = getModel().redrawDice(ev.getDicePosition());
 
             getModel().useTokenOnToolcard(event.getPlayerName(), ev.getToolCardIndex());
+
+            StringBuilder message = new StringBuilder(getToolCardLogMessage(event));
+            message.append("The ");
+            message.append(Utils.decodeDice(dfBefore) + " [" + Utils.decodeCardinalNumber(ev.getDicePosition()) + "dice] ");
+            message.append("was redrawn and now is ");
+            message.append(Utils.decodeDice(redrawed));
+
+            sendLogEvent(message.toString());
+
             if (getModel().getPlayerSchemaCopy(ev.getPlayerName()).isDiceAllowedSomewhere(redrawed, SchemaCardFace.Ignore.NOTHING)) {
                 //the diceface can be placed
                 return new PlaceRedrawnDiceState(getController(), getModel(), new TurnState(getController(), getModel(), isDicePlaced(), true), redrawed, ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard() - 1);
@@ -512,11 +555,20 @@ public class TurnState extends State {
      */
     private State useGavel(UseToolcardEvent event) {
         try {
+
             getModel().redrawAllDice();
 
             getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
 
-            signalToolCardUsed(event);
+            StringBuilder message = new StringBuilder(getToolCardLogMessage(event));
+            message.append("All dices were redrawn! ");
+            message.append("New dices: ");
+
+            for (int i = 0; i < getModel().getDiceNumberOnDraftBoard(); i++) {
+                message.append(Utils.decodeCardinalNumber(i + 1) + " " + Utils.decodeDice(getModel().getDiceFaceByIndex(i)));
+            }
+
+            sendLogEvent(message.toString());
 
             return new TurnState(getController(), getModel(), isDicePlaced(), true);
         } catch (Exception e) {
@@ -535,7 +587,9 @@ public class TurnState extends State {
         try {
             PlaceAnotherDiceEvent ev = (PlaceAnotherDiceEvent) event;
 
-            if (getModel().isDiceAllowed(event.getPlayerName(), ev.getPoint(), getModel().getDiceFaceByIndex(ev.getDiceFaceIndex()), SchemaCardFace.Ignore.NOTHING)) {
+            DiceFace df = getModel().getDiceFaceByIndex(ev.getDiceFaceIndex());
+
+            if (getModel().isDiceAllowed(event.getPlayerName(), ev.getPoint(), df, SchemaCardFace.Ignore.NOTHING)) {
                 getModel().placeDice(event.getPlayerName(), ev.getDiceFaceIndex(), ev.getPoint());
                 getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
             } else {
@@ -545,7 +599,13 @@ public class TurnState extends State {
 
             getModel().playerWillDropTurn(event.getPlayerName());
 
-            signalToolCardUsed(event);
+            StringBuilder message = new StringBuilder(getToolCardLogMessage(event));
+            message.append("The ");
+            message.append(Utils.decodeDice(df) + "[" + Utils.decodeCardinalNumber(ev.getDiceFaceIndex() + 1) + "dice] ");
+            message.append(" was placed in position");
+            message.append(Utils.decodePosition(ev.getPoint()));
+
+            sendLogEvent(message.toString());
 
             return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
         } catch (Exception e) {
@@ -564,12 +624,21 @@ public class TurnState extends State {
         try {
             PlaceAnotherDiceEvent e = (PlaceAnotherDiceEvent) event;
             String name = getModel().getCurrentPlayerName();
-            if (getModel().isAloneDiceAllowed(name, e.getPoint(), getModel().getDiceFaceByIndex(e.getDiceFaceIndex()), SchemaCardFace.Ignore.NOTHING)) {
+
+            DiceFace df = getModel().getDiceFaceByIndex(e.getDiceFaceIndex());
+
+            if (getModel().isAloneDiceAllowed(name, e.getPoint(), df, SchemaCardFace.Ignore.NOTHING)) {
 
                 getModel().placeDice(e.getPlayerName(), e.getDiceFaceIndex(), e.getPoint());
                 getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
 
-                signalToolCardUsed(event);
+                StringBuilder message = new StringBuilder(getToolCardLogMessage(event));
+                message.append("The ");
+                message.append(Utils.decodeDice(df) + "[" + Utils.decodeCardinalNumber(e.getDiceFaceIndex() + 1) + "dice] ");
+                message.append(" was placed in position");
+                message.append(Utils.decodePosition(e.getPoint()));
+
+                sendLogEvent(message.toString());
 
                 return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
             } else {
@@ -590,11 +659,20 @@ public class TurnState extends State {
      */
     private State useDiamondPad(UseToolcardEvent event) {
         try {
+
             DiceActionEvent ev = (DiceActionEvent) event;
+
+            DiceFace df = getModel().getDiceFaceByIndex(ev.getDicePosition());
+
             getModel().flipDice(ev.getDicePosition());
             getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
 
-            signalToolCardUsed(event);
+            StringBuilder message = new StringBuilder(getToolCardLogMessage(event));
+            message.append("The " + Utils.decodeDice(df));
+            message.append(" was flipped and became a ");
+            message.append(Utils.decodeDice(getModel().getDiceFaceByIndex(ev.getDicePosition())));
+
+            sendLogEvent(message.toString());
 
             return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
         } catch (Exception e) {
@@ -612,8 +690,19 @@ public class TurnState extends State {
     private State useFirmPastaDiluent(UseToolcardEvent event) {
         try {
             DiceActionEvent ev = (DiceActionEvent) event;
+
+            DiceFace dfBefore = getModel().getDiceFaceByIndex(ev.getDicePosition());
+
             getModel().putBackAndRedrawDice(ev.getDicePosition());
             getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
+
+            StringBuilder message = new StringBuilder(getToolCardLogMessage(event));
+            message.append("The ");
+            message.append(Utils.decodeDice(dfBefore) + "[" + Utils.decodeCardinalNumber(ev.getDicePosition() + 1) + "dice] ");
+            message.append("was redrawn and now it is a " + Utils.decodeDice(getModel().getDiceFaceByIndex(ev.getDicePosition())));
+
+            sendLogEvent(message.toString());
+
             return new PlaceRedrawnWithNumberDiceState(getController(), getModel(), new TurnState(getController(), getModel(), this.isDicePlaced(), true),
                 ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard() - 1);
         } catch (Exception e) {
@@ -655,7 +744,15 @@ public class TurnState extends State {
                     getModel().moveDice(ev.getPlayerName(), ev.getSource(1), ev.getDestination(1), true);
                     getModel().useTokenOnToolcard(event.getPlayerName(), event.getToolCardIndex());
 
-                    signalToolCardUsed(event);
+                    StringBuilder message = new StringBuilder(getToolCardLogMessage(event));
+                    message.append("Moved dice from ");
+                    message.append(Utils.decodePosition(ev.getSource(0)));
+                    message.append(" to " + Utils.decodePosition(ev.getDestination(0)));
+                    message.append(" and ");
+                    message.append(Utils.decodePosition(ev.getSource(1)));
+                    message.append(" to " + Utils.decodePosition(ev.getDestination(1)));
+
+                    sendLogEvent(message.toString());
 
                     return new TurnState(getController(), getModel(), this.isDicePlaced(), true);
                 } else {
@@ -671,6 +768,22 @@ public class TurnState extends State {
             Log.w("Unable to use ManualCutter: " + e.getMessage());
             return this;
         }
+    }
+
+    /**
+     * Signals the log event.
+     *
+     * @param message the message to send.
+     */
+    private void sendLogEvent(String message) {
+        getController().dispatchEvent(
+            new LogEvent(
+                this.getClass().getName(),
+                "",
+                "",
+                message
+            )
+        );
     }
 
     @Override

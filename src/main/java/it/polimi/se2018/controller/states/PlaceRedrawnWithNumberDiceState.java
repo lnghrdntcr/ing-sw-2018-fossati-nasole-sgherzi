@@ -4,8 +4,10 @@ import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceWithNumberSelectionEvent;
 import it.polimi.se2018.controller.controllerEvent.LogEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
+import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.utils.Utils;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceSelectingNumberEvent;
 import it.polimi.se2018.view.viewEvent.PlayerDisconnectedEvent;
 import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
@@ -45,12 +47,20 @@ public class PlaceRedrawnWithNumberDiceState extends State {
         try {
             PlaceAnotherDiceSelectingNumberEvent ev = (PlaceAnotherDiceSelectingNumberEvent) event;
             //checks if user is placing the redrawn face
+            DiceFace df = getModel().getDiceFaceByIndex(ev.getDiceFaceIndex());
+
             if (ev.getDiceFaceIndex() == getModel().getDiceNumberOnDraftBoard() - 1) {
                 getModel().changeDiceNumber(ev.getDiceFaceIndex(), ev.getNumber());
                 if (getModel().isDiceAllowed(ev.getPlayerName(), ev.getPoint(), getModel().getDiceFaceByIndex(getModel().getDiceNumberOnDraftBoard() - 1), SchemaCardFace.Ignore.NOTHING)) {
                     getModel().placeDice(ev.getPlayerName(), ev.getDiceFaceIndex(), ev.getPoint());
 
-                    getController().dispatchEvent(new LogEvent(this.getClass().getName(), event.getPlayerName(), "", event.getPlayerName() + " has used " + getModel().getToolCardByPosition(event.getToolCardIndex()).getName()));
+                    StringBuilder message = new StringBuilder(event.getPlayerName() + " has used " + getModel().getToolCardByPosition(event.getToolCardIndex()).getName() + ": ");
+                    message.append("The ");
+                    message.append(Utils.decodeDice(df) + "["+ Utils.decodeCardinalNumber(ev.getDiceFaceIndex() + 1) +"dice] ");
+                    message.append(" was placed in position");
+                    message.append(Utils.decodePosition(ev.getPoint()));
+
+                    getController().dispatchEvent(new LogEvent(this.getClass().getName(), event.getPlayerName(), "", message.toString()));
 
                     return oldState;
                 } else {

@@ -7,6 +7,7 @@ import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.utils.Utils;
 import it.polimi.se2018.view.viewEvent.PlaceAnotherDiceEvent;
 import it.polimi.se2018.view.viewEvent.PlayerDisconnectedEvent;
 import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
@@ -50,7 +51,15 @@ public class PlaceRedrawnDiceState extends State {
                 if (getModel().isDiceAllowed(ev.getPlayerName(), ev.getPoint(), redrawnDiceFace, SchemaCardFace.Ignore.NOTHING)) {
                     getModel().placeDice(ev.getPlayerName(), ev.getDiceFaceIndex(), ev.getPoint());
 
-                    getController().dispatchEvent(new LogEvent(this.getClass().getName(), event.getPlayerName(), "", event.getPlayerName() + " has used " + getModel().getToolCardByPosition(event.getToolCardIndex()).getName()));
+                    DiceFace df = getModel().getDiceFaceByIndex(ev.getDiceFaceIndex());
+
+                    StringBuilder message = new StringBuilder(event.getPlayerName() + " has used " + getModel().getToolCardByPosition(event.getToolCardIndex()).getName());
+                    message.append("The ");
+                    message.append(Utils.decodeDice(df) + "[" + Utils.decodeCardinalNumber(ev.getDiceFaceIndex() + 1) + "dice] ");
+                    message.append(" was placed in position");
+                    message.append(Utils.decodePosition(ev.getPoint()));
+
+                    getController().dispatchEvent(new LogEvent(this.getClass().getName(), event.getPlayerName(), "", message.toString()));
 
                     return oldState;
                 } else {

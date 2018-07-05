@@ -1,5 +1,6 @@
 package it.polimi.se2018.utils;
 
+import it.polimi.se2018.model.schema.DiceFace;
 import org.json.JSONObject;
 
 import java.awt.*;
@@ -15,4 +16,17 @@ public class Utils {
     public static Point decodePosition(JSONObject pointJson) {
         return new Point(pointJson.getInt("x"), pointJson.getInt("y"));
     }
+
+    public static String decodePosition(Point point){
+        return point.x + ", "+ point.y;
+    }
+
+    public static String decodeCardinalNumber(int number){
+        return (number == 1 ? "1st " : (number == 2 ? "2nd " : (number == 3 ? "3rd" : number + "th")));
+    }
+
+    public static String decodeDice(DiceFace df){
+        return df.getColor().toString().toLowerCase() + " " + df.getNumber() + " ";
+    }
+
 }
