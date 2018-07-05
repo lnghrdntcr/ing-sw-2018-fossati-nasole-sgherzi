@@ -80,11 +80,13 @@ public class LocalProxySocketString extends LocalProxy {
 
 
                         while(builder.indexOf(Settings.SOCKET_EOM) != -1) {
-                            event =(ViewEvent) Event.decodeJSON(builder.substring(0, builder.indexOf(Settings.SOCKET_EOM)));
+                            String message = builder.substring(0, builder.indexOf(Settings.SOCKET_EOM));
+                            System.out.println("JSON: "+message);
+                            event =(ViewEvent) Event.decodeJSON(message);
 
                             LocalProxySocketString.this.dispatchEventToVirtualView(event);
 
-                            builder.delete(0, builder.indexOf(Settings.SOCKET_EOM)+1);
+                            builder.delete(0, builder.indexOf(Settings.SOCKET_EOM)+Settings.SOCKET_EOM.length());
                         }
                     } catch (ClassNotFoundException | ClassCastException e) {
                         Log.e("Invalid event received: " + e.getMessage());

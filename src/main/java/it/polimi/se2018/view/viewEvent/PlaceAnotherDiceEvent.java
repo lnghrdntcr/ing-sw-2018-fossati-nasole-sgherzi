@@ -1,6 +1,8 @@
 package it.polimi.se2018.view.viewEvent;
 
 import it.polimi.se2018.utils.Event;
+import it.polimi.se2018.utils.Utils;
+import org.json.JSONObject;
 
 import java.awt.*;
 
@@ -15,6 +17,13 @@ public class PlaceAnotherDiceEvent extends UseToolcardEvent {
         this.diceFaceIndex = diceFaceIndex;
     }
 
+    public PlaceAnotherDiceEvent(String json){
+        super(json);
+        JSONObject jsonObject = new JSONObject(json);
+        diceFaceIndex=jsonObject.getInt("diceFaceIndex");
+        point=Utils.decodePosition(jsonObject.getJSONObject("point"));
+    }
+
 
     public int getDiceFaceIndex() {
         return diceFaceIndex;
@@ -22,5 +31,14 @@ public class PlaceAnotherDiceEvent extends UseToolcardEvent {
 
     public Point getPoint() {
         return point;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject jsonObject = super.toJSON();
+
+        jsonObject.put("point", new JSONObject(point));
+
+        return jsonObject;
     }
 }

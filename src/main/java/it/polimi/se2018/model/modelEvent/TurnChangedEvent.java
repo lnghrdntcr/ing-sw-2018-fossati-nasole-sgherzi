@@ -3,6 +3,7 @@ package it.polimi.se2018.model.modelEvent;
 import it.polimi.se2018.view.GameEnding;
 import it.polimi.se2018.view.GameTable;
 import it.polimi.se2018.view.SelectSchemaCardFace;
+import org.json.JSONObject;
 
 /**
  * Event to inform that the turn has changed
@@ -19,6 +20,16 @@ public class TurnChangedEvent extends ModelEvent {
         this.direction = direction;
         this.dicePlaced = dicePlaced;
         this.toolcardUsed = toolcardUsed;
+    }
+
+    public TurnChangedEvent(String json){
+        super(json);
+        JSONObject jsonObject = new JSONObject(json);
+        round=jsonObject.getInt("round");
+        direction=jsonObject.getBoolean("direction");
+        dicePlaced=jsonObject.getBoolean("dicePlaced");
+        toolcardUsed=jsonObject.getBoolean("toolcardUsed");
+
     }
 
     public int getRound() {
@@ -50,5 +61,10 @@ public class TurnChangedEvent extends ModelEvent {
 
     public boolean isToolcardUsed() {
         return toolcardUsed;
+    }
+
+    public static void main(String a[]){
+        System.out.println(new TurnChangedEvent("emitter", "receiver", "player", 7, true, true, true).toJSON().toString());
+        System.out.println(new TurnChangedEvent(new TurnChangedEvent("emitter", "receiver", "player", 7, true, true, true).toJSON().toString()).toJSON().toString());
     }
 }

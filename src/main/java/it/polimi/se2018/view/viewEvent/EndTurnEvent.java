@@ -8,6 +8,10 @@ public class EndTurnEvent extends ViewEvent {
         super(emitter, player, receiver);
     }
 
+    public EndTurnEvent(String json){
+        super(json);
+    }
+
     @Override
     public State visit(State state) {
         return state.handleEndTurnEvent(this);

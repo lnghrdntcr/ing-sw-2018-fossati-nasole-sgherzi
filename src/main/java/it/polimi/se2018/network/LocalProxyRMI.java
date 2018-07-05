@@ -30,7 +30,7 @@ public class LocalProxyRMI extends LocalProxy implements LocalProxyRMIInterface 
 
             try {
 
-                Log.d("[RMI::sendEventToClient]" + event.toString());
+                //Log.d("[RMI::sendEventToClient]" + event.toString());
 
                 client.sendEventToClient(event);
             } catch (RemoteException e) {

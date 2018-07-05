@@ -26,6 +26,7 @@ public class PrivateObjective extends Objective implements Serializable {
     }
 
     public static PrivateObjective fromJSON(JSONObject privateObjectiveJson) {
+        if(privateObjectiveJson==null) return null;
         String stringColor = privateObjectiveJson.getString("color");
 
         GameColor gc =null;

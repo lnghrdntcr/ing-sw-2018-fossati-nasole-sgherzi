@@ -28,7 +28,7 @@ public class AskSchemaCardFaceEvent extends ControllerEvent {
         schemas=new SchemaCard[2];
         JSONObject jsonObject= new JSONObject(json);
         schemas[0]=SchemaCard.loadSchemaCardFromJsonObj(jsonObject.getJSONArray("schemas").getJSONObject(0));
-        schemas[0]=SchemaCard.loadSchemaCardFromJsonObj(jsonObject.getJSONArray("schemas").getJSONObject(0));
+        schemas[1]=SchemaCard.loadSchemaCardFromJsonObj(jsonObject.getJSONArray("schemas").getJSONObject(1));
     }
 
     public SchemaCard[] getSchemas() {

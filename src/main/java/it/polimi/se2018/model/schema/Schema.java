@@ -3,6 +3,9 @@ package it.polimi.se2018.model.schema;
 import it.polimi.se2018.model.ImmutableCloneable;
 import it.polimi.se2018.model.schema_card.SchemaCardFace;
 import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.gui.Dice;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -27,6 +30,23 @@ public class Schema implements Serializable {
         if (schemaCardFace == null)
             throw new IllegalArgumentException(getClass().getCanonicalName() + ": schemaCardFace cannot be null!");
         this.schemaCardFace = schemaCardFace;
+    }
+
+    public static Schema fromJSON(JSONObject jsonObject) {
+        Schema schema = new Schema(SchemaCardFace.loadFromJson(jsonObject.getJSONObject("schemaCardFace")));
+
+        JSONArray diceFaces = jsonObject.getJSONArray("diceFaces");
+        for(int y=0; y<diceFaces.length(); y++){
+            JSONArray row = diceFaces.getJSONArray(y);
+            for(int x=0; x<row.length(); x++){
+                if(!row.isNull(x)) {
+                    DiceFace diceFace = DiceFace.fromJson(row.getJSONObject(x));
+                    schema.setDiceFace(new Point(x, y), diceFace);
+                }
+            }
+        }
+
+        return schema;
     }
 
     /**
@@ -279,5 +299,24 @@ public class Schema implements Serializable {
 
         return false;
 
+    }
+
+    public JSONObject toJSON() {
+        JSONObject jsonObject = new JSONObject(this);
+        JSONArray diceFacesJson = new JSONArray();
+
+        for(int y=0; y<Settings.CARD_HEIGHT; y++){
+            JSONArray row = new JSONArray();
+            for(int x=0; x<Settings.CARD_WIDTH; x++){
+                DiceFace diceFace = getDiceFace(new Point(x, y));
+                row.put(diceFace!=null?diceFace.toJSON():null);
+            }
+            diceFacesJson.put(row);
+        }
+
+        jsonObject.put("diceFaces", diceFacesJson);
+
+        jsonObject.put("schemaCardFace", getSchemaCardFace().toJsonObject());
+        return jsonObject;
     }
 }

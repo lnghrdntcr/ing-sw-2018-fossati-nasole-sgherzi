@@ -231,11 +231,11 @@ public class CLIPrinter {
 
     }
 
-    public static void printPublicObjectives(PublicObjective publicObjective, int index) {
+    public static void printPublicObjectives(String publicObjective, int index) {
 
         System.out.println(ansi().bg(WHITE).fg(RED).a("Public Objective n: " + index).reset());
 
-        String path = "cli/publicObjectives/" + publicObjective.getClass().getSimpleName() + ".json";
+        String path = "cli/publicObjectives/" +publicObjective + ".json";
 
         File publicObjectiveResource = null;
 
@@ -245,7 +245,7 @@ public class CLIPrinter {
             publicObjectiveResource = new File(Objects.requireNonNull(publicObjective.getClass().getClassLoader().getResource(path)).toURI());
             fileInputStream = new FileInputStream(publicObjectiveResource);
         } catch (FileNotFoundException | URISyntaxException | NullPointerException e) {
-            Log.d("Resource file linked to " + publicObjective.getClass().getSimpleName() + " not found.");
+            Log.d("Resource file linked to " + publicObjective + " not found.");
             return;
         }
 
@@ -262,7 +262,7 @@ public class CLIPrinter {
         JSONObject root = new JSONObject(builder.toString());
 
         System.out.println(ansi().fg(Ansi.Color.RED).a(root.getString("title")).reset());
-        System.out.println(ansi().fg(Ansi.Color.BLUE).a("Points: " + publicObjective.getPoint()).reset());
+        System.out.println(ansi().fg(Ansi.Color.BLUE).a("Points: " + root.getInt("points")).reset());
         System.out.println(ansi().fg(Ansi.Color.BLUE).a(root.getString("description")).reset());
         // Yes, I want to print 2 newlines
         System.out.println("\n");

@@ -87,11 +87,13 @@ public class RemoteProxySocketString extends RemoteProxy {
 
 
                         while(builder.indexOf(Settings.SOCKET_EOM) != -1) {
-                            event =Event.decodeJSON(builder.substring(0, builder.indexOf(Settings.SOCKET_EOM)));
+                            String jsonMessage = builder.substring(0, builder.indexOf(Settings.SOCKET_EOM));
+                            System.out.println(jsonMessage);
+                            event =Event.decodeJSON(jsonMessage);
 
                             RemoteProxySocketString.this.dispatchEventToRemoteView(event);
 
-                            builder.delete(0, builder.indexOf(Settings.SOCKET_EOM)+1);
+                            builder.delete(0, builder.indexOf(Settings.SOCKET_EOM)+Settings.SOCKET_EOM.length());
                         }
                     } catch (ClassNotFoundException |ClassCastException e) {
                         Log.e("Invalid event received: " + e.getMessage());

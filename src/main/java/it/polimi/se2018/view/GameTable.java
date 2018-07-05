@@ -21,7 +21,7 @@ public abstract class GameTable {
     private RemoteView view;
     private DiceHolderImmutable diceHolderImmutable;
     private DraftBoardImmutable draftBoardImmutable;
-    private PublicObjective[] publicObjectives = new PublicObjective[Settings.POBJECTIVES_N];
+    private String[] publicObjectives = new String[Settings.POBJECTIVES_N];
     private HashMap<String, PlayerImmutable> players = new HashMap<>();
     private ArrayList<String> playersName = new ArrayList<>();
     private HashMap<String, Schema> schemas = new HashMap<>();
@@ -208,7 +208,7 @@ public abstract class GameTable {
         return roundDirection;
     }
 
-    public PublicObjective getPublicObjective(int index) {
+    public String getPublicObjective(int index) {
         return publicObjectives[index];
     }
 

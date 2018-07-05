@@ -30,7 +30,7 @@ public class ObjectiveView extends StackPane {
 
     }
 
-    public void setObjective(Objective objective){
+    public void setObjective(Object objective){
 
         if(objective == null){
 
@@ -45,7 +45,7 @@ public class ObjectiveView extends StackPane {
             return;
         }
 
-        objectiveIm.setImage(new Image("gui/objectives/public/" + objective.getClass().getSimpleName() + ".png"));
+        objectiveIm.setImage(new Image("gui/objectives/public/" + ((String)objective) + ".png"));
 
 
     }

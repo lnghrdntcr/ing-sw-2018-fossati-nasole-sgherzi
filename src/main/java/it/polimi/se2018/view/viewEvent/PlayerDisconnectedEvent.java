@@ -7,6 +7,10 @@ public class PlayerDisconnectedEvent extends ViewEvent {
         super(emitter, player, receiver);
     }
 
+    public PlayerDisconnectedEvent(String json){
+        super(json);
+    }
+
     @Override
     public State visit(State state) {
         return state.handlePlayerDisconnected(this);

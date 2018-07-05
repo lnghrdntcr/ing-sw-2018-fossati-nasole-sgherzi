@@ -2,10 +2,12 @@ package it.polimi.se2018.network;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.VirtualView;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.*;
 import java.rmi.Naming;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
  * The entry point for the server. Manages all the connections and waits for client's connections
  */
 public class Server extends UnicastRemoteObject implements ServerInterface {
+
 
     private ArrayList<View> virtualViews = new ArrayList<>();
     private ServerSocket serverSocket;
@@ -35,15 +38,18 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
     private final static int RMI_PORT = 1099;
     private final static int SOCKET_PORT = 2099;
+    private static final int SOCKETSTRING_PORT = 2100;
     private String ip = "127.0.0.1";
     private Controller controller;
+    private ServerSocket serverSocketString;
+    private Thread listenerThreadString;
 
     /**
      * Instantiate a new server
      *
      * @throws RemoteException If a communicaton error occours
      */
-    public Server( int serverTimeout, int actionTimeout, String customSchemaCardPath) throws RemoteException {
+    public Server(int serverTimeout, int actionTimeout, String customSchemaCardPath) throws RemoteException {
         this.serverTimeout = serverTimeout * 1000L;
         this.actionTimeout = actionTimeout * 1000L;
         this.customSchemaCardPath = customSchemaCardPath;
@@ -62,6 +68,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
         setupRMI();
         setupSocket();
+        setupSocketString();
     }
 
     /**
@@ -114,7 +121,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
                     }
 
                     Log.w(
-                        "No more player are allowed as the maximum of 4 players is already reached."
+                            "No more player are allowed as the maximum of 4 players is already reached."
                     );
 
                 } catch (IOException e) {
@@ -123,6 +130,70 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
             });
 
             listenerThread.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setupSocketString() {
+        try {
+            serverSocketString = new ServerSocket(SOCKETSTRING_PORT);
+            Log.i("SocketString server listening on " + ip + ":" + SOCKETSTRING_PORT);
+            listenerThreadString = new Thread(() -> {
+
+                try {
+                    //TODO: controllare qui, puo' causare problemi di riconnessione???
+                    while (virtualViews.size() < 4) {
+                        Socket clientConnection = serverSocketString.accept();
+                        InputStreamReader inputStream = new InputStreamReader(clientConnection.getInputStream());
+                        String playerName = null;
+
+                        StringBuilder builder = new StringBuilder();
+                        while (builder.indexOf(Settings.SOCKET_EOM) == -1) {
+                            char[] buffer = new char[256];
+                            int readed = inputStream.read(buffer, 0, 256);
+                            builder.append(buffer, 0, readed);
+                        }
+                        playerName=builder.substring(0, builder.indexOf(Settings.SOCKET_EOM));
+
+
+                        if (playerName != null) {
+                            Log.i("Hello " + playerName + "! Nice to meet you!");
+
+                            if (this.controller != null && this.controller.isPlayerDisconnected(playerName)) {
+                                this.controller.reconnectPlayer(new LocalProxySocketString(clientConnection), playerName);
+                            } else {
+
+                                for (View el : virtualViews) {
+                                    if (el.getPlayer().equals(playerName)) {
+                                        Log.w("A player with an already existent name tried to join this match!");
+                                        clientConnection.close();
+                                    }
+                                }
+
+                                if (!clientConnection.isClosed()) {
+                                    //inputStream.close();
+                                    LocalProxySocketString localProxySocket = new LocalProxySocketString(clientConnection);
+                                    addClient(localProxySocket, playerName);
+                                    Log.d("Connected!");
+                                }
+                            }
+
+
+                        }
+
+                    }
+
+                    Log.w(
+                            "No more player are allowed as the maximum of 4 players is already reached."
+                    );
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            listenerThreadString.start();
         } catch (IOException e) {
             e.printStackTrace();
         }

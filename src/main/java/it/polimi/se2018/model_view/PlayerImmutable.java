@@ -26,7 +26,7 @@ public class PlayerImmutable implements Serializable, Cloneable {
     }
 
     public static PlayerImmutable fromJSON(JSONObject jsonObject) {
-        return new PlayerImmutable(jsonObject.getString("name"), jsonObject.getInt("token"), PrivateObjective.fromJSON(jsonObject.getJSONObject("privateObjective")));
+        return new PlayerImmutable(jsonObject.getString("name"), jsonObject.getInt("token"), PrivateObjective.fromJSON(jsonObject.optJSONObject("privateObjective")));
     }
 
     public String getName() {

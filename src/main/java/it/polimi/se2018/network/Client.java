@@ -1,11 +1,13 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.utils.Log;
+import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.CLI.CLIPrinter;
 import it.polimi.se2018.view.RemoteView;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -91,9 +93,13 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         CLIPrinter.printQuestion("Connection method? [rmi]");
         String method = scanner.nextLine();
-        method = (method.equals("") || (!method.equalsIgnoreCase("rmi") && !method.equalsIgnoreCase("socket"))) ? "rmi" : method;
+        method = (method.equals("") || (!method.equalsIgnoreCase("rmi") && !method.equalsIgnoreCase("socket"  ) && !method.equalsIgnoreCase("json"))) ? "rmi" : method;
 
         int defaultPort = method.equalsIgnoreCase("rmi") || (!method.equalsIgnoreCase("rmi") && !method.equalsIgnoreCase("socket")) ? 1099 : 2099;
+
+        if(method.equalsIgnoreCase("json")){
+            defaultPort=2100;
+        }
 
         CLIPrinter.printQuestion("ip [localhost]: ");
         host = scanner.nextLine();
@@ -120,8 +126,10 @@ public class Client {
             remoteProxy = connectRMI();
         } else if (method.equalsIgnoreCase("socket")) {
             remoteProxy = connectSocket();
+        } else if(method.equalsIgnoreCase("json")){
+            remoteProxy =  connectJSON();
         } else {
-            Log.w("Not implemented.");
+            Log.w("Connection method " + method + " not implemented.");
         }
 
         if (remoteProxy == null) {
@@ -140,6 +148,29 @@ public class Client {
         remoteView.register(remoteProxy);
         remoteView.start();
 
+    }
+
+    private static RemoteProxy connectJSON() {
+        try {
+            Log.d("Connecting via json..."+port);
+
+            Socket socket = new Socket(host, port);
+            Log.d("Sending name...");
+            OutputStreamWriter outStream = new OutputStreamWriter(socket.getOutputStream());
+            outStream.write(name+Settings.SOCKET_EOM);
+            outStream.flush();
+            //objectOutputStream.close();
+            Log.d("Registering proxy...");
+            RemoteProxySocketString remoteProxySocket = new RemoteProxySocketString(socket);
+
+
+            Log.d("Connected!");
+            return remoteProxySocket;
+        } catch (IllegalArgumentException | IOException e) {
+            Log.e("Cannot connect to server: " + e.getMessage());
+            System.exit(-1);
+        }
+        return null;
     }
 
 }

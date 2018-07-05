@@ -8,6 +8,10 @@ public class CancelActionEvent extends ViewEvent {
         super(emitter, player, receiver);
     }
 
+    public CancelActionEvent(String json){
+        super(json);
+    }
+
     @Override
     public State visit(State state) {
         return state.handleUserCancelEvent();

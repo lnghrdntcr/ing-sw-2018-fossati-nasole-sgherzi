@@ -1,6 +1,6 @@
 package it.polimi.se2018.view.viewEvent;
 
-import it.polimi.se2018.controller.states.State;
+import org.json.JSONObject;
 
 public class SwapDiceFaceWithDiceHolderEvent extends UseToolcardEvent {
     private final int draftBoardIndex;
@@ -12,6 +12,14 @@ public class SwapDiceFaceWithDiceHolderEvent extends UseToolcardEvent {
         this.draftBoardIndex = draftBoardIndex;
         this.turn = turn;
         this.indexInTurn = indexInTurn;
+    }
+
+    public SwapDiceFaceWithDiceHolderEvent(String json){
+        super(json);
+        JSONObject jsonObject = new JSONObject(json);
+        draftBoardIndex=jsonObject.getInt("draftBoardIndex");
+        turn=jsonObject.getInt("turn");
+        indexInTurn=jsonObject.getInt("indexInTurn");
     }
 
     public int getDraftBoardIndex() {
