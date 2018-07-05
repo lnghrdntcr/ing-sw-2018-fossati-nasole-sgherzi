@@ -1,5 +1,5 @@
 {
   "serverTimeout": 5,
   "actionTimeout": 300,
-  "customSchemaCardPath": ""
+  "customSchemaCardPath": "giannino.scf"
 }
