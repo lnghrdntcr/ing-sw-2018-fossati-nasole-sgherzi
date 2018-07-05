@@ -79,6 +79,10 @@ public class TurnHolder {
         return round;
     }
 
+    /**
+     * Returns the index of the actual player of the match, zero based
+     * @return the index of the player, zero based
+     */
     public int getCurrentPlayer() {
         return currentPlayer;
     }

@@ -13,6 +13,9 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
+/**
+ * A class that represent a player area
+ */
 public class PlayerBoard extends VBox implements EventHandler<ActionEvent> {
 
     @FXML
@@ -70,6 +73,10 @@ public class PlayerBoard extends VBox implements EventHandler<ActionEvent> {
 
     }
 
+    /**
+     * Updates the current player of this view
+     * @param player the {@link PlayerImmutable} to render
+     */
     public void setPlayer(PlayerImmutable player) {
 
         if (player == null) return;
@@ -78,7 +85,6 @@ public class PlayerBoard extends VBox implements EventHandler<ActionEvent> {
             placeDice.setVisible(false);
             useToolCard.setVisible(false);
             endTurn.setVisible(false);
-            /*            this.getChildren().removeAll(placeDice, useToolCard, endTurn);*/
         }
 
         playerNameToken.setText(player.getName() + "   " + "Token: " + player.getToken());
@@ -86,6 +92,10 @@ public class PlayerBoard extends VBox implements EventHandler<ActionEvent> {
 
     }
 
+    /**
+     * Update the Schema of the player currently shown on the screen
+     * @param schema the {@link Schema} to render
+     */
     public void setSchema(Schema schema) {
 
         if (schema == null) return;
@@ -114,13 +124,25 @@ public class PlayerBoard extends VBox implements EventHandler<ActionEvent> {
 
     }
 
+    /**
+     * An interface to handle all the possible action of the player
+     */
     public interface OnPlayerBoardAction {
 
-        public void onPlayerPlaceDice();
+        /**
+         * Handles the click of the user on the placeDice button
+         */
+        void onPlayerPlaceDice();
 
-        public void onPlayerEndTurn();
+        /**
+         * Handles the click of the user on the End Turn button
+         */
+        void onPlayerEndTurn();
 
-        public void onPlayerUseToolCard();
+        /**
+         * Handles the click of the user on the Use Tool Card button
+         */
+        void onPlayerUseToolCard();
 
     }
 

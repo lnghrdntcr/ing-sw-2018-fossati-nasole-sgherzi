@@ -48,6 +48,11 @@ public class GameSetupState extends State {
 
     }
 
+
+    /**
+     * Performs all the necessary action to sync the current game state and a reconnected user
+     * @param playerName the player to resync
+     */
     @Override
     public void syncPlayer(String playerName) {
 

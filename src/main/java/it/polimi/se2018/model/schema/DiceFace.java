@@ -29,6 +29,11 @@ public class DiceFace implements Serializable {
         this.number = number;
     }
 
+    /**
+     * Decode a {@link JSONObject} in order to recreate a {@link DiceFace} object
+     * @param jsonObject the JSON to decode
+     * @return the DiceFace represented by the JSON
+     */
     public static DiceFace fromJson(JSONObject jsonObject){
 
         GameColor gc = null;
@@ -41,10 +46,16 @@ public class DiceFace implements Serializable {
         return new DiceFace(gc, jsonObject.getInt("number"));
     }
 
+    /**
+     * @return the color of the dice
+     */
     public GameColor getColor() {
         return color;
     }
 
+    /**
+     * @return the number of the dice
+     */
     public int getNumber() {
         return number;
     }

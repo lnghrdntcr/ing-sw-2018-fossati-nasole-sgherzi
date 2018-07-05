@@ -23,6 +23,11 @@ public class PlaceRedrawnWithNumberDiceState extends State {
         getController().dispatchEvent(new AskPlaceRedrawDiceWithNumberSelectionEvent(getClass().getCanonicalName(), playerName, playerName, diceNumberOnDraftBoard));
     }
 
+    /**
+     * Performs all the necessary action to sync the current game state and a reconnected user
+     * @param playerName the player to resync
+     */
+
     @Override
     public void syncPlayer(String playerName) {
         this.oldState.syncPlayer(playerName);

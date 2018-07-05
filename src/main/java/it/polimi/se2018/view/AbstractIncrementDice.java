@@ -4,6 +4,9 @@ import it.polimi.se2018.view.CLI.CLIIncrementDice;
 import it.polimi.se2018.view.gui.GUIIncrementDice;
 import it.polimi.se2018.view.viewEvent.ChangeDiceNumberEvent;
 
+/**
+ * A state that ask if the user wants to increment or decrement a dice
+ */
 public abstract class AbstractIncrementDice extends State {
     private int diceIndex;
 
@@ -20,8 +23,11 @@ public abstract class AbstractIncrementDice extends State {
         }
     }
 
-
-    public void processIncrement(int increment) {
+    /**
+     * Process and checks the choice of the user and goes in a new state if necessary
+     * @param increment +1 for incrementation, -1 for decrementation
+     */
+    protected void processIncrement(int increment) {
         if (increment == -1 && getGameTable().getDraftBoardImmutable().getDices()[diceIndex].getNumber() == 1) {
             throw new InputError("Cannot decrement a 1 dice!");
         }
@@ -43,6 +49,9 @@ public abstract class AbstractIncrementDice extends State {
         getGameTable().setState(AbstractMainMenuState.createFromContext(this.getGameTable()));
     }
 
+    /**
+     * Process the will of the user to cancel the current action
+     */
     public void processCancel() {
         getGameTable().setState(AbstractMainMenuState.createFromContext(this.getGameTable()));
     }

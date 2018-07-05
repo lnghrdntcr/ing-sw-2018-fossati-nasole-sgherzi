@@ -6,6 +6,9 @@ import it.polimi.se2018.view.viewEvent.SwapDiceFaceWithDiceHolderEvent;
 
 import java.awt.*;
 
+/**
+ * A state that asks to the user to select a dice from the TurnHolder to exchange with a previously selected dice from the DiceHolder
+ */
 public abstract class AbstractExchangeWDiceHolder extends State {
 
     private int diceIndex;
@@ -23,6 +26,10 @@ public abstract class AbstractExchangeWDiceHolder extends State {
         }
     }
 
+    /**
+     * Process and checks the choice of the user and goes in a new state if necessary
+     * @param victim the dice selected by the user
+     */
     protected void processVictim(Point victim) {
 
         //FIXME: this is wrong it does not check input

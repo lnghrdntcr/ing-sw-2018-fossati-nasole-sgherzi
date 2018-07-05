@@ -14,6 +14,9 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ * A class to render a dice on the screen
+ */
 public class Dice extends StackPane {
     @FXML
     private ImageView diceNumber;
@@ -34,6 +37,9 @@ public class Dice extends StackPane {
 
     }
 
+    /** Updates the image of the dice. If the param is null, becomes transparent
+     * @param diceFace the diceFace to render
+     */
     public void setDiceFace(DiceFace diceFace){
         if(diceFace==null){
             diceColour.setImage(null);

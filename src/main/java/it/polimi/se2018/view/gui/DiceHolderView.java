@@ -11,13 +11,14 @@ import javafx.scene.layout.VBox;
 
 import java.awt.Point;
 
-public class DiceHolderView extends HBox implements EventHandler<javafx.scene.input.MouseEvent> {
+/**
+ * A class to render the dice Holder on the screen
+ */
+public class DiceHolderView extends HBox  {
 
     private VBox[] turns = new VBox[Settings.TURNS];
 
-    private int token, usedToken;
 
-    private Schema schema;
     private OnTurnHolderInteractionListener interactionListener;
 
     public DiceHolderView() {
@@ -39,6 +40,10 @@ public class DiceHolderView extends HBox implements EventHandler<javafx.scene.in
         }
     }
 
+    /**
+     * Updates the dice holder on the screen
+     * @param diceHolder the dice holder to render
+     */
     public void setDiceHolder(DiceHolderImmutable diceHolder) {
 
         if (diceHolder == null) return;
@@ -70,13 +75,14 @@ public class DiceHolderView extends HBox implements EventHandler<javafx.scene.in
 
     }
 
-
-    @Override
-    public void handle(javafx.scene.input.MouseEvent event) {
-
-    }
-
+    /**
+     * An interface that represent a listener for an actionon the TurnHolder
+     */
     public interface OnTurnHolderInteractionListener {
+        /**
+         * Handles the action of the click on a specific dice
+         * @param point the coordinates of the dice clicked
+         */
         public void onDiceSelected(Point point);
     }
 

@@ -6,6 +6,9 @@ import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
+/**
+ * A class to draw the DraftBoard on the screen
+ */
 public class DraftBoard extends HBox {
 
 
@@ -20,6 +23,10 @@ public class DraftBoard extends HBox {
         this.dicePlacer = dicePlacer;
     }
 
+    /**
+     * Updates the DraftBoard on the screen
+     * @param draftBoard the {@link DraftBoardImmutable} to render
+     */
     public void setDraftBoard(DraftBoardImmutable draftBoard) {
 
         if (draftBoard == null) return;
@@ -48,7 +55,14 @@ public class DraftBoard extends HBox {
 
     }
 
+    /**
+     * An interface to handle actions on the DraftBoard
+     */
     public interface OnDiceSelectedListener {
+        /**
+         * Handles the click on a dice of the DraftBoard
+         * @param index the index of the dice clicked
+         */
         public void onDiceSelected(int index);
     }
 

@@ -16,6 +16,9 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ * A class to render a toolcard on the screen
+ */
 public class ToolCard extends StackPane {
     @FXML
     private ImageView toolcard;
@@ -36,6 +39,10 @@ public class ToolCard extends StackPane {
 
     }
 
+    /**
+     * Updates the current toolCard on the screen. If the param is null, it shows the back of the toolcard.
+     * @param toolCardImmutable the toolcard to render
+     */
     public void setToolCard(ToolCardImmutable toolCardImmutable){
 
         if(toolCardImmutable == null){

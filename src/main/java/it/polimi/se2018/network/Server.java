@@ -135,6 +135,11 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         }
     }
 
+    /**
+     * Instantiates the SocketString (JSON) part of the servers.
+     * Moreover spawns a Thread to accept incoming connections
+     */
+
     private void setupSocketString() {
         try {
             serverSocketString = new ServerSocket(SOCKETSTRING_PORT);
@@ -199,6 +204,9 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         }
     }
 
+    /**
+     * Starts the timeout when more than one user is connected
+     */
     private void startTimeout() {
         this.timeoutThread = new Thread(() -> {
             Log.d("Starting timeout with timeout of " + this.serverTimeout / 1000L + " seconds");
@@ -314,7 +322,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
      * When the required number of players are connected, starts the match
      */
     private void startGame() {
-        // TODO: a futura memoria
         gameStarted = true;
 
         this.controller = new Controller(virtualViews, this.actionTimeout);

@@ -13,13 +13,16 @@ import it.polimi.se2018.view.viewEvent.MoveDiceEvent;
 
 import java.awt.*;
 
+/**
+ * A state that asks to the user to move one or two dices.
+ */
 public abstract class AbstractMoveDice extends State {
     private Point firstSource;
     private Point secondSource;
     private Point firstDestination;
     private Point secondDestination;
-    SchemaCardFace.Ignore ignore;
-    String toolName;
+    private SchemaCardFace.Ignore ignore;
+    private String toolName;
     private Times times;
     private final GameColor color;
     private ActionState actionState;
@@ -60,6 +63,10 @@ public abstract class AbstractMoveDice extends State {
         }
     }
 
+    /**
+     * Process and checks the choice of the user and goes in a new state if necessary
+     * @param firstSource where to remove the first dice
+     */
     public void processFirstSource(Point firstSource) {
         this.firstSource = firstSource;
         if (playerSchema.getDiceFace(firstSource) == null) {
@@ -75,7 +82,10 @@ public abstract class AbstractMoveDice extends State {
         actionState = ActionState.PLACE;
         getGameTable().setState(this);
     }
-
+    /**
+     * Process and checks the choice of the user and goes in a new state if necessary
+     * @param secondSource where to remove the second dice
+     */
     public void processSecondSource(Point secondSource) {
         this.secondSource = secondSource;
         if (playerSchema.getDiceFace(secondSource) == null) {
@@ -89,7 +99,10 @@ public abstract class AbstractMoveDice extends State {
         actionState = ActionState.PLACE;
         getGameTable().setState(this);
     }
-
+    /**
+     * Process and checks the choice of the user and goes in a new state if necessary
+     * @param firstDestination where to put the first dice
+     */
     public void processFirstDestination(Point firstDestination) {
         this.firstDestination = firstDestination;
         if (playerSchema.getDiceFace(firstDestination) != null) {
@@ -111,7 +124,10 @@ public abstract class AbstractMoveDice extends State {
 
         getGameTable().setState(this);
     }
-
+    /**
+     * Process and checks the choice of the user and goes in a new state if necessary
+     * @param secondDestination where to put the second dice
+     */
     public void processSecondDestination(Point secondDestination) {
         if (playerSchema.getDiceFace(secondDestination) != null) {
             throw new InputError("The cell not empty!");
@@ -141,7 +157,9 @@ public abstract class AbstractMoveDice extends State {
         getGameTable().setState(AbstractMainMenuState.createFromContext(getGameTable()));
 
     }
-
+    /**
+     * process the will of the user to cancel this action
+     */
     public void processCancel(){
         getGameTable().setState(AbstractMainMenuState.createFromContext(this.getGameTable()));
     }

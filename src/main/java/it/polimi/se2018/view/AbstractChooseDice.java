@@ -7,6 +7,9 @@ import it.polimi.se2018.view.viewEvent.DiceActionEvent;
 import java.util.HashMap;
 import java.util.function.Function;
 
+/**
+ * A state that ask to the player to choose a dice from the Draftboard
+ */
 public abstract class AbstractChooseDice extends State {
 
     private static HashMap<String, Function<Integer, State>> provider = new HashMap<>();
@@ -61,7 +64,11 @@ public abstract class AbstractChooseDice extends State {
     }
 
 
-    public void processDice(int diceFace) {
+    /**
+     * Process and checks the choice of the user and goes in a new state if necessary
+     * @param diceFace the dice face selected by the user
+     */
+    protected void processDice(int diceFace) {
         if (diceFace < 0 || diceFace >= this.getGameTable().getDraftBoardImmutable().getDices().length) {
             throw new InputError("Input out of range.");
         }

@@ -22,7 +22,7 @@ public class Log {
     /**
      * Logs a warning
      *
-     * @param message
+     * @param message the message to log
      */
     public static void w(String message) {
         System.out.println(ansi().fg(Ansi.Color.YELLOW).a("[WARNING] " + message).reset());
@@ -31,7 +31,7 @@ public class Log {
     /**
      * Logs a debug message
      *
-     * @param message
+     * @param message the message to log
      */
     public static void d(String message) {
         System.out.println("[DEBUG] " + message);
@@ -40,7 +40,7 @@ public class Log {
     /**
      * Logs an error message
      *
-     * @param message
+     * @param message the message to log
      */
     public static void e(String message) {
         System.out.println(ansi().fg(Ansi.Color.RED).a("[ERROR] " + message).reset());

@@ -67,10 +67,17 @@ public class Player implements ImmutableCloneable<PlayerImmutable>{
       this.privateObjective = privateObjective;
     }
 
+    /**
+     * Computes the score of the current player's schema based on its privateObjective
+     * @return the partial score of the player's schema
+     */
     public int computeScoreFromPrivateObjective(){
         return this.privateObjective.computeScore(this.schema);
     }
 
+    /**
+     * @return the number of free space on the player schema
+     */
     public int computeFreeSpaces(){
         return schema.computeFreeSpaces();
     }

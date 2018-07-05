@@ -36,15 +36,6 @@ public class LocalProxySocket extends LocalProxy {
 
         listenerThread = new ListenerThread();
         listenerThread.start();
-
-        /*while (true){
-            sendEventToClient(new TurnChangedEvent("LOCAL", "LOCALPLAYER", 0));
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }*/
     }
 
     /**

@@ -121,10 +121,19 @@ public class SchemaCard implements Serializable {
         return new SchemaCard(front, back);
     }
 
+    /**
+     * Get a single face of this SchemaCard
+     * @param side the side to get (FRONT or BACK)
+     * @return The front face or the back face of this card
+     */
     public SchemaCardFace getFace(Side side) {
         return schemaCardFaces.get(side);
     }
 
+    /**
+     * Get the JSON represetnation of this object
+     * @return a {@link JSONObject} that represetns the SchermaCard
+     */
     public JSONObject toJsonObj() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("front", schemaCardFaces.get(Side.FRONT).toJsonObject());
