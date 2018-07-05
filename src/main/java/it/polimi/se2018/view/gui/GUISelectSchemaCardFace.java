@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements EventHandler<ActionEvent> {
@@ -237,9 +238,7 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
             } else {
 
                 for (int i = 0; i < pastEvents.size(); i++) {
-
-                    events.getChildren().add(new Label(pastEvents.get(i).getMessage()));
-
+                    events.getChildren().add(new Label(new Date(pastEvents.get(i).getTimestamp()).getHours() + ":" + new Date(pastEvents.get(i).getTimestamp()).getMinutes() + ":" + new Date(pastEvents.get(i).getTimestamp()).getSeconds() + "  " + pastEvents.get(i).getMessage()));
                 }
 
                 logsPanel.setContent(events);

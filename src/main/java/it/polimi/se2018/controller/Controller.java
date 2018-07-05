@@ -12,6 +12,7 @@ import it.polimi.se2018.network.LocalProxy;
 import it.polimi.se2018.utils.*;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.VirtualView;
+import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
 
 import java.util.ArrayList;

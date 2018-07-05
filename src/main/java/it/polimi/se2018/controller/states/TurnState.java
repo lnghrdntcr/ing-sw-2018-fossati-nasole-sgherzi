@@ -169,6 +169,9 @@ public class TurnState extends State {
                 event.getDiceFaceIndex()
             ),
             SchemaCardFace.Ignore.NOTHING)) {
+
+            DiceFace df = getModel().getDiceFaceByIndex(event.getDiceFaceIndex());
+
             getModel().placeDice(event.getPlayerName(), event.getDiceFaceIndex(), event.getPoint());
 
             getController().dispatchEvent(
@@ -178,9 +181,9 @@ public class TurnState extends State {
                     "",
                     event.getPlayerName() +
                         " has placed a "
-                        + getModel().getDiceFaceByIndex(event.getDiceFaceIndex()).getColor().toString().toLowerCase()
+                        + df.getColor().toString().toLowerCase()
                         + " "
-                        + getModel().getDiceFaceByIndex(event.getDiceFaceIndex()).getNumber()
+                        + df.getNumber()
                         + " in position "
                         + event.getPoint().x
                         + " "

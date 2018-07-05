@@ -2,7 +2,6 @@ package it.polimi.se2018.view.CLI;
 
 import it.polimi.se2018.controller.controllerEvent.LogEvent;
 import it.polimi.se2018.model.objectives.PrivateObjective;
-import it.polimi.se2018.model.objectives.PublicObjective;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.*;
@@ -23,10 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import static org.fusesource.jansi.Ansi.Color.*;
 import static org.fusesource.jansi.Ansi.ansi;
@@ -235,7 +231,7 @@ public class CLIPrinter {
 
         System.out.println(ansi().bg(WHITE).fg(RED).a("Public Objective n: " + index).reset());
 
-        String path = "cli/publicObjectives/" +publicObjective + ".json";
+        String path = "cli/publicObjectives/" + publicObjective + ".json";
 
         File publicObjectiveResource = null;
 
@@ -349,7 +345,7 @@ public class CLIPrinter {
         }
 
         for (LogEvent ev : pastEvents) {
-            CLIPrinter.printInfo(ev.getMessage());
+            CLIPrinter.printInfo(new Date(ev.getTimestamp()).getHours() + ":" + new Date(ev.getTimestamp()).getMinutes() + ":" + new Date(ev.getTimestamp()).getSeconds() + "  " + ev.getMessage());
         }
 
     }
