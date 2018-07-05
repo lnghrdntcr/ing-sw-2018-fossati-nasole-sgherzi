@@ -61,14 +61,5 @@ public class SchemaChangedEvent extends ModelEvent {
         return jsonObject;
     }
 
-    public static void main(String a[]) throws FileNotFoundException {
-        List<SchemaCard> schemaCards = SchemaCard.loadSchemaCardsFromJson(Settings.getSchemaCardDatabase());
 
-        Schema schema = new Schema(schemaCards.get(0).getFace(Side.FRONT));
-
-        schema.setDiceFace(new Point(0, 0), new DiceFace(GameColor.BLUE, 3));
-        schema.setDiceFace(new Point(1, 3), new DiceFace(GameColor.RED, 2));
-        System.out.println(new SchemaChangedEvent("emitter", "receiver", "player", schema).toJSON().toString());
-        System.out.println(new SchemaChangedEvent(new SchemaChangedEvent("emitter", "receiver", "player", schema).toJSON().toString()).toJSON().toString());
-    }
 }
