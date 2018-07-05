@@ -10,10 +10,7 @@ import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.CLI.CLIPrinter;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.rmi.RemoteException;
 import java.util.Objects;
@@ -77,28 +74,33 @@ public class App {
             }
         }
 
-        File configFile = null;
+        //File configFile = null;
+
+        InputStream configFile = null;
 
         if (path == null) {
             try {
 
-
-                configFile = new File(
+                /*configFile = new File(
                     (new App())
                     .getClass()
                     .getClassLoader()
                     .getResource("defaultConfig.json")
                     .toURI()
-                );
-            } catch (URISyntaxException e) {
+                );*/
+
+                configFile = new App().getClass().getClassLoader().getResourceAsStream("defaultConfig.json");
+
+            } catch (Exception e) {
+                e.printStackTrace();
                 CLIPrinter.printError("Could not load the default configuration file!");
             }
         } else {
-            configFile = new File(path);
+            configFile = new FileInputStream(new File(path));
         }
 
-        FileInputStream fileInputStream = new FileInputStream(configFile);
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+        //FileInputStream fileInputStream = new FileInputStream(configFile);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(configFile);
         StringBuilder builder;
         try (Scanner scanner = new Scanner(bufferedInputStream)) {
             builder = new StringBuilder();

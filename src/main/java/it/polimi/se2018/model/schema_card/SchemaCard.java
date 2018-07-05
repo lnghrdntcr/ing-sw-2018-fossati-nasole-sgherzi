@@ -45,33 +45,24 @@ public class SchemaCard implements Serializable {
 
         ArrayList<SchemaCard> list = new ArrayList<>();
 
-        URI defaultFilePath = null;
+        InputStream defaultFilePath = null;
 
         // I'm loading the default schema cards
         if (fileName.equals(Settings.getDefaultSchemaCardDatabase())) {
-            try {
-                defaultFilePath = (new PrivateObjective(GameColor.RED)).getClass().getClassLoader().getResource(Settings.getDefaultSchemaCardDatabase()).toURI();
-            } catch (URISyntaxException e) {
-                CLIPrinter.printError("Could not load default Schema Card Database");
-            }
+                defaultFilePath = (new PrivateObjective(GameColor.RED)).getClass().getClassLoader().getResourceAsStream(Settings.getDefaultSchemaCardDatabase());
         }
 
-        File jsonFile = null;
+        InputStream jsonFile = null;
 
         if (defaultFilePath == null) {
-            jsonFile = new File(fileName);
+            jsonFile = new FileInputStream(new File(fileName)) ;
         } else {
-            jsonFile = new File(defaultFilePath);
+            jsonFile = defaultFilePath;
         }
 
-        if (!jsonFile.exists())
-            throw new FileNotFoundException(SchemaCard.class.getCanonicalName() + ": file does not exist -> " + fileName);
-
-        //let's load the whole string in memory
-
         //open file and set up reader
-        FileInputStream fileInputStream = new FileInputStream(jsonFile);
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+        //FileInputStream fileInputStream = new FileInputStream(jsonFile);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(jsonFile);
         StringBuilder builder;
         try (Scanner scanner = new Scanner(bufferedInputStream)) {
             builder = new StringBuilder();

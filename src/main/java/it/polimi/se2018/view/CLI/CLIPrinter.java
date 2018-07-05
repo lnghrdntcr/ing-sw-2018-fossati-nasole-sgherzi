@@ -3,6 +3,7 @@ package it.polimi.se2018.view.CLI;
 import it.polimi.se2018.controller.controllerEvent.LogEvent;
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema.DiceFace;
+import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
 import it.polimi.se2018.model.schema_card.*;
 import it.polimi.se2018.model_view.DiceHolderImmutable;
@@ -17,10 +18,7 @@ import org.fusesource.jansi.AnsiConsole;
 import org.json.JSONObject;
 
 import java.awt.*;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.*;
 
@@ -193,11 +191,10 @@ public class CLIPrinter {
 
         String path = "cli/toolcards/" + toolCardImmutable.getName() + ".json";
 
-        FileInputStream fileInputStream = null;
+        InputStream fileInputStream = null;
         try {
-            File toolcardResources = new File(Objects.requireNonNull(toolCardImmutable.getClass().getClassLoader().getResource(path)).toURI());
-            fileInputStream = new FileInputStream(toolcardResources);
-        } catch (FileNotFoundException | URISyntaxException | NullPointerException e) {
+            fileInputStream = toolCardImmutable.getClass().getClassLoader().getResourceAsStream(path);
+        } catch (NullPointerException e) {
             Log.d("Resource file linked to " + toolCardImmutable.getName() + " not found.");
             return;
         }
@@ -233,14 +230,11 @@ public class CLIPrinter {
 
         String path = "cli/publicObjectives/" + publicObjective + ".json";
 
-        File publicObjectiveResource = null;
+        InputStream fileInputStream = null;
 
-
-        FileInputStream fileInputStream = null;
         try {
-            publicObjectiveResource = new File(Objects.requireNonNull(publicObjective.getClass().getClassLoader().getResource(path)).toURI());
-            fileInputStream = new FileInputStream(publicObjectiveResource);
-        } catch (FileNotFoundException | URISyntaxException | NullPointerException e) {
+            fileInputStream = new PrivateObjective(GameColor.RED).getClass().getClassLoader().getResourceAsStream(path);
+        } catch (NullPointerException e) {
             Log.d("Resource file linked to " + publicObjective + " not found.");
             return;
         }

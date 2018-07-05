@@ -4,7 +4,6 @@ import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
-import jdk.internal.util.xml.impl.Input;
 
 import java.io.*;
 import java.net.Socket;
