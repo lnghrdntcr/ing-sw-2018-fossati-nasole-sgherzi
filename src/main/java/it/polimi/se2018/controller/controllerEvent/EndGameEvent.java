@@ -17,10 +17,12 @@ import java.util.ArrayList;
 public class EndGameEvent extends ControllerEvent {
 
     private ArrayList<ScoreHolder> leaderBoard;
+    private final String globalLeaderBoard;
 
-    public EndGameEvent(String emitter, String receiver, String player, ArrayList<ScoreHolder> leaderBoard) {
+    public EndGameEvent(String emitter, String receiver, String player, ArrayList<ScoreHolder> leaderBoard, String globalLeaderBoard) {
         super(emitter, player, receiver);
         this.leaderBoard = leaderBoard;
+        this.globalLeaderBoard = globalLeaderBoard;
     }
 
     public EndGameEvent(String json){
@@ -33,6 +35,8 @@ public class EndGameEvent extends ControllerEvent {
 
             leaderBoard.add(new ScoreHolder(leaderBoardJson.getJSONObject(i)));
         }
+
+        globalLeaderBoard = new JSONObject(json).getString("globalLeaderBoard");
 
     }
 
@@ -52,6 +56,10 @@ public class EndGameEvent extends ControllerEvent {
     @Override
     public void visit(SelectSchemaCardFace selectSchemaCardFace) {
 
+    }
+
+    public String getGlobalLeaderBoard() {
+        return globalLeaderBoard;
     }
 
 }

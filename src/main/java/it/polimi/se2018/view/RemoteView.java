@@ -1,6 +1,5 @@
 package it.polimi.se2018.view;
 
-import it.polimi.se2018.controller.controllerEvent.GameStartEvent;
 import it.polimi.se2018.controller.controllerEvent.TimeoutCommunicationEvent;
 import it.polimi.se2018.utils.Event;
 import it.polimi.se2018.utils.Log;
@@ -8,7 +7,7 @@ import it.polimi.se2018.view.CLI.CLIGameEnding;
 import it.polimi.se2018.view.CLI.CLIGameTable;
 import it.polimi.se2018.view.CLI.CLISelectSchema;
 import it.polimi.se2018.view.gui.GUIGameTable;
-import it.polimi.se2018.view.gui.GUILeaderBoard;
+import it.polimi.se2018.view.gui.GUIGameEnding;
 import it.polimi.se2018.view.gui.GUILogger;
 import it.polimi.se2018.view.gui.GUISelectSchemaCardFace;
 import it.polimi.se2018.view.viewEvent.ViewEvent;
@@ -34,7 +33,7 @@ public class RemoteView extends View {
         } else {
             GUILogger.go();
             selectSchemaCardFace = new GUISelectSchemaCardFace(this);
-            gameEnding = new GUILeaderBoard(this);
+            gameEnding = new GUIGameEnding(this);
             gameTable = new GUIGameTable(this);
         }
 

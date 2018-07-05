@@ -39,6 +39,8 @@ public class GameEndState extends State {
      */
     private void computeScore() {
 
+        JSONObject root = null;
+
         if (getModel() == null)
             throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Model cannot be null.");
 
@@ -67,7 +69,7 @@ public class GameEndState extends State {
             InputStream is = new FileInputStream(file);
 
             JSONTokener tokener = new JSONTokener(is);
-            JSONObject root = new JSONObject(tokener);
+            root = new JSONObject(tokener);
 
             for (ScoreHolder sh : scoreHolders) {
 
@@ -100,7 +102,7 @@ public class GameEndState extends State {
             e.printStackTrace();
         }
 
-        this.getController().dispatchEvent(new EndGameEvent(this.getClass().getName(), "", "", scoreHolders));
+        this.getController().dispatchEvent(new EndGameEvent(this.getClass().getName(), "", "", scoreHolders, root.toString()));
 
     }
 

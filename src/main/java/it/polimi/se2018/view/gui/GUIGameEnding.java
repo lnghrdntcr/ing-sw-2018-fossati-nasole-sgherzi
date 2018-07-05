@@ -17,12 +17,15 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class GUILeaderBoard extends GameEnding {
+public class GUIGameEnding extends GameEnding {
     @FXML
     private VBox root;
 
     @FXML
     private HBox leaderboard;
+
+    @FXML
+    private VBox globalStats;
 
     @FXML
     private VBox players;
@@ -32,7 +35,7 @@ public class GUILeaderBoard extends GameEnding {
 
     private ArrayList<ScoreHolder> scoreHolders;
 
-    public GUILeaderBoard(RemoteView view) {
+    public GUIGameEnding(RemoteView view) {
         super(view);
     }
 
@@ -60,6 +63,7 @@ public class GUILeaderBoard extends GameEnding {
             leaderboard = (HBox) scene.lookup("#leaderboard");
             players = (VBox) scene.lookup("#players");
             scores = (VBox) scene.lookup("#scores");
+            globalStats = (VBox) scene.lookup("#globalStats");
 
             for (ScoreHolder sh : scoreHolders) {
 
@@ -76,6 +80,20 @@ public class GUILeaderBoard extends GameEnding {
                 scores.getChildren().add(score);
 
             }
+
+            for (String key : getGlobalLeaderBoard().keySet()) {
+
+                Label label = new Label();
+
+                label.setText("Player: " + key
+                    + " Victories" + getGlobalLeaderBoard().getJSONObject(key).get("victories")
+                    + " Losses" + getGlobalLeaderBoard().getJSONObject(key).get("losses")
+                    + "Total time played" + getGlobalLeaderBoard().getJSONObject(key).get("totalTimePlayed"));
+
+                globalStats.getChildren().add(label);
+
+            }
+
 
             root.setStyle("-fx-background-image: url('/gui/fireworks.gif');\n" +
                 "    -fx-background-repeat: no-repeat;");

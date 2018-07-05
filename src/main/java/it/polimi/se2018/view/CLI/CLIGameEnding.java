@@ -19,11 +19,20 @@ public class CLIGameEnding extends GameEnding implements InputListenerThread.Inp
     }
 
     public void handleEndGameEvent(EndGameEvent event) {
+        super.handleEndGameEvent(event);
         this.getView().activateGameEnding();
         CLIPrinter.printFinalAnimation();
 
         for (ScoreHolder sc : event.getLeaderBoard()) {
-            System.out.println(sc.getPlayerName());
+            CLIPrinter.printInfo(sc.getPlayerName());
+        }
+
+        CLIPrinter.printInfo("LeaderBoard: ");
+        for (String key : getGlobalLeaderBoard().keySet()) {
+            CLIPrinter.printInfo("Player: " + key);
+            CLIPrinter.printInfo("\tVictories" + getGlobalLeaderBoard().getJSONObject(key).get("victories"));
+            CLIPrinter.printInfo("\tLosses" + getGlobalLeaderBoard().getJSONObject(key).get("losses"));
+            CLIPrinter.printInfo("\tTotal time played" + getGlobalLeaderBoard().getJSONObject(key).get("totalTimePlayed"));
         }
 
         System.exit(0);
