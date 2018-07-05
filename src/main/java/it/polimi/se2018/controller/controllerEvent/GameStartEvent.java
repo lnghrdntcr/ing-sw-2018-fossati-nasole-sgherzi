@@ -18,6 +18,10 @@ public class GameStartEvent extends ControllerEvent implements VisitableFromView
         gameTable.handleGameStart(this);
     }
 
+    public GameStartEvent(String json){
+        super(json);
+    }
+
     @Override
     public void visit(GameEnding gameEnding) {
 

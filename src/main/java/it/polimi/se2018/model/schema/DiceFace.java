@@ -1,5 +1,8 @@
 package it.polimi.se2018.model.schema;
 
+import it.polimi.se2018.view.gui.Dice;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -26,6 +29,18 @@ public class DiceFace implements Serializable {
         this.number = number;
     }
 
+    public static DiceFace fromJson(JSONObject jsonObject){
+
+        GameColor gc = null;
+        for(GameColor tempColor: GameColor.values()){
+            if(tempColor.toString().toUpperCase().equals(jsonObject.getString("color"))){
+                gc=tempColor;
+            }
+        }
+
+        return new DiceFace(gc, jsonObject.getInt("number"));
+    }
+
     public GameColor getColor() {
         return color;
     }
@@ -47,5 +62,9 @@ public class DiceFace implements Serializable {
 
         return (this.color.equals(diceFace.getColor()) || this.number == diceFace.getNumber());
 
+    }
+
+    public JSONObject toJSON() {
+        return new JSONObject(this);
     }
 }

@@ -9,6 +9,10 @@ public class PlayerTimeoutEvent extends ControllerEvent {
         super(emitter, player, receiver);
     }
 
+    public PlayerTimeoutEvent(String json){
+        super(json);
+    }
+
     @Override
     public void visit(GameTable gameTable) {
         gameTable.handlePlayerTimeout(this);

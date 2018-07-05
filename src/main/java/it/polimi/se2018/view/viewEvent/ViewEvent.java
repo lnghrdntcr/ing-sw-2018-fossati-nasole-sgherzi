@@ -8,5 +8,9 @@ public abstract class ViewEvent extends Event {
         super(emitter, player, receiver);
     }
 
+    public ViewEvent(String json) {
+        super(json);
+    }
+
     abstract public State visit(State state);
 }

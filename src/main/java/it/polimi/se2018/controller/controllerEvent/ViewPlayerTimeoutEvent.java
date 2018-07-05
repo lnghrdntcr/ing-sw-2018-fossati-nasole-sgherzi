@@ -8,6 +8,8 @@ public class ViewPlayerTimeoutEvent extends ViewEvent {
         super(emitter, receiver, player);
     }
 
+    public ViewPlayerTimeoutEvent(String json){super(json);}
+
     @Override
     public State visit(State state) {
         return state.handleUserTimeOutEvent();

@@ -28,7 +28,10 @@ public class SchemaCardFace implements Serializable {
      * @throws MalformedSchemaCardFaceException if the restrictions dimension are not valid
      */
     public static SchemaCardFace loadFromJson(JSONObject obj) throws JSONException, MalformedSchemaCardFaceException {
-        int difficulty = obj.getInt("diff");
+        int difficulty = obj.optInt("diff", -1);
+        if(difficulty==-1){
+            difficulty=obj.getInt("difficulty");
+        }
         String name = obj.getString("name");
         JSONArray rows = obj.getJSONArray("restrictions");
 
@@ -140,6 +143,23 @@ public class SchemaCardFace implements Serializable {
      */
     public String getName() {
         return name;
+    }
+
+    public JSONObject toJsonObject() {
+        JSONObject jsonObject = new JSONObject(this);
+        JSONArray rows = new JSONArray();
+        for (int y = 0; y < Settings.CARD_HEIGHT; y++) {
+            JSONArray row = new JSONArray();
+
+            for (int x = 0; x < Settings.CARD_WIDTH; x++) {
+                row.put(getRestriction(new Point(x, y)));
+            }
+
+            rows.put(row);
+
+        }
+        jsonObject.put("restrictions", rows);
+        return jsonObject;
     }
 
     public enum Ignore {

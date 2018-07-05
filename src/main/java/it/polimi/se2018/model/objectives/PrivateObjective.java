@@ -3,6 +3,7 @@ package it.polimi.se2018.model.objectives;
 import it.polimi.se2018.model.schema.DiceFace;
 import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema.Schema;
+import org.json.JSONObject;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -22,6 +23,20 @@ public class PrivateObjective extends Objective implements Serializable {
 
     public PrivateObjective(GameColor color) {
         this.color = color;
+    }
+
+    public static PrivateObjective fromJSON(JSONObject privateObjectiveJson) {
+        String stringColor = privateObjectiveJson.getString("color");
+
+        GameColor gc =null;
+        for(GameColor tempColor : GameColor.values()){
+            if(tempColor.toString().equalsIgnoreCase(stringColor)){
+                gc=tempColor;
+            }
+        }
+
+        if (gc == null) throw new IllegalArgumentException("Invalid game color received: "+stringColor);
+        return new PrivateObjective(gc);
     }
 
     /**

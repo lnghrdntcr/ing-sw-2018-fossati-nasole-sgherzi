@@ -209,7 +209,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
                     }
 
                     Log.d(getClass().getName() + " Going in new state: " + state + " event: " + inboundEvent);
-
+                    Log.d(getClass().getName() + "JSON:" + inboundEvent.toJSON());
                 }
 
                 try {

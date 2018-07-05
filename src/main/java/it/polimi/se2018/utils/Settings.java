@@ -54,4 +54,6 @@ public class Settings {
     public static String getSchemaCardDatabase(){
         return schemaCardDatabase;
     }
+
+    public final static String SOCKET_EOM="#$$EOM$$#";
 }

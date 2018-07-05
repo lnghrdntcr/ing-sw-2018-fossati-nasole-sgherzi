@@ -37,4 +37,8 @@ public class PublicObjectiveEvent extends ModelEvent {
     public int getIndex() {
         return index;
     }
+
+    public static void main(String a[]){
+
+    }
 }

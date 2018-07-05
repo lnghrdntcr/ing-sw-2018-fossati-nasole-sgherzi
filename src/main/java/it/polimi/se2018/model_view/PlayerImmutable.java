@@ -2,6 +2,7 @@ package it.polimi.se2018.model_view;
 
 import it.polimi.se2018.model.objectives.PrivateObjective;
 import it.polimi.se2018.model.schema.Schema;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 
@@ -24,6 +25,10 @@ public class PlayerImmutable implements Serializable, Cloneable {
 
     }
 
+    public static PlayerImmutable fromJSON(JSONObject jsonObject) {
+        return new PlayerImmutable(jsonObject.getString("name"), jsonObject.getInt("token"), PrivateObjective.fromJSON(jsonObject.getJSONObject("privateObjective")));
+    }
+
     public String getName() {
         return name;
     }
@@ -37,7 +42,7 @@ public class PlayerImmutable implements Serializable, Cloneable {
         return token;
     }
 
-    public PlayerImmutable getFilteredInstance(){
+    public PlayerImmutable obtainFilteredInstance(){
         PlayerImmutable toReturn=null;
         try {
             toReturn = (PlayerImmutable) clone();

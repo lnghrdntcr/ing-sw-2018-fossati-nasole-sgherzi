@@ -1,5 +1,7 @@
 package it.polimi.se2018.utils;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Comparator;
 
@@ -34,6 +36,10 @@ public class ScoreHolder implements Comparable<ScoreHolder>, Serializable {
         this.publicObjectivePoints = publicObjectivePoints;
         this.missing = missing;
 
+    }
+
+    public ScoreHolder(JSONObject obj) {
+        this(obj.getString("playerName"), obj.getInt("privateObjectivePoints"), obj.getInt("publicObjectivePoints"), obj.getInt("tokenPoints"), obj.getInt("missing"), obj.getInt("orderInFinalRound"));
     }
 
     /**
@@ -102,4 +108,11 @@ public class ScoreHolder implements Comparable<ScoreHolder>, Serializable {
     }
 
 
+    public int getPrivateObjectivePoints() {
+        return privateObjectivePoints;
+    }
+
+    public int getMissing() {
+        return missing;
+    }
 }

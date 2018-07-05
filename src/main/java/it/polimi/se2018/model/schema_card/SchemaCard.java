@@ -92,6 +92,12 @@ public class SchemaCard implements Serializable {
         return schemaCardFaces.get(side);
     }
 
+    public JSONObject toJsonObj() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("front", schemaCardFaces.get(Side.FRONT).toJsonObject());
+        jsonObject.put("back", schemaCardFaces.get(Side.FRONT).toJsonObject());
+        return jsonObject;
+    }
 }
 
 

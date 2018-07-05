@@ -10,4 +10,5 @@ public abstract class ControllerEvent extends Event implements VisitableFromView
     protected ControllerEvent(String emitter, String player, String receiver) {
         super(emitter, player, receiver);
     }
+    protected ControllerEvent(String json){super(json);}
 }
