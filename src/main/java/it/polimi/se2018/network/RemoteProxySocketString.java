@@ -83,6 +83,7 @@ public class RemoteProxySocketString extends RemoteProxy {
                 while (goAhead && !RemoteProxySocketString.this.remoteConnection.isClosed()) {
                     try {
                         int characterReaded = objectInputStream.read(buffer);
+                        if(characterReaded<=0 ) continue;
                         builder.append(buffer, 0, characterReaded);
 
 

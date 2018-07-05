@@ -76,6 +76,7 @@ public class LocalProxySocketString extends LocalProxy {
                 while (goAhead && !LocalProxySocketString.this.remoteConnection.isClosed()) {
                     try {
                         int characterReaded = objectInputStream.read(buffer);
+                        if(characterReaded<=0 ) continue;
                         builder.append(buffer, 0, characterReaded);
 
 
