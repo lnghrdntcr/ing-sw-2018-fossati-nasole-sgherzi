@@ -11,10 +11,7 @@ import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.RemoteView;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.view.viewEvent.EndTurnEvent;
-import it.polimi.se2018.view.viewEvent.MoveDiceEvent;
-import it.polimi.se2018.view.viewEvent.PlaceDiceEvent;
-import it.polimi.se2018.view.viewEvent.UseToolcardEvent;
+import it.polimi.se2018.view.viewEvent.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -65,8 +62,32 @@ public class TurnStateTest {
 
     @Test
     public void handleToolcardEvent() throws FileNotFoundException {
+        for (int i = 0; i < this.games.size(); i++) {
+
+            Controller actualController = this.games.get(i);
+            GameTableMultiplayer actualModel = actualController.getModel();
+            TurnState actualTurnState = this.turnStates.get(i);
+
+
+            try {
+                actualTurnState.handleEndTurnEvent(null);
+            } catch (IllegalArgumentException ignore) {
+                Log.i("Null event thrown as expected.");
+            }
+
+            //player trying to use tool while not its turn
+            actualTurnState.handleToolcardEvent(new MoveDiceEvent(getClass().getName(), "", actualModel.getPlayersName()[1],
+                    1, new Point(0, 0), new Point(1, 1)));
+
+            actualTurnState.handleToolcardEvent(new MoveDiceEvent(getClass().getName(), "", actualModel.getCurrentPlayerName(),
+                    1, new Point(0, 0), new Point(1, 1)));
+
+
+        }
 
     }
+
+    //still same problem: maybe drawDice() is called internally somewhere?
 
     @Test
     public void handlePlaceDiceEvent() throws FileNotFoundException {
@@ -78,37 +99,36 @@ public class TurnStateTest {
             TurnState actualTurnState = this.turnStates.get(i);
 
             SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
+            //actualModel.drawDice();
 
             // Testing normal behaviour
             for (int j = 0; j < actualModel.getPlayersName().length; j++) {
 
                 actualModel.setPlayerSchema("Player" + j, schemaCardFace);
 
-                TurnState newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(),"",  "Player" + j, 0, new Point(0, 0)));
+                TurnState newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(), "", "Player" + j, 0, new Point(0, 0)));
 
                 assertFalse(newState.isToolcardUsed());
                 assertTrue(newState.isDicePlaced());
 
                 // Trying to place a dice twice in the same turn.
                 // In this case the returned state must be the SAME of the state before.
-                newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(),"",  "Player" + j, 0, new Point(2, 2)));
+                newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(), "", "Player" + j, 0, new Point(2, 2)));
                 assertSame(actualTurnState, newState);
 
                 // Testing against a dice which is in the same position.
                 // In this case the returned state must be the SAME of the state before.
-                newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(),"",  "Player" + j, 0, new Point(0, 0)));
+                newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(), "", "Player" + j, 0, new Point(0, 0)));
                 assertSame(newState, actualTurnState);
 
                 actualModel.nextTurn();
 
                 // Testing against another player trying to do the action.
                 // In this case the returned state must be the SAME of the state before.
-                newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(),"",  "Player" + j, 0, new Point(3, 2)));
+                newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(this.getClass().getName(), "", "Player" + j, 0, new Point(3, 2)));
                 assertSame(newState, actualTurnState);
 
             }
-
-
 
 
         }
@@ -117,11 +137,29 @@ public class TurnStateTest {
 
     @Test
     public void handleUserTimeOutEvent() {
+        //just calling handleEndTurnEvent.
     }
 
     @Test
+    public void handlePlayerDisconnected() {
+        for (int i = 0; i < this.games.size(); i++) {
+
+            Controller actualController = this.games.get(i);
+            GameTableMultiplayer actualModel = actualController.getModel();
+            TurnState actualTurnState = this.turnStates.get(i);
+
+            //normal behavior
+            actualTurnState.handlePlayerDisconnected(new PlayerDisconnectedEvent(getClass().getName(), actualModel.getCurrentPlayerName(), ""));
+            //someone but the current player is trying to call it
+            actualTurnState.handlePlayerDisconnected(new PlayerDisconnectedEvent(getClass().getName(), actualModel.getPlayersName()[1], ""));
+
+        }
+    }
+
+    //todo
+    @Test
     public void handleEndTurnEvent() throws FileNotFoundException {
-/*        for (int i = 0; i < this.games.size(); i++) {
+        for (int i = 0; i < this.games.size(); i++) {
             Controller actualController = this.games.get(i);
             GameTableMultiplayer actualModel = actualController.getModel();
             TurnState actualTurnState = this.turnStates.get(i);
@@ -129,31 +167,31 @@ public class TurnStateTest {
 
             SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
 
-            actualModel.drawDice();
+            //not current player trying to invoke the method
+            TurnState newState = (TurnState) actualTurnState.handleEndTurnEvent(new EndTurnEvent(this.getClass().getName(),
+                    actualModel.getPlayersName()[1], ""));
+            assertEquals(newState, actualTurnState);
 
             for (int j = 0; j < views.size(); j++) {
 
-                try {
-                    actualTurnState.handleEndTurnEvent(null);
-                } catch (IllegalArgumentException e) {
-                    Log.w("the event cant be null");
-                }
+                actualModel.setPlayerSchema("Player" + j, schemaCardFace);
 
                 //can't test the "null model" exception...
 
-                TurnState newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(
-                this.getClass().getName(), "Player" + j, 0, new Point(0, 0)));
+                newState = (TurnState) actualTurnState.handlePlaceDiceEvent(new PlaceDiceEvent(
+                        this.getClass().getName(), "", actualModel.getCurrentPlayerName(), 1, new Point(0, 0)));
                 assertTrue(newState.isDicePlaced());
 
-                newState = (TurnState) actualTurnState.handleEndTurnEvent(new EndTurnEvent(this.getClass().getName(), "Player" + j));
+                newState = (TurnState) actualTurnState.handleEndTurnEvent(new EndTurnEvent(this.getClass().getName(),
+                        actualModel.getCurrentPlayerName(), ""));
                 assertFalse(newState.isDicePlaced());
             }
 
-            for(int j = 0; j < 2*views.size() * 9 + views.size(); j++){
-                TurnState newState = (TurnState) actualTurnState.handleEndTurnEvent(new EndTurnEvent(this.getClass().getName(), "Player" + j));
+            for (int j = 0; j < 2 * views.size() * 9 + views.size(); j++) {
+                newState = (TurnState) actualTurnState.handleEndTurnEvent(new EndTurnEvent(this.getClass().getName(), actualModel.getCurrentPlayerName(), ""));
             }
             assertFalse(actualModel.hasNextTurn());
-        }*/
+        }
     }
 
     @Test
@@ -163,4 +201,14 @@ public class TurnStateTest {
     @Test
     public void isToolcardUsed() {
     }
+
+    @Test
+    public void setupToolCardIsUsable() {
+    }
+
+    @Test
+    public void setupToolCardUse() {
+    }
+
+
 }
