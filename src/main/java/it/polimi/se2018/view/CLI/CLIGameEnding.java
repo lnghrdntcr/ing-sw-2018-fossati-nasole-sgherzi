@@ -30,9 +30,9 @@ public class CLIGameEnding extends GameEnding implements InputListenerThread.Inp
         CLIPrinter.printInfo("LeaderBoard: ");
         for (String key : getGlobalLeaderBoard().keySet()) {
             CLIPrinter.printInfo("Player: " + key);
-            CLIPrinter.printInfo("\tVictories" + getGlobalLeaderBoard().getJSONObject(key).optInt("victories", 0));
-            CLIPrinter.printInfo("\tLosses" + getGlobalLeaderBoard().getJSONObject(key).optInt("losses", 0));
-            CLIPrinter.printInfo("\tTotal time played" + getGlobalLeaderBoard().getJSONObject(key).optInt("totalTimePlayed", 0));
+            CLIPrinter.printInfo("\tVictories " + getGlobalLeaderBoard().getJSONObject(key).optInt("victories", 0));
+            CLIPrinter.printInfo("\tLosses " + getGlobalLeaderBoard().getJSONObject(key).optInt("losses", 0));
+            CLIPrinter.printInfo("\tTotal time played " + getGlobalLeaderBoard().getJSONObject(key).optInt("totalTimePlayed", 0));
         }
 
         System.exit(0);

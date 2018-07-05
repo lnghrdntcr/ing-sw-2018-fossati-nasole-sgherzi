@@ -8,6 +8,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class GUIGameEnding extends GameEnding {
     @FXML
@@ -60,6 +63,23 @@ public class GUIGameEnding extends GameEnding {
 
             secondStage.show();
 
+            secondStage.setOnCloseRequest((windowEvent) -> {
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Closing game...");
+                alert.setContentText("Are you sure you want to exit?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (((Optional) result).get() == ButtonType.OK) {
+                    Platform.exit();
+                    System.exit(-1);
+                } else {
+                    // This is the only way I found to prevent the closing of a window, LèL
+                    windowEvent.consume();
+                }
+            });
+
             leaderboard = (HBox) scene.lookup("#leaderboard");
             players = (VBox) scene.lookup("#players");
             scores = (VBox) scene.lookup("#scores");
@@ -86,9 +106,9 @@ public class GUIGameEnding extends GameEnding {
                 Label label = new Label();
 
                 label.setText("Player: " + key
-                    + " Victories" + getGlobalLeaderBoard().getJSONObject(key).optInt("victories", 0)
-                    + " Losses" + getGlobalLeaderBoard().getJSONObject(key).optInt("losses", 0)
-                    + "Total time played" + getGlobalLeaderBoard().getJSONObject(key).optInt("totalTimePlayed", 0));
+                    + " Victories: " + getGlobalLeaderBoard().getJSONObject(key).optInt("victories", 0)
+                    + " Losses: " + getGlobalLeaderBoard().getJSONObject(key).optInt("losses", 0)
+                    + " Total time played: " + getGlobalLeaderBoard().getJSONObject(key).optInt("totalTimePlayed", 0));
 
                 globalStats.getChildren().add(label);
 
