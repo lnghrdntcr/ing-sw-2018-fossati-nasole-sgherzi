@@ -1,4 +1,4 @@
-# Progetto di Ingegneria del Software spring2018
+# Progetto di Ingegneria del Software - _Sagrada_
 
 ## Partecipanti 
 * Francesco Sgherzi 
@@ -42,6 +42,12 @@ Il file JSON deve essere un array di oggetti. Ogni oggetto deve avere due elemen
   * "1" = restrizione numerica, da 1 a 6
   * "BLUE" = restrizione per colore, come codificate in Enum GameColor
 
+## JAR
+[CLIENT](deliveries/final/sagrada-client.jar)
+
+
+[SERVER](deliveries/final/sagrada-server.jar)
+
 ## Sonarqube
 
 ![Overall results](deliveries/final/SonarQube%20Final%20-%20Global.png)
@@ -50,4 +56,22 @@ Il file JSON deve essere un array di oggetti. Ogni oggetto deve avere due elemen
 ## UML
 
 [Final UML Model + Controller + Network](/deliveries/final/FinalUmlModel%2BController%2BNetwork.pdf)
+
+
 [View UML](deliveries/final/ViewUML.pdf)
+
+## Funzionalità implementate
+* Regole Complete
+
+* Comunicazione 
+    * Socket con oggetti serializzati
+    * RMI
+    * Socket attraverso stringhe (JSON)
+    
+* Interfaccia utente
+    * GUI
+    * CLI
+
+* Funzionalità avanzate
+    * Carte Schema dinamiche
+    * Persistenza
