@@ -19,7 +19,7 @@ public class Settings {
     /**
      * Number of turns in a match
      */
-    public static final int TURNS = 2;
+    public static final int TURNS = 10;
     /**
      * Maximum number of players in a match
      */

@@ -45,6 +45,9 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
     private DraftBoard draftBoardView;
 
     @FXML
+    private ScrollPane scrollPane;
+
+    @FXML
     private VBox player1;
 
     @FXML
@@ -226,6 +229,8 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
             turnMessage = (Label) scene.lookup("#turnMessage");
             renderTurn();
 
+            scrollPane = (ScrollPane) scene.lookup("#scrollPane");
+
             players.add(new PlayerBoard(this));
             players.add(new PlayerBoard(this));
             players.add(new PlayerBoard(this));
@@ -276,6 +281,9 @@ public class GUIGameTable extends GameTable implements EventHandler<ActionEvent>
 
             root.setStyle("-fx-background-image: url('/gui/background.jpg');\n" +
                 "    -fx-background-repeat: repeat;");
+
+            scrollPane.setStyle("-fx-background-color: transparent;");
+           /* scrollPane.setStyle(".scroll-pane .viewport {-fx-background-color: transparent;}");*/
 
         });
 

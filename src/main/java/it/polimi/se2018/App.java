@@ -80,17 +80,7 @@ public class App {
 
         if (path == null) {
             try {
-
-                /*configFile = new File(
-                    (new App())
-                    .getClass()
-                    .getClassLoader()
-                    .getResource("defaultConfig.json")
-                    .toURI()
-                );*/
-
                 configFile = new App().getClass().getClassLoader().getResourceAsStream("defaultConfig.json");
-
             } catch (Exception e) {
                 e.printStackTrace();
                 CLIPrinter.printError("Could not load the default configuration file!");

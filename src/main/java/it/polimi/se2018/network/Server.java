@@ -22,23 +22,20 @@ import java.util.ArrayList;
 public class Server extends UnicastRemoteObject implements ServerInterface {
 
 
-    private ArrayList<View> virtualViews = new ArrayList<>();
-    private ServerSocket serverSocket;
-    private Thread listenerThread;
-    boolean gameStarted;
-    private Thread timeoutThread;
-
-    // Config variables.
-    private long serverTimeout;
-    private final long actionTimeout;
-    private final String customSchemaCardPath;
-
-    // The beginning time of the timeout.
-    private long beginTime;
-
     private final static int RMI_PORT = 1099;
     private final static int SOCKET_PORT = 2099;
     private static final int SOCKETSTRING_PORT = 2100;
+    private final long actionTimeout;
+    private final String customSchemaCardPath;
+    boolean gameStarted;
+    private ArrayList<View> virtualViews = new ArrayList<>();
+    private ServerSocket serverSocket;
+    private Thread listenerThread;
+    private Thread timeoutThread;
+    // Config variables.
+    private long serverTimeout;
+    // The beginning time of the timeout.
+    private long beginTime;
     private String ip = "127.0.0.1";
     private Controller controller;
     private ServerSocket serverSocketString;
@@ -121,7 +118,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
                     }
 
                     Log.w(
-                            "No more player are allowed as the maximum of 4 players is already reached."
+                        "No more player are allowed as the maximum of 4 players is already reached."
                     );
 
                 } catch (IOException e) {
@@ -159,7 +156,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
                             int readed = inputStream.read(buffer, 0, 256);
                             builder.append(buffer, 0, readed);
                         }
-                        playerName=builder.substring(0, builder.indexOf(Settings.SOCKET_EOM));
+                        playerName = builder.substring(0, builder.indexOf(Settings.SOCKET_EOM));
 
 
                         if (playerName != null) {
@@ -190,7 +187,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
                     }
 
                     Log.w(
-                            "No more player are allowed as the maximum of 4 players is already reached."
+                        "No more player are allowed as the maximum of 4 players is already reached."
                     );
 
                 } catch (IOException e) {
@@ -294,7 +291,16 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
         remoteProxyRMI.setServer(localProxyRMIInterface);
 
         Log.i("Client with name " + player + " connected!");
-        addClient(localProxyRMI, player);
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            addClient(localProxyRMI, player);
+        }).start();
+
         return true;
     }
 
