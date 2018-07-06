@@ -82,12 +82,12 @@ public class Client {
     /**
      * Starts the client getting basic informations about the connection.
      */
-    public static void startClient() {
+    public static void main(String param[]) {
 
         CLIPrinter.setup();
 
         Scanner scanner = new Scanner(System.in);
-        CLIPrinter.printQuestion("Connection method? [rmi]");
+        CLIPrinter.printQuestion("Connection method? [rmi], socket, json");
         String method = scanner.nextLine();
         method = (method.equals("") || (!method.equalsIgnoreCase("rmi") && !method.equalsIgnoreCase("socket"  ) && !method.equalsIgnoreCase("json"))) ? "rmi" : method;
 

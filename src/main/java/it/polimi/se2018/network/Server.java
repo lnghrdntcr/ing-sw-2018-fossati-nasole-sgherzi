@@ -3,18 +3,19 @@ package it.polimi.se2018.network;
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
+import it.polimi.se2018.view.CLI.CLIPrinter;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.VirtualView;
+import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * The entry point for the server. Manages all the connections and waits for client's connections
@@ -331,6 +332,60 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
         this.controller = new Controller(virtualViews, this.actionTimeout);
         this.controller.start();
+
+    }
+
+
+    public static void main(String args[]) throws IOException {
+
+        String path = null;
+
+        if (args.length == 4) {
+            // It means that also the external config file is passed as an argument... maybe.
+            if (args[1].equals("--config") || args[2].startsWith("-c ")) {
+                path = args[2];
+            }
+        }
+
+
+        InputStream configFile = null;
+
+        if (path == null) {
+            try {
+                configFile = Server.class.getClassLoader().getResourceAsStream("defaultConfig.json");
+            } catch (Exception e) {
+                e.printStackTrace();
+                CLIPrinter.printError("Could not load the default configuration file!");
+            }
+        } else {
+            configFile = new FileInputStream(new File(path));
+        }
+
+        //FileInputStream fileInputStream = new FileInputStream(configFile);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(configFile);
+        StringBuilder builder;
+        try (Scanner scanner = new Scanner(bufferedInputStream)) {
+            builder = new StringBuilder();
+
+            //read all lines
+            while (scanner.hasNextLine()) {
+                builder.append(scanner.nextLine());
+            }
+        }
+
+        //now we have the whole file loaded, let's parse the JSON
+        JSONObject root = new JSONObject(builder.toString());
+
+        Log.d(root.toString());
+
+        // Setting schema card path
+        Settings.setSchemaCardDatabase(root.getString("customSchemaCardPath"));
+
+        new Server(
+                root.getInt("serverTimeout"),
+                root.getInt("actionTimeout"),
+                root.getString("customSchemaCardPath")
+        ).startServer();
 
     }
 
