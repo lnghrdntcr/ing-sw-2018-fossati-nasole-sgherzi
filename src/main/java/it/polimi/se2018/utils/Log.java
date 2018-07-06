@@ -10,6 +10,9 @@ import static org.fusesource.jansi.Ansi.ansi;
  * Contains useful methods for logging
  */
 public class Log {
+
+    public static boolean logLevel = false;
+
     /**
      * Logs an information
      *
@@ -34,7 +37,7 @@ public class Log {
      * @param message the message to log
      */
     public static void d(String message) {
-        System.out.println("[DEBUG] " + message);
+        if(logLevel) System.out.println("[DEBUG] " + message);
     }
 
     /**

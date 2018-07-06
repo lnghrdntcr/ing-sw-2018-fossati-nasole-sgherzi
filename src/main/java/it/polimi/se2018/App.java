@@ -39,6 +39,7 @@ public class App {
                     return;
                 }
                 try {
+                    Log.logLevel = true;
                     loadConfigAndStartServer(args);
                 } catch (NumberFormatException e) {
                     Log.e("Players not a number!");
@@ -53,6 +54,7 @@ public class App {
 
                 break;
             case "client":
+                Log.logLevel = false;
                 Client.startClient();
                 break;
             default:
