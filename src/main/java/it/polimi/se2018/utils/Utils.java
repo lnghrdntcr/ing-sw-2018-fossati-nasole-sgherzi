@@ -17,15 +17,15 @@ public class Utils {
         return new Point(pointJson.getInt("x"), pointJson.getInt("y"));
     }
 
-    public static String decodePosition(Point point){
-        return point.x + ", "+ point.y;
+    public static String decodePosition(Point point) {
+        return point.x + ", " + point.y;
     }
 
-    public static String decodeCardinalNumber(int number){
-        return (number == 1 ? "1st " : (number == 2 ? "2nd " : (number == 3 ? "3rd" : number + "th")));
+    public static String decodeCardinalNumber(int number) {
+        return (number == 1 ? "1st " : (number == 2 ? "2nd " : (number == 3 ? "3rd" : number + "th ")));
     }
 
-    public static String decodeDice(DiceFace df){
+    public static String decodeDice(DiceFace df) {
         return df.getColor().toString().toLowerCase() + " " + df.getNumber() + " ";
     }
 

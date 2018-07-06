@@ -27,7 +27,7 @@ public class CLIGameTable extends GameTable implements InputListenerThread.Input
 
     @Override
     protected void renderDiceHolder() {
-        System.out.println("DiceHolder Changed.");
+        Log.d("DiceHolder Changed.");
     }
 
     @Override
