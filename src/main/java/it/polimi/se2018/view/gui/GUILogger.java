@@ -1,25 +1,16 @@
 package it.polimi.se2018.view.gui;
 
-import it.polimi.se2018.model.objectives.MediumShades;
-import it.polimi.se2018.model.objectives.PrivateObjective;
-import it.polimi.se2018.model.schema.DiceFace;
-import it.polimi.se2018.model.schema.GameColor;
-import it.polimi.se2018.model.schema.Schema;
-import it.polimi.se2018.model.schema_card.SchemaCard;
-import it.polimi.se2018.model.schema_card.SchemaCardFace;
-import it.polimi.se2018.model.schema_card.Side;
-import it.polimi.se2018.model_view.ToolCardImmutable;
-import it.polimi.se2018.utils.Log;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
-import java.io.IOException;
+import java.net.URISyntaxException;
 
 
 public class GUILogger extends Application {
@@ -36,6 +27,13 @@ public class GUILogger extends Application {
         primaryStage.setResizable(true);
 
         primaryStage.show();
+
+
+        Media media = new Media(getClass().getClassLoader().getResource("gui/miguel.mp3").toExternalForm());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+        MediaView mediaView = new MediaView(mediaPlayer);
 
     }
 
