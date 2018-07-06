@@ -71,6 +71,7 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
 
     private SchemaPanel schemaPanel1, schemaPanel2, schemaPanel3, schemaPanel4;
     private ObjectiveView objectiveView;
+    private AskSchemaCardFaceEvent receivedEvent;
 
 
     public GUISelectSchemaCardFace(RemoteView view) {
@@ -80,7 +81,10 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
 
     @Override
     public void showSchemaCardFaceSelection(AskSchemaCardFaceEvent event) {
+        receivedEvent = event;
 
+        if(root==null) return;
+        if(event==null) return;
         Platform.runLater(() -> {
             schemaPanel1.updateSchema(new Schema(event.getSchemas()[0].getFace(Side.FRONT)));
             schemaPanel2.updateSchema(new Schema(event.getSchemas()[0].getFace(Side.BACK)));
@@ -192,6 +196,8 @@ public class GUISelectSchemaCardFace extends SelectSchemaCardFace implements Eve
 
             root.setStyle("-fx-background-image: url('/gui/background.jpg');\n" +
                 "    -fx-background-repeat: repeat;");
+
+            showSchemaCardFaceSelection(receivedEvent);
         });
 
 

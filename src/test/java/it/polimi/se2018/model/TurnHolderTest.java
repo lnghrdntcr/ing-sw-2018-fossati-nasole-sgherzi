@@ -1,5 +1,6 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.utils.Settings;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ public class TurnHolderTest {
 
         TurnHolder turnHolder = new TurnHolder(n);
 
-        for(int i=0; i<10; i++){
+        for(int i = 0; i<Settings.TURNS; i++){
             assertEquals(i, turnHolder.getRound());
 
             for(int j=0; j<2*n; j++){
@@ -29,7 +30,7 @@ public class TurnHolderTest {
 
                 turnHolder.nextTurn();
 
-                if (!(i==9 && j==2*n-1)) {
+                if (!(i==Settings.TURNS-1 && j==2*n-1)) {
                     assertFalse(turnHolder.isGameEnded());
                 }else{
                     assertTrue(turnHolder.isGameEnded());
