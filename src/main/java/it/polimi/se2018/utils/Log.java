@@ -37,7 +37,7 @@ public class Log {
      * @param message the message to log
      */
     public static void d(String message) {
-        if(true) System.out.println("[DEBUG] " + message);
+        if(logLevel) System.out.println("[DEBUG] " + message);
     }
 
     /**
