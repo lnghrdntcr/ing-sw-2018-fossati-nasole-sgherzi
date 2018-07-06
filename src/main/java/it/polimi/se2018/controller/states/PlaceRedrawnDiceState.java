@@ -44,14 +44,16 @@ public class PlaceRedrawnDiceState extends State {
     @Override
     public State handleToolcardEvent(UseToolcardEvent event) {
         Log.d(getClass().getCanonicalName() + " handling ToolcardEvent");
+        //TODO: check if the player is the current player
         try {
             PlaceAnotherDiceEvent ev = (PlaceAnotherDiceEvent) event;
             //checks if user is placing the redrawn face
             if (getModel().getDiceFaceByIndex(ev.getDiceFaceIndex()).equals(redrawnDiceFace)) {
+                DiceFace df = getModel().getDiceFaceByIndex(ev.getDiceFaceIndex());
                 if (getModel().isDiceAllowed(ev.getPlayerName(), ev.getPoint(), redrawnDiceFace, SchemaCardFace.Ignore.NOTHING)) {
                     getModel().placeDice(ev.getPlayerName(), ev.getDiceFaceIndex(), ev.getPoint());
 
-                    DiceFace df = getModel().getDiceFaceByIndex(ev.getDiceFaceIndex());
+
 
                     StringBuilder message = new StringBuilder(event.getPlayerName() + " has used " + getModel().getToolCardByPosition(event.getToolCardIndex()).getName());
                     message.append("The ");

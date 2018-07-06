@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class Controller extends Observable<Event> implements Observer<ViewEvent> {
 
+    private final boolean isInTest;
     private long matchBeginTime;
     private GameTableMultiplayer model;
     private State state;
@@ -41,7 +42,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     private Thread timeoutCommunicationThread;
     private Thread eventLoopHandlerThread;
 
-    public Controller(ArrayList<? extends View> viewArrayList, long actionTimeout) {
+    public Controller(ArrayList<? extends View> viewArrayList, long actionTimeout, String[] toolcards) {
 
         this.actionTimeout = actionTimeout;
         this.views = viewArrayList;
@@ -55,7 +56,14 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
             pln.add(view.getPlayer());
         });
 
-        model = new GameTableMultiplayer(pickPublicObjectives(), pln.toArray(new String[viewArrayList.size()]), pickToolCards());
+        if(toolcards==null){
+            toolcards=pickToolCards();
+            isInTest=false;
+        }else{
+            isInTest=true;
+        }
+
+        model = new GameTableMultiplayer(pickPublicObjectives(), pln.toArray(new String[viewArrayList.size()]), toolcards);
 
         viewArrayList.forEach(view -> model.register(view));
 
@@ -63,6 +71,10 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
 
 
+    }
+
+    public Controller(ArrayList<? extends View> viewArrayList, long actionTimeout){
+        this(viewArrayList, actionTimeout, null);
     }
 
 
@@ -75,7 +87,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
         Log.d("Starting timeout...");
 
-        state = new GameSetupState(this, model);
+        state = new GameSetupState(this, model, isInTest);
 
         this.startEventLoopHandlerThread();
         this.startActionTimeout();

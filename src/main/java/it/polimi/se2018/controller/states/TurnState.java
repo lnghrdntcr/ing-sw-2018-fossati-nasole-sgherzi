@@ -51,11 +51,11 @@ public class TurnState extends State {
         if (!getController().isGameStarted()) {
             Log.d("A NEW GAME HAS STARTED!!!");
             this.getController().dispatchEvent(
-                new GameStartEvent(
-                    this.getClass().getName(),
-                    "",
-                    ""
-                )
+                    new GameStartEvent(
+                            this.getClass().getName(),
+                            "",
+                            ""
+                    )
             );
 
             this.getController().setGameStarted();
@@ -71,21 +71,22 @@ public class TurnState extends State {
         }
 
         this.getController().dispatchEvent(
-            new TurnChangedEvent(
-                this.getClass().getName(),
-                "",
-                this.getModel().getCurrentPlayerName(),
-                this.getModel().getRound(),
-                this.getModel().isFirstTurnInRound(),
-                isDicePlaced(),
-                isToolcardUsed()
-            )
+                new TurnChangedEvent(
+                        this.getClass().getName(),
+                        "",
+                        this.getModel().getCurrentPlayerName(),
+                        this.getModel().getRound(),
+                        this.getModel().isFirstTurnInRound(),
+                        isDicePlaced(),
+                        isToolcardUsed()
+                )
         );
 
     }
 
     /**
      * Performs all the necessary action to sync the current game state and a reconnected user
+     *
      * @param playerName the player to resync
      */
 
@@ -93,24 +94,24 @@ public class TurnState extends State {
     public void syncPlayer(String playerName) {
 
         getController().dispatchEvent(
-            new LogEvent(
-                this.getClass().getName(),
-                playerName,
-                "",
-                playerName + " reconnected!"
-            )
+                new LogEvent(
+                        this.getClass().getName(),
+                        playerName,
+                        "",
+                        playerName + " reconnected!"
+                )
         );
 
         this.getController().dispatchEvent(
-            new TurnChangedEvent(
-                this.getClass().getName(),
-                playerName,
-                this.getModel().getCurrentPlayerName(),
-                this.getModel().getRound(),
-                this.getModel().isFirstTurnInRound(),
-                isDicePlaced(),
-                isToolcardUsed()
-            )
+                new TurnChangedEvent(
+                        this.getClass().getName(),
+                        playerName,
+                        this.getModel().getCurrentPlayerName(),
+                        this.getModel().getRound(),
+                        this.getModel().isFirstTurnInRound(),
+                        isDicePlaced(),
+                        isToolcardUsed()
+                )
         );
     }
 
@@ -124,29 +125,31 @@ public class TurnState extends State {
     @Override
     public State handleToolcardEvent(UseToolcardEvent event) {
         Log.d(getClass().getCanonicalName() + " handling useToolcardEvent...");
-        if (event == null)
-            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Event cannot be null");
 
-        if (!getModel().getCurrentPlayerName().equals(event.getPlayerName()))
+        if (!getModel().getCurrentPlayerName().equals(event.getPlayerName())) {
             Log.w("Only current player can use a toolcard");
+            return this;
+        }
 
         Tool tool = getModel().getToolCardByPosition(event.getToolCardIndex());
         int playerToken = getModel().getPlayerToken(event.getPlayerName());
 
-        if (!isToolCardUsable
-            .get(
-                tool.getName()
-            )
-            .get()) {
+        if (!isToolCardUsable.get(tool.getName()).get()) {
             Log.i(tool.getClass().getName() + " not usable in this turn.");
+            return this;
+        }
+
+        if (hasUsedToolcard) {
+            Log.w("You have already used a toolcard in your turn!");
+            return this;
         }
 
         if (playerToken < tool.getNeededTokens()) {
             Log.i(
-                event.getPlayerName()
-                    + " cannot use the " + tool.getClass().getName() + " toolcard:\n "
-                    + "Tokens needed:\t" + tool.getNeededTokens()
-                    + "\n Actual tokens:\t" + playerToken
+                    event.getPlayerName()
+                            + " cannot use the " + tool.getClass().getName() + " toolcard:\n "
+                            + "Tokens needed:\t" + tool.getNeededTokens()
+                            + "\n Actual tokens:\t" + playerToken
             );
             return this;
         } else {
@@ -181,32 +184,32 @@ public class TurnState extends State {
         }
 
         if (getModel().isDiceAllowed(
-            event.getPlayerName(),
-            event.getPoint(),
-            getModel().getDiceFaceByIndex(
-                event.getDiceFaceIndex()
-            ),
-            SchemaCardFace.Ignore.NOTHING)) {
+                event.getPlayerName(),
+                event.getPoint(),
+                getModel().getDiceFaceByIndex(
+                        event.getDiceFaceIndex()
+                ),
+                SchemaCardFace.Ignore.NOTHING)) {
 
             DiceFace df = getModel().getDiceFaceByIndex(event.getDiceFaceIndex());
 
             getModel().placeDice(event.getPlayerName(), event.getDiceFaceIndex(), event.getPoint());
 
             getController().dispatchEvent(
-                new LogEvent(
-                    this.getClass().getName(),
-                    "",
-                    "",
-                    event.getPlayerName() +
-                        " has placed a "
-                        + df.getColor().toString().toLowerCase()
-                        + " "
-                        + df.getNumber()
-                        + " in position "
-                        + event.getPoint().x
-                        + " "
-                        + event.getPoint().y
-                )
+                    new LogEvent(
+                            this.getClass().getName(),
+                            "",
+                            "",
+                            event.getPlayerName() +
+                                    " has placed a "
+                                    + df.getColor().toString().toLowerCase()
+                                    + " "
+                                    + df.getNumber()
+                                    + " in position "
+                                    + event.getPoint().x
+                                    + " "
+                                    + event.getPoint().y
+                    )
             );
 
         } else {
@@ -221,12 +224,12 @@ public class TurnState extends State {
     public State handleUserTimeOutEvent() {
 
         getController().dispatchEvent(
-            new LogEvent(
-                this.getClass().getName(),
-                "",
-                "",
-                getModel().getCurrentPlayerName() + " timed out!"
-            )
+                new LogEvent(
+                        this.getClass().getName(),
+                        "",
+                        "",
+                        getModel().getCurrentPlayerName() + " timed out!"
+                )
         );
 
         return this.handleEndTurnEvent(new EndTurnEvent("UserTimeout", getModel().getCurrentPlayerName(), this.getModel().getCurrentPlayerName()));
@@ -241,24 +244,24 @@ public class TurnState extends State {
         if (playerDisconnectedEvent.getPlayerName().equals(getModel().getCurrentPlayerName())) {
 
             getController().dispatchEvent(
-                new LogEvent(
-                    this.getClass().getName(),
-                    "",
-                    "",
-                    playerDisconnectedEvent.getPlayerName() + " disconnected!"
-                )
+                    new LogEvent(
+                            this.getClass().getName(),
+                            "",
+                            "",
+                            playerDisconnectedEvent.getPlayerName() + " disconnected!"
+                    )
             );
 
             return this.handleEndTurnEvent(new EndTurnEvent("PlayerDisconnected", playerDisconnectedEvent.getPlayerName(), this.getModel().getCurrentPlayerName()));
         }
 
         getController().dispatchEvent(
-            new LogEvent(
-                this.getClass().getName(),
-                "",
-                "",
-                playerDisconnectedEvent.getPlayerName() + " disconnected!"
-            )
+                new LogEvent(
+                        this.getClass().getName(),
+                        "",
+                        "",
+                        playerDisconnectedEvent.getPlayerName() + " disconnected!"
+                )
         );
 
         return super.handlePlayerDisconnected(playerDisconnectedEvent);
@@ -274,7 +277,7 @@ public class TurnState extends State {
     @Override
     public State handleEndTurnEvent(EndTurnEvent event) {
         Log.d(getClass().getCanonicalName() + " handling EndTurnEvent...");
-        if(event==null)throw new IllegalArgumentException("Event cannot be null!");
+        if (event == null) throw new IllegalArgumentException("Event cannot be null!");
 
         if (!getModel().getCurrentPlayerName().equals(event.getPlayerName())) {
             Log.w(event.getPlayerName() + "Only the current player can end its turn!");
@@ -702,7 +705,7 @@ public class TurnState extends State {
             sendLogEvent(message.toString());
 
             return new PlaceRedrawnWithNumberDiceState(getController(), getModel(), new TurnState(getController(), getModel(), this.isDicePlaced(), true),
-                ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard() - 1);
+                    ev.getPlayerName(), getModel().getDiceNumberOnDraftBoard() - 1);
         } catch (Exception e) {
             Log.w("Unable to use FirmPastaDiluent: " + e.getMessage());
             return this;
@@ -726,7 +729,7 @@ public class TurnState extends State {
             }
 
             if (!ev.getColor().equals(getModel().getPlayerDiceFace(ev.getPlayerName(), ev.getSource(0)).getColor()) ||
-                !ev.getColor().equals(getModel().getPlayerDiceFace(ev.getPlayerName(), ev.getSource(1)).getColor())) {
+                    !ev.getColor().equals(getModel().getPlayerDiceFace(ev.getPlayerName(), ev.getSource(1)).getColor())) {
                 Log.w(getClass().getCanonicalName() + ": trying to move a dice of a wrong color");
                 return this;
             }
@@ -775,23 +778,23 @@ public class TurnState extends State {
      */
     private void sendLogEvent(String message) {
         getController().dispatchEvent(
-            new LogEvent(
-                this.getClass().getName(),
-                "",
-                "",
-                message
-            )
+                new LogEvent(
+                        this.getClass().getName(),
+                        "",
+                        "",
+                        message
+                )
         );
     }
 
     @Override
     public String toString() {
         return "TurnState{" +
-            "hasPlacedDice=" + hasPlacedDice +
-            ", hasUsedToolcard=" + hasUsedToolcard +
-            ", player=" + getModel().getCurrentPlayerName() +
-            ", round=" + getModel().getRound() +
-            ", firstTurn=" + getModel().isFirstTurnInRound() +
-            '}';
+                "hasPlacedDice=" + hasPlacedDice +
+                ", hasUsedToolcard=" + hasUsedToolcard +
+                ", player=" + getModel().getCurrentPlayerName() +
+                ", round=" + getModel().getRound() +
+                ", firstTurn=" + getModel().isFirstTurnInRound() +
+                '}';
     }
 }

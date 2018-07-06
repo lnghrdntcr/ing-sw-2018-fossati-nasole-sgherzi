@@ -2,21 +2,19 @@ package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.AskSchemaCardFaceEvent;
-import it.polimi.se2018.controller.controllerEvent.EndGameEvent;
 import it.polimi.se2018.controller.controllerEvent.ViewPlayerTimeoutEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
+import it.polimi.se2018.model.schema.GameColor;
 import it.polimi.se2018.model.schema_card.Side;
 import it.polimi.se2018.network.LocalProxy;
 import it.polimi.se2018.utils.Event;
-import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.View;
-import it.polimi.se2018.view.viewEvent.PlayerDisconnectedEvent;
-import it.polimi.se2018.view.viewEvent.SchemaCardSelectedEvent;
-import it.polimi.se2018.view.viewEvent.ViewEvent;
+import it.polimi.se2018.view.viewEvent.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -144,6 +142,42 @@ public class GameSetupStateTest {
             }
 
         }
+    }
+
+
+    @Test
+    public void handleOtherEvents() throws InterruptedException {
+        for (int i = 0; i < this.games.size(); i++) {
+
+            Controller actualController = this.games.get(i);
+
+            actualController.start();
+
+            Thread.sleep(100);
+
+            for(TestView tv: views.get(i)){
+                assertTrue(tv.wasAskSchemaCardFaceDelivered);
+                tv.dispatchEventToController(new CancelActionEvent("emitter", "", ""));
+                tv.dispatchEventToController(new ChangeDiceNumberEvent("emitter", "", "", 1, 1, 1 ));
+                tv.dispatchEventToController(new DiceActionEvent("emitter", "", "", 1, 1));
+                tv.dispatchEventToController(new DoubleMoveDiceEvent("emitter", "", "", 1, new Point(1, 1), new Point(1, 1), new Point(1, 1), new Point(1, 1)));
+                tv.dispatchEventToController(new DoubleMoveOfColorDiceEvent("emitter", "", "", 1, new Point(1, 1), new Point(1, 1), new Point(1, 1), new Point(1, 1), GameColor.RED));
+                tv.dispatchEventToController(new EndTurnEvent("emitter", "", ""));
+                tv.dispatchEventToController(new MoveDiceEvent("emitter", "", "", 2, new Point(1, 1), new Point(1, 1)));
+                tv.dispatchEventToController(new PlaceAnotherDiceEvent("emitter", "", "", 2, new Point(1, 1), 1));
+                tv.dispatchEventToController(new PlaceAnotherDiceSelectingNumberEvent("emitter", "", "", 2, new Point(1, 1), 1, 2));
+                tv.dispatchEventToController(new PlaceDiceEvent("emitter", "", "", 2, new Point(1, 1)));
+                tv.dispatchEventToController(new SwapDiceFaceWithDiceHolderEvent("emitter", "", "", 1, 1, 1, 1));
+            }
+
+            Thread.sleep(100);
+
+            for(TestView tv: views.get(i)){
+                assertNull(actualController.getModel().getPlayerSchemaCopy(tv.getPlayer()));
+            }
+
+        }
+
     }
 
     public class TestView extends View {

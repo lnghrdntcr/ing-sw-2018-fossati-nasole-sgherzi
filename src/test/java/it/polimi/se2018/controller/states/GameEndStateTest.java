@@ -11,6 +11,8 @@ import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.Settings;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.viewEvent.EndTurnEvent;
+import it.polimi.se2018.view.viewEvent.SchemaCardSelectedEvent;
+import it.polimi.se2018.view.viewEvent.ViewEvent;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 
 public class GameEndStateTest {
 
-    private ArrayList<ArrayList<View>> views;
+    private ArrayList<ArrayList<TestView>> views;
     private ArrayList<Controller> games;
     private ArrayList<GameTableMultiplayer> models;
     private ArrayList<TurnState> turnStates;
@@ -85,6 +87,7 @@ public class GameEndStateTest {
 
             for (int j = 0; j < 2 * views.get(i).size() * (Settings.TURNS) + views.get(i).size(); j++) {
                 actualTurnState = actualTurnState.handleEndTurnEvent(new EndTurnEvent(this.getClass().getName(), actualModel.getCurrentPlayerName(), ""));
+                actualTurnState = actualTurnState.handleSchemaCardSelectedEvent(new SchemaCardSelectedEvent("emitter", "",  views.get(i).get(0).getPlayer(), 0, Side.FRONT));
             }
 
             assertTrue(actualTurnState instanceof GameEndState);
@@ -110,6 +113,10 @@ public class GameEndStateTest {
         public TestView(String player, int numPlayers) {
             super(player);
             this.numPlayers = numPlayers;
+        }
+
+        public void dispatchEventToController(ViewEvent event){
+            notify(event);
         }
 
         @Override

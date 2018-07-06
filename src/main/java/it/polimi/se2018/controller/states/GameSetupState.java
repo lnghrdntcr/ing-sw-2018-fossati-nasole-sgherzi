@@ -25,10 +25,12 @@ public class GameSetupState extends State {
 
     private List<SchemaCard> schemaCardList;
 
-    public GameSetupState(Controller controller, GameTableMultiplayer model) {
+    public GameSetupState(Controller controller, GameTableMultiplayer model, boolean forceTestCard) {
         super(controller, model);
 
         try {
+            String path = Settings.getDefaultSchemaCardDatabase();
+            if(forceTestCard) path = "validTest_emptycard12.scf";
             schemaCardList = SchemaCard.loadSchemaCardsFromJson(Settings.getDefaultSchemaCardDatabase());
         } catch (FileNotFoundException e) {
             Log.e("SchemaCardFile " + Settings.getDefaultSchemaCardDatabase() + " not valid!");
