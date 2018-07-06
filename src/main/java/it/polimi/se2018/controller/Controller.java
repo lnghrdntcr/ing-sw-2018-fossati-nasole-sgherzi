@@ -267,6 +267,20 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     }
 
     /**
+     * Checks if there is a player remotely connected to this match
+     *
+     * @return true if there is still a player connected
+     */
+    public boolean isSomeoneStillThere() {
+        int i = 0;
+        for (View v : this.views) {
+            if (v.isConnected()) i++;
+        }
+
+        return i > 0;
+    }
+
+    /**
      * @return the model associated to this match
      */
     public GameTableMultiplayer getModel() {

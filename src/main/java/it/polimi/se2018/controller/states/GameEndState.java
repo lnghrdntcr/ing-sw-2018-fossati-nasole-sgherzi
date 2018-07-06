@@ -3,7 +3,9 @@ package it.polimi.se2018.controller.states;
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.EndGameEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
+import it.polimi.se2018.utils.Log;
 import it.polimi.se2018.utils.ScoreHolder;
+import it.polimi.se2018.view.viewEvent.PlayerDisconnectedEvent;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -100,4 +102,12 @@ public class GameEndState extends State {
 
     }
 
+    @Override
+    public State handlePlayerDisconnected(PlayerDisconnectedEvent playerDisconnectedEvent) {
+        if(! getController().isSomeoneStillThere()){
+            Log.i("All players disconnected, closing the game...");
+            System.exit(0);
+        }
+        return this;
+    }
 }

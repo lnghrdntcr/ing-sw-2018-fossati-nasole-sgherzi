@@ -339,6 +339,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
     public static void main(String args[]) throws IOException {
         CLIPrinter.setup();
         String path = null;
+        Log.logLevel=true;
 
         if (args.length == 4) {
             // It means that also the external config file is passed as an argument... maybe.
