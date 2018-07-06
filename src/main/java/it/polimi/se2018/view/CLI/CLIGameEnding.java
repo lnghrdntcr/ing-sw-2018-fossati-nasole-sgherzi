@@ -3,6 +3,7 @@ package it.polimi.se2018.view.CLI;
 import it.polimi.se2018.controller.controllerEvent.EndGameEvent;
 import it.polimi.se2018.utils.LeaderBoardHolder;
 import it.polimi.se2018.utils.ScoreHolder;
+import it.polimi.se2018.utils.Utils;
 import it.polimi.se2018.view.GameEnding;
 import it.polimi.se2018.view.RemoteView;
 
@@ -29,11 +30,16 @@ public class CLIGameEnding extends GameEnding implements InputListenerThread.Inp
         }
 
         CLIPrinter.printInfo("LeaderBoard: ");
+
+        for (int i = 0; i < getGlobalLeaderboardUnpacked().size(); i++) {
+            CLIPrinter.printInfo(Utils.decodeCardinalNumber(i + 1) + "Player: " + getGlobalLeaderboardUnpacked().get(i).getName());
+            CLIPrinter.printInfo("\tVictories " + getGlobalLeaderboardUnpacked().get(i).getScores().optInt("victories", 0));
+            CLIPrinter.printInfo("\tLosses " + getGlobalLeaderboardUnpacked().get(i).getScores().optInt("losses", 0));
+            CLIPrinter.printInfo("\tTotal time played " + getGlobalLeaderboardUnpacked().get(i).getScores().optInt("totalTimePlayed", 0));
+        }
+
         for (LeaderBoardHolder lbh: getGlobalLeaderboardUnpacked()){
-            CLIPrinter.printInfo("Player: " + lbh.getName());
-            CLIPrinter.printInfo("\tVictories " + lbh.getScores().optInt("victories", 0));
-            CLIPrinter.printInfo("\tLosses " + lbh.getScores().optInt("losses", 0));
-            CLIPrinter.printInfo("\tTotal time played " + lbh.getScores().optInt("totalTimePlayed", 0));
+
         }
 
         System.exit(0);
