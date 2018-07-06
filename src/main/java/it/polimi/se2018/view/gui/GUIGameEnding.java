@@ -1,6 +1,7 @@
 package it.polimi.se2018.view.gui;
 
 import it.polimi.se2018.controller.controllerEvent.EndGameEvent;
+import it.polimi.se2018.utils.LeaderBoardHolder;
 import it.polimi.se2018.utils.ScoreHolder;
 import it.polimi.se2018.view.GameEnding;
 import it.polimi.se2018.view.RemoteView;
@@ -101,14 +102,14 @@ public class GUIGameEnding extends GameEnding {
 
             }
 
-            for (String key : getGlobalLeaderBoard().keySet()) {
+            for (LeaderBoardHolder lbh: getGlobalLeaderboardUnpacked()){
 
                 Label label = new Label();
 
-                label.setText("Player: " + key
-                    + " Victories: " + getGlobalLeaderBoard().getJSONObject(key).optInt("victories", 0)
-                    + " Losses: " + getGlobalLeaderBoard().getJSONObject(key).optInt("losses", 0)
-                    + " Total time played: " + getGlobalLeaderBoard().getJSONObject(key).optInt("totalTimePlayed", 0));
+                label.setText("Player: " + lbh.getName()
+                    + " Victories: " + lbh.getScores().optInt("victories", 0)
+                    + " Losses: " + lbh.getScores().optInt("losses", 0)
+                    + " Total time played: " + lbh.getScores().optInt("totalTimePlayed", 0));
 
                 globalStats.getChildren().add(label);
 
