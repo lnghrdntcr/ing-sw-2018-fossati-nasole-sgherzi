@@ -2,6 +2,7 @@ package it.polimi.se2018.controller.states;
 
 import it.polimi.se2018.controller.Controller;
 import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceEvent;
+import it.polimi.se2018.controller.controllerEvent.AskPlaceRedrawDiceWithNumberSelectionEvent;
 import it.polimi.se2018.controller.controllerEvent.AskSchemaCardFaceEvent;
 import it.polimi.se2018.model.GameTableMultiplayer;
 import it.polimi.se2018.model.schema.DiceFace;
@@ -320,22 +321,22 @@ public class TurnStateTest {
         testView.dispatchEventToController(new SwapDiceFaceWithDiceHolderEvent("test", "", testView.getPlayer(), 0, 0, 0, 0));
         Thread.sleep(500);
 
-        DiceFace newDiceFaceOnDraftBoard = actualController.getModel().getDiceFaceByIndex(actualController.getModel().getDiceNumberOnDraftBoard()-1);
-        DiceFace newDiceFaceOnTurnOlder = actualController.getModel().getImmutableDiceHolder().getDiceFaces(0)[actualController.getModel().getImmutableDiceHolder().getDiceFaces(0).length-1];
+        DiceFace newDiceFaceOnDraftBoard = actualController.getModel().getDiceFaceByIndex(actualController.getModel().getDiceNumberOnDraftBoard() - 1);
+        DiceFace newDiceFaceOnTurnOlder = actualController.getModel().getImmutableDiceHolder().getDiceFaces(0)[actualController.getModel().getImmutableDiceHolder().getDiceFaces(0).length - 1];
 
 
-        assertEquals(oldDiceFaceOnDraftBoard.getColor(), newDiceFaceOnTurnOlder.getColor() );
-        assertEquals(oldDiceFaceOnDraftBoard.getNumber(), newDiceFaceOnTurnOlder.getNumber() );
+        assertEquals(oldDiceFaceOnDraftBoard.getColor(), newDiceFaceOnTurnOlder.getColor());
+        assertEquals(oldDiceFaceOnDraftBoard.getNumber(), newDiceFaceOnTurnOlder.getNumber());
 
-        assertEquals(oldDiceFaceOnTurnOlder.getColor(), newDiceFaceOnDraftBoard.getColor() );
-        assertEquals(oldDiceFaceOnTurnOlder.getNumber(), newDiceFaceOnDraftBoard.getNumber() );
+        assertEquals(oldDiceFaceOnTurnOlder.getColor(), newDiceFaceOnDraftBoard.getColor());
+        assertEquals(oldDiceFaceOnTurnOlder.getNumber(), newDiceFaceOnDraftBoard.getNumber());
         assertEquals(1, actualController.getModel().getToolCardByPosition(0).getToken());
         testView.dispatchEventToController(new EndTurnEvent("test", testView.getPlayer(), ""));
 
         //==========Gavel==========
         testView = views.get(0);
         ArrayList<DiceFace> diceFaces = new ArrayList<>();
-        for(int i=0; i<actualController.getModel().getDiceNumberOnDraftBoard(); i++){
+        for (int i = 0; i < actualController.getModel().getDiceNumberOnDraftBoard(); i++) {
             diceFaces.add(actualController.getModel().getDiceFaceByIndex(i));
         }
         testView.dispatchEventToController(new DiceActionEvent("test", "", testView.getPlayer(), 1, -1));
@@ -343,29 +344,29 @@ public class TurnStateTest {
         Thread.sleep(1000);
         assertEquals(0, actualController.getModel().getToolCardByPosition(1).getToken());
         //cannot use in first turn
-        for(int i=0; i<actualController.getModel().getDiceNumberOnDraftBoard(); i++){
+        for (int i = 0; i < actualController.getModel().getDiceNumberOnDraftBoard(); i++) {
             assertEquals(diceFaces.get(i).getColor(), actualController.getModel().getDiceFaceByIndex(i).getColor());
             assertEquals(diceFaces.get(i).getNumber(), actualController.getModel().getDiceFaceByIndex(i).getNumber());
         }
         testView.dispatchEventToController(new EndTurnEvent("test", testView.getPlayer(), ""));
 
 
-
         testView.dispatchEventToController(new DiceActionEvent("test", "", testView.getPlayer(), 1, -1));
         Thread.sleep(1000);
 
         //at least one change....?
-        int changes=0;
-        for(int i=0; i<actualController.getModel().getDiceNumberOnDraftBoard(); i++){
-            if(diceFaces.get(i).getColor()!= actualController.getModel().getDiceFaceByIndex(i).getColor())changes++;
-            if(diceFaces.get(i).getNumber()!=actualController.getModel().getDiceFaceByIndex(i).getNumber())changes++;
+        int changes = 0;
+        for (int i = 0; i < actualController.getModel().getDiceNumberOnDraftBoard(); i++) {
+            if (diceFaces.get(i).getColor() != actualController.getModel().getDiceFaceByIndex(i).getColor()) changes++;
+            if (diceFaces.get(i).getNumber() != actualController.getModel().getDiceFaceByIndex(i).getNumber())
+                changes++;
         }
 
-        if(changes==0){
+        if (changes == 0) {
             Log.w("0 changes after Gavel, it can be, but try to run the tests again for correctness!");
         }
         testView.dispatchEventToController(new EndTurnEvent("test", testView.getPlayer(), ""));
-        Log.i("PLAYERSCHEMACARDFACE"+actualController.getModel().getPlayerSchemacardFace(testView.getPlayer()).getName());
+        Log.i("PLAYERSCHEMACARDFACE " + actualController.getModel().getPlayerSchemacardFace(testView.getPlayer()).getName());
         Thread.sleep(1000);
         //==========CorkRow==========
         testView = views.get(1);
@@ -377,9 +378,321 @@ public class TurnStateTest {
     }
 
 
+    @Test
+    public void toolcardTest_2() throws InterruptedException {
+
+
+        ArrayList<TestView> views = new ArrayList<>();
+
+        for (int j = 0; j < 2; j++) {
+            views.add(new TestView("Player" + j, 2));
+        }
+
+        Controller actualController = new Controller(views, 100000, new String[]{"EglomiseBrush", "CopperReamer", "Lathekin"});
+        actualController.start();
+
+        Thread.sleep(100);
+
+        for (TestView tv : views) {
+            assertTrue(tv.wasAskSchemaCardFaceDelivered);
+            tv.dispatchEventToController(new SchemaCardSelectedEvent("test", "", tv.getPlayer(), 0, Side.FRONT));
+        }
+
+        Thread.sleep(100);
+
+        //==========EglomiseBrush==========
+        int secondIndex = -1;
+        do {
+            actualController.getModel().redrawAllDice();
+            for (int i = 1; i < actualController.getModel().getDiceNumberOnDraftBoard(); i++) {
+                if (actualController.getModel().getDiceFaceByIndex(0).getColor() != actualController.getModel().getDiceFaceByIndex(i).getColor() &&
+                        actualController.getModel().getDiceFaceByIndex(0).getNumber() != actualController.getModel().getDiceFaceByIndex(i).getNumber()) {
+                    secondIndex = i;
+                }
+            }
+        } while (secondIndex == -1);
+
+        DiceFace diceFace1 = actualController.getModel().getDiceFaceByIndex(0);
+        DiceFace diceFace2 = actualController.getModel().getDiceFaceByIndex(secondIndex);
+
+        TestView testView = views.get(0);
+        testView.dispatchEventToController(new PlaceDiceEvent("test", "", testView.getPlayer(), 0, new Point(0, 0)));
+        testView.dispatchEventToController(new EndTurnEvent("test", testView.getPlayer(), ""));
+
+        testView = views.get(1);
+        testView.dispatchEventToController(new EndTurnEvent("test", testView.getPlayer(), ""));
+        testView.dispatchEventToController(new EndTurnEvent("test", testView.getPlayer(), ""));
+
+        testView = views.get(0);
+        testView.dispatchEventToController(new PlaceDiceEvent("test", "", testView.getPlayer(), secondIndex - 1, new Point(1, 0)));
+
+        Thread.sleep(500);
+
+        assertEquals(diceFace1.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(0, 0)).getNumber());
+        assertEquals(diceFace1.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(0, 0)).getColor());
+
+        assertEquals(diceFace2.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 0)).getNumber());
+        assertEquals(diceFace2.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 0)).getColor());
+
+
+        testView.dispatchEventToController(new MoveDiceEvent("test", "", testView.getPlayer(), 0, new Point(0, 0), new Point(1, 1)));
+        Thread.sleep(500);
+
+        assertEquals(diceFace1.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 1)).getNumber());
+        assertEquals(diceFace1.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 1)).getColor());
+
+        assertEquals(diceFace2.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 0)).getNumber());
+        assertEquals(diceFace2.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 0)).getColor());
+    }
+
+
+    @Test
+    public void toolcardTest_3() throws InterruptedException {
+
+
+        ArrayList<TestView> views = new ArrayList<>();
+
+        for (int j = 0; j < 2; j++) {
+            views.add(new TestView("Player" + j, 2));
+        }
+
+        Controller actualController = new Controller(views, 100000, new String[]{"EglomiseBrush", "CopperReamer", "Lathekin"});
+        actualController.start();
+
+        Thread.sleep(100);
+
+        for (TestView tv : views) {
+            assertTrue(tv.wasAskSchemaCardFaceDelivered);
+            tv.dispatchEventToController(new SchemaCardSelectedEvent("test", "", tv.getPlayer(), 0, Side.FRONT));
+        }
+
+        Thread.sleep(100);
+
+        //==========CopperReamer==========
+        int secondIndex = -1;
+        do {
+            actualController.getModel().redrawAllDice();
+            for (int i = 1; i < actualController.getModel().getDiceNumberOnDraftBoard(); i++) {
+                if (actualController.getModel().getDiceFaceByIndex(0).getColor() != actualController.getModel().getDiceFaceByIndex(i).getColor() &&
+                        actualController.getModel().getDiceFaceByIndex(0).getNumber() != actualController.getModel().getDiceFaceByIndex(i).getNumber()) {
+                    secondIndex = i;
+                }
+            }
+        } while (secondIndex == -1);
+
+        DiceFace diceFace1 = actualController.getModel().getDiceFaceByIndex(0);
+        DiceFace diceFace2 = actualController.getModel().getDiceFaceByIndex(secondIndex);
+
+        TestView testView = views.get(0);
+        testView.dispatchEventToController(new PlaceDiceEvent("test", "", testView.getPlayer(), 0, new Point(0, 0)));
+        testView.dispatchEventToController(new EndTurnEvent("test", testView.getPlayer(), ""));
+
+        testView = views.get(1);
+        testView.dispatchEventToController(new EndTurnEvent("test", testView.getPlayer(), ""));
+        testView.dispatchEventToController(new EndTurnEvent("test", testView.getPlayer(), ""));
+
+        testView = views.get(0);
+        testView.dispatchEventToController(new PlaceDiceEvent("test", "", testView.getPlayer(), secondIndex - 1, new Point(1, 0)));
+
+        Thread.sleep(500);
+
+        assertEquals(diceFace1.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(0, 0)).getNumber());
+        assertEquals(diceFace1.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(0, 0)).getColor());
+
+        assertEquals(diceFace2.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 0)).getNumber());
+        assertEquals(diceFace2.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 0)).getColor());
+
+
+        testView.dispatchEventToController(new MoveDiceEvent("test", "", testView.getPlayer(), 1, new Point(0, 0), new Point(1, 1)));
+        Thread.sleep(500);
+
+        assertEquals(diceFace1.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 1)).getNumber());
+        assertEquals(diceFace1.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 1)).getColor());
+
+        assertEquals(diceFace2.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 0)).getNumber());
+        assertEquals(diceFace2.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 0)).getColor());
+    }
+
+    @Test
+    public void toolcardTest_4() throws InterruptedException {
+
+
+        ArrayList<TestView> views = new ArrayList<>();
+
+        for (int j = 0; j < 2; j++) {
+            views.add(new TestView("Player" + j, 2));
+        }
+
+        Controller actualController = new Controller(views, 100000, new String[]{"EglomiseBrush", "CopperReamer", "Lathekin"});
+        actualController.start();
+
+        Thread.sleep(100);
+
+        for (TestView tv : views) {
+            assertTrue(tv.wasAskSchemaCardFaceDelivered);
+            tv.dispatchEventToController(new SchemaCardSelectedEvent("test", "", tv.getPlayer(), 0, Side.FRONT));
+        }
+
+        Thread.sleep(100);
+
+        //==========Lathekin==========
+        int secondIndex = -1;
+        do {
+            actualController.getModel().redrawAllDice();
+            for (int i = 1; i < actualController.getModel().getDiceNumberOnDraftBoard(); i++) {
+                if (actualController.getModel().getDiceFaceByIndex(0).getColor() != actualController.getModel().getDiceFaceByIndex(i).getColor() &&
+                        actualController.getModel().getDiceFaceByIndex(0).getNumber() != actualController.getModel().getDiceFaceByIndex(i).getNumber()) {
+                    secondIndex = i;
+                }
+            }
+        } while (secondIndex == -1);
+
+        DiceFace diceFace1 = actualController.getModel().getDiceFaceByIndex(0);
+        DiceFace diceFace2 = actualController.getModel().getDiceFaceByIndex(secondIndex);
+
+        TestView testView = views.get(0);
+        testView.dispatchEventToController(new PlaceDiceEvent("test", "", testView.getPlayer(), 0, new Point(0, 0)));
+        testView.dispatchEventToController(new EndTurnEvent("test", testView.getPlayer(), ""));
+
+        testView = views.get(1);
+        testView.dispatchEventToController(new EndTurnEvent("test", testView.getPlayer(), ""));
+        testView.dispatchEventToController(new EndTurnEvent("test", testView.getPlayer(), ""));
+
+        testView = views.get(0);
+        testView.dispatchEventToController(new PlaceDiceEvent("test", "", testView.getPlayer(), secondIndex - 1, new Point(1, 0)));
+
+        Thread.sleep(500);
+
+        assertEquals(diceFace1.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(0, 0)).getNumber());
+        assertEquals(diceFace1.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(0, 0)).getColor());
+
+        assertEquals(diceFace2.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 0)).getNumber());
+        assertEquals(diceFace2.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 0)).getColor());
+
+
+        testView.dispatchEventToController(new DoubleMoveDiceEvent("test", "", testView.getPlayer(), 2, new Point(0, 0), new Point(1, 1), new Point(1, 0), new Point(2, 1)));
+        Thread.sleep(500);
+
+        assertEquals(diceFace1.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 1)).getNumber());
+        assertEquals(diceFace1.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 1)).getColor());
+
+        assertEquals(diceFace2.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(2, 1)).getNumber());
+        assertEquals(diceFace2.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(2, 1)).getColor());
+    }
+
+
+    @Test
+    public void toolcardTest_8() throws InterruptedException {
+
+
+        ArrayList<TestView> views = new ArrayList<>();
+
+        for (int j = 0; j < 2; j++) {
+            views.add(new TestView("Player" + j, 2));
+        }
+
+        Controller actualController = new Controller(views, 100000, new String[]{"WheeledPincer", "FirmPastaDiluent", "ManualCutter"});
+        actualController.start();
+
+        Thread.sleep(100);
+
+        for (TestView tv : views) {
+            assertTrue(tv.wasAskSchemaCardFaceDelivered);
+            tv.dispatchEventToController(new SchemaCardSelectedEvent("test", "", tv.getPlayer(), 0, Side.FRONT));
+        }
+
+        Thread.sleep(100);
+
+        //==========WheeledPincer==========
+        int secondIndex = -1;
+        do {
+            actualController.getModel().redrawAllDice();
+            for (int i = 1; i < actualController.getModel().getDiceNumberOnDraftBoard(); i++) {
+                if (actualController.getModel().getDiceFaceByIndex(0).getColor() != actualController.getModel().getDiceFaceByIndex(i).getColor() &&
+                        actualController.getModel().getDiceFaceByIndex(0).getNumber() != actualController.getModel().getDiceFaceByIndex(i).getNumber()) {
+                    secondIndex = i;
+                }
+            }
+        } while (secondIndex == -1);
+
+        DiceFace diceFace1 = actualController.getModel().getDiceFaceByIndex(0);
+        DiceFace diceFace2 = actualController.getModel().getDiceFaceByIndex(secondIndex);
+
+        TestView testView = views.get(0);
+        testView.dispatchEventToController(new PlaceDiceEvent("test", "", testView.getPlayer(), 0, new Point(0, 0)));
+        Thread.sleep(500);
+
+
+        testView.dispatchEventToController(new PlaceAnotherDiceEvent("test", "", testView.getPlayer(), 0, new Point(1, 0), secondIndex-1));
+
+        Thread.sleep(500);
+
+        assertEquals(diceFace1.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(0, 0)).getNumber());
+        assertEquals(diceFace1.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(0, 0)).getColor());
+
+        assertEquals(diceFace2.getNumber(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 0)).getNumber());
+        assertEquals(diceFace2.getColor(), actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(1, 0)).getColor());
+
+
+    }
+
+    @Test
+    public void toolcardTest_11() throws InterruptedException {
+
+
+        ArrayList<TestView> views = new ArrayList<>();
+
+        for (int j = 0; j < 2; j++) {
+            views.add(new TestView("Player" + j, 2));
+        }
+
+        Controller actualController = new Controller(views, 100000, new String[]{"WheeledPincer", "FirmPastaDiluent", "ManualCutter"});
+        actualController.start();
+
+        Thread.sleep(100);
+
+        for (TestView tv : views) {
+            assertTrue(tv.wasAskSchemaCardFaceDelivered);
+            tv.dispatchEventToController(new SchemaCardSelectedEvent("test", "", tv.getPlayer(), 0, Side.FRONT));
+        }
+
+        Thread.sleep(100);
+
+        //==========FirmPastaDiluent==========
+        TestView testView = views.get(0);
+        ArrayList<DiceFace> diceFaces = new ArrayList<>();
+        for (int i = 0; i < actualController.getModel().getDiceNumberOnDraftBoard(); i++) {
+            diceFaces.add(actualController.getModel().getDiceFaceByIndex(i));
+        }
+
+
+
+
+        testView.dispatchEventToController(new DiceActionEvent("test", "", testView.getPlayer(), 1, 0));
+        Thread.sleep(200);
+
+        //other dices remain the same
+        for (int i = 0; i < actualController.getModel().getDiceNumberOnDraftBoard()-1; i++) {
+            assertEquals(diceFaces.get(i+1).getColor(), actualController.getModel().getDiceFaceByIndex(i).getColor());
+            assertEquals(diceFaces.get(i+1).getNumber(), actualController.getModel().getDiceFaceByIndex(i).getNumber());
+        }
+
+        if(testView.placed){
+            assertNotNull(actualController.getModel().getPlayerSchemaCopy(testView.getPlayer()).getDiceFace(new Point(0, 0)).getColor());
+        }
+
+
+
+
+    }
+
+
     public class TestView extends View {
 
         private final int numPlayers;
+
+
+        public boolean placed=false;
 
         public boolean wasAskSchemaCardFaceDelivered = false;
 
@@ -390,7 +703,7 @@ public class TurnStateTest {
 
         @Override
         public void update(Event message) {
-            if(!message.getReceiver().equals(getPlayer()))return;
+            if (!message.getReceiver().equals(getPlayer())) return;
             //Log.d("TESTVIEW " + message.toString());
             if (message instanceof AskSchemaCardFaceEvent) {
                 wasAskSchemaCardFaceDelivered = true;
@@ -400,6 +713,13 @@ public class TurnStateTest {
                 AskPlaceRedrawDiceEvent event = (AskPlaceRedrawDiceEvent) message;
                 Log.i("Replying to AskPlaceRedrawDiceEvent");
                 dispatchEventToController(new PlaceAnotherDiceEvent("test", "", getPlayer(), 2, new Point(0, 0), event.getDiceIndex()));
+            }
+
+            if(message instanceof AskPlaceRedrawDiceWithNumberSelectionEvent){
+                AskPlaceRedrawDiceWithNumberSelectionEvent event = (AskPlaceRedrawDiceWithNumberSelectionEvent) message;
+                Log.i("Replying to AskPlaceRedrawDiceEvent");
+                dispatchEventToController(new PlaceAnotherDiceSelectingNumberEvent("test", "", getPlayer(), 2, new Point(0, 0), event.getDiceIndex(), 1));
+                placed=true;
             }
         }
 
