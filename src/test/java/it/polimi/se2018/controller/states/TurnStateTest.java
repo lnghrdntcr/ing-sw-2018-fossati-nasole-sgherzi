@@ -24,10 +24,10 @@ import static org.junit.Assert.*;
 
 public class TurnStateTest {
 
-    ArrayList<View> views;
-    ArrayList<Controller> games;
-    ArrayList<GameTableMultiplayer> models;
-    ArrayList<TurnState> turnStates;
+    private ArrayList<ArrayList<View>> views;
+    private ArrayList<Controller> games;
+    private ArrayList<GameTableMultiplayer> models;
+    private ArrayList<TurnState> turnStates;
 
 
     @Before
@@ -36,17 +36,16 @@ public class TurnStateTest {
         this.games = new ArrayList<>();
         this.models = new ArrayList<>();
         this.turnStates = new ArrayList<>();
+        this.views= new ArrayList<>();
 
         for (int i = Settings.MIN_NUM_PLAYERS; i <= Settings.MAX_NUM_PLAYERS; i++) {
-            //I don't get what this is. I actually think it goes here,
-            // because of the second for loop creating duplicates otherwise.
-            this.views = new ArrayList<>();
+            this.views.add(new ArrayList<>());
 
             for (int j = 0; j < i; j++) {
-                this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
+                this.views.get(i-Settings.MIN_NUM_PLAYERS).add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            Controller actualController = new Controller(this.views, 10);
+            Controller actualController = new Controller(this.views.get(i-Settings.MIN_NUM_PLAYERS), 10);
 
             this.games.add(actualController);
             this.models.add(actualController.getModel());
@@ -71,6 +70,7 @@ public class TurnStateTest {
 
             try {
                 actualTurnState.handleEndTurnEvent(null);
+                fail();
             } catch (IllegalArgumentException ignore) {
                 Log.i("Null event thrown as expected.");
             }
@@ -172,7 +172,7 @@ public class TurnStateTest {
                     actualModel.getPlayersName()[1], ""));
             assertEquals(newState, actualTurnState);
 
-            for (int j = 0; j < views.size(); j++) {
+            for (int j = 0; j < views.get(i).size(); j++) {
 
                 actualModel.setPlayerSchema("Player" + j, schemaCardFace);
 
@@ -187,7 +187,7 @@ public class TurnStateTest {
                 assertFalse(newState.isDicePlaced());
             }
 
-            for (int j = 0; j < 2 * views.size() * 9 + views.size(); j++) {
+            for (int j = 0; j < 2 * views.get(i).size() * (Settings.TURNS-1) + views.get(i).size(); j++) {
                 newState = (TurnState) actualTurnState.handleEndTurnEvent(new EndTurnEvent(this.getClass().getName(), actualModel.getCurrentPlayerName(), ""));
             }
             assertFalse(actualModel.hasNextTurn());

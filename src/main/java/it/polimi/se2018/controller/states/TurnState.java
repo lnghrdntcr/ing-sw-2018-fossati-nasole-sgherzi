@@ -274,9 +274,7 @@ public class TurnState extends State {
     @Override
     public State handleEndTurnEvent(EndTurnEvent event) {
         Log.d(getClass().getCanonicalName() + " handling EndTurnEvent...");
-
-        if (getModel() == null)
-            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Model cannot be null");
+        if(event==null)throw new IllegalArgumentException("Event cannot be null!");
 
         if (!getModel().getCurrentPlayerName().equals(event.getPlayerName())) {
             Log.w(event.getPlayerName() + "Only the current player can end its turn!");
@@ -317,7 +315,7 @@ public class TurnState extends State {
      *
      * @return true if it has, false otherwise
      */
-    public boolean isDicePlaced() {
+    boolean isDicePlaced() {
         return this.hasPlacedDice;
     }
 
@@ -326,7 +324,7 @@ public class TurnState extends State {
      *
      * @return true if it has, false otherwise
      */
-    public boolean isToolcardUsed() {
+    boolean isToolcardUsed() {
         return this.hasUsedToolcard;
     }
 
