@@ -337,7 +337,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
 
 
     public static void main(String args[]) throws IOException {
-
+        CLIPrinter.setup();
         String path = null;
 
         if (args.length == 4) {
