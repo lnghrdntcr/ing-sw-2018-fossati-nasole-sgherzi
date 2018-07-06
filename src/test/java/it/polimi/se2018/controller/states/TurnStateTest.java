@@ -49,7 +49,7 @@ public class TurnStateTest {
                 this.views.get(i - Settings.MIN_NUM_PLAYERS).add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            Controller actualController = new Controller(this.views.get(i - Settings.MIN_NUM_PLAYERS), 10);
+            Controller actualController = new Controller(this.views.get(i - Settings.MIN_NUM_PLAYERS), 100000);
 
             this.games.add(actualController);
             this.models.add(actualController.getModel());

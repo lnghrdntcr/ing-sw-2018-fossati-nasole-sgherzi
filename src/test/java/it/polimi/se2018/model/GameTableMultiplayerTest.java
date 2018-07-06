@@ -34,7 +34,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             for (int j = 0; j < i; j++) {
@@ -55,7 +55,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             // As the "truthfulness" of the ToolCards cannot be tested (they are picked up random)
@@ -91,7 +91,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             // As the "truthfulness" of the PublicObjectivesCard cannot be tested (they are picked up random)
@@ -138,7 +138,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
@@ -168,7 +168,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             // Setting the schema card face is needed as the player has to get the token before using them. (u don't say?)
@@ -225,7 +225,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             // Draw the dices
@@ -280,7 +280,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             // Draw the dices
@@ -326,7 +326,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             // Draw the dices
@@ -354,7 +354,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             // Draw the dices
@@ -404,7 +404,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             //angelo: maybe this is already the second time I invoke this, due to intern calls?
@@ -434,7 +434,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             // Draw the dices
@@ -471,7 +471,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             // Draw the dices
@@ -523,7 +523,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             for (int j = 0; j < i; j++) {
@@ -554,7 +554,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             // Draw the dices
@@ -608,7 +608,7 @@ public class GameTableMultiplayerTest {
                 players.add("Player" + j);
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             assertTrue(Arrays.equals(players.toArray(), this.model.getPlayersName()));
@@ -630,7 +630,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
@@ -658,7 +658,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             for (int j = 0; j < i; j++) {
@@ -699,7 +699,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);
@@ -741,7 +741,7 @@ public class GameTableMultiplayerTest {
                 this.views.add(new RemoteView("Player" + j, RemoteView.Graphics.CLI));
             }
 
-            this.controller = new Controller(this.views, 10);
+            this.controller = new Controller(this.views, 100000);
             this.model = controller.getModel();
 
             SchemaCardFace schemaCardFace = SchemaCard.loadSchemaCardsFromJson("gameData/tests/validTest_emptycard.scf").get(0).getFace(Side.FRONT);

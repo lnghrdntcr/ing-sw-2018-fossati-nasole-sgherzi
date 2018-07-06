@@ -43,7 +43,7 @@ public class GameSetupStateTest {
                 this.views.get(i - Settings.MIN_NUM_PLAYERS).add(new TestView("Player" + j, i));
             }
 
-            Controller actualController = new Controller(this.views.get(i - Settings.MIN_NUM_PLAYERS), 10000);
+            Controller actualController = new Controller(this.views.get(i - Settings.MIN_NUM_PLAYERS), 100000);
 
             this.games.add(actualController);
             this.models.add(actualController.getModel());
@@ -67,14 +67,14 @@ public class GameSetupStateTest {
 
             actualController.start();
 
-            Thread.sleep(100);
+            Thread.sleep(1000);
 
             for(TestView tv: views.get(i)){
                 assertTrue(tv.wasAskSchemaCardFaceDelivered);
                 tv.dispatchEventToController(new SchemaCardSelectedEvent("test", "", tv.getPlayer(), 0, Side.FRONT));
             }
 
-            Thread.sleep(100);
+            Thread.sleep(1000);
 
             for(TestView tv: views.get(i)){
                 assertNotNull(actualController.getModel().getPlayerSchemacardFace(tv.getPlayer()));
@@ -83,7 +83,6 @@ public class GameSetupStateTest {
 
         }
     }
-
     @Test
     public void syncPlayer() throws InterruptedException {
         for (int i = 0; i < this.games.size(); i++) {
