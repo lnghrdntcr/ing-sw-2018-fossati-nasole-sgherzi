@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -44,7 +45,7 @@
             </VBox>
          </children>
       </HBox>
-      <HBox alignment="TOP_CENTER" prefWidth="300.0" style="-fx-border-radius: 5; -fx-border-width: 5; -fx-border-color: white;">
+      <HBox alignment="TOP_CENTER" prefHeight="250.0" prefWidth="550.0" style="-fx-border-radius: 5; -fx-border-width: 5; -fx-border-color: white;">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -52,15 +53,19 @@
             <Insets bottom="5.0" left="15.0" right="15.0" top="20.0" />
          </VBox.margin>
          <children>
-            <VBox fx:id="globalStats" alignment="TOP_CENTER" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label text="Global Stats">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
+            <ScrollPane HBox.hgrow="ALWAYS">
+               <content>
+                  <VBox fx:id="globalStats" alignment="TOP_CENTER" prefHeight="21.0" prefWidth="536.0" style="-fx-background-color: white;">
+                     <children>
+                        <Label text="Global Stats">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
          </children>
       </HBox>
    </children>
