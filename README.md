@@ -5,11 +5,6 @@
 * Angelo Nasole
 * Nicola Fossati
 
-## TODO
-* finire i test
-* aggiungere caricamento schema card da cartella resources (usando getResources)
-* Eliminare un evento mettendo parametro default (Placeanotherdicewithnumberselection) e guardare anche stati
-* 
 
 ## Caratteristiche file JSON per le carte schema
 Il file JSON deve essere un array di oggetti. Ogni oggetto deve avere due elementi di tipo SchemaCardFace: uno associato
@@ -46,18 +41,13 @@ Il file JSON deve essere un array di oggetti. Ogni oggetto deve avere due elemen
   * "" = nessuna restrizione
   * "1" = restrizione numerica, da 1 a 6
   * "BLUE" = restrizione per colore, come codificate in Enum GameColor
-  
-  #Tested toolcards:
-  * Tampone diamantato
-  * Eglomise brush
-  * Wheeled Pincer
-  * Cork row
-  * Firm pasta diluent
-  * Firm pasta brush
-  * Copper reamer
-  * Gavel
-  * Circular Cutter
-  * Lathekin
-  * RoughingNipper
-  * 
-  
+
+## Sonarqube
+
+![Overall results](deliveries/final/SonarQube%20Final%20-%20Global.png)
+![Testing results](deliveries/final/SonarQube%20Final%20-%20Testing.png)
+
+## UML
+
+[Final UML Model + Controller + Network](/deliveries/final/FinalUmlModel%2BController%2BNetwork.pdf)
+[View UML](deliveries/final/ViewUML.pdf)
