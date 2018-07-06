@@ -211,8 +211,13 @@ public class GUIPlaceDice extends AbstractPlaceDiceState implements DraftBoard.O
 
     @Override
     public void unrealize() {
-        if (root == null) return;
-        ((Stage) (root.getScene().getWindow())).close();
+        if (root != null) {
+            Platform.runLater(() -> {
+                Stage stage = (Stage) root.getScene().getWindow();
+                stage.close();
+                root = null;
+            });
+        }
     }
 
     @Override
