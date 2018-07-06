@@ -1,5 +1,6 @@
 package it.polimi.se2018.view.gui;
 
+import it.polimi.se2018.utils.Log;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -21,22 +22,32 @@ public class GUILogger extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        MediaView mediaView=null;
+        try {
+            Media media = new Media(getClass().getClassLoader().getResource("gui/miguel.mp3").toExternalForm());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setAutoPlay(true);
+            mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+             mediaView = new MediaView(mediaPlayer);
+        } catch (Exception e) {
+            Log.e("Cannot play ambient music: "+e.getMessage());
+        }
 
-        Scene scene = new Scene(new HBox(new Label("LOL")));
+
+        HBox hBox = new HBox(new Label("Playing music..."));
+
+        if(mediaView!=null){
+            hBox.getChildren().add(mediaView);
+        }
+
+        Scene scene = new Scene(hBox);
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
 
         primaryStage.show();
 
 
-        try {
-            Media media = new Media(getClass().getClassLoader().getResource("gui/miguel.mp3").toExternalForm());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.setAutoPlay(true);
-            mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
-            MediaView mediaView = new MediaView(mediaPlayer);
-        } catch (Exception ignored) {
-        }
+
 
     }
 
