@@ -19,7 +19,7 @@ public class SchemaChangedEventTest {
 
     @Test
     public void serializationTest() throws ClassNotFoundException, FileNotFoundException {
-        List<SchemaCard> schemaCards = SchemaCard.loadSchemaCardsFromJson(Settings.getDefaultSchemaCardDatabase());
+        List<SchemaCard> schemaCards = SchemaCard.loadSchemaCardsFromJson("gameData/tests/schemaCards/schemaCardBase.scf");
 
         Schema schema = new Schema(schemaCards.get(0).getFace(Side.FRONT));
 

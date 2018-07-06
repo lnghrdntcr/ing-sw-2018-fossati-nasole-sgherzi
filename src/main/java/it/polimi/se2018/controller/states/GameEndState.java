@@ -41,13 +41,8 @@ public class GameEndState extends State {
 
         JSONObject root = null;
 
-        if (getModel() == null)
-            throw new IllegalArgumentException(this.getClass().getCanonicalName() + ": Model cannot be null.");
-
         ArrayList<ScoreHolder> scoreHolders = getModel().computeAllScores();
 
-        if (scoreHolders.isEmpty())
-            throw new IllegalStateException(this.getClass().getCanonicalName() + ": There are no players on which compute the score.");
         if (scoreHolders.size() != 1) {
             Collections.sort(scoreHolders);
             Collections.reverse(scoreHolders);
