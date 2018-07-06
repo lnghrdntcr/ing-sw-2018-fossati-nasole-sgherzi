@@ -25,10 +25,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class Controller extends Observable<Event> implements Observer<ViewEvent> {
 
-    private final long matchBeginTime;
+    private long matchBeginTime;
     private GameTableMultiplayer model;
     private State state;
-    private List<View> views;
+    private List<? extends View> views;
     private boolean gameStarted = false;
     private ConcurrentLinkedQueue<Event> outboundEventLoop = new ConcurrentLinkedQueue<>();
     private ConcurrentLinkedQueue<ViewEvent> inboundEventLoop = new ConcurrentLinkedQueue<>();
@@ -41,7 +41,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
     private Thread timeoutCommunicationThread;
     private Thread eventLoopHandlerThread;
 
-    public Controller(ArrayList<View> viewArrayList, long actionTimeout) {
+    public Controller(ArrayList<? extends View> viewArrayList, long actionTimeout) {
 
         this.actionTimeout = actionTimeout;
         this.views = viewArrayList;
@@ -61,7 +61,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
         Log.i("Game created with " + pln.size() + " players");
 
-        matchBeginTime = System.currentTimeMillis() / 1000;
+
 
     }
 
@@ -81,6 +81,7 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
         this.startActionTimeout();
 
         model.onGameStart();
+        matchBeginTime = System.currentTimeMillis() / 1000;
 
     }
 
@@ -289,7 +290,11 @@ public class Controller extends Observable<Event> implements Observer<ViewEvent>
 
         for (View v : this.views) {
             if (v.getPlayer().equals(playerName) && !v.isConnected()) {
-                ((VirtualView) v).connect(localProxy);
+                try {
+                    ((VirtualView) v).connect(localProxy);
+                }catch (ClassCastException cce){
+                    Log.d("Trying to reconnect a local player, does not instantiate a new connection...");
+                }
 
                 new Thread(() -> {
                     try {
