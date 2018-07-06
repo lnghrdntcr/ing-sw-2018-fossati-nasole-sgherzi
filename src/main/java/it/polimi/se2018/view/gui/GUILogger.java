@@ -10,13 +10,13 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.net.URISyntaxException;
-
 
 public class GUILogger extends Application {
 
     public static void go() {
-        new Thread(()->{launch("");}).start();
+        new Thread(() -> {
+            launch("");
+        }).start();
     }
 
     @Override
@@ -29,14 +29,16 @@ public class GUILogger extends Application {
         primaryStage.show();
 
 
-        Media media = new Media(getClass().getClassLoader().getResource("gui/miguel.mp3").toExternalForm());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setAutoPlay(true);
-        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
-        MediaView mediaView = new MediaView(mediaPlayer);
+        try {
+            Media media = new Media(getClass().getClassLoader().getResource("gui/miguel.mp3").toExternalForm());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setAutoPlay(true);
+            mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+            MediaView mediaView = new MediaView(mediaPlayer);
+        } catch (Exception ignored) {
+        }
 
     }
-
 
 
 }

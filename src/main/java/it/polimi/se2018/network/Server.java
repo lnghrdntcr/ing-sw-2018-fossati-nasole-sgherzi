@@ -144,7 +144,6 @@ public class Server extends UnicastRemoteObject implements ServerInterface {
             listenerThreadString = new Thread(() -> {
 
                 try {
-                    //TODO: controllare qui, puo' causare problemi di riconnessione???
                     while (virtualViews.size() < 4) {
                         Socket clientConnection = serverSocketString.accept();
                         InputStreamReader inputStream = new InputStreamReader(clientConnection.getInputStream());

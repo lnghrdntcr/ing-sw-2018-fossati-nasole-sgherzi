@@ -10,8 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -41,7 +39,7 @@ public class SchemaCard implements Serializable {
      * @throws FileNotFoundException if the file specified does not exist
      * @throws JSONException         if the file specified is badly formatted
      */
-    public static List<SchemaCard> loadSchemaCardsFromJson(String fileName) throws FileNotFoundException, JSONException {
+    public static List<SchemaCard> loadSchemaCardsFromJson(String fileName, boolean loadOnlyOtherSource) throws FileNotFoundException, JSONException {
 
         ArrayList<SchemaCard> list = new ArrayList<>();
 
@@ -49,19 +47,21 @@ public class SchemaCard implements Serializable {
 
         // I'm loading the default schema cards
         if (fileName.equals(Settings.getDefaultSchemaCardDatabase())) {
-                defaultFilePath = (new PrivateObjective(GameColor.RED)).getClass().getClassLoader().getResourceAsStream(Settings.getDefaultSchemaCardDatabase());
+            defaultFilePath = (new PrivateObjective(GameColor.RED)).getClass().getClassLoader().getResourceAsStream(Settings.getDefaultSchemaCardDatabase());
         }
 
         InputStream jsonFile = null;
 
-        if (defaultFilePath == null) {
-            jsonFile = new FileInputStream(new File(fileName)) ;
+        if(!loadOnlyOtherSource){
+            if (defaultFilePath == null) {
+                jsonFile = new FileInputStream(new File(fileName));
+            } else {
+                jsonFile = defaultFilePath;
+            }
         } else {
-            jsonFile = defaultFilePath;
+            jsonFile = new FileInputStream(new File(fileName));
         }
 
-        //open file and set up reader
-        //FileInputStream fileInputStream = new FileInputStream(jsonFile);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(jsonFile);
         StringBuilder builder;
         try (Scanner scanner = new Scanner(bufferedInputStream)) {
@@ -86,17 +86,31 @@ public class SchemaCard implements Serializable {
             }
         }
 
-        // Now I
+
         if (fileName.equals(Settings.getDefaultSchemaCardDatabase()) && !Settings.getSchemaCardDatabase().equals("")) {
             try {
                 list.addAll(SchemaCard.loadSchemaCardsFromJson(Settings.getSchemaCardDatabase()));
             } catch (FileNotFoundException | JSONException e) {
                 CLIPrinter.printError("Could not load custom schema card file.");
             }
+
         }
 
         return list;
     }
+
+    /**
+     * @param fileName
+     * @return
+     * @throws FileNotFoundException
+     * @throws JSONException
+     */
+    public static List<SchemaCard> loadSchemaCardsFromJson(String fileName) throws FileNotFoundException, JSONException {
+
+        return SchemaCard.loadSchemaCardsFromJson(fileName, false);
+
+    }
+
 
     /**
      * Load a SchemaCard from JSON rapresentation
@@ -114,6 +128,7 @@ public class SchemaCard implements Serializable {
 
     /**
      * Get a single face of this SchemaCard
+     *
      * @param side the side to get (FRONT or BACK)
      * @return The front face or the back face of this card
      */
@@ -123,6 +138,7 @@ public class SchemaCard implements Serializable {
 
     /**
      * Get the JSON represetnation of this object
+     *
      * @return a {@link JSONObject} that represetns the SchermaCard
      */
     public JSONObject toJsonObj() {

@@ -29,9 +29,13 @@ public class GameSetupState extends State {
         super(controller, model);
 
         try {
-            String path = Settings.getDefaultSchemaCardDatabase();
-            if(forceTestCard) path = "validTest_emptycard12.scf";
-            schemaCardList = SchemaCard.loadSchemaCardsFromJson(Settings.getDefaultSchemaCardDatabase());
+
+            if (forceTestCard) {
+                schemaCardList = SchemaCard.loadSchemaCardsFromJson("gameData/resources/schemaCards/validTest_emptycard12.scf", true);
+            } else {
+                schemaCardList = SchemaCard.loadSchemaCardsFromJson(Settings.getDefaultSchemaCardDatabase());
+            }
+
         } catch (FileNotFoundException e) {
             Log.e("SchemaCardFile " + Settings.getDefaultSchemaCardDatabase() + " not valid!");
             return;
@@ -53,6 +57,7 @@ public class GameSetupState extends State {
 
     /**
      * Performs all the necessary action to sync the current game state and a reconnected user
+     *
      * @param playerName the player to resync
      */
     @Override
