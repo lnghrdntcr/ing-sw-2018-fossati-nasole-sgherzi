@@ -369,7 +369,6 @@ public class TurnStateTest {
         Thread.sleep(1000);
         //==========CorkRow==========
         testView = views.get(1);
-        testView.dispatchEventToController(new PlaceDiceEvent(this.getClass().getName(), "", testView.getPlayer(), 0, new Point(0, 0)));
         DiceFace diceFace = actualController.getModel().getDiceFaceByIndex(0);
         testView.dispatchEventToController(new PlaceAnotherDiceEvent("test", "", testView.getPlayer(), 2, new Point(2, 2), 0));
         Thread.sleep(1000);
